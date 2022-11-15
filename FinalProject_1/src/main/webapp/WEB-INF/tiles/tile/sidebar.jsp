@@ -82,14 +82,14 @@
 	{position:relative;right: 0px;transition: all .35s;}
 	
 	
-	ul{
+	.nav-menu ul{
 	  padding-left: 5px;
 	}
-	li:hover, .profile:hover{
+	.nav-menu li:hover, .profile:hover{
 	  background-color: rgb(244, 244, 244);
 	}
 	
-	li{
+	.nav-menu li{
 	   cursor: pointer; 
 	  /* position: absolute; */
 	  color: inherit;
@@ -103,8 +103,12 @@
 	  -webkit-transition: .3s all ease;
 	  -o-transition: .3s all ease;
 	  transition: .3s all ease; } */
-	a, a:hover {
+	.nav-menu a, .nav-menu a:hover {
 	text-decoration: none !important; }
+	
+	.nav-menu a:hover{
+		
+	}
 	
 	.menu-text{
 	  color:#556372;
