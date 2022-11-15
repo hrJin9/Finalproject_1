@@ -32,6 +32,7 @@
 	
 	
 	<!-- mapper 파일이란 sql 문을 가지고 있는 xml 파일을 말한다. -->
+	<!-- 
 	<bean id="sqlSessionFactory_2" class="org.mybatis.spring.SqlSessionFactoryBean">
 	   <property name="mapperLocations" value="classpath*:com/spring/finalproject/mapper/*.xml" />
 	   <property name="dataSource" ref="dataSource_2"/>
@@ -41,7 +42,7 @@
 	<bean id="sqlsession_2" class="org.mybatis.spring.SqlSessionTemplate"> 
 	   <constructor-arg index="0" ref="sqlSessionFactory_2" />
 	</bean>   	
-	
+	 -->
 	
 	
 	
