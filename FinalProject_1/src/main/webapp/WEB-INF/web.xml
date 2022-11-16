@@ -33,7 +33,7 @@
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<!-- === #13. URL 패턴에서 확장자 .action 인 것으로 요청을 하면 appServlet 서블릿이 받아서 처리를 해준다. === --> 
-		<url-pattern>*.action</url-pattern>
+		<url-pattern>*.up</url-pattern>
 	</servlet-mapping>
 	
 	
@@ -55,7 +55,8 @@
 	
 	<!--  ===== #14. 시작 웹페이지 등록하기 ===== -->
 	<welcome-file-list>
-	  <welcome-file>index.action</welcome-file>
+	  <welcome-file>/</welcome-file>
+	  <welcome-file>index.up</welcome-file>
 	</welcome-file-list>
 
 </web-app>

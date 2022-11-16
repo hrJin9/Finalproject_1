@@ -3,9 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="attendance_header.jsp"%> 
-<%@ include file="/WEB-INF/tiles/tile/sidebar.jsp"%>    
-<%@ include file="/WEB-INF/tiles/tile/sidebar2.jsp"%>
-<link rel="stylesheet" type="text/css" href="/resources/css/hyerin.css">
 <script>
 	$(document).ready(function(){
 	 	$("a#attendance").removeClass("list_iscurrent");

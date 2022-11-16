@@ -1,11 +1,12 @@
 @charset "UTF-8";
 
+
 /* attendance.jsp */
 .fontsize-basic{font-size: 10pt;}
 .font-bold{font-weight:bold;}
 
 .attendance-container{
-	margin-left: 65px;
+	margin-left: 40px;
 	position: relative; /* position: absolute의 기준점 */
 }
 
@@ -17,8 +18,15 @@
 	height: 40px;
 }
 
+div.datebox > span {position:relative; right:6px;}
+div.datebox > button:nth-child(3){position:relative; right: 12px;}
+
+#dp1668580804821 {
+	font-size: 10pt;
+}
+
 .datearrow {
-	height: 35px; width: 40px;
+	height: 35px; width: 30px;
 	background-color: transparent;
 	border: solid 1px rgba(0, 0, 0, .1);
 	border-radius: 5px;
@@ -180,21 +188,39 @@
 	background-color: rgba(242, 242, 242, .2);
 	color: rgba(0, 0, 0, .3);
 }
+
 .workinghour > td:first-child{
 	width: 15%;
+}
+
+.workinghour td {
+	padding: 10px 0 10px 5px;
+	font-size: 9pt;
 }
 
 .workinghour > td:first-child ~ td {
 	width: 3%;
 }
 
-.workingweek tr:not(.workingweek > tr > td:first-child):hover{
-	background-color: rgba(242, 242, 242, .2);
+
+.working-recordbar{
+	width: 50%;
+	height: 30px;
+	background-color: #04BFAD;
+}
+
+.workinghour ~ tr td {
+	padding: 25px 0 25px 0;
+}
+
+.workingweek > table > tbody > tr:first-child ~ tr:hover {
+	background-color: rgba(242, 242, 242, .5);
 	cursor:pointer;
 }
 
-.workingweek td:first-child{
-	padding: 25px 0 25px 0;
+
+.workingweek > tr:first-child ~ tr > td{
+	padding: 20px;
 }
 
 .date{
@@ -233,8 +259,16 @@
 
 .offcanvas{
 	box-shadow: 5px 5px 20px 3px rgb(205,205,210, 0.8);
-	border-left: none;
 }
+
+.offcanvas-header, .offcanvas-body{
+	padding: 25px !important;
+}
+
+.offcanvas-end{
+	border-left: none !important;
+}
+
 
 .line{
 	display: inline-block;
@@ -244,22 +278,24 @@
 }
 
 .workStatusbox{
-	width: 50px !important; 
+	width: 40px !important; 
 }
 
 
 .workwirte-container{
 	border: solid 1px rgba(242, 242, 242);
-	width: 300px; height: 60px;
+	width: 100%; height: 60px;
 	border-radius: 10px;
+	display: flex;
 }
+
+.workwrite-container div {margin: auto;}
 
 .workwirte-container div, .workwirte-container ul{
 	font-size: 10pt;
+	margin: auto;
 }
 
-.workwrite-container > div{
-}
 
 .workwritebox:hover{
 	background-color: rgba(230, 230, 230, 0.5);
@@ -270,7 +306,7 @@
 
 .dropdown-menu{
 	border-radius: 10px;
-	border: none;
+	border: none !important;
 	box-shadow: 5px 5px 20px 3px rgb(205,205,210, 0.8);
 }
 
@@ -307,8 +343,9 @@
 	margin-top: 10pt;
 	border-radius: 10px;
 	background-color: rgba(242, 242, 242);
-	width: 300px; height: 40px;
+	width: 100%; height: 40px;
 	display:flex;
+	
 }
 
 .workadd:hover{
@@ -322,6 +359,36 @@
 	margin: auto;
 }
 
+
+.workstatus-buttoncontainer{
+	margin-top: 10px;
+}
+
+.workstatus-del{
+	border: solid 1px rgba(0, 0, 0, 0.1);
+	width: 50px; height: 40px;
+	border-radius: 10px;
+	background-color: white;
+}
+
+.workstatus-cancel{
+	font-size: 10pt;
+	float: right;
+	border: solid 1px rgba(0, 0, 0, 0.1);
+	border-radius : 10px;
+	width: 60px; height: 40px;
+	background-color: white;
+}
+
+.workstatus-save{
+	font-size: 10pt;
+	float:right;
+	border: none;
+	border-radius : 10px;
+	width: 90px; height: 40px;
+	margin-right: 10px;
+	background-color: #5F98F6;
+}
 
 
 
@@ -338,7 +405,7 @@
 	margin: auto;
 	border: solid 1px rgba(150, 150, 150, 0.5);
 	border-radius: 15px;
-	height: 150px; width: 60%;
+	height: 130px; width: 60%;
 	display: flex;
 }
 

@@ -38,6 +38,10 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/jquery.form.min.js"></script>
 
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+<!-- 혜린style.css -->
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hyerin.css?after">
+
 </head>
 <body>
 	<div>

@@ -103,8 +103,8 @@
 </head>
 <body>
 <nav id="list">
-	<a id="attendance" href="<%= request.getContextPath()%>/attendance.jsp">근태현황</a>
-	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff.jsp">내 연차내역</a>
+	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up">근태현황</a>
+	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff.up">내 연차내역</a>
 	<div class="list_underline"></div>
 </nav>
 
