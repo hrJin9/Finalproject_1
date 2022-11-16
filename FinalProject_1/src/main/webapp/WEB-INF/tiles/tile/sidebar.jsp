@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
+    
 <style type="text/css">
 
 	@font-face {
@@ -132,8 +135,8 @@
 	  display: flex;
 	}
 	.pic{
-	  height: 38px;
-	  width: 38px;
+	  height: 42px;
+	  width: 42px;
 	  font-size: 9pt;
 	  position: relative;
 	  display: flex;
@@ -192,9 +195,49 @@
 	  flex-shrink: 0;
 	  isolation: isolate;
 	}
+	.news {
+		border: 1px solid #e6e6e6;
+		padding: 20px;
+		margin-bottom: 22px;
+		width: 230px;  
+		height: 130px; 
+		border-radius: 10px;
+		background-color: white;
+		display: inline-block;
+		float: left;
+		font-size: 18pt;
+		
+		position: 
+		fixed; top: 21%; 
+		left: 4%; 
+		z-index: 2;
+	} 
 
 </style>
-<link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+		$(".myprofile").hide();
+		
+		$(".profile").click(function(){
+			$(".myprofile").toggle();
+		});
+		
+		// 비밀번호 변경창 닫기 버튼 클릭 시
+		$("button.pwdChangeClose").click(function() {
+
+			const iframe_pwdChange = document.getElementById("iframe_pwdChange"); // 대상 아이프레임 선택
+			const iframe_window = iframe_pwdChange.contentWindow;
+
+			iframe_window.func_form_reset_empty();
+		});
+		
+	});// end of $(document).ready(function(){})---------------
+
+</script>
+
 <input type="checkbox" id="menuicon">
   <label for="menuicon">
     <span></span>
@@ -203,7 +246,7 @@
   </label>
   <div class="sidebar">
 
-    <div class="profile" href="#" style="margin-top: 20px;margin-bottom:30px;">
+    <div class="profile" href="#" style="margin-top: 30px; margin-bottom:30px;">
       <span class="pic"><span>지은</span></span>
       <span class="my"><span class="name">김지은</span><br>
       <span class="role">개발자</span>
@@ -228,5 +271,54 @@
         <li class="member"><a href="#" ><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
         <li class="member"><a href="#" ><span class="icon icon-cog"></span><span class="menu-text">설정</span></a></li>
       </ul>
+    </div>
+  </div>
+  
+  <div id="list-example" class="list-group myprofile" style="width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 12%; left: 1%; z-index: 1;">
+	  <a class="list-group-item list-group-item-action" href="#" style="font-size: 14px; cursor: pointer;">
+	  	<i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
+	  	<span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
+	  	<span style="font-size: 8.5pt; color: #737373;">sawonwldms@gmail.com</span><br>
+	  	<span style="font-size: 8.5pt; color: #737373; padding-bottom: 3px; ">개발자</span><br>
+  	  </a>
+	  <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; cursor: pointer;" data-toggle="modal" data-target="#userPwdChange" data-dismiss="modal" data-backdrop="static">
+	  	<i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
+  	  </a>
+	  <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
+ 	</div>
+ 	
+ 	
+	<!-- <div class=news>
+		<span style="font-size: 9pt; color: #595959;">새로운 소식</span><br>  
+		<span style="font-size: 13pt;">7시간 20분</span>  
+	</div><br>  -->
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	<%-- **** 비밀번호 변경 Modal **** --%>
+	<div class="modal fade" id="userPwdChange">  <%-- 아이디찾기 a 태그의 data-target="#userPwdChange" data-dismiss="modal" 와 매핑됨. --%>
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal header -->
+	    <button type="button" class="close pwdChangeClose" data-dismiss="modal" style="margin: 20px 0px 10px 380px; font-size: 20pt;">&times;</button>
+        
+        <!-- Modal body -->
+        <h4 class="modal-title" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
+        <div class="modal-body">
+          <div id="pwdChange">
+             <%-- <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/login/pwdChange.up"> --%>
+             <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="http://localhost:9090/FinalProject/pwdChange.jsp">
+             </iframe>
+         </div>
+       </div>
+        
+        <!-- Modal footer -->
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-danger pwdChangeClose" data-dismiss="modal">Close</button>
+        </div> -->
+      </div>
     </div>
   </div>
