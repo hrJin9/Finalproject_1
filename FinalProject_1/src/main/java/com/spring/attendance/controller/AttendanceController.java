@@ -18,9 +18,14 @@ public class AttendanceController {
 		return "attendance/attendance.tiles";
 	}
 	
-	@RequestMapping(value = "/dayoff.up")
+	@RequestMapping(value = "/dayoff/index.up")
+	public String dayoffI_index(HttpServletRequest request) {
+		return "attendance/dayoff_index.tiles";
+	}
+	
+	@RequestMapping(value = "/dayoff/detail.up")
 	public String dayoff(HttpServletRequest request) {
-		return "attendance/dayoff.tiles";
+		return "attendance/dayoff_detail.tiles";
 	}
 	
 	@RequestMapping(value = "/support/meetingroom.up")
