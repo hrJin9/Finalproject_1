@@ -23,7 +23,7 @@
 		width: 640px;
 		font-size: 18pt;
 		font-weight: bold;
-		margin: 4px 0 0 70px;
+		margin: 4px 0 0 80px;
 	}
 	
 	#attendance_mainList a {
@@ -47,7 +47,7 @@
 		width: 640px;
 		font-size: 10pt;
 		font-weight: bold;
-		margin: 4px 0 0 60px;
+		margin: 4px 0 0 70px;
 	}
 	
 	#dayoff_subList a {
@@ -65,7 +65,7 @@
 		position: absolute;
 		left: 0;
 		bottom: -1px;
-		width: 9%;
+		width: 8%;
 		height: 2px;
 		background: #333;
 		transition: all .3s ease-in-out;

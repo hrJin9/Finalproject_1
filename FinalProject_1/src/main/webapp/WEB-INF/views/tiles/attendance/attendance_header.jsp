@@ -20,7 +20,7 @@
 		width: 640px;
 		font-size: 18pt;
 		font-weight: bold;
-		margin: 4px 0 0 70px;
+		margin: 4px 0 0 80px;
 	}
 	
 	#attendance_mainList a {
@@ -32,7 +32,6 @@
 		margin-left: 4%;
 		color: #D2D6D9;
 	}
-	
 	
 	#dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
 		left: 0%;
@@ -52,7 +51,7 @@
 </style>
 
 <nav id="attendance_mainList">
-	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up">내 근무</a>
+	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up" style="color: black;">내 근무</a>
 	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff/index.up" class="iscurrent">내 휴가</a>
 	<div class="list_underline"></div>
 </nav>

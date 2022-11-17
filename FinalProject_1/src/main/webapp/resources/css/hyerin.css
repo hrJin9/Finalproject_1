@@ -251,9 +251,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-right: none;
 }
 
-.workingweek > table td:first-child{
-	border-left: none;
-}
 .workinghour td{
 	border-top: none;
 }
@@ -573,7 +570,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-write > div:first-child, .dayoff-record > div:first-child{
 	font-weight: bold;
 	font-size: 11pt;
-	margin: 30px 0;
+	margin: 30px 0 20px 0;
 }
 
 .dayoff-write > div:nth-child(2) > div{
@@ -608,8 +605,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .dayoff-record > div > div:nth-child(2),
-.dayoff-detail > div > div:nth-child(2),
-.mettingroom-date > div > div:nth-child(2){
+.dayoff-detail > div > div:nth-child(2){
 	float: right;
 	position: relative; right: 0.25%;
 }
@@ -682,7 +678,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-detail > div:first-child, .dayoff-record > div:first-child{
 	font-weight: bold;
 	font-size: 11pt;
-	margin: 30px 0;
+	margin: 30px 0 20px 0;
 }
 
 .dayoff-detail-sumbox{
@@ -743,7 +739,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .dayoff-adjustmentbox > table > thead > tr > td{
-	padding: 20px 10px;
+	padding: 15px 10px;
 	border-right: solid 1px rgba(0,0,0,.1);
 	border-bottom: solid 1px rgba(0,0,0,.1);
 }
@@ -776,11 +772,8 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	margin-left : 100px;
 }
 
-.mettingroom-container > div {display: flex;}
-
-
 .meetingroom-info{
-	margin: auto;
+	margin: 20px 0;
 	border: solid 1px rgba(0,0,0, 0.1);
 	background-color: rgba(250,250,250,.5);
 	height: 100px;
@@ -794,7 +787,28 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	font-size: 9pt;
 }
 
+.mettingroom-date {
+	margin: 30px 0;
+}
+
 .mettingroom-date > div > div:first-child {
 	font-weight: bold;
+}
+
+.mettingroom-date > div > div:nth-child(2) {
+	float: right;
+}
+
+.mettingroom-date > div > div > input {
+	position: relative; bottom: 1px;
+}
+
+
+.meetingroom-offcanvas > table {
+	font-size: 10pt;
+}
+
+.meetingroom-offcanvas > table td{
+	padding: 20px 10px;
 }
 
