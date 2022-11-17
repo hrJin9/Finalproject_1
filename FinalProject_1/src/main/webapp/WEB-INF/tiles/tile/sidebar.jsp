@@ -362,6 +362,7 @@
              <%-- <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/login/pwdChange.up"> --%>
              <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="http://localhost:9090/FinalProject/pwdChange.jsp">
              </iframe>
+             
          </div>
        </div>
         
