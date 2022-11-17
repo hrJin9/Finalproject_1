@@ -21,10 +21,18 @@ public class FinalprojectController {
 	 * mav.setViewName("main/index.tiles"); return mav; }// end of index
 	 */
 	@RequestMapping(value = {"/main.up", "/"})
-	public ModelAndView home2(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView index(HttpServletRequest request, ModelAndView mav) {
 		
 		mav.setViewName("main/index.tiles");
 		return mav;
 	}
+	
+	@RequestMapping(value = "/main/index_todo.up")
+	public ModelAndView index_todo(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("main/index_todo.tiles");
+		return mav;
+	}
+	
 	
 }
