@@ -1,7 +1,73 @@
 @charset "UTF-8";
 
+body::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+}
+
+body::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-track {
+	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+}
+
+.dropdown-toggle::after{display: none !important;}
+
+hr.HRhr{
+	background-color: rgba(0,0,0, .3) !important;
+	border: none; height: 1px;
+}
+
 
 /* attendance.jsp */
+.spinner {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  position: relative; left: 10px;
+}
+
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #04BFAD;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.4) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.4);
+    -webkit-transform: scale(0.4);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+
+
+
+
 .fontsize-basic{font-size: 10pt;}
 .font-bold{font-weight:bold;}
 
@@ -11,22 +77,20 @@
 }
 
 .contentsmargin{
-	margin-left: 30px;
+	margin-left: 65px;
 }
 
 .datebox {
-	height: 40px;
+	height: 30px;
 }
 
-div.datebox > span {position:relative; right:6px;}
-div.datebox > button:nth-child(3){position:relative; right: 12px;}
+div.datebox > span {position:relative; right:6px; font-size: 10pt;}
+div.datebox > span > input {position:relative; bottom: 1px;}
+div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
-#dp1668580804821 {
-	font-size: 10pt;
-}
 
 .datearrow {
-	height: 35px; width: 30px;
+	height: 30px; width: 30px;
 	background-color: transparent;
 	border: solid 1px rgba(0, 0, 0, .1);
 	border-radius: 5px;
@@ -34,7 +98,7 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 }
 
 .datepicker {
-	height: 35px; width : 100px;
+	height: 30px; width : 100px;
 	display: inline-block;
 	border: solid 1px rgba(0, 0, 0, .1);
 	margin: 0;
@@ -75,8 +139,13 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 	border: solid 1px rgba(0, 0, 0, .1);
 	border-radius: 5px;
 	background-color: transparent;
-	height: 35px; width: 60px;
+	height: 30px; width: 50px;
 	font-size: 10pt;
+	position: relative; bottom: 1px;
+}
+
+.workingweek-sum{
+	margin-top: 20px;
 }
 
 .workingweek-info{
@@ -84,16 +153,16 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 }
 
 .workingiweek-infobox{
-	height: 100px; width: 180px;
+	height: 110px; width: 180px;
 	border-radius : 10px;
 	box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
 	background-color: #566573;
-	position: absolute; left: 80px; bottom: 500px; 
+	position: absolute; left: 90px; bottom: 450px; 
 }
 
 .workingiweek-infobox > table{
 	color: #B1B5B9;
-	font-size: 10pt;
+	font-size: 9pt;
 	width: 90%;
 	position: relative; left: 7px; top: 7px;
 }
@@ -128,16 +197,16 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 }
 
 .workingweek-sumbar-infobox{
-	height: 80px; width: 150px;
+	height: 90px; width: 150px;
 	border-radius : 10px;
 	box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
 	background-color: #566573;
-	position: absolute; bottom: 500px; left: 25%;
+	position: absolute; bottom: 450px; left: 30%;
 }
 
 .workingweek-sumbar-infobox > table{
 	color: #B1B5B9;
-	font-size: 10pt;
+	font-size: 9pt;
 	width: 90%;
 	position: relative; left: 7px; top: 7px;
 }
@@ -151,12 +220,12 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 	border-radius : 7px;
 	box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
 	background-color: #566573;
-	position: absolute; bottom: 500px; left: 71%;
+	position: absolute; bottom: 450px; left: 73%;
 }
 
 .workingweek-sumbar-goal-infobox > table{
 	color: #B1B5B9;
-	font-size: 10pt;
+	font-size: 9pt;
 	width: 90%;
 	position: relative; left: 7px; top: 5px;
 }
@@ -176,6 +245,10 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 
 .workingweek > table td{
 	border: solid 1px rgba(0, 0, 0, .1);
+}
+
+.workweek > table > tbody > tr > td:last-child{
+	border-right: none;
 }
 
 .workingweek > table td:first-child{
@@ -205,12 +278,14 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 
 .working-recordbar{
 	width: 50%;
-	height: 30px;
+	height: 20px;
 	background-color: #04BFAD;
+	border-radius: 5px;
+	position: absolute; top:33%; left:20%;
 }
 
 .workinghour ~ tr td {
-	padding: 25px 0 25px 0;
+	padding: 15px 0 15px 5px;
 }
 
 .workingweek > table > tbody > tr:first-child ~ tr:hover {
@@ -249,6 +324,11 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 	height: 16px;
 	background-color: #DCF2F0;
 	color: #025951;
+	float: right;
+	position: relative; right: 10px;
+}
+.workingtotalhourByday > span{
+	margin-left: 3px;
 }
 
 
@@ -268,22 +348,35 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 .offcanvas-end{
 	border-left: none !important;
 }
-
+/* 
+.btn-close{
+	position: relative; left: 10px;
+}
+ */
 
 .line{
 	display: inline-block;
 	background-color: rgba(242, 242, 242);
 	height: 1px;
-	width: 100px;
+	width: 250px;
+	margin-left: 10px;
+	margin-bottom: 5px;
 }
 
 .workStatusbox{
 	width: 40px !important; 
 }
 
+.todayworkStatus-container{
+	font-size: 10pt;
+	margin-bottom: 20px;
+	font-weight: bold;
+	
+}
+
 
 .workwirte-container{
-	border: solid 1px rgba(242, 242, 242);
+	border: solid 1px rgba(0, 0, 0, .1);
 	width: 100%; height: 60px;
 	border-radius: 10px;
 	display: flex;
@@ -315,29 +408,53 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 }
 
 .workStatusbox img {
-	margin-left: 10px;
+	margin-right:5px;
 }
 
 .workStatusbox li a{
-	position: relative;
-	bottom: 20px;
-	margin-left: 20px;
+	padding: 10px 15px;
 }
 
 .workStatusbox li a:hover{
-	background-color: transparent;
+	border-radius: 7px;
+	background-color: rgba(230, 230, 230, 0.5);
 }
 
 .workStartbox, .workEndbox{
 	display: inline-block;
 }
 
+.workStartbox, .workEndbox{
+	padding: 7px 15px;
+	border-radius: 5px;
+}
 
-.workstarttime{
+.workStartbox:hover, .workEndbox:hover{
+	background-color: rgba(230, 230, 230, 0.5);
+}
+
+
+.workstarttime, .workendtime{
 	height: 150px;
 	width: 100px;
 	overflow: scroll;
+	overflow-x : hidden;
+	
 }
+
+.workstarttime::-webkit-scrollbar, .workendtime::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+}
+
+.workstarttime::-webkit-scrollbar-thumb, .workendtime::-webkit-scrollbar-thumb{
+    height: 30%; /* 스크롤바의 길이 */
+	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+.workstarttime::-webkit-scrollbar-track, .workendtime::-webkit-scrollbar-track{
+	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+}
+
 
 .workadd{
 	margin-top: 10pt;
@@ -361,7 +478,7 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 
 
 .workstatus-buttoncontainer{
-	margin-top: 10px;
+	margin-top: 20px;
 }
 
 .workstatus-del{
@@ -388,6 +505,7 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 	width: 90px; height: 40px;
 	margin-right: 10px;
 	background-color: #5F98F6;
+	color: white;
 }
 
 
@@ -397,21 +515,24 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 
 /* dayoff.jsp */
 .dayoff-container{
-	display: flex;	
 	margin-top: 50px;
+}
+
+.dayoff-sum-container{
+	display: flex;	
 }
 
 .dayoff-sum{
 	margin: auto;
+	display: flex;
 	border: solid 1px rgba(150, 150, 150, 0.5);
 	border-radius: 15px;
-	height: 130px; width: 60%;
-	display: flex;
+	height: 100px; width: 60%;
+	padding: 0 20px;
 }
 
 .dayoff-sum > div{
 	margin: auto;
-	display: inline-block;
 }
 
 .dayoff-sum > div > div:first-child{
@@ -423,4 +544,247 @@ div.datebox > button:nth-child(3){position:relative; right: 12px;}
 	color: rgba(150, 150, 150);
 }
 
+.longer-verticalline{
+	height: 99px;
+	background-color: rgba(150, 150, 150, 0.5); 
+	width: 1px;
+}
+.verticalline{
+	height: 50px;
+	background-color: rgba(0,0,0, .1); 
+	width: 1px;
+}
+
+
+.dayoff-searchcontainer{
+	display: block;
+	font-size: 10pt;
+	margin: 20px 0 0 50px;
+}
+
+
+
+/* dayoff_index.jsp */
+.dayoff-index-container{
+	width: 90%;
+	margin-left: 100px;
+}
+
+.dayoff-write > div:first-child, .dayoff-record > div:first-child{
+	font-weight: bold;
+	font-size: 11pt;
+	margin: 20px 0 20px 0;
+}
+
+.dayoff-write > div:nth-child(2) > div{
+	width: 30%;
+}
+
+.dayoff-box{
+	border: solid 1px rgba(0,0,0,.1);
+	border-radius: 12px;
+	height: 150px;
+	display: inline-block;
+	margin-right: 10px;
+	padding: 20px 20px;
+}
+
+.dayoff-box:hover{
+	background-color: rgba(200,200,200,.1);
+	cursor: pointer;
+}
+
+.dayoff-box > div {
+	margin-top: 40px;
+}
+
+.dayoff-box > div > div:nth-child(1){
+	font-size: 9pt; 
+}
+.dayoff-box > div > div:nth-child(2){
+	font-size: 11pt;
+	color: rgba(0,0,0,.6);
+}
+
+
+.dayoff-record > div > div:nth-child(2),
+.dayoff-detail > div > div:nth-child(2),
+.mettingroom-date > div > div:nth-child(2){
+	float: right;
+	position: relative; right: 0.25%;
+}
+
+.dayoff-record > div > div, .dayoff-record > div > div:nth-child(2) div,
+.dayoff-detail > div > div, .dayoff-detail > div > div:nth-child(2) div,
+.mettingroom-date > div > div, .mettingroom-date > div > div:nth-child(2) div{
+	display: inline-block;
+}
+
+.dayoff-record > div > div:nth-child(2) div,
+.dayoff-detail > div > div:nth-child(2) div,
+.mettingroom-date > div > div:nth-child(2) div{
+	border: solid 1px rgba(0,0,0, .1);
+	border-radius: 5px;
+	height: 30px; width: 30px;
+}
+
+.dayoff-record > div > div:nth-child(2) div:hover,
+.dayoff-detail > div > div:nth-child(2) div:hover,
+.mettingroom-date > div > div:nth-child(2) div:hover{
+	background-color: rgba(200,200,200, .2);
+	border: solid 1px rgba(0,0,0, .2);
+	cursor: pointer;
+}
+
+.dayoff-record > div > div:nth-child(2) div i,
+.dayoff-detail > div > div:nth-child(2) div i,
+.mettingroom-date > div > div:nth-child(2) div i{
+	margin: 7px 0 0 9px;
+}
+
+.dayoff-record > div > div input,
+.dayoff-detail > div > div input,
+.mettingroom-date > div > div input{
+	border: solid 1px rgba(0,0,0, 0.1);
+	font-size: 10pt;
+	border-radius: 5px;
+	height: 30px;
+}
+
+.dayoff-record > div:nth-child(2){
+	border: solid 1px rgba(0,0,0, 0.1);
+	background-color: rgba(250,250,250,.5);
+	height: 200px; width: 100%;
+	border-radius: 5px;
+}
+
+.dayoff-record > div:nth-child(2){
+	display: flex;
+}
+
+.dayoff-record > div:nth-child(2) > div{
+	margin: auto;
+	font-size: 10pt;
+	color: rgba(0,0,0,0.5);
+}
+
+.dayoff-record > div:nth-child(2) > div > i{
+	margin-left : 50px;
+}
+
+
+/* dayoff_detail.jsp */
+.dayoff-detail-container{
+	width: 90%;
+	margin-left: 100px;
+}
+
+.dayoff-detail > div:first-child, .dayoff-record > div:first-child{
+	font-weight: bold;
+	font-size: 11pt;
+	margin: 20px 0 20px 0;
+}
+
+.dayoff-detail-sumbox{
+	height: 110px; width: 100%;
+	border: solid 1px rgba(0,0,0,.1);
+	border-radius: 5px;
+	display: flex;
+	padding: 20px 40px;
+}
+
+.dayoff-detail-sumbox > div{
+	margin: auto;
+}
+
+
+.dayoff-detail-sumbox > div > div:nth-child(1){
+	height: 13px; width: 2px;
+	display: inline-block;
+}
+
+.dayoff-detail-sumbox > div > span{
+	font-size: 9pt;	
+	position: relative; bottom: 2px; left: 2px;
+}
+
+.dayoff-detail-sumbox > div > div:nth-child(3){
+	font-size: 12pt; font-weight: bold;
+}
+
+
+.sumbox-verticalline{
+	height: 109px; width: 1px;
+	background-color: rgba(0,0,0,.1);
+	position: relative; bottom: 20px;
+}
+
+.dayoff-plus{color:green;}
+.dayoff-none{color:rgba(0,0,0,0.3);}
+.dayoff-minus{color:#BF2604;}
+
+
+.dayoff-adjustmentbox{
+	margin-top: 20px;
+	width: 100%;
+	border: solid 1px rgba(0,0,0,.1);
+	border-radius: 5px;
+}
+
+.dayoff-adjustmentbox > table{
+	width: 100%;
+	font-size: 10pt;
+}
+
+.dayoff-adjustmentbox > table > thead {
+	text-align: right;
+}
+
+.dayoff-adjustmentbox > table > thead > tr > td{
+	padding: 20px 10px;	
+}
+
+.dayoff-adjusmentbox > table > tbody > tr > td:first-child ~ td{
+	text-align: right;
+	color: red;
+}
+
+.dayoff-adjusmentbox > table > tbody > tr > td{
+	padding: 10px;
+	color: red;
+}
+
+
+
+
+
+
+
+/* meetingroom.jsp */
+.mettingroom-container{
+	width: 90%;
+	margin-left : 100px;
+}
+
+.mettingroom-container > div {display: flex;}
+
+
+.meetingroom-info{
+	margin: auto;
+	border: solid 1px rgba(0,0,0, 0.1);
+	background-color: rgba(250,250,250,.5);
+	height: 100px;
+	width: 100%;
+	border-radius: 5px;
+	padding: 20px 20px;
+	color: rgba(0,0,0,0.5);
+	font-size: 10pt;
+}
+.meetingroom-info > div{
+	font-size: 9pt;
+}
+
+.mettingroom-date > div > div:first-child {
+	font-weight: bold;
+}
 
