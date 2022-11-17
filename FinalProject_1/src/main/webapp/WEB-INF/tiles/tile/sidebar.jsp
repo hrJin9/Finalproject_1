@@ -88,7 +88,7 @@
    {position:relative;right: 0px;transition: all .35s;}
    
    input#menuicon:checked + label + div +div+div.news{
-   	position:relative;
+   	position:absolute;
    	left: 143px;
     top: 169px;
     transition: all .35s;
@@ -106,9 +106,9 @@
       float: left;
       font-size: 18pt;
       
-      position: fixed; 
+      position: absolute; 
       top: 23%;
-      left: 5%;
+      left: 3.5%;
       z-index: 2;
       
       overflow:hidden;
@@ -141,7 +141,6 @@
    .nav-menu a:hover{
       
    }
-   
    .menu-text{
      color:#556372;
      font-size: 10pt;
@@ -260,9 +259,14 @@
          $(".myprofile").toggle();
       });
       
-      $(".home").click(function(){
+      $("li#newsIcon").click(function(){
          $(".news").toggle();
+         // $(".profile").attr("disabled", true);
+         // $(".profile").unbind('click').click();
+         // $(".profile").unbind("click");
       });
+      
+      
       
       // 비밀번호 변경창 닫기 버튼 클릭 시
       $("button.pwdChangeClose").click(function() {
@@ -295,7 +299,7 @@
     <div class="nav-menu">
       <ul>
         <li class="home"><a href="#" ><span class="icon icon-search"></span><span class="menu-text">검색</span></a></li>
-        <li class="home"><a href="#" ><span class="icon icon-bell"></span><span class="menu-text">새로운 소식</span>
+        <li class="home" id="newsIcon"><a href="#" ><span class="icon icon-bell"></span><span class="menu-text">새로운 소식</span>
           <span class="newred"></span>
           <span class="badge"><span class="newCnt">1</span></span></a></li>
 
@@ -313,7 +317,7 @@
     </div>
   </div>
   
-  <div id="list-example" class="list-group myprofile" style="width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 12%; left: 1%; z-index: 1;">
+  <div id="list-example" class="list-group myprofile" style="width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 14%; left: 1%; z-index: 1;">
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
