@@ -77,7 +77,7 @@
 						<td>자동 소멸</td>
 						<td>조정</td>
 						<td>사용</td>
-						<td>잔여</td>
+						<td><div>잔여</div><div style="font-size:8pt;">전년도이월</div></td>
 					</tr>
 				</thead>
 				<tbody>
