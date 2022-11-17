@@ -91,7 +91,7 @@
 
 <nav id="attendance_mainList">
 	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up">내 근무</a>
-	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff.up">내 연차</a>
+	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff.up">내 휴가</a>
 	<div class="list_underline"></div>
 </nav>
 
