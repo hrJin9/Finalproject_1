@@ -150,7 +150,7 @@
 	<%-- **** 로그인 폼 **** --%>
 	<form id="login_frm" name="login_frm">
 		<div id="login_box" class="d-flex flex-column m-auto">
-			<img src="<%= ctxPath%>/images/로고.png" class="logo" width=73% height="230px;" style="margin: 0 0 13px 44px;" alt="...">
+			<img src="<%= ctxPath%>/resources/images/로고.png" class="logo" width=73% height="230px;" style="margin: 0 0 13px 44px;" alt="...">
 
 			<div id="input_login" class="d-flex flex-column">
 				<input type="text" name="userid" id="loginUserid" placeholder="아이디" required> 

@@ -69,7 +69,7 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-	
+		
 		$("#selboxDirect").hide();  // 소속 직접작성란 숨기고 시작한다.
 	
 		

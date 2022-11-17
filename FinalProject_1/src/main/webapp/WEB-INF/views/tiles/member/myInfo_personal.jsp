@@ -3,9 +3,6 @@
 
 <%-- <%@ include file="sidebar.jsp"%>  --%>
     
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    
 <style type="text/css">
 
 	@font-face {
@@ -150,6 +147,17 @@
 
 <script type="text/javascript">
 
+	$(document).ready(function(){
+		
+		//offcanvas
+	 	$(".update").click(function(e){
+	 		$('.offcanvas').offcanvas('show');
+	 		$("#offcanvasScrollingLabel").text("개인 정보 수정");
+	 		
+	 	});
+		
+	});// end of $(document).ready(function(){})-------------------------------
+
 </script>
 
 <div class="container" style="margin-right: 145px;">
@@ -262,5 +270,106 @@
 			<span style="font-size: 13pt;">11월 급여명세서</span>  
 		</div><br> 
 	</div>
+	
+	<!-- 오프캔버스 시작 -->
+	<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+	  <div class="offcanvas-header">
+	    <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
+	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	  </div>
+	  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
+	  <div class="offcanvas-body">
+	  	<div>
+	  		<div class="todayworkStatus-container">
+		  		<span>총 근무</span>
+		  		<div class="workingtotalhourByday ml-2"><span class="ml-1">9</span>시간</div>
+		  		<div class="line"></div>
+	  		</div>
+	  		<!-- 근무 1개  -->
+	  		<div class="workwirte-container dropdown">
+				<div class="dropdown-toggle workwritebox btn" id="workwriteStatus" data-bs-toggle="dropdown" aria-expanded="false">
+					<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
+					근무
+				</div>
+				<ul class="dropdown-menu workStatusbox" aria-labelledby="workwriteStatus" style="min-width: 7rem;">
+					<li>
+						<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
+							근무
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/oncoming-automobile_1f698.png" width="16px"/>
+							외근
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/laptop_1f4bb.png" width="16px"/>
+							원격근무
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/spiral-calendar_1f5d3-fe0f.png" width="16px"/>
+							출장
+						</a>
+					</li>
+					<hr class="HRhr"style="margin:0; height:1px; background-color: rgba(242, 242, 242); border:none;"/>
+					<li>
+						<a class="dropdown-item" href="#">
+							<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
+							하루종일
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">
+							<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
+							시간입력
+						</a>
+					</li>
+				</ul>
+				
+				<div class="dropdown-toggle workStartbox" id="workwriteStart" data-bs-toggle="dropdown" aria-expanded="false">
+					시작시간
+				</div>
+				<ul class="dropdown-menu workstarttime" aria-labelledby="workwriteStart" style="min-width: 6rem;">
+					<c:forEach var="i" begin="0" end="23">
+						<c:forEach var="j" begin="0" end="1">
+							<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
+							<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
+						</c:forEach>
+					</c:forEach>
+				</ul>
+				
+				<div style="display:inline-block;">
+					<i class="fa-solid fa-arrow-right" style="color: #C6C6C6"></i>
+				</div>
+				
+				<div class="dropdown-toggle workEndbox" id="workwriteEnd" data-bs-toggle="dropdown" aria-expanded="false">
+					끝시간						
+				</div>
+				<ul class="dropdown-menu workendtime" aria-labelledby="workwriteEnd" style="min-width: 6rem;">
+					<c:forEach var="i" begin="0" end="23">
+						<c:forEach var="j" begin="0" end="1">
+							<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
+							<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
+						</c:forEach>
+					</c:forEach>
+				</ul>
+			</div>
+			
+			<!-- 근무 1개 끝  -->
+			
+	  		<div class="workadd">
+	  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt;">추가하기</span></div>
+  			</div>
+  			<div class="workstatus-buttoncontainer">
+  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
+	  			<button type="reset" class="workstatus-cancel">취소</button>
+	  			<button type="button" class="workstatus-save">저장하기</button>
+  			</div>
+	  	</div>
+	  </div>
+	</div>
+	<!-- 오프캔버스 끝 -->
+		
 </div>
 
