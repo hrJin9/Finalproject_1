@@ -37,13 +37,11 @@
    }
    input#menuicon + label{
      display: block;
-     /* margin: 30px; */
      width:30px;
      height: 10px;
      position: fixed;
      bottom:30px;
-     left:28px;
-     /* bottom: calc(50%-25px); */
+     left:25px;
      transition: all .35s;
      cursor: pointer;
      z-index: 2;
@@ -159,13 +157,13 @@
      border-radius: 8px;
      position: relative;
      cursor: pointer;
-     padding: 0 13px;
+     padding: 1px 13px;
      text-align: initial;
      display: flex;
    }
    .pic{
-     height: 42px;
-     width: 42px;
+     height: 38px;
+	 width: 38px;
      font-size: 9pt;
      position: relative;
      display: flex;
@@ -176,33 +174,34 @@
      color: #fbfbfb;
      -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wLjUgMTAwQzAuNSA3OS40MjM5IDEuNjAzMTcgNjIuOTIzNSA0LjUzMjYyIDQ5Ljc0MjFDNy40NjA4MiAzNi41NjY0IDEyLjIwNzEgMjYuNzM3NSAxOS40NzIzIDE5LjQ3MjNDMjYuNzM3NSAxMi4yMDcxIDM2LjU2NjQgNy40NjA4MiA0OS43NDIxIDQuNTMyNjJDNjIuOTIzNSAxLjYwMzE3IDc5LjQyMzkgMC41IDEwMCAwLjVDMTIwLjU3NiAwLjUgMTM3LjA3NyAxLjYwMzE3IDE1MC4yNTggNC41MzI2MkMxNjMuNDM0IDcuNDYwODIgMTczLjI2MiAxMi4yMDcxIDE4MC41MjggMTkuNDcyM0MxODcuNzkzIDI2LjczNzUgMTkyLjUzOSAzNi41NjY0IDE5NS40NjcgNDkuNzQyMUMxOTguMzk3IDYyLjkyMzUgMTk5LjUgNzkuNDIzOSAxOTkuNSAxMDBDMTk5LjUgMTIwLjU3NiAxOTguMzk3IDEzNy4wNzcgMTk1LjQ2NyAxNTAuMjU4QzE5Mi41MzkgMTYzLjQzNCAxODcuNzkzIDE3My4yNjIgMTgwLjUyOCAxODAuNTI4QzE3My4yNjIgMTg3Ljc5MyAxNjMuNDM0IDE5Mi41MzkgMTUwLjI1OCAxOTUuNDY3QzEzNy4wNzcgMTk4LjM5NyAxMjAuNTc2IDE5OS41IDEwMCAxOTkuNUM3OS40MjM5IDE5OS41IDYyLjkyMzUgMTk4LjM5NyA0OS43NDIxIDE5NS40NjdDMzYuNTY2NCAxOTIuNTM5IDI2LjczNzUgMTg3Ljc5MyAxOS40NzIzIDE4MC41MjhDMTIuMjA3MSAxNzMuMjYyIDcuNDYwODIgMTYzLjQzNCA0LjUzMjYyIDE1MC4yNThDMS42MDMxNyAxMzcuMDc3IDAuNSAxMjAuNTc2IDAuNSAxMDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K);
      -webkit-mask-size: contain;
-     background-color: #f3bd42;
+     background-color: #4285f4;
    }
    .my{
      margin-left: 14px;
      position: relative;
-     top: 5.5px;
+     top: 2px;
      font-size: 13px;
    }
    .role{
      font-size: 5px;
      position: relative;
      color: #ababab;
+     top: -3px;
    }
    .name{
      font-weight: bold;
    }
    .badge{
      background-color: rgb(242, 75, 23);
+     padding: 0.5em 0.5em;
      width: 14px;
      height: 12px;
      font-size: 1px;
      font-weight: 600;
      color: #fbfbfb;
-     border-radius: 20px;
      display: inline-block;
      position: relative;
-     bottom: 1.3px;
+     bottom: 0.3px;
      left: 18px;
      box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.04);
    }
@@ -217,7 +216,9 @@
      right: 68px;
    }
    .newCnt{
+   	 font-size: 5pt;
      position: relative;
+     top: -2px;
      display: flex;
      align-items: center;
      justify-content: center;
@@ -285,7 +286,7 @@
   </label>
   <div class="sidebar">
 
-    <div class="profile" href="#" style="margin-top: 30px; margin-bottom:30px;">
+    <div class="profile" href="#" style="margin-top: 29px; margin-bottom:30px;">
       <span class="pic"><span>지은</span></span>
       <span class="my"><span class="name">김지은</span><br>
       <span class="role">개발자</span>
@@ -297,7 +298,7 @@
         <li class="home"><a href="#" ><span class="icon icon-search"></span><span class="menu-text">검색</span></a></li>
         <li class="home"><a href="#" ><span class="icon icon-bell"></span><span class="menu-text">새로운 소식</span>
           <span class="newred"></span>
-          <span class="badge"><span class="newCnt">1</span></span></a></li>
+          <span class="badge" style="border-radius: 6.25rem;"><span class="newCnt">1</span></span></a></li>
 
         <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
 

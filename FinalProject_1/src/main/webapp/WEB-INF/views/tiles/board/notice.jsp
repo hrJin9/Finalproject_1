@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%@ include file="board_header.jsp"%>
+<%@ include file="board_header.jsp"%> 
+
 <style type="text/css">
 
 
@@ -42,9 +43,9 @@ h2 {
 
 
 .table thead th {
-	padding-top:0;
-	border: none;
-	border-bottom: 1px solid #8a8d8f;
+	padding-top: 0;
+    border-bottom: 2px solid #d4d5d6;
+    border-top: 1px solid white;
 }
 .boardth{
 	position: relative;
@@ -72,7 +73,6 @@ table tr:hover {
 .form-control{
 	font-size: 12pt;
 }
-
 
 </style>
 
@@ -115,7 +115,7 @@ $(document).ready(function(){
       	 <div style="display: inline-block;float: right;">
       	 	 <a href="#" class="btn "style="font-size: 9pt;padding-left:20px;padding-right:20px;border-color:white; background-color:#4d4f53;color:white">글쓰기</a>
       	 </div>
-         <form action="#" class="booking-form ml-3"  style="float: left;margin-bottom: 0;">
+          <form action="#" class="booking-form ml-3"  style="float: left;margin-bottom: 0;">
 			<div class="row" style="margin-right:0;">
 				<div class=" mr-2">
 					<div class="form-group">

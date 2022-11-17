@@ -47,7 +47,8 @@
 	}
 	
 	hr{
-		border-top: solid 0.5px #e4e8ec !important;
+		border-top: solid 0.5px #686c6f !important;
+		background-color: white;
 	}
 	
 	#list a:hover{
@@ -171,6 +172,9 @@
 	a.icon-star-empty:hover, a.icon-star-full:hover {
 		color: #ffc107;
 	}
+	a, a:hover {
+    	text-decoration: none !important;
+	}
 	a:hover {
 		color: #ffc107;
     }
@@ -182,6 +186,13 @@
 		border: 0px;
 		border-radius: 17.5px;
 		background-color: #D2D6D9;
+	}
+	select {
+    word-wrap: normal;
+	}
+	
+	button, select {
+	    text-transform: none;
 	}
 </style>
 
