@@ -125,14 +125,14 @@
 	
 </script>
 <div class="attendance-container">
-	<div class="datebox contentsmargin">
+	<div class="datebox ">
 		<button type="button" class="datearrow" style="border-right: none;"><i class="fa-solid fa-angle-left" style="font-size:10pt;"></i></button>
 		<span><input type="" class="datepicker"/></span>
 		<button type="button" class="datearrow" style="border-left: none;"><i class="fa-solid fa-angle-right" style="font-size:10pt;"></i></button>
 		<button type="button" class="today">오늘</button>
 	</div>
 	<hr class="HRhr"/>
-	<div class="workingweek-sum contentsmargin">
+	<div class="workingweek-sum">
 		<span class="fontsize-basic"><span style="font-weight: bold; font-size: 12pt;">16시간</span> / 52시간</span>
 		<div class="workingweek-info">
 			<i class="fa-solid fa-circle-info ml-2" style="color: #C6C6C6; font-size: 9pt;"></i>

@@ -73,13 +73,9 @@ hr.HRhr{
 
 .attendance-container{
 	width: 90%;
-	margin-left: 40px;
 	position: relative;/* position: absolute의 기준점 */
 }
 
-.contentsmargin{
-	margin-left: 65px;
-}
 
 .datebox {
 	height: 30px;
