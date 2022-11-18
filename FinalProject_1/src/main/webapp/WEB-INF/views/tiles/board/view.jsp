@@ -182,65 +182,54 @@ $(document).ready(function(){
 		  	e.preventDefault();
 	});
 	
-	<%-- === 스마트 에디터 구현 시작 === \
-	
-	//전역변수
-       var obj = [];
-       
-       //스마트에디터 프레임생성
-       nhn.husky.EZCreator.createInIFrame({
-           oAppRef: obj,
-           elPlaceHolder: "content",
-           sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
-           htParams : {
-               // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-               bUseToolbar : true,            
-               // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-               bUseVerticalResizer : true,    
-               // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-               bUseModeChanger : true,
-           }
-       });
-	===  스마트 에디터 구현 끝 === --%>
-	
 	// 글쓰기 버튼
     $("button#writecmt").click(function(){
-       
-       <%-- === 스마트 에디터 구현 시작 === 
-       // id가 content인 textarea에 에디터에서 대입
-         obj.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
-      === 스마트 에디터 구현 끝 === --%>
-       
-    
-    <%-- === 글내용 유효성 검사(스마트 에디터 사용 할 경우) 시작 === 
-        var contentval = $("textarea#content").val();
-            
-       
-          contentval = contentval.replace(/&nbsp;/gi, ""); // 공백을 "" 으로 변환
-       /*    
-             대상문자열.replace(/찾을 문자열/gi, "변경할 문자열");
-         ==> 여기서 꼭 알아야 될 점은 나누기(/)표시안에 넣는 찾을 문자열의 따옴표는 없어야 한다는 점입니다. 
-                      그리고 뒤의 gi는 다음을 의미합니다.
-    
-         g : 전체 모든 문자열을 변경 global
-         i : 영문 대소문자를 무시, 모두 일치하는 패턴 검색 ignore
-    */ 
-    //   alert(contentval);
-    //   <p>             </p>
-       
-         contentval = contentval.substring(contentval.indexOf("<p>")+3);
-         contentval = contentval.substring(0, contentval.indexOf("</p>"));
-                
-         if(contentval.trim().length == 0) {
-            alert("글내용을 입력하세요!!");
-             return;
-         }
-      === 글내용 유효성 검사(스마트 에디터 사용 할 경우) 끝 === --%>
        
        // 폼(form)을 전송(submit)
     });	  
 	
+    <%-- 텍스트 에디터 시작 --%>
+	const editor = new toastui.Editor({
+	    el: document.querySelector("#editor"),
+	    height: "200px",
+	    initialEditType: "wysiwyg",
+	    hooks: {
+	      addImageBlobHook: function (blob, callback) {
+	        const formData = new FormData();
+	        formData.append("image", blob);
+	        const imageURL = imageUpload(formData);
+	        // console.log(imageURL);
+	        callback(imageURL, "image");
+	      },
+	    },
+	    language: 'ko-KR'
+	 });
+	<%-- 텍스트 에디터 끝 --%>
+	
 });//end of ready
+	
+
+	function imageUpload(formData) {
+	/* 	 
+	  let imageURL;
+	  $.ajax({
+	    type: "post",
+	    url: "",
+	    async: false,
+	    data: formData,
+	    processData: false,
+	    contentType: false,
+	    success: function (data) {
+	      imageURL = data;
+	      console.log(imageURL);
+	    },
+	    error: function (request, status, error) {
+	      alert(request + ", " + status + ", " + error);
+	    },
+	  }); */
+	
+	  return imageURL;
+	}
 
 
 </script>
@@ -290,7 +279,7 @@ $(document).ready(function(){
      	
      	<div style="margin-bottom:11rem!important">
      		<img class="boardprofile mr-2" width="35px" height="35px" style="display:block; position: absolute;"><br><br>
-     		<textarea name="content" id="content"></textarea>
+     		<div id="editor"></div>
      		<button id="writecmt"class="btn ">작성</button>
      	</div>
      	

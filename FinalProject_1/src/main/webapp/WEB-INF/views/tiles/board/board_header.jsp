@@ -34,6 +34,12 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
+
+<!-- 텍스트에디터 -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
 <style type="text/css">
 	@font-face {
 	    font-family: 'Pretendard-Regular';
@@ -193,6 +199,13 @@
 	
 	button, select {
 	    text-transform: none;
+	}
+	
+	.toastui-editor-defaultUI-toolbar {
+		background-color: #ffffff;
+	}
+	div.toastui-editor-mode-switch{
+		display: none;
 	}
 </style>
 
