@@ -34,6 +34,12 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
+
+<!-- 텍스트에디터 -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
 <style type="text/css">
 	@font-face {
 	    font-family: 'Pretendard-Regular';
@@ -47,7 +53,8 @@
 	}
 	
 	hr{
-		border-top: solid 0.5px #e4e8ec !important;
+		border-top: solid 0.5px #686c6f !important;
+		background-color: white;
 	}
 	
 	#list a:hover{
@@ -171,6 +178,9 @@
 	a.icon-star-empty:hover, a.icon-star-full:hover {
 		color: #ffc107;
 	}
+	a, a:hover {
+    	text-decoration: none !important;
+	}
 	a:hover {
 		color: #ffc107;
     }
@@ -182,6 +192,20 @@
 		border: 0px;
 		border-radius: 17.5px;
 		background-color: #D2D6D9;
+	}
+	select {
+    word-wrap: normal;
+	}
+	
+	button, select {
+	    text-transform: none;
+	}
+	
+	.toastui-editor-defaultUI-toolbar {
+		background-color: #ffffff;
+	}
+	div.toastui-editor-mode-switch{
+		display: none;
 	}
 </style>
 

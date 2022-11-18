@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    
+
+<% String ctxPath = request.getContextPath(); %>  
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
     
 <style type="text/css">
@@ -19,12 +17,12 @@
      font-family: 'Pretendard-Regular';
    }
    div.sidebar{
-     width: 175px;
+     width: 186px;
      height: 100%;
      background-color: rgb(249, 250, 250);
      position: fixed;
      top: 0;
-     left: -110px;
+     left: -104px;
      z-index: 1;
      transition: all .35s;
      padding: 26px 10px 24px 13px;
@@ -37,13 +35,11 @@
    }
    input#menuicon + label{
      display: block;
-     /* margin: 30px; */
      width:30px;
      height: 10px;
      position: fixed;
      bottom:30px;
-     left:28px;
-     /* bottom: calc(50%-25px); */
+     left:31px;
      transition: all .35s;
      cursor: pointer;
      z-index: 2;
@@ -88,12 +84,14 @@
    {position:relative;right: 0px;transition: all .35s;}
    
    input#menuicon:checked + label + div +div+div.news{
-   	position:relative;
+   	position:absolute;
    	left: 143px;
     top: 169px;
     transition: all .35s;
    }
-   
+   div#mycontent{
+   	  transition':all 0.5s;
+   }
    input#menuicon + label + div +div+div.news {
       border: 1px solid #e6e6e6;
       padding: 20px;
@@ -106,9 +104,9 @@
       float: left;
       font-size: 18pt;
       
-      position: fixed; 
+      position: absolute; 
       top: 23%;
-      left: 5%;
+      left: 3.5%;
       z-index: 2;
       
       overflow:hidden;
@@ -141,7 +139,6 @@
    .nav-menu a:hover{
       
    }
-   
    .menu-text{
      color:#556372;
      font-size: 10pt;
@@ -159,13 +156,13 @@
      border-radius: 8px;
      position: relative;
      cursor: pointer;
-     padding: 0 13px;
+     padding: 1px 13px;
      text-align: initial;
      display: flex;
    }
    .pic{
-     height: 42px;
-     width: 42px;
+     height: 38px;
+	 width: 38px;
      font-size: 9pt;
      position: relative;
      display: flex;
@@ -176,36 +173,37 @@
      color: #fbfbfb;
      -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wLjUgMTAwQzAuNSA3OS40MjM5IDEuNjAzMTcgNjIuOTIzNSA0LjUzMjYyIDQ5Ljc0MjFDNy40NjA4MiAzNi41NjY0IDEyLjIwNzEgMjYuNzM3NSAxOS40NzIzIDE5LjQ3MjNDMjYuNzM3NSAxMi4yMDcxIDM2LjU2NjQgNy40NjA4MiA0OS43NDIxIDQuNTMyNjJDNjIuOTIzNSAxLjYwMzE3IDc5LjQyMzkgMC41IDEwMCAwLjVDMTIwLjU3NiAwLjUgMTM3LjA3NyAxLjYwMzE3IDE1MC4yNTggNC41MzI2MkMxNjMuNDM0IDcuNDYwODIgMTczLjI2MiAxMi4yMDcxIDE4MC41MjggMTkuNDcyM0MxODcuNzkzIDI2LjczNzUgMTkyLjUzOSAzNi41NjY0IDE5NS40NjcgNDkuNzQyMUMxOTguMzk3IDYyLjkyMzUgMTk5LjUgNzkuNDIzOSAxOTkuNSAxMDBDMTk5LjUgMTIwLjU3NiAxOTguMzk3IDEzNy4wNzcgMTk1LjQ2NyAxNTAuMjU4QzE5Mi41MzkgMTYzLjQzNCAxODcuNzkzIDE3My4yNjIgMTgwLjUyOCAxODAuNTI4QzE3My4yNjIgMTg3Ljc5MyAxNjMuNDM0IDE5Mi41MzkgMTUwLjI1OCAxOTUuNDY3QzEzNy4wNzcgMTk4LjM5NyAxMjAuNTc2IDE5OS41IDEwMCAxOTkuNUM3OS40MjM5IDE5OS41IDYyLjkyMzUgMTk4LjM5NyA0OS43NDIxIDE5NS40NjdDMzYuNTY2NCAxOTIuNTM5IDI2LjczNzUgMTg3Ljc5MyAxOS40NzIzIDE4MC41MjhDMTIuMjA3MSAxNzMuMjYyIDcuNDYwODIgMTYzLjQzNCA0LjUzMjYyIDE1MC4yNThDMS42MDMxNyAxMzcuMDc3IDAuNSAxMjAuNTc2IDAuNSAxMDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K);
      -webkit-mask-size: contain;
-     background-color: #f3bd42;
+     background-color: #4285f4;
    }
    .my{
      margin-left: 14px;
      position: relative;
-     top: 5.5px;
+     top: 2px;
      font-size: 13px;
    }
    .role{
      font-size: 5px;
      position: relative;
      color: #ababab;
+     top: -3px;
    }
    .name{
      font-weight: bold;
    }
    .badge{
-     background-color: rgb(242, 75, 23);
-     width: 14px;
-     height: 12px;
-     font-size: 1px;
-     font-weight: 600;
-     color: #fbfbfb;
-     border-radius: 20px;
-     display: inline-block;
-     position: relative;
-     bottom: 1.3px;
-     left: 18px;
-     box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.04);
-   }
+	 background-color: rgb(242, 75, 23);
+	 padding: 0.5em 0.5em;
+	 width: 15px;
+	 height: 13px;
+	 font-size: 1px;
+	 font-weight: 600;
+	 color: #fbfbfb;
+	 display: inline-block;
+	 position: relative;
+	 bottom: 4.3px;
+	 left: 18px;
+	 box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+	}
    .newred{
      background-color: rgb(242, 75, 23);
      width: 5px;
@@ -217,7 +215,9 @@
      right: 68px;
    }
    .newCnt{
+     font-size: 5pt;
      position: relative;
+     top: 0px;
      display: flex;
      align-items: center;
      justify-content: center;
@@ -247,22 +247,82 @@
       bottom: 20px;
       left: 10px;
    }
+   
+   #mycontent{
+   	float: right; width: 94%; margin: 0 auto;
+   }
+   
+   /* 
+   #mycontent{
+		margin-left : 3%;
+   }
+    */
 </style>
 
 <script type="text/javascript">
 
    $(document).ready(function(){
-      
-      $(".myprofile").hide();
-      $(".news").hide();
-      
-      $(".profile").click(function(){
-         $(".myprofile").toggle();
+	  // $(".myprofile").hide();
+	  // $(".news").hide();
+	   
+      $(".profile").click(function(){  // 내프로필 클릭시
+         // $(".myprofile").toggle();
+      	 if($(".myprofile").css("display","none")) {
+      		$(".myprofile").css("display","block");
+      		$(".news").css("display","none");
+      	 } else {
+      		 // $(".myprofile").css("display","none");
+      		$(".myprofile").toggle();
+      	 }
       });
       
-      $(".home").click(function(){
-         $(".news").toggle();
+     /*  $(".profile").click(function(){  // 내프로필 클릭시
+	      if($(".myprofile").css("display","block") ) { // 내프로필 창이 열려있다면
+	    	  $("li#newsIcon").click(function(){
+	   	         $(".myprofile").css("display","none");
+	   	      });
+	      }
+      }); */
+      
+      /* $(".profile").click(function(){  // 내프로필 클릭시
+	      if($(".myprofile").show()) { // 내프로필 창이 열려있다면
+	    	  $("li#newsIcon").click(function(){
+	   	         $(".myprofile").hide();
+	   	      });
+	      }
+      }); */
+      
+      
+      $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
+          // $(".news").toggle();
+    	  if($(".news").css("display","none")) {
+       		 $(".news").css("display","block");
+       		 $(".myprofile").css("display","none");
+       	  } else {
+       		 // $(".news").css("display","none");
+       		 $(".myprofile").toggle();
+       	  }
       });
+      
+      /* $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
+	      if($(".news").css("display","block")) {  // 새로운소식 창이 열려있다면
+	    	  $(".profile").click(function(){
+	   	         $(".news").css("display","none");
+	   	      });
+	      }
+      }); */
+    	  
+      /* $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
+	      if($(".news").show()) {  // 새로운소식 창이 열려있다면
+	    	  $(".profile").click(function(){
+	   	         $(".news").hide();
+	   	      });
+	      }
+      }); */
+    	  
+      
+      
+      
       
       // 비밀번호 변경창 닫기 버튼 클릭 시
       $("button.pwdChangeClose").click(function() {
@@ -271,6 +331,16 @@
          const iframe_window = iframe_pwdChange.contentWindow;
 
          iframe_window.func_form_reset_empty();
+      });
+      
+      
+      <%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
+      $("input#menuicon").change(function(){
+          if($("#menuicon").is(":checked")){
+              $("div#mycontent").css({'transition':'all 0.5s','width':'87%','margin':'0 auto'});
+          }else{
+              $("div#mycontent").css({'width':'94%','transition':'all 0.5s'});
+          }
       });
       
    });// end of $(document).ready(function(){})---------------
@@ -285,7 +355,7 @@
   </label>
   <div class="sidebar">
 
-    <div class="profile" href="#" style="margin-top: 30px; margin-bottom:30px;">
+    <div class="profile" href="#" style="margin-top: 29px; margin-bottom:30px;">
       <span class="pic"><span>지은</span></span>
       <span class="my"><span class="name">김지은</span><br>
       <span class="role">개발자</span>
@@ -295,9 +365,9 @@
     <div class="nav-menu">
       <ul>
         <li class="home"><a href="#" ><span class="icon icon-search"></span><span class="menu-text">검색</span></a></li>
-        <li class="home"><a href="#" ><span class="icon icon-bell"></span><span class="menu-text">새로운 소식</span>
+        <li class="home" id="newsIcon"><a href="#" ><span class="icon icon-bell"></span><span class="menu-text">새로운 소식</span>
           <span class="newred"></span>
-          <span class="badge"><span class="newCnt">1</span></span></a></li>
+          <span class="badge" style="border-radius: 6.25rem;"><span class="newCnt">1</span></span></a></li>
 
         <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
 
@@ -313,21 +383,21 @@
     </div>
   </div>
   
-  <div id="list-example" class="list-group myprofile" style="width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 12%; left: 1%; z-index: 1;">
+  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 14%; left: 1%; z-index: 1;">
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
         <span style="font-size: 8.5pt; color: #737373;">sawonwldms@gmail.com</span><br>
         <span style="font-size: 8.5pt; color: #737373; padding-bottom: 3px; ">개발자</span><br>
        </a>
-     <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; cursor: pointer;" data-toggle="modal" data-target="#userPwdChange" data-dismiss="modal" data-backdrop="static">
+     <a class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;" data-toggle="modal" data-target="#userPwdChange" data-dismiss="modal" data-backdrop="static">
         <i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
        </a>
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
     </div>
     
     
-   <div class=news>
+   <div class=news style="display:none;">
       <div style="font-size: 11.5pt; color: #595959; font-weight: bold; padding-bottom: 30px;">새로운 소식
          <button style="margin-left: 90px; border: none; font-size: 8pt; font-weight:bold; border-radius: 3px; background-color:#3B86C812; color: #2E5E87; padding: 5px 8px;">모두읽음</button>
       </div>
@@ -359,8 +429,8 @@
         <h4 class="modal-title" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
         <div class="modal-body">
           <div id="pwdChange">
-             <%-- <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/login/pwdChange.up"> --%>
-             <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="http://localhost:9090/FinalProject/pwdChange.jsp">
+             <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/member/pwdChange.up">
+             <%-- <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/WEB-INF/views/tiles/member/pwdChange.jsp"> --%>
              </iframe>
              
          </div>
