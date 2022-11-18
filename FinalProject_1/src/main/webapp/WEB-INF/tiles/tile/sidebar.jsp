@@ -85,7 +85,7 @@
    
    input#menuicon:checked + label + div +div+div.news{
    	position:absolute;
-   	left: 143px;
+   	left: 165px;
     top: 169px;
     transition: all .35s;
    }
@@ -106,7 +106,7 @@
       
       position: absolute; 
       top: 23%;
-      left: 3.5%;
+      left: 4.5%;
       z-index: 2;
       
       overflow:hidden;
@@ -267,12 +267,12 @@
 	   
       $(".profile").click(function(){  // 내프로필 클릭시
          // $(".myprofile").toggle();
-      	 if($(".myprofile").css("display","none")) {
-      		$(".myprofile").css("display","block");
-      		$(".news").css("display","none");
+      	 if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
+      		$(".myprofile").show();
+      		$(".news").hide();
       	 } else {
-      		 // $(".myprofile").css("display","none");
-      		$(".myprofile").toggle();
+      		$(".myprofile").hide();
+      		// $(".myprofile").toggle();
       	 }
       });
       
@@ -295,12 +295,12 @@
       
       $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
           // $(".news").toggle();
-    	  if($(".news").css("display","none")) {
-       		 $(".news").css("display","block");
-       		 $(".myprofile").css("display","none");
+    	  if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
+       		 $(".news").show();
+       		 $(".myprofile").hide();
        	  } else {
-       		 // $(".news").css("display","none");
-       		 $(".myprofile").toggle();
+       		 $(".news").hide();
+       		 // $(".myprofile").toggle();
        	  }
       });
       

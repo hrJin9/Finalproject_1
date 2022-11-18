@@ -26,24 +26,24 @@
 		padding-right: 14px;
 	}
 		
-	#phone, #message {
+	#phoneIcon, #messageIcon {
 		border: 0.3px solid #d9d9d9;
-		margin-top: 15px;
-		margin-right: 3px;
-		padding: 4.5px 6px 6px 6px;
-		background-color: white;
-		border-radius: 3px;
-		font-size: 9pt;
+	    margin-top: 15px;
+	    margin-right: 3px;
+	    padding: 3.5px 6.5px 3.5px 6.5px;
+	    background-color: white;
+	    border-radius: 3px;
+	    font-size: 9pt;
 	}	
 	
 	#status {
-		border: 0.3px solid #d9d9d9;
-		margin-top: 17px;
-		margin-right: 3px;
-		padding: 3px 6px;
-		background-color: white;
-		border-radius: 3px;
-		font-size: 8pt;
+	    border: 0.3px solid #d9d9d9;
+	    margin-top: 17px;
+	    margin-right: 3px;
+	    padding: 3.5px 7px 3.2px 7px;
+	    background-color: white;
+	    border-radius: 3px;
+	    font-size: 9.2pt;
 	}	
 	
 	/* nav바 */
@@ -107,7 +107,7 @@
 	}
 	
 	.menubar {
-		margin-left: 685px;
+		margin-left: 810px;
 		color: #a6a6a6; 
 		font-size: 10pt;
 	}
@@ -131,9 +131,9 @@
 	/* 우측 사이드 근무시간, 남은연차, 급여 */
 	.moreInfo {
 		border: 1px solid #e6e6e6;
-		padding: 20px;
+		padding: 15.5px 22px;
 		margin-bottom: 22px;
-		width: 230px;  
+		width: 246px;  
 		height: 130px; 
 		border-radius: 10px;
 		display: inline-block;
@@ -142,6 +142,53 @@
 		/* box-shadow: 3px 3px 10px 5px #f2f2f2;    */
 	} 
 
+	/* 오프캔버스 */
+	.offcanvas-end {
+		width: 711px;
+	}
+	
+	form input, form > select {
+		border: 1.5px solid #cccccc;
+		border-radius: 3.5px;
+		width: 100%;
+		padding: 10px 17px;
+		margin: 7px 0 18px 0;
+		opacity: 0.85;
+		font-size: 10pt;
+		line-height: 20px;
+	}
+	
+	#idCheck, 
+	#emailCheck,
+	#btn_emailVerifyCodeCheck,
+	#mobileCheck,
+	#btn_mobileVerifyCodeCheck	{
+		color:#333333;
+		height: 30px;
+		border-style: none;
+		border-radius: 5%;
+	} 
+	
+	
+	input:focus {
+		border: 1.8px solid #4285f4;
+    	outline: none;
+	}
+	
+	#btnRegister {
+		width: 190px;
+	    padding: 7.5px;
+	    border: 1px solid #4285f4;
+		background-color: #4285f4;
+		color: white;
+		font-size: 13pt;
+		border-radius: 30px;
+	}
+	
+	#btnRegister:hover {
+		opacity: 1;
+	}
+	
 
 </style>   
 
@@ -149,12 +196,30 @@
 
 	$(document).ready(function(){
 		
-		//offcanvas
+		$("#selboxDirect").hide();  // 소속 직접작성란 숨기고 시작한다.
+		
+		// offcanvas
 	 	$(".update").click(function(e){
 	 		$('.offcanvas').offcanvas('show');
 	 		$("#offcanvasScrollingLabel").text("개인 정보 수정");
 	 		
+			// 소속 입력
+			$("#team").change(function() {
+				//직접입력을 누를 때 나타남
+				if($("#team").val() == "direct") {
+					/* $("select#team").hide(); */
+					$("#selboxDirect").show();
+					$("select#team").css('margin-bottom','0px');    
+				}  else {
+					$("#selboxDirect").hide();
+					$("select#team").css('margin-bottom','18px');
+				}
+		
+			}) 
 	 	});
+		
+		   
+
 		
 	});// end of $(document).ready(function(){})-------------------------------
 
@@ -168,16 +233,16 @@
 		<span style="color: #8c8c8c;">구성원&nbsp;&nbsp;/&nbsp;&nbsp;</span>
 		<span>김지은</span>
 	</div>
-	<div class="profile" href="#" style="margin-top: 23px; margin-bottom:30px;">
+	<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
 	    <span class="pic" style="height: 135px; width: 135px; font-size: 25pt; font-weight: bold;">
 	    	<span>지은</span>
 	   	</span>
 	    <span class="myInfo">
 	    	<span style="font-size: 16pt; font-weight: bold;">김지은</span><br>
-	    	<span style="font-size: 9pt; padding: 4px 0;"><span id="team">소속</span>IT</span><br>
-	    	<span style="font-size: 9pt; padding: 4px 0;"><span id="role">직무</span>개발자</span><br>
-	    	<button type="button" id="phone"><span><i class="fas fa-phone-alt" style="transform: scaleX(-1); transition: .3s; color: #666666;"></i></span></button>
-	    	<button type="button" id="message"><span><i class="far fa-envelope"></i></span></button>
+	    	<span style="font-size: 9pt; padding: 4px 0; display: block; margin-bottom: -8px;"><span id="team">소속</span>IT</span>
+	    	<span style="font-size: 9pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role">직무</span>개발자</span>
+	    	<button type="button" id="phoneIcon"><span><i class="fas fa-phone-alt" style="transform: scaleX(-1); transition: .3s; color: #666666;"></i></span></button>
+	    	<button type="button" id="messageIcon" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
 	    	<button type="button" id="status"><span><i class="fas fa-circle" style="color: #07B419; padding-right: 5px; font-size: 7pt;"></i>재직중</span></button>
 		    </span>
 		</div>
@@ -191,183 +256,140 @@
 	 
 	 	<hr style="margin-top: 0px;"/><br>
 		
-		
 		<div class="container">
 			<div id="hrInfo">개인 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br>
-	 	<table class="table table-borderless content" style="float: left;">
-	       <colgroup>
-	          <col width="250px" />
-	          <col />
-	     	</colgroup>
-	          <tbody>
-	                <tr>
-	                   <td>이름</td>   
-	                   <td>김지은</td>   
-	                </tr>
-	                <tr>
-	                   <td>영문이름</td>   
-	                   <td>KIM JI EUN</td>   
-	                </tr>
-	                <tr>
-	                   <td>생년월일</td>   
-	                   <td>1997-01-20&nbsp;(만 25세)</td>   
-	                </tr>
-	                <tr>
-	                   <td>성별</td>   
-	                   <td>여자</td>   
-	                </tr>
-	                <tr>
-	                   <td>이메일</td>   
-	                   <td>yelee0124@gamil.com</td>   
-	                </tr>
-	                <tr>
-	                   <td>연락처</td>   
-	                   <td>010-1234-5678</td>   
-	                </tr>
-	                <tr>
-	                   <td>주소</td>   
-	                   <td>경기도 성남시 분당구 판교원로 68(운중동, 산운마을11단지 판교 포레라움아파트),<br><br>
-	                   	   101동 706호 <%-- 상세주소 --%>
-	                   </td>   
-	                </tr>
-	                <tr>
-	                   <td>최종학력</td>   
-	                   <td>카이스트/대학교(일반대학)</td>   
-	                </tr>
-	                <tr>
-	                   <td>전공</td>   
-	                   <td>컴퓨터공학과</td>   
-	                </tr>
-	                <tr>
-	                   <td>병역사항</td>   
-	                   <td>해당없음</td>   
-	                </tr>
-	                <tr>
-	                   <td>고용형태</td>   
-	                   <td>정직원</td>   
-	                </tr>
-	          </tbody>
-	 	</table>
-	       
-	  </div>
+		 	<table class="table table-borderless content" style="float: left;">
+		       <colgroup>
+		          <col width="250px" />
+		          <col />
+		     	</colgroup>
+		          <tbody>
+		                <tr>
+		                   <td>이름</td>   
+		                   <td>김지은</td>   
+		                </tr>
+		                <tr>
+		                   <td>영문이름</td>   
+		                   <td>KIM JI EUN</td>   
+		                </tr>
+		                <tr>
+		                   <td>생년월일</td>   
+		                   <td>1997-01-20&nbsp;(만 25세)</td>   
+		                </tr>
+		                <tr>
+		                   <td>성별</td>   
+		                   <td>여자</td>   
+		                </tr>
+		                <tr>
+		                   <td>이메일</td>   
+		                   <td>yelee0124@gamil.com</td>   
+		                </tr>
+		                <tr>
+		                   <td>연락처</td>   
+		                   <td>010-1234-5678</td>   
+		                </tr>
+		                <tr>
+		                   <td>주소</td>   
+		                   <td>경기도 성남시 분당구 판교원로 68(운중동, 산운마을11단지 판교 포레라움아파트),<br><br>
+		                   	   101동 706호 <%-- 상세주소 --%>
+		                   </td>   
+		                </tr>
+		                <tr>
+		                   <td>최종학력</td>   
+		                   <td>카이스트/대학교(일반대학)</td>   
+		                </tr>
+		                <tr>
+		                   <td>전공</td>   
+		                   <td>컴퓨터공학과</td>   
+		                </tr>
+		                <tr>
+		                   <td>병역사항</td>   
+		                   <td>해당없음</td>   
+		                </tr>
+		                <tr>
+		                   <td>고용형태</td>   
+		                   <td>정직원</td>   
+		                </tr>
+		          </tbody>
+		 	</table>
+	 	</div>
 	</form>
   
   
-	<div style="position: absolute; right: 162px; top: 365px;"> 
+	<div style="position: absolute; right: 165px; top: 365px;"> 
 		<div class=moreInfo>
-			<div style="padding-bottom: 20px;"><ion-icon name="time-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959;">근무시간</span><br>  
+			<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
+			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
 			<span style="font-size: 13pt;">7시간 20분</span>  
 		</div><br> 
 		<div class=moreInfo>
-			<div style="padding-bottom: 20px; transform: scaleX(-1); padding-left: 165px;"><ion-icon name="leaf-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959;">남은연차</span><br>  
+			<div style="padding-bottom: 21px; transform: scaleX(-1); padding-left: 176px;"><ion-icon name="leaf-outline"></ion-icon></div>
+			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">남은연차</span>
 			<span style="font-size: 13pt;">25일</span>  
 		</div><br> 
 		<div class=moreInfo>
-			<div style="padding-bottom: 20px;"><ion-icon name="server-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959;">급여</span><br>  
+			<div style="padding-bottom: 21px;"><ion-icon name="server-outline"></ion-icon></div>
+			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">급여</span>  
 			<span style="font-size: 13pt;">11월 급여명세서</span>  
 		</div><br> 
 	</div>
 	
 	<!-- 오프캔버스 시작 -->
 	<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-	  <div class="offcanvas-header">
-	    <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
-	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-	  </div>
-	  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
-	  <div class="offcanvas-body">
-	  	<div>
-	  		<div class="todayworkStatus-container">
-		  		<span>총 근무</span>
-		  		<div class="workingtotalhourByday ml-2"><span class="ml-1">9</span>시간</div>
-		  		<div class="line"></div>
-	  		</div>
-	  		<!-- 근무 1개  -->
-	  		<div class="workwirte-container dropdown">
-				<div class="dropdown-toggle workwritebox btn" id="workwriteStatus" data-bs-toggle="dropdown" aria-expanded="false">
-					<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
-					근무
-				</div>
-				<ul class="dropdown-menu workStatusbox" aria-labelledby="workwriteStatus" style="min-width: 7rem;">
-					<li>
-						<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
-							근무
-						</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/oncoming-automobile_1f698.png" width="16px"/>
-							외근
-						</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/laptop_1f4bb.png" width="16px"/>
-							원격근무
-						</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/spiral-calendar_1f5d3-fe0f.png" width="16px"/>
-							출장
-						</a>
-					</li>
-					<hr class="HRhr"style="margin:0; height:1px; background-color: rgba(242, 242, 242); border:none;"/>
-					<li>
-						<a class="dropdown-item" href="#">
-							<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
-							하루종일
-						</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="#">
-							<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
-							시간입력
-						</a>
-					</li>
-				</ul>
-				
-				<div class="dropdown-toggle workStartbox" id="workwriteStart" data-bs-toggle="dropdown" aria-expanded="false">
-					시작시간
-				</div>
-				<ul class="dropdown-menu workstarttime" aria-labelledby="workwriteStart" style="min-width: 6rem;">
-					<c:forEach var="i" begin="0" end="23">
-						<c:forEach var="j" begin="0" end="1">
-							<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-							<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-						</c:forEach>
-					</c:forEach>
-				</ul>
-				
-				<div style="display:inline-block;">
-					<i class="fa-solid fa-arrow-right" style="color: #C6C6C6"></i>
-				</div>
-				
-				<div class="dropdown-toggle workEndbox" id="workwriteEnd" data-bs-toggle="dropdown" aria-expanded="false">
-					끝시간						
-				</div>
-				<ul class="dropdown-menu workendtime" aria-labelledby="workwriteEnd" style="min-width: 6rem;">
-					<c:forEach var="i" begin="0" end="23">
-						<c:forEach var="j" begin="0" end="1">
-							<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-							<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-						</c:forEach>
-					</c:forEach>
-				</ul>
-			</div>
-			
-			<!-- 근무 1개 끝  -->
-			
-	  		<div class="workadd">
-	  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt;">추가하기</span></div>
-  			</div>
-  			<div class="workstatus-buttoncontainer">
-  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-	  			<button type="reset" class="workstatus-cancel">취소</button>
-	  			<button type="button" class="workstatus-save">저장하기</button>
-  			</div>
-	  	</div>
-	  </div>
+		<div class="offcanvas-header">
+		  <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
+		  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
+		<div class="offcanvas-body">
+			<div class="collapse show">
+				<form name="updateFrm">
+					<div style="float: left; width: 45.5%;">
+						<div>이름</div>
+						<input id="name" type="text" class="required" name="name" size="20" placeholder="이름 입력" />
+					</div>
+						
+					<div style="float: left; width: 52%; margin-left: 16px;">
+						<div>영문이름</div>
+						<input id="Egname" type="text" class="required" name="name" size="20" placeholder="이름 입력" />
+					</div>
+					
+					<div style="clear: both;">생년월일</div>
+					<input id="Egname" type="text" class="required" name="name" size="20" placeholder="이름 입력" />
+					
+					<div>소속</div>
+					<%-- <input id="team" type="text" class="required" name="team" size="50" placeholder="소속 입력" /> --%>
+					<select id="team" name="team" class="required">
+						<option value="">소속 선택</option>
+						<option value="hr">인사팀</option>
+						<option value="accounting">회계팀</option>
+						<option value="sales">영업팀</option>
+						<option value="planning">기획팀</option>
+						<option value="IT">IT팀</option>
+						<option value="design">디자인팀</option>
+						<option value="direct">직접 입력</option>
+					</select>
+					<input input type="text" id="selboxDirect" name="selboxDirect" />
+					
+					<div style="vertical-align: middle;">이메일</div>
+					<input id="email" type="text" class="required" name="email" placeholder="이메일 입력"/>
+					<%--<button type="button" id="emailCheck">인증하기</button>
+					<span id="spinner" class="spinner-border text-success"></span>
+					<span id="emailCheckResult"></span>
+					<span class="error" style="color: red">이메일 형식에 맞지 않습니다.</span>
+					<br>
+					<div id="emailVerify">
+						<input id="userEmailVerifyCode" type="text" name="emailVerifyCode" class="mt-2" size="20"/>
+						<button type="button" id="btn_emailVerifyCodeCheck" onclick="emailVerifyCodeCheck();">인증확인</button>
+						<span id="emailTimer" class="text-danger"></span>
+					</div>
+					<div id="emailVerifyConfirm">이메일 인증이 확인되었습니다.</div> --%>
+					
+					<div style="vertical-align: middle;">연락처</div>
+					<input id="phone" type="text" class="required" name="연락처" placeholder="연락처 입력"/>
+				</form>
+			</div> 
+		</div>
 	</div>
 	<!-- 오프캔버스 끝 -->
 		
