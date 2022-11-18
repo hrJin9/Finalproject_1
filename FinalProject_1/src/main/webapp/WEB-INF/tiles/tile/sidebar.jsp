@@ -14,7 +14,7 @@
      /* font-weight: 400; */
      /* font-style: normal; */
    }
-   body{
+   body{ 
      /* font-size: 9pt; */
      font-family: 'Pretendard-Regular';
    }
