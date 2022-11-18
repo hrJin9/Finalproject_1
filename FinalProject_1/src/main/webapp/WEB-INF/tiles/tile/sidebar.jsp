@@ -17,12 +17,12 @@
      font-family: 'Pretendard-Regular';
    }
    div.sidebar{
-     width: 175px;
+     width: 186px;
      height: 100%;
      background-color: rgb(249, 250, 250);
      position: fixed;
      top: 0;
-     left: -110px;
+     left: -104px;
      z-index: 1;
      transition: all .35s;
      padding: 26px 10px 24px 13px;
@@ -39,7 +39,7 @@
      height: 10px;
      position: fixed;
      bottom:30px;
-     left:25px;
+     left:31px;
      transition: all .35s;
      cursor: pointer;
      z-index: 2;
@@ -89,7 +89,9 @@
     top: 169px;
     transition: all .35s;
    }
-   
+   div#mycontent{
+   	  transition':all 0.5s;
+   }
    input#menuicon + label + div +div+div.news {
       border: 1px solid #e6e6e6;
       padding: 20px;
@@ -319,6 +321,16 @@
          const iframe_window = iframe_pwdChange.contentWindow;
 
          iframe_window.func_form_reset_empty();
+      });
+      
+      
+      <%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
+      $("input#menuicon").change(function(){
+          if($("#menuicon").is(":checked")){
+              $("div#mycontent").css({'transition':'all 0.5s','width':'90%','margin':'0 auto'});
+          }else{
+              $("div#mycontent").css({'width':'100%','transition':'all 0.5s'});
+          }
       });
       
    });// end of $(document).ready(function(){})---------------
