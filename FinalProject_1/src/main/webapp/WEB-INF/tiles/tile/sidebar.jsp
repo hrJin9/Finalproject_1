@@ -249,7 +249,7 @@
    }
    
    #mycontent{
-   	float: right; width: 94%; margin: 0 auto;
+   	float: right; width: 94.6%; margin: 0 auto;
    }
    
    /* 
@@ -339,7 +339,7 @@
           if($("#menuicon").is(":checked")){
               $("div#mycontent").css({'transition':'all 0.5s','width':'87%','margin':'0 auto'});
           }else{
-              $("div#mycontent").css({'width':'94%','transition':'all 0.5s'});
+              $("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
           }
       });
       
