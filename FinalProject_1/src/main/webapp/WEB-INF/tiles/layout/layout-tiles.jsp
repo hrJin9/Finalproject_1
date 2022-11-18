@@ -43,6 +43,9 @@
 
 <!-- 혜린style.css -->
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hyerin.css?after">
+<style type="text/css">
+	.margin-container{margin-left: 2%;}
+</style>
 
 </head>
 <body>
