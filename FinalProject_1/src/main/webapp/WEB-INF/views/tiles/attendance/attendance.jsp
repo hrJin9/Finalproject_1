@@ -163,7 +163,6 @@
 		</div>
 	</div>
 	<div class="workingweek">
-		
 		<table class="fontsize-basic">
 			<tr class="workinghour">
 				<td></td>
@@ -259,7 +258,7 @@
 					</ul>
 					
 					<div class="dropdown-toggle workStartbox" id="workwriteStart" data-bs-toggle="dropdown" aria-expanded="false">
-						시작시간
+						시작 시각
 					</div>
 					<ul class="dropdown-menu workstarttime" aria-labelledby="workwriteStart" style="min-width: 6rem;">
 						<c:forEach var="i" begin="0" end="23">
@@ -275,7 +274,7 @@
 					</div>
 					
 					<div class="dropdown-toggle workEndbox" id="workwriteEnd" data-bs-toggle="dropdown" aria-expanded="false">
-						끝시간						
+						종료 시각						
 					</div>
 					<ul class="dropdown-menu workendtime" aria-labelledby="workwriteEnd" style="min-width: 6rem;">
 						<c:forEach var="i" begin="0" end="23">

@@ -35,6 +35,7 @@
 </script>
 
 <div class="mettingroom-container">
+<!-- 
 	<div>
 		<div class="meetingroom-info">
 			<i class="fa-solid fa-circle-info"></i>
@@ -45,9 +46,10 @@
 		</div>
 	</div>
 	<hr class="HRhr" style="margin: 20px 0;"/>
+	 -->
 	<div class="mettingroom-date">
 		<div style="display: block;">
-			<div>예약하기</div>
+			<div>예약현황</div>
 			<div>
 				<input type="text"/>
 				<div><i class="fa-solid fa-angle-left"></i></div>
@@ -103,32 +105,81 @@
 			
 			
 			<!-- 오프캔버스 시작 -->
-			<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+			<div class="offcanvas offcanvas-end meetingroom-offcanvas" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 			  <div class="offcanvas-header">
 			    <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
 			    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			  </div>
 			  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 			  <div class="offcanvas-body">
-			  	<div class="meetingroom-offcanvas">
-			  		<table style="width:100%;">
-			  			<tr>
-			  				<td width="30%">예약일</td>
-			  				<td></td>
-			  			</tr>
-			  			<tr>
-			  				<td>예약자</td>
-			  				<td></td>
-			  			</tr>
-			  			<tr>
-			  				<td>익명예약</td>
-			  				<td></td>
-			  			</tr>
-			  			<tr>
-			  				<td>목적</td>
-			  				<td></td>
-			  			</tr>
-			  		</table>
+			  	<div class="meetingroom-offcanvas-body">
+			  		<div>
+			  			<div class="meetingroom-info">
+							<i class="fa-solid fa-circle-info"></i>
+							<div>
+								<div>~에 위치한 회의실입니다. 예약 후 이용바랍니다.</div>
+								<div>담당자 연락처 : 010-8828-4730</div>
+							</div>
+						</div>
+			  		</div>
+			  		
+			  		<div class="mr-write-container">
+			  			<div style="font-weight: bold;">예약 일정·정보 입력</div>
+			  			<div>
+			  				<div><input type="text"/></div>
+							<i class="fa-solid fa-arrow-right" style="color: #C6C6C6; margin: 0px 2%;"></i>
+							<div style="text-align: right;"><input type="text"/></div>
+			  			</div>
+			  			<div class="mr-writemessage-container">
+				  			<input type="text" placeholder="예약 목적 메시지 입력"/>
+				  		</div>
+			  		</div>
+			  		
+			  		<div class="mr-writedetail-container">
+			  			<div style="font-weight: bold;">상세 일정 편집</div>
+			  			<div>
+			  				<div>
+					  			2022. 11. 9 (수)
+			  				</div>
+				  			<div>
+				  				<div>
+				  					<div class="dropdown-toggle" id="mr-status" data-bs-toggle="dropdown" aria-expanded="false">
+				  						하루 종일
+				  					</div>
+				  					<ul class="dropdown-menu" aria-labelledby="mr-status" style="min-width: 6rem;">
+										<li><a class="dropdown-item" href="#">시간 입력</a></li>
+										<li><a class="dropdown-item" href="#">하루 종일</a></li>
+									</ul>
+				  				</div>
+				  				<div class="dropdown-toggle workStartbox" id="workwriteStart" data-bs-toggle="dropdown" aria-expanded="false">
+									시작 시각
+								</div>
+								<ul class="dropdown-menu workstarttime" aria-labelledby="workwriteStart" style="min-width: 6rem;">
+									<c:forEach var="i" begin="0" end="23">
+										<c:forEach var="j" begin="0" end="1">
+											<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
+											<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
+										</c:forEach>
+									</c:forEach>
+								</ul>
+								<i class="fa-solid fa-arrow-right" style="color: #C6C6C6; margin: 0px 2%;"></i>
+								<div class="dropdown-toggle workEndbox" id="workwriteEnd" data-bs-toggle="dropdown" aria-expanded="false">
+									종료 시각						
+								</div>
+								<ul class="dropdown-menu workendtime" aria-labelledby="workwriteEnd" style="min-width: 6rem;">
+									<c:forEach var="i" begin="0" end="23">
+										<c:forEach var="j" begin="0" end="1">
+											<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
+											<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
+										</c:forEach>
+									</c:forEach>
+								</ul>
+				  			</div>
+			  			</div>
+			  		</div>
+			  	<div>
+			  		<button type="reset" class="workstatus-cancel">취소</button>
+		  			<button type="button" class="workstatus-save">저장하기</button>
 			  	</div>
 			  </div>
 			</div>
