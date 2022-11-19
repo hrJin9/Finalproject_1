@@ -32,7 +32,7 @@
 		padding: 0.7em 0 0.3em 0;
 		color: #333;
 		text-decoration: none;
-		margin-left: 4%;
+		margin-right: 4%;
 		color: #D2D6D9;
 	}
 	
