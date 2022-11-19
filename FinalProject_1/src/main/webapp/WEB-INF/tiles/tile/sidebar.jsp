@@ -295,7 +295,7 @@
       <%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
       $("input#menuicon").change(function(){
           if($("#menuicon").is(":checked")){
-              $("div#mycontent").css({'transition':'all 0.5s','width':'87%','margin':'0 auto'});
+              $("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
           }else{
               $("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
           }
