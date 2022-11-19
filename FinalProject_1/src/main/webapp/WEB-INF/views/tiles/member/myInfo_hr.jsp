@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%-- <%@ include file="sidebar.jsp"%> --%>
-    
 <style type="text/css">
 
 	@font-face {
@@ -106,7 +104,7 @@
 		font-size: 14pt;
 	}
 	
-	.menubar {
+	/* .menubar {
 		margin-left: 810px;
 		color: #a6a6a6; 
 		font-size: 10pt;
@@ -116,7 +114,7 @@
 		margin-left: 25px;
 		color: #a6a6a6; 
 		font-size: 10pt;
-	}
+	} */
 	
 	.content {
 		color: #556372; 
@@ -181,7 +179,8 @@
 		
 		
 		<div class="container">
-			<div id="hrInfo">인사 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br>
+			<%-- <div id="hrInfo">인사 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
+			<div id="hrInfo">인사 정보</div><br>
 	 	<table class="table table-borderless content" style="float: left;">
 	       <colgroup>
 	          <col width="250px" />
@@ -212,10 +211,15 @@
 	                   <td>직무</td>   
 	                   <td>개발자</td>   
 	                </tr>
+					<tr>
+	                   <td>고용형태</td>   
+	                   <td>정직원</td>   
+	                </tr>
 	          </tbody>
 	 	</table>
 	       
-		<div id="workInfo">근무 정보<span><i class="fas fa-list-ul menubar"><i class="fas fa-pen update"></i></i></span></div><br>
+		<%-- <div id="workInfo">근무 정보<span><i class="fas fa-list-ul menubar"><i class="fas fa-pen update"></i></i></span></div><br> --%>
+		<div id="workInfo">근무 정보</div><br>
 	 	<table class="table table-borderless content" style="float: left;">
 	       <colgroup>
 	          <col width="250px" />
@@ -256,7 +260,7 @@
 	</form>
   
   
-	<div style="position: absolute; right: 165px; top: 365px;"> 
+	<div style="position: absolute; right: 140px; top: 365px;"> 
 		<div class=moreInfo>
 			<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
 			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
