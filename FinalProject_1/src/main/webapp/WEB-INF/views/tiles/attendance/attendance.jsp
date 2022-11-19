@@ -293,8 +293,8 @@
 	  			</div>
 	  			<div class="workstatus-buttoncontainer">
 	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-		  			<button type="reset" class="workstatus-cancel">취소</button>
 		  			<button type="button" class="workstatus-save">저장하기</button>
+		  			<button type="reset" class="workstatus-cancel">취소</button>
 	  			</div>
 		  	</div>
 		  </div>

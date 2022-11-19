@@ -85,7 +85,7 @@
    
    input#menuicon:checked + label + div +div+div.news{
    	position:absolute;
-   	left: 143px;
+   	left: 165px;
     top: 169px;
     transition: all .35s;
    }
@@ -106,7 +106,7 @@
       
       position: absolute; 
       top: 23%;
-      left: 3.5%;
+      left: 4.5%;
       z-index: 2;
       
       overflow:hidden;
@@ -191,18 +191,18 @@
      font-weight: bold;
    }
    .badge{
-	 background-color: rgb(242, 75, 23);
-	 padding: 0.5em 0.5em;
-	 width: 15px;
-	 height: 13px;
-	 font-size: 1px;
-	 font-weight: 600;
-	 color: #fbfbfb;
-	 display: inline-block;
-	 position: relative;
-	 bottom: 4.3px;
-	 left: 18px;
-	 box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+     background-color: rgb(242, 75, 23);
+     padding: 0.5em 0.5em;
+     width: 15.5px;
+     height: 13.5px;
+     font-size: 1px;
+     font-weight: 600;
+     color: #fbfbfb;
+     display: inline-block;
+     position: relative;
+     bottom: 4.3px;
+     left: 18px;
+     box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
 	}
    .newred{
      background-color: rgb(242, 75, 23);
@@ -217,7 +217,7 @@
    .newCnt{
      font-size: 5pt;
      position: relative;
-     top: 0px;
+     top: 1px;
      display: flex;
      align-items: center;
      justify-content: center;
@@ -262,66 +262,24 @@
 <script type="text/javascript">
 
    $(document).ready(function(){
-	  // $(".myprofile").hide();
-	  // $(".news").hide();
 	   
       $(".profile").click(function(){  // 내프로필 클릭시
-         // $(".myprofile").toggle();
-      	 if($(".myprofile").css("display","none")) {
-      		$(".myprofile").css("display","block");
-      		$(".news").css("display","none");
+      	 if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
+      		$(".myprofile").show();
+      		$(".news").hide();
       	 } else {
-      		 // $(".myprofile").css("display","none");
-      		$(".myprofile").toggle();
+      		$(".myprofile").hide();
       	 }
       });
       
-     /*  $(".profile").click(function(){  // 내프로필 클릭시
-	      if($(".myprofile").css("display","block") ) { // 내프로필 창이 열려있다면
-	    	  $("li#newsIcon").click(function(){
-	   	         $(".myprofile").css("display","none");
-	   	      });
-	      }
-      }); */
-      
-      /* $(".profile").click(function(){  // 내프로필 클릭시
-	      if($(".myprofile").show()) { // 내프로필 창이 열려있다면
-	    	  $("li#newsIcon").click(function(){
-	   	         $(".myprofile").hide();
-	   	      });
-	      }
-      }); */
-      
-      
       $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-          // $(".news").toggle();
-    	  if($(".news").css("display","none")) {
-       		 $(".news").css("display","block");
-       		 $(".myprofile").css("display","none");
+    	  if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
+       		 $(".news").show();
+       		 $(".myprofile").hide();
        	  } else {
-       		 // $(".news").css("display","none");
-       		 $(".myprofile").toggle();
+       		 $(".news").hide();
        	  }
       });
-      
-      /* $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-	      if($(".news").css("display","block")) {  // 새로운소식 창이 열려있다면
-	    	  $(".profile").click(function(){
-	   	         $(".news").css("display","none");
-	   	      });
-	      }
-      }); */
-    	  
-      /* $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-	      if($(".news").show()) {  // 새로운소식 창이 열려있다면
-	    	  $(".profile").click(function(){
-	   	         $(".news").hide();
-	   	      });
-	      }
-      }); */
-    	  
-      
-      
       
       
       // 비밀번호 변경창 닫기 버튼 클릭 시
@@ -383,7 +341,7 @@
     </div>
   </div>
   
-  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 14%; left: 1%; z-index: 1;">
+  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 1;">
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>

@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%-- <%@ include file="sidebar.jsp"%> --%>
-    
 <style type="text/css">
 
 	@font-face {
@@ -28,22 +26,22 @@
 		
 	#phone, #message {
 		border: 0.3px solid #d9d9d9;
-		margin-top: 15px;
-		margin-right: 3px;
-		padding: 4.5px 6px 6px 6px;
-		background-color: white;
-		border-radius: 3px;
-		font-size: 9pt;
+	    margin-top: 15px;
+	    margin-right: 3px;
+	    padding: 3.5px 6.5px 3.5px 6.5px;
+	    background-color: white;
+	    border-radius: 3px;
+	    font-size: 9pt;
 	}	
 	
 	#status {
-		border: 0.3px solid #d9d9d9;
-		margin-top: 17px;
-		margin-right: 3px;
-		padding: 3px 6px;
-		background-color: white;
-		border-radius: 3px;
-		font-size: 8pt;
+	    border: 0.3px solid #d9d9d9;
+	    margin-top: 17px;
+	    margin-right: 3px;
+	    padding: 3.5px 7px 3.2px 7px;
+	    background-color: white;
+	    border-radius: 3px;
+	    font-size: 9.2pt;
 	}	
 	
 	/* nav바 */
@@ -106,8 +104,8 @@
 		font-size: 14pt;
 	}
 	
-	.menubar {
-		margin-left: 685px;
+	/* .menubar {
+		margin-left: 810px;
 		color: #a6a6a6; 
 		font-size: 10pt;
 	}
@@ -116,7 +114,7 @@
 		margin-left: 25px;
 		color: #a6a6a6; 
 		font-size: 10pt;
-	}
+	} */
 	
 	.content {
 		color: #556372; 
@@ -131,9 +129,9 @@
 	/* 우측 사이드 근무시간, 남은연차, 급여 */
 	.moreInfo {
 		border: 1px solid #e6e6e6;
-		padding: 20px;
+		padding: 15.5px 22px;
 		margin-bottom: 22px;
-		width: 230px;  
+		width: 246px;  
 		height: 130px; 
 		border-radius: 10px;
 		display: inline-block;
@@ -156,20 +154,20 @@
 		<span style="color: #8c8c8c;">구성원&nbsp;&nbsp;/&nbsp;&nbsp;</span>
 		<span>김지은</span>
 	</div>
-	<div class="profile" href="#" style="margin-top: 23px; margin-bottom:30px;">
+	<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
 	    <span class="pic" style="height: 135px; width: 135px; font-size: 25pt; font-weight: bold;">
 	    	<span>지은</span>
 	   	</span>
 	    <span class="myInfo">
 	    	<span style="font-size: 16pt; font-weight: bold;">김지은</span><br>
-	    	<span style="font-size: 9pt; padding: 4px 0;"><span id="team">소속</span>IT</span><br>
-	    	<span style="font-size: 9pt; padding: 4px 0;"><span id="role">직무</span>개발자</span><br>
+	    	<span style="font-size: 9pt; padding: 4px 0; display: block; margin-bottom: -8px;"><span id="team">소속</span>IT</span>
+	    	<span style="font-size: 9pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role">직무</span>개발자</span>
 	    	<button type="button" id="phone"><span><i class="fas fa-phone-alt" style="transform: scaleX(-1); transition: .3s; color: #666666;"></i></span></button>
-	    	<button type="button" id="message"><span><i class="far fa-envelope"></i></span></button>
+	    	<button type="button" id="message" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
 	    	<button type="button" id="status"><span><i class="fas fa-circle" style="color: #07B419; padding-right: 5px; font-size: 7pt;"></i>재직중</span></button>
 		    </span>
 		</div>
-	   </div>  
+	   </div> 
 	
 	<nav id="list">
 		<a class="list_iscurrent">인사 정보</a>
@@ -181,7 +179,8 @@
 		
 		
 		<div class="container">
-			<div id="hrInfo">인사 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br>
+			<%-- <div id="hrInfo">인사 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
+			<div id="hrInfo">인사 정보</div><br>
 	 	<table class="table table-borderless content" style="float: left;">
 	       <colgroup>
 	          <col width="250px" />
@@ -212,10 +211,15 @@
 	                   <td>직무</td>   
 	                   <td>개발자</td>   
 	                </tr>
+					<tr>
+	                   <td>고용형태</td>   
+	                   <td>정직원</td>   
+	                </tr>
 	          </tbody>
 	 	</table>
 	       
-		<div id="workInfo">근무 정보<span><i class="fas fa-list-ul menubar"><i class="fas fa-pen update"></i></i></span></div><br>
+		<%-- <div id="workInfo">근무 정보<span><i class="fas fa-list-ul menubar"><i class="fas fa-pen update"></i></i></span></div><br> --%>
+		<div id="workInfo">근무 정보</div><br>
 	 	<table class="table table-borderless content" style="float: left;">
 	       <colgroup>
 	          <col width="250px" />
@@ -256,20 +260,20 @@
 	</form>
   
   
-	<div style="position: absolute; right: 162px; top: 365px;"> 
+	<div style="position: absolute; right: 140px; top: 365px;"> 
 		<div class=moreInfo>
-			<div style="padding-bottom: 20px;"><ion-icon name="time-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959;">근무시간</span><br>  
+			<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
+			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
 			<span style="font-size: 13pt;">7시간 20분</span>  
 		</div><br> 
 		<div class=moreInfo>
-			<div style="padding-bottom: 20px; transform: scaleX(-1); padding-left: 165px;"><ion-icon name="leaf-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959;">남은연차</span><br>  
+			<div style="padding-bottom: 21px; transform: scaleX(-1); padding-left: 176px;"><ion-icon name="leaf-outline"></ion-icon></div>
+			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">남은연차</span>
 			<span style="font-size: 13pt;">25일</span>  
 		</div><br> 
 		<div class=moreInfo>
-			<div style="padding-bottom: 20px;"><ion-icon name="server-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959;">급여</span><br>  
+			<div style="padding-bottom: 21px;"><ion-icon name="server-outline"></ion-icon></div>
+			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">급여</span>  
 			<span style="font-size: 13pt;">11월 급여명세서</span>  
 		</div><br> 
 	</div>

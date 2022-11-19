@@ -72,7 +72,7 @@
 		
 		$("#selboxDirect").hide();  // 소속 직접작성란 숨기고 시작한다.
 	
-		// 소속 입력
+		
 		$("#team").change(function() {
 			//직접입력을 누를 때 나타남
 			if($("#team").val() == "direct") {
@@ -129,7 +129,7 @@
 			<input input type="text" id="selboxDirect" name="selboxDirect" />
 			
 			<div style="vertical-align: middle;">이메일</div>
-			<input id="email" type="text" class="required" name="email" placeholder="이메일 입력"/>
+			<input id="email" type="text" class="required" name="email" size="50" placeholder="이메일 확인"/>
 			<%--<button type="button" id="emailCheck">인증하기</button>
 			<span id="spinner" class="spinner-border text-success"></span>
 			<span id="emailCheckResult"></span>
