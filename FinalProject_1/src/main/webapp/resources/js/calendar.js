@@ -1,18 +1,14 @@
-/*!
-FullCalendar v5.11.3
-Docs & License: https://fullcalendar.io/
-(c) 2022 Adam Shaw
-*/
+
 var FullCalendar = (function (exports) {
     'use strict';
-
+ 
 
     var extendStatics = function(d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    };
+    }; 
 
     function __extends(d, b) {
         if (typeof b !== "function" && b !== null)
@@ -15001,3 +14997,17 @@ var FullCalendar = (function (exports) {
     return exports;
 
 }({}));
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
