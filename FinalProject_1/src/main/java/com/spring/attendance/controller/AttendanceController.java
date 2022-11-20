@@ -28,12 +28,6 @@ public class AttendanceController {
 		return "attendance/dayoff_detail.tiles";
 	}
 	
-	@RequestMapping(value = "/support/meetingroom.up")
-	public ModelAndView meetingroom(HttpServletRequest request, ModelAndView mav) {
-		
-		mav.setViewName("reservation/meetingroom.tiles");
-		return mav;
-	}
 	
 	
 	

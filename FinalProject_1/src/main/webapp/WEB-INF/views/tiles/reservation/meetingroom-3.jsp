@@ -6,7 +6,11 @@
 </style>
 
 <script>
-
+	$(document).ready(function(){
+		$("a#mettingroom-1").removeClass("iscurrent");
+		$("a#mettingroom-3").css("color","black");
+		$("a#mettingroom-3").addClass("iscurrent");
+	}); //end of ready
 </script>
 
 <div class="mettingroom-container">
@@ -19,7 +23,7 @@
 			</div>
 		</div>
 	</div>
-	<hr style="margin: 20px 0;"/>
+	<hr class="HRhr" style="margin: 20px 0;"/>
 	<div class="mettingroom-date">
 		<div>
 			<div>예약하기</div>
@@ -30,6 +34,9 @@
 			</div>
 		</div>
 		<div>
+		
+		
+		
 		</div>
 	</div>
 

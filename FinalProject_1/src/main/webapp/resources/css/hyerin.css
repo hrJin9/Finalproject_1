@@ -72,13 +72,10 @@ hr.HRhr{
 .font-bold{font-weight:bold;}
 
 .attendance-container{
-	margin-left: 40px;
-	position: relative; /* position: absolute의 기준점 */
+	width: 90%;
+	position: relative;/* position: absolute의 기준점 */
 }
 
-.contentsmargin{
-	margin-left: 65px;
-}
 
 .datebox {
 	height: 30px;
@@ -178,8 +175,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	background-color: rgba(0, 0, 0, .1);
 	height: 10px;
 	width: 75%;
-	margin-left : 15%;
 	border-radius: 10px;
+	float: right;
+	position: relative; right: 20px; top: 5px;
 }
 
 .workingweek-sumbar-default{
@@ -247,13 +245,10 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border: solid 1px rgba(0, 0, 0, .1);
 }
 
-.workweek > table > tbody > tr > td:last-child{
+.workingweek > table > tbody > tr > td:last-child{
 	border-right: none;
 }
 
-.workingweek > table td:first-child{
-	border-left: none;
-}
 .workinghour td{
 	border-top: none;
 }
@@ -425,7 +420,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workStartbox, .workEndbox{
-	padding: 7px 15px;
+	padding: 7px 2%;
 	border-radius: 5px;
 }
 
@@ -490,11 +485,12 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .workstatus-cancel{
 	font-size: 10pt;
-	float: right;
 	border: solid 1px rgba(0, 0, 0, 0.1);
 	border-radius : 10px;
 	width: 60px; height: 40px;
 	background-color: white;
+	margin-right: 10px;
+	float: right;
 }
 
 .workstatus-save{
@@ -503,9 +499,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border: none;
 	border-radius : 10px;
 	width: 90px; height: 40px;
-	margin-right: 10px;
 	background-color: #5F98F6;
 	color: white;
+	float: right;
 }
 
 
@@ -573,7 +569,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-write > div:first-child, .dayoff-record > div:first-child{
 	font-weight: bold;
 	font-size: 11pt;
-	margin: 30px 0;
+	margin: 30px 0 20px 0;
 }
 
 .dayoff-write > div:nth-child(2) > div{
@@ -608,8 +604,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .dayoff-record > div > div:nth-child(2),
-.dayoff-detail > div > div:nth-child(2),
-.mettingroom-date > div > div:nth-child(2){
+.dayoff-detail > div > div:nth-child(2){
 	float: right;
 	position: relative; right: 0.25%;
 }
@@ -682,7 +677,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-detail > div:first-child, .dayoff-record > div:first-child{
 	font-weight: bold;
 	font-size: 11pt;
-	margin: 30px 0;
+	margin: 30px 0 20px 0;
 }
 
 .dayoff-detail-sumbox{
@@ -743,7 +738,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .dayoff-adjustmentbox > table > thead > tr > td{
-	padding: 20px 10px;
+	padding: 15px 10px;
 	border-right: solid 1px rgba(0,0,0,.1);
 	border-bottom: solid 1px rgba(0,0,0,.1);
 }
@@ -770,17 +765,14 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 
-/* meetingroom.jsp */
+/* meetingroom-1.jsp */
 .mettingroom-container{
 	width: 90%;
 	margin-left : 100px;
 }
 
-.mettingroom-container > div {display: flex;}
-
-
 .meetingroom-info{
-	margin: auto;
+	margin: 0 0 10px 0;
 	border: solid 1px rgba(0,0,0, 0.1);
 	background-color: rgba(250,250,250,.5);
 	height: 100px;
@@ -794,7 +786,98 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	font-size: 9pt;
 }
 
+.mettingroom-date {
+	margin: 30px 0;
+}
+
 .mettingroom-date > div > div:first-child {
 	font-weight: bold;
 }
+
+.mettingroom-date > div > div:nth-child(2) {
+	float: right;
+}
+
+.mettingroom-date > div > div > input {
+	position: relative; bottom: 1px;
+}
+
+
+.meetingroom-offcanvas{
+	width: 40%;
+}
+
+.meetingroom-offcanvas-body > table {
+	font-size: 10pt;
+	border-collapse: collapse;
+	border-radius: 5px;
+	border-style: hidden;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	width : 100%;
+}
+
+.meetingroom-offcanvas-body > table td{
+	padding: 10px 20px;
+}
+
+
+.meetingroom-allday-chx, meetingroom-annonymous-chx{
+	margin-left: 5px;
+	border: solid 1px rgba(0,0,0, 0.2) !important;
+	border-radius: 5px !important;
+	width: 13px;
+	position: relative; top: 15px;
+}
+
+.meetingroom-allday-chx ~ label {
+	font-size: 9pt;
+}
+
+.meetingrrom-purpose{
+	width: 100%;
+}
+
+
+
+.mr-write-container{
+	font-size: 10pt;
+	margin-top: 30px;
+}
+
+
+.mr-write-container > div:nth-child(2) {
+	border: solid 1px rgba(0, 0, 0, .1);
+	border-radius: 5px;
+	width: 100%; height: 40px;
+	padding: 0 2%;
+	margin: 10px 0;
+}
+
+.mr-write-container > div:nth-child(2) > div{
+	width: 45%;
+}
+
+.mr-write-container > div:nth-child(2) input{
+	border: none;
+	width: 66%; height: 36px;
+}
+
+
+.mr-write-container > div:nth-child(2) div {
+	display: inline-block;
+}
+
+.mr-writedetail-container > div:nth-child(2){
+	border: solid 1px rgba(0, 0, 0, .1);
+	border-radius: 5px;
+	width: 100%; height: 100px;
+	padding: 0 2%;
+	margin: 10px 0;
+}
+
+
+.mr-writemessage-container{
+	width: 100%;
+}
+
 

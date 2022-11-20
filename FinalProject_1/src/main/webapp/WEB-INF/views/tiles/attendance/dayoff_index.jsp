@@ -59,7 +59,7 @@
 			</div>
 		
 		</div>
-		<hr class="HRhr" style="margin: 30px 0 30px 0;"/>
+		<hr class="HRhr" style="margin: 40px 0;"/>
 	</div>
 	<div class="dayoff-record">
 		<div>

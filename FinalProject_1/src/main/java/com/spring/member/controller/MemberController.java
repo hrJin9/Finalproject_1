@@ -1,12 +1,14 @@
-package com.spring.attendance.controller;
+package com.spring.member.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.finalproject.service.InterFinalprojectService;
 
+@Controller
 public class MemberController {
 	@Autowired
 	private InterFinalprojectService service;
@@ -29,6 +31,16 @@ public class MemberController {
 	@RequestMapping(value = "/member/pwdChange.up")
 	public String pwdChange(HttpServletRequest request) {
 		return "member/pwdChange.tiles";
+	}
+	
+	@RequestMapping(value = "/member/memberInfo.up")
+	public String memberInfo(HttpServletRequest request) {
+		return "member/memberInfo.tiles";
+	}
+	
+	@RequestMapping(value = "/member/memberInfo2.up")
+	public String memberInfo2(HttpServletRequest request) {
+		return "member/memberInfo2.tiles";
 	}
 	
 }

@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    
+
+<% String ctxPath = request.getContextPath(); %>  
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
     
 <style type="text/css">
@@ -19,12 +17,12 @@
      font-family: 'Pretendard-Regular';
    }
    div.sidebar{
-     width: 175px;
+     width: 186px;
      height: 100%;
      background-color: rgb(249, 250, 250);
      position: fixed;
      top: 0;
-     left: -110px;
+     left: -104px;
      z-index: 1;
      transition: all .35s;
      padding: 26px 10px 24px 13px;
@@ -41,7 +39,7 @@
      height: 10px;
      position: fixed;
      bottom:30px;
-     left:25px;
+     left:31px;
      transition: all .35s;
      cursor: pointer;
      z-index: 2;
@@ -87,11 +85,13 @@
    
    input#menuicon:checked + label + div +div+div.news{
    	position:absolute;
-   	left: 143px;
+   	left: 165px;
     top: 169px;
     transition: all .35s;
    }
-   
+   div#mycontent{
+   	  transition':all 0.5s;
+   }
    input#menuicon + label + div +div+div.news {
       border: 1px solid #e6e6e6;
       padding: 20px;
@@ -106,7 +106,7 @@
       
       position: absolute; 
       top: 23%;
-      left: 3.5%;
+      left: 4.5%;
       z-index: 2;
       
       overflow:hidden;
@@ -115,7 +115,7 @@
    .nav-menu ul{
      padding-left: 5px;
    }
-   .nav-menu li:hover, .profile:hover{
+   .nav-menu li:hover, .profile2:hover{
      background-color: rgb(244, 244, 244);
    }
    
@@ -193,17 +193,17 @@
    .badge{
      background-color: rgb(242, 75, 23);
      padding: 0.5em 0.5em;
-     width: 14px;
-     height: 12px;
+     width: 15.5px;
+     height: 13.5px;
      font-size: 1px;
      font-weight: 600;
      color: #fbfbfb;
      display: inline-block;
      position: relative;
-     bottom: 0.3px;
+     bottom: 4.3px;
      left: 18px;
-     box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.04);
-   }
+     box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+	}
    .newred{
      background-color: rgb(242, 75, 23);
      width: 5px;
@@ -215,9 +215,9 @@
      right: 68px;
    }
    .newCnt{
-   	 font-size: 5pt;
+     font-size: 5pt;
      position: relative;
-     top: -2px;
+     top: 1px;
      display: flex;
      align-items: center;
      justify-content: center;
@@ -247,26 +247,39 @@
       bottom: 20px;
       left: 10px;
    }
+   
+   #mycontent{
+   	float: right; width: 94.6%; margin: 0 auto;
+   }
+   
+   /* 
+   #mycontent{
+		margin-left : 3%;
+   }
+    */
 </style>
 
 <script type="text/javascript">
 
    $(document).ready(function(){
-      
-      $(".myprofile").hide();
-      $(".news").hide();
-      
-      $(".profile").click(function(){
-         $(".myprofile").toggle();
+	   
+      $(".profile").click(function(){  // 내프로필 클릭시
+      	 if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
+      		$(".myprofile").show();
+      		$(".news").hide();
+      	 } else {
+      		$(".myprofile").hide();
+      	 }
       });
       
-      $("li#newsIcon").click(function(){
-         $(".news").toggle();
-         // $(".profile").attr("disabled", true);
-         // $(".profile").unbind('click').click();
-         // $(".profile").unbind("click");
+      $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
+    	  if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
+       		 $(".news").show();
+       		 $(".myprofile").hide();
+       	  } else {
+       		 $(".news").hide();
+       	  }
       });
-      
       
       
       // 비밀번호 변경창 닫기 버튼 클릭 시
@@ -276,6 +289,16 @@
          const iframe_window = iframe_pwdChange.contentWindow;
 
          iframe_window.func_form_reset_empty();
+      });
+      
+      
+      <%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
+      $("input#menuicon").change(function(){
+          if($("#menuicon").is(":checked")){
+              $("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
+          }else{
+              $("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
+          }
       });
       
    });// end of $(document).ready(function(){})---------------
@@ -290,7 +313,7 @@
   </label>
   <div class="sidebar">
 
-    <div class="profile" href="#" style="margin-top: 29px; margin-bottom:30px;">
+    <div class="profile profile2" href="#" style="margin-top: 29px; margin-bottom:30px;">
       <span class="pic"><span>지은</span></span>
       <span class="my"><span class="name">김지은</span><br>
       <span class="role">개발자</span>
@@ -318,28 +341,28 @@
     </div>
   </div>
   
-  <div id="list-example" class="list-group myprofile" style="width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 14%; left: 1%; z-index: 1;">
+  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 1;">
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
         <span style="font-size: 8.5pt; color: #737373;">sawonwldms@gmail.com</span><br>
         <span style="font-size: 8.5pt; color: #737373; padding-bottom: 3px; ">개발자</span><br>
        </a>
-     <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; cursor: pointer;" data-toggle="modal" data-target="#userPwdChange" data-dismiss="modal" data-backdrop="static">
+     <a class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;" data-toggle="modal" data-target="#userPwdChange" data-dismiss="modal" data-backdrop="static">
         <i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
        </a>
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
     </div>
     
     
-   <div class=news>
+   <div class=news style="display:none;">
       <div style="font-size: 11.5pt; color: #595959; font-weight: bold; padding-bottom: 30px;">새로운 소식
          <button style="margin-left: 90px; border: none; font-size: 8pt; font-weight:bold; border-radius: 3px; background-color:#3B86C812; color: #2E5E87; padding: 5px 8px;">모두읽음</button>
       </div>
       <div>
          <span class="newsIcon" style="font-size: 9pt; position: relative; display: inline-block;">
             <span class="newred2"></span>
-            <span class="icon icon-bell" style="color: #ffffff; position: absolute; left: 0.7px; bottom: 9px; font-size: 9pt;"></span>
+            <span class="icon icon-bell" style="color: #ffffff; position: absolute; left: 0px; bottom: 9px; font-size: 9pt;"></span>
          </span>
          <span style="padding-left:15px; position:relative; top:1px;">
             <span style="font-size:8pt; font-weight:bold; color:#595959; display: inline-block;">'비품신청'의 승인이 완료되었어요.<br>
@@ -364,8 +387,8 @@
         <h4 class="modal-title" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
         <div class="modal-body">
           <div id="pwdChange">
-             <%-- <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/login/pwdChange.up"> --%>
-             <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="http://localhost:9090/FinalProject/pwdChange.jsp">
+             <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/member/pwdChange.up">
+             <%-- <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/WEB-INF/views/tiles/member/pwdChange.jsp"> --%>
              </iframe>
              
          </div>

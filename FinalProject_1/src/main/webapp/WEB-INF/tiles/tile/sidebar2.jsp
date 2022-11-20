@@ -6,10 +6,11 @@
 .sidebar2 {
 	padding: 0;
 	margin: 30px;
-	opacity: 50%;
 	position: fixed;
 	bottom: 55%;
-	right: 9%;
+	right: -0.8%;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .bookmark a {
@@ -20,7 +21,7 @@
 }
 
 .sidebar2 .list-group-item {
-	box-shadow: 1px 1px 1px 0.2px rgba(0, 0, 0, 0.15);
+	
 }
 
 .sidebar2 i {
