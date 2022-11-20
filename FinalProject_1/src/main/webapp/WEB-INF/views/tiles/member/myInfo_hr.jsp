@@ -169,94 +169,94 @@
 		</div>
 	   </div> 
 	
-	<nav id="list">
-		<a class="list_iscurrent">인사 정보</a>
-		<a>개인 정보</a>
-		<div class="list_underline"></div>
-	</nav>    
-	 
+		<nav id="list">
+			<a class="list_iscurrent">인사 정보</a>
+			<a>개인 정보</a>
+			<div class="list_underline"></div>
+		</nav>    
+		 
 	 	<hr style="margin-top: 0px;"/><br>
-		
-		
+			
+			
 		<div class="container">
 			<%-- <div id="hrInfo">인사 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
 			<div id="hrInfo">인사 정보</div><br>
-	 	<table class="table table-borderless content" style="float: left;">
-	       <colgroup>
-	          <col width="250px" />
-	          <col />
-	     	</colgroup>
-	          <tbody>
-	                <tr>
-	                   <td>사번</td>   
-	                   <td>201</td>   
-	                </tr>
-	                <tr>
-	                   <td>입사일</td>   
-	                   <td>2022.10.10</td>   
-	                </tr>
-	                <tr>
-	                   <td>입사유형</td>   
-	                   <td>경력</td>   
-	                </tr>
-	                <tr>
-	                   <td>소속</td>   
-	                   <td>IT팀</td>   
-	                </tr>
-	                <tr>
-	                   <td>직위</td>   
-	                   <td>부장</td>   
-	                </tr>
-	                <tr>
-	                   <td>직무</td>   
-	                   <td>개발자</td>   
-	                </tr>
-					<tr>
-	                   <td>고용형태</td>   
-	                   <td>정직원</td>   
-	                </tr>
-	          </tbody>
-	 	</table>
-	       
-		<%-- <div id="workInfo">근무 정보<span><i class="fas fa-list-ul menubar"><i class="fas fa-pen update"></i></i></span></div><br> --%>
-		<div id="workInfo">근무 정보</div><br>
-	 	<table class="table table-borderless content" style="float: left;">
-	       <colgroup>
-	          <col width="250px" />
-	          <col />
-	     	</colgroup>
-	          <tbody>
-	                <tr>
-	                   <td>근무유형</td>   
-	                   <td>기본 근무유형</td>   
-	                </tr>
-	                <tr>
-	                   <td>일하는 방식</td>   
-	                   <td>고정 출퇴근제</td>   
-	                </tr>
-	                <tr>
-	                   <td>일하는 날</td>   
-	                   <td>월요일,화요일,수요일,목요일,금요일</td>   
-	                </tr>
-	                <tr>
-	                   <td>주휴일</td>   
-	                   <td>일요일</td>   
-	                </tr>
-	                <tr>
-	                   <td>출근 시간</td>   
-	                   <td>오전 09:00</td>   
-	                </tr>
-	                <tr>
-	                   <td>일하는 시간</td>   
-	                   <td>8시간</td>   
-	                </tr>
-	                <tr>
-	                   <td>쉬는 날 유형</td>   
-	                   <td>기본</td>   
-	                </tr>
-	          </tbody>
-	       </table>
-	  </div>
+		 	<table class="table table-borderless content" style="float: left;">
+		       <colgroup>
+		          <col width="250px" />
+		          <col />
+		     	</colgroup>
+		          <tbody>
+		                <tr>
+		                   <td>사번</td>   
+		                   <td>201</td>   
+		                </tr>
+		                <tr>
+		                   <td>입사일</td>   
+		                   <td>2022.10.10</td>   
+		                </tr>
+		                <tr>
+		                   <td>입사유형</td>   
+		                   <td>경력</td>   
+		                </tr>
+		                <tr>
+		                   <td>소속</td>   
+		                   <td>IT팀</td>   
+		                </tr>
+		                <tr>
+		                   <td>직위</td>   
+		                   <td>부장</td>   
+		                </tr>
+		                <tr>
+		                   <td>직무</td>   
+		                   <td>개발자</td>   
+		                </tr>
+						<tr>
+		                   <td>고용형태</td>   
+		                   <td>정직원</td>   
+		                </tr>
+		          </tbody>
+		 	</table>
+		       
+			<%-- <div id="workInfo">근무 정보<span><i class="fas fa-list-ul menubar"><i class="fas fa-pen update"></i></i></span></div><br> --%>
+			<div id="workInfo">근무 정보</div><br>
+		 	<table class="table table-borderless content" style="float: left;">
+		       <colgroup>
+		          <col width="250px" />
+		          <col />
+		     	</colgroup>
+		          <tbody>
+		                <tr>
+		                   <td>근무유형</td>   
+		                   <td>기본 근무유형</td>   
+		                </tr>
+		                <tr>
+		                   <td>일하는 방식</td>   
+		                   <td>고정 출퇴근제</td>   
+		                </tr>
+		                <tr>
+		                   <td>일하는 날</td>   
+		                   <td>월요일,화요일,수요일,목요일,금요일</td>   
+		                </tr>
+		                <tr>
+		                   <td>주휴일</td>   
+		                   <td>일요일</td>   
+		                </tr>
+		                <tr>
+		                   <td>출근 시간</td>   
+		                   <td>오전 09:00</td>   
+		                </tr>
+		                <tr>
+		                   <td>일하는 시간</td>   
+		                   <td>8시간</td>   
+		                </tr>
+		                <tr>
+		                   <td>쉬는 날 유형</td>   
+		                   <td>기본</td>   
+		                </tr>
+		          </tbody>
+		       </table>
+		  </div>
 	</form>
   
   

@@ -255,8 +255,6 @@
 	
 	$(document).ready(function(){
 		
-		$("#selboxDirect").hide();  // 소속 직접작성란 숨기고 시작한다.
-		
 		// 개인정보수정- offcanvas
 	 	$(".update").click(function(e){
 	 		$('.offcanvas').offcanvas('show');
@@ -377,11 +375,11 @@
 		</div>
 	   </div>  
 	
-	<nav id="list">
-		<a class="list_iscurrent">인사 정보</a>
-		<a>개인 정보</a>
-		<div class="list_underline"></div>
-	</nav>    
+		<nav id="list">
+			<a class="list_iscurrent">인사 정보</a>
+			<a>개인 정보</a>
+			<div class="list_underline"></div>
+		</nav>    
 	 
 	 	<hr style="margin-top: 0px;"/><br>
 		

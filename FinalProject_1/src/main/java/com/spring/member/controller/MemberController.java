@@ -33,4 +33,14 @@ public class MemberController {
 		return "member/pwdChange.tiles";
 	}
 	
+	@RequestMapping(value = "/member/memberInfo.up")
+	public String memberInfo(HttpServletRequest request) {
+		return "member/memberInfo.tiles";
+	}
+	
+	@RequestMapping(value = "/member/memberInfo2.up")
+	public String memberInfo2(HttpServletRequest request) {
+		return "member/memberInfo2.tiles";
+	}
+	
 }

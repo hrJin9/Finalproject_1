@@ -8,7 +8,7 @@
 	margin: 30px;
 	position: fixed;
 	bottom: 55%;
-	right: 1%;
+	right: -0.8%;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
