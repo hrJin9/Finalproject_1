@@ -33,7 +33,7 @@
 	});
 </script>
 
-<div class="dayoff-detail-container contentsmargin">
+<div class="dayoff-detail-container margin-container">
 	<div class="dayoff-detail">
 		<div>
 			<div>연차 상세 현황</div>
@@ -53,13 +53,13 @@
 			<div>
 				<div style="background-color:#BF2604;"></div>
 				<span>자동 소멸</span>
-				<div class="dayoff-none">없음</div>
+				<div class="dayoff-nonecnt">없음</div>
 			</div>
 			<div class="sumbox-verticalline"></div>
 			<div>
 				<div style="background-color:#F29F05;"></div>
 				<span >조정</span>
-				<div class="dayoff-none">없음</div>
+				<div class="dayoff-nonecnt">없음</div>
 			</div>
 			<div class="sumbox-verticalline"></div>
 			<div>

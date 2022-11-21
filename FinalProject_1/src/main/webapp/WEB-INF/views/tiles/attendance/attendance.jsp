@@ -62,21 +62,10 @@
 		 	$(".date").eq(i).html(getCurrentWeek()[i]);
 	 	}
 	 	
-	 	// <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-	 	
 	 	// 오늘 날짜 dot
 	 	const now = new Date();
 	 	const week = ['sun', 'mon','tue','wed','thu','fri','sat'];
 	 	let dayOfweek = week[now.getDay()];
-	 	/* 
-	 	if(dayOfweek=="mon"){html="<div class='todaydot'></div>"; $(".mon").append(html);}
-	 	if(dayOfweek=="tue"){html="<div class='todaydot'></div>"; $(".tue").append(html);}
-	 	if(dayOfweek=="wed"){html="<div class='todaydot'></div>"; $(".wed").append(html);}
-	 	if(dayOfweek=="thu"){html="<div class='todaydot spinner-grow spinner-grow-sm' role='status' aria-hidden='true'></div>"; $(".thu").append(html);}
-	 	if(dayOfweek=="fri"){html="<div class='todaydot'></div>"; $(".fri").append(html);}
-	 	if(dayOfweek=="sat"){html="<div class='todaydot'></div>"; $(".sat").append(html);}
-	 	if(dayOfweek=="sun"){html="<div class='todaydot'></div>"; $(".sun").append(html);}
-	 	 */
 	 	html = '<div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>';
 	 	if(dayOfweek=="mon"){$(".mon").append(html);}
 	 	if(dayOfweek=="tue"){$(".tue").append(html);}
@@ -162,7 +151,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="workingweek	margin-container">
+	<div class="workingweek">
 		<table class="fontsize-basic">
 			<tr class="workinghour">
 				<td></td>
