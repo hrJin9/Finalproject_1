@@ -104,16 +104,11 @@
 	button:focus {
 	  background-color: red;
 	}
-	
-	.dropdown{ 
-		margin-right: 80%; 
-	
-	}  
-	 
+
 	.rounded {
     	border-radius: 2.25rem!important;
 	}
-	    
+	     
          
    
 </style>
@@ -139,7 +134,7 @@
 <hr style="margin-top: 0px;"/>
 
 
-<div class="dropdown" style="display:flex; flex-direction: row-reverse; margin-right: 190px; margin-bottom: 20px;">    
+<div class="dropdown" style="display:flex; flex-direction: row-reverse; margin-right: 250px; margin-bottom: 20px;">      
     <button type="button" class="btn" style="color: #ffffff; background-color: #404040;">  
          할 일 일정 
     </button>   
@@ -156,7 +151,7 @@
     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="color: #a6a6a6;"> 
          생성 순
     </button>
-    <div class="dropdown-menu"> 
+    <div class="dropdown-menu">  
       <a class="dropdown-item" href="#">생성 순</a>
       <a class="dropdown-item" href="#">시작일 순</a>
       <a class="dropdown-item" href="#">종료일 순</a>
