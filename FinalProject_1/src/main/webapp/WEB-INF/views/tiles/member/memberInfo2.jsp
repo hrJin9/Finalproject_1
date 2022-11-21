@@ -209,6 +209,11 @@
 	.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:after {
 	  top: 0;
 	}
+	
+	.table>:not(:first-child){
+		border-top: solid 1px #eeeeee !important;
+	}
+	
 </style>
 
 <script type="text/javascript">

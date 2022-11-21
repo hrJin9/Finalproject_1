@@ -198,7 +198,7 @@
        <div class="modal-body">
           <div id="pwdFind">
              <%-- <iframe id="iframe_pwdFind" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/login/pwdChange.up"> --%>
-             <iframe id="iframe_pwdFind" style="border: none; width: 100%; height: 350px;" src="http://localhost:9090/FinalProject/pwdFind.jsp">
+             <iframe id="iframe_pwdFind" style="border: none; width: 100%; height: 350px;" src="localhost:9090<%= request.getContextPath()%>/login/pwdChange.up">
              </iframe>
           </div>
        </div>
