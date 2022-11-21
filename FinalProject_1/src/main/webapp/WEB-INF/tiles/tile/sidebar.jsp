@@ -115,7 +115,7 @@
    .nav-menu ul{
      padding-left: 5px;
    }
-   .nav-menu li:hover, .profile:hover{
+   .nav-menu li:hover, .profile2:hover{
      background-color: rgb(244, 244, 244);
    }
    
@@ -313,7 +313,7 @@
   </label>
   <div class="sidebar">
 
-    <div class="profile" href="#" style="margin-top: 29px; margin-bottom:30px;">
+    <div class="profile profile2" href="#" style="margin-top: 29px; margin-bottom:30px;">
       <span class="pic"><span>지은</span></span>
       <span class="my"><span class="name">김지은</span><br>
       <span class="role">개발자</span>
@@ -362,7 +362,7 @@
       <div>
          <span class="newsIcon" style="font-size: 9pt; position: relative; display: inline-block;">
             <span class="newred2"></span>
-            <span class="icon icon-bell" style="color: #ffffff; position: absolute; left: 0.7px; bottom: 9px; font-size: 9pt;"></span>
+            <span class="icon icon-bell" style="color: #ffffff; position: absolute; left: 0px; bottom: 9px; font-size: 9pt;"></span>
          </span>
          <span style="padding-left:15px; position:relative; top:1px;">
             <span style="font-size:8pt; font-weight:bold; color:#595959; display: inline-block;">'비품신청'의 승인이 완료되었어요.<br>
