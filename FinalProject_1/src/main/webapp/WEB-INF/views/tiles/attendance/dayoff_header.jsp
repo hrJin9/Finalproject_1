@@ -101,4 +101,4 @@
 	<div class="dayoff_subList_underline"></div>
 </nav>
 
-<hr class="HRhr" style="margin-top: 0px;"/>
+<hr class="HRhr" style="margin-top: 0px; margin-bottom: 0px;"/>

@@ -10,7 +10,7 @@
 		height: 20px;
 		background-color: #04BFAD;
 		border-radius: 5px;
-		position: absolute; top:53%; left:25%;
+		position: absolute; top:46%; left:25%;
 	}
 </style>
 
@@ -30,8 +30,18 @@
 	 	});
 		
 		
-		
-	}); //end of ready
+	 	flatpickr.localize(flatpickr.l10ns.ko);
+	 	flatpickr($(".dateSelector"));
+		// 데이트피커
+		$(".dateSelector").flatpickr({
+			dateFormat: "Y-m-d H:i",
+			enableTime: true,
+			minuteIncrement: 30,
+			conjunction: " ~ ",
+			local: 'ko'
+		});
+
+		}); //end of ready
 </script>
 
 <div class="mettingroom-container margin-container">
@@ -114,13 +124,11 @@
 			  		<div class="mr-write-container">
 			  			<div style="font-weight: bold;">예약 일정·정보 입력</div>
 			  			<div>
-			  				<div><input type="text"/></div>
+			  				<div><input class="dateSelector" placeholder="ex) 2022-01-01" /></div>
 							<i class="fa-solid fa-arrow-right" style="color: #C6C6C6; margin: 0px 2%;"></i>
-							<div style="text-align: right;"><input type="text"/></div>
+							<div style="text-align: right;"><input class="dateSelector" placeholder="ex) 2022-01-01" /></div>
 			  			</div>
-			  			<div class="mr-writemessage-container">
-				  			<input type="text" placeholder="예약 목적 메시지 입력"/>
-				  		</div>
+			  			<input class="mr-write" type="text" placeholder="예약 목적 메시지 입력"/>
 			  		</div>
 			  		
 			  		<div class="mr-writedetail-container">
@@ -165,10 +173,10 @@
 				  			</div>
 			  			</div>
 			  		</div>
-			  	<div>
-			  		<button type="reset" class="workstatus-cancel">취소</button>
+			  	<div class="workstatus-buttoncontainer">
 		  			<button type="button" class="workstatus-save">저장하기</button>
-			  	</div>
+		  			<button type="reset" class="workstatus-cancel">취소</button>
+	  			</div>
 			  </div>
 			</div>
 			<!-- 오프캔버스 끝 -->

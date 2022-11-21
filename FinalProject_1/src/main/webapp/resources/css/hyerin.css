@@ -68,11 +68,11 @@ hr.HRhr{
 
 
 
-.fontsize-basic{font-size: 10pt;}
+.fontsize-basic{font-size: 11pt;}
 .font-bold{font-weight:bold;}
 
 .attendance-container{
-	width: 98%;
+	width: 95%;
 	position: relative;/* position: absolute의 기준점 */
 }
 
@@ -81,7 +81,7 @@ hr.HRhr{
 	height: 30px;
 }
 
-div.datebox > span {position:relative; right:6px; font-size: 10pt;}
+div.datebox > span {position:relative; right:6px; font-size: 11pt;}
 div.datebox > span > input {position:relative; bottom: 1px;}
 div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
@@ -137,7 +137,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius: 5px;
 	background-color: transparent;
 	height: 30px; width: 50px;
-	font-size: 10pt;
+	font-size: 11pt;
 	position: relative; bottom: 1px;
 }
 
@@ -280,7 +280,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	height: 20px;
 	background-color: #04BFAD;
 	border-radius: 5px;
-	position: absolute; top:33%; left:20%;
+	position: absolute; top:32%; left:20%;
 }
 
 .workinghour ~ tr td {
@@ -327,7 +327,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	position: relative; right: 10px;
 }
 .workingtotalhourByday > span{
-	margin-left: 3px;
+	margin-left: 4px;
 }
 
 
@@ -367,7 +367,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .todayworkStatus-container{
-	font-size: 10pt;
+	font-size: 11pt;
 	margin-bottom: 20px;
 	font-weight: bold;
 	
@@ -384,7 +384,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .workwrite-container div {margin: auto;}
 
 .workwirte-container div, .workwirte-container ul{
-	font-size: 10pt;
+	font-size: 11pt;
 	margin: auto;
 }
 
@@ -471,7 +471,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workadd > div {
-	font-size: 10pt;
+	font-size: 11pt;
 	margin: auto;
 }
 
@@ -488,7 +488,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workstatus-cancel{
-	font-size: 10pt;
+	font-size: 11pt;
 	border: solid 1px rgba(0, 0, 0, 0.1);
 	border-radius : 10px;
 	width: 60px; height: 40px;
@@ -498,12 +498,16 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workstatus-save{
-	font-size: 10pt;
+	font-size: 11pt;
 	float:right;
 	border: none;
 	border-radius : 10px;
 	width: 90px; height: 40px;
+	
+	background-color: #42A5F5;
+	/* 
 	background-color: #5F98F6;
+	 */
 	color: white;
 	float: right;
 }
@@ -536,7 +540,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .dayoff-sum > div > div:first-child{
-	font-size: 10pt;
+	font-size: 11pt;
 	color: rgba(150, 150, 150);
 }
 .dayoff-sum > div > div:nth-child(2){
@@ -558,7 +562,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .dayoff-searchcontainer{
 	display: block;
-	font-size: 10pt;
+	font-size: 11pt;
 	margin: 20px 0 0 50px;
 }
 
@@ -566,14 +570,14 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 /* dayoff_index.jsp */
 .dayoff-index-container{
-	width: 98%;
+	width: 96%;
 	margin-bottom: 50px;
 }
 
 .dayoff-write > div:first-child
 {
 	font-weight: bold;
-	font-size: 11pt;
+	font-size: 12pt;
 	margin-top: 30px; margin-bottom: 20px;
 }
 
@@ -590,17 +594,19 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	padding: 20px 20px;
 }
 
+/* 
 .dayoff-box:hover{
 	background-color: rgba(200,200,200,.1);
 	cursor: pointer;
 }
+ */
 
 .dayoff-box > div {
 	margin-top: 40px;
 }
 
 .dayoff-box > div > div:nth-child(1){
-	font-size: 10pt; 
+	font-size: 11pt; 
 }
 .dayoff-box > div > div:nth-child(2){
 	font-size: 11pt;
@@ -659,7 +665,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .payroll-dateSelect input
 {
 	border: solid 1px rgba(0,0,0, 0.1);
-	font-size: 10pt;
+	font-size: 11pt;
 	border-radius: 5px;
 	height: 30px;
 }
@@ -677,7 +683,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .dayoff-none > div{
 	margin: auto;
-	font-size: 10pt;
+	font-size: 11pt;
 	color: rgba(0,0,0,0.5);
 }
 
@@ -712,7 +718,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .dayoff-recordtable td{
 	padding: 5px 5px;
-	font-size: 10pt;	
+	font-size: 11pt;	
 }
 
 .dayoff-recordtable td:first-child > div{
@@ -756,14 +762,76 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 
-/* dayoff_detail.jsp */
-.dayoff-detail-container{
-	width: 96%;
+.dayoff-offcanvas {
+	width: 40%;
 }
 
-.dayoff-subject{
-	font-weight: bold;
+
+.do-oc-header{
+	float: left;
+	display: inline-block;
+	width: 100%;
 	font-size: 11pt;
+	display: flex;
+}
+
+.do-oc-header > div{
+	display: inline-block;
+}
+
+.do-oc-header > div:first-child {
+	width: 9%;
+}	
+
+.do-oc-header > div:nth-child(2) {
+	width: 80%;
+}
+
+.do-oc-date{
+	font-size: 8pt;
+}
+
+.do-oc-tablecontainer{
+	margin: 15px 0;
+	border: solid 1px rgba(0,0,0,0.1);
+	border-radius: 10px;
+	font-size: 11pt;
+}
+
+.do-oc-table{
+	width: 100%;
+	margin: 15px 0;
+}
+.do-oc-table td{
+	padding: 5px 20px;
+}
+
+
+.do-oc-cancel{
+	border: solid 1px #BF2604;
+	border-radius: 10px;
+	height: 40px;
+	color: #BF2604;
+	font-size: 11pt;
+	width: 100px;
+	background-color: white;
+	float: right;
+}
+
+.do-oc-cancel:hover{
+	background-color: #F2E6E4;
+}
+
+
+
+/* dayoff_detail.jsp */
+.dayoff-detail-container{
+	width: 90%;
+}
+
+.dayoff-subject{	
+	font-weight: bold;
+	font-size: 12pt;
 	margin: 30px 0 20px 0;
 }
 
@@ -774,7 +842,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius: 5px;
 	display: flex;
 	padding: 20px 40px;
-	margin-top: 20px;
 }
 
 .dayoff-detail-sumbox > div{
@@ -800,7 +867,11 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .sumbox-verticalline{
 	height: 109px; width: 1px;
 	background-color: rgba(0,0,0,.1);
-	position: relative; bottom: 20px;
+	position: relative; bottom: 20px; 
+}
+
+.sumbox-verticalline:first-child{
+	position: relative; bottom: 25px;
 }
 
 .dayoff-plus{color:green;}
@@ -814,7 +885,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius: 5px;
 	border-style: hidden;
 	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-	font-size: 10pt;
+	font-size: 11pt;
 }
 
 .dayoff-adjustmentbox > table > thead {
@@ -855,7 +926,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 /* meetingroom-1.jsp */
 .mettingroom-container{
-	width: 96%;
+	width: 90%;
 }
 
 .meetingroom-info{
@@ -867,7 +938,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius: 5px;
 	padding: 20px 20px;
 	color: rgba(0,0,0,0.5);
-	font-size: 10pt;
+	font-size: 11pt;
 }
 .meetingroom-info > div{
 	font-size: 9pt;
@@ -895,7 +966,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .meetingroom-offcanvas-body > table {
-	font-size: 10pt;
+	font-size: 11pt;
 	border-collapse: collapse;
 	border-radius: 5px;
 	border-style: hidden;
@@ -927,8 +998,8 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .mr-write-container{
-	font-size: 10pt;
-	margin-top: 30px;
+	font-size: 11pt;
+	margin: 30px 0;
 }
 
 
@@ -946,7 +1017,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mr-write-container > div:nth-child(2) input{
 	border: none;
-	width: 66%; height: 36px;
+	width: 100%; height: 36px;
 }
 
 
@@ -965,8 +1036,18 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mr-writemessage-container{
 	width: 100%;
+	margin: 15px 0;
 }
 
+
+.mr-write{
+	width: 100%;
+	height: 100px !important;
+}
+
+.mr-write::placeholder{
+	vertical-align: baseline;
+}
 
 
 
@@ -987,7 +1068,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius: 5px;
 	width: 100%; height: 200px;
 	display: flex;
-	font-size: 10pt;
+	font-size: 11pt;
 	background-color: rgba(250,250,250, 0.5);
 	color: rgba(0,0,0,0.5);
 }
@@ -1041,7 +1122,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .payroll-download > div{
 	display: inline-block;
-	font-size: 10pt;
+	font-size: 11pt;
 }
 
 

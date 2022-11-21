@@ -28,13 +28,26 @@
 	       });                    
 	       
 	       //초기값을 오늘 날짜로 설정해줘야 합니다.
-	       $('.dayoff-datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+	       $('.dayoff-datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+	       
+	       
+	       // offcanvas
+	       $(".dayoff-recordtable tr").click(function(){
+				$('.offcanvas').offcanvas('show');
+	    	   
+				// 해당 날짜 넣어주기
+				const do_date = $(this).find(".do-use-date").text();
+				$(".do-oc-date").text(do_date);
+	       });//end of offcanvas click
+	       
+	       
+	       
 	});
 </script>
 
 <div class="dayoff-index-container">
 	<div class="dayoff-write">
-		<div class="margin-container dayoff-subject">휴가 등록</div>
+		<div class="margin-container dayoff-subject">잔여 휴가</div>
 		<div class="ml-1 margin-container">
 			<div class="dayoff-box timeoff">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="25px"/>
@@ -80,7 +93,7 @@
 						<td>
 							<span>연차</span>
 							<span class="dayoff-line"></span>
-							<span>2022. 11. 18 (금)</span>
+							<span class="do-use-date">2022. 11. 17 (목)</span>
 						</td>
 						<td width="5%">
 							<div class="dayoff-cntinfo"><div>1일</div></div>
@@ -98,7 +111,7 @@
 						<td>
 							<span>연차</span>
 							<span class="dayoff-line"></span>
-							<span>2022. 11. 18 (금)</span>
+							<span class="do-use-date">2022. 11. 18 (금)</span>
 						</td>
 						<td width="5%">
 							<div class="dayoff-cntinfo"><div>1일</div></div>
@@ -147,7 +160,7 @@
 						<td>
 							<span>연차</span>
 							<span class="dayoff-line"></span>
-							<span>2022. 11. 18 (금)</span>
+							<span class="do-use-date">2022. 11. 18 (금)</span>
 						</td>
 						<td width="5%">
 							<div class="dayoff-cntinfo"><div>1일</div></div>
@@ -165,7 +178,7 @@
 						<td>
 							<span>연차</span>
 							<span class="dayoff-line"></span>
-							<span>2022. 11. 18 (금)</span>
+							<span class="do-use-date">2022. 11. 18 (금)</span>
 						</td>
 						<td width="5%">
 							<div class="dayoff-cntinfo"><div>1일</div></div>
@@ -178,5 +191,53 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	
+	<!-- 오프캔버스 시작 -->
+		<div class="offcanvas offcanvas-end dayoff-offcanvas" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+		  <div class="offcanvas-header">
+		    <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
+		    <div class="do-oc-header">
+		    	<div><span class="pic"><span>지은</span></span></div>
+		    	<div>
+		    		<div style="font-weight: bold;"><span>김지은</span>님의 휴가 요청</div>
+			    	<div class="do-oc-date"></div>
+		    	</div>
+		    </div>
+		    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		  </div>
+		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
+		  <div class="offcanvas-body">
+		  	<div>
+		  		<div style="font-weight: bold;"><span><i class="fas fa-paper-plane" style="font-size: 10pt; margin-right: 10px;"></i></span>요청 내용</div>
+		  		<div class="do-oc-tablecontainer">
+		  			<table class="do-oc-table">
+		  				<tr>
+		  					<td width="25%">휴가종류</td>
+		  					<td width="75%">연차</td>
+		  				</tr>
+		  				<tr>
+		  					<td>휴가기간</td>
+		  					<td>2022. 11. 2(수) ~ 2022. 11. 3(목)</td>
+		  				</tr>
+		  				<tr>
+		  					<td>사용시간</td>
+		  					<td>2일</td>
+		  				</tr>
+		  				<tr>
+		  					<td>메시지</td>
+		  					<td>우왕</td>
+		  				</tr>
+		  			
+		  			</table>
+		  		</div>
+	  			<button type="reset" class="do-oc-cancel">휴가 취소하기</button>
+		  	</div>
+		  </div>
+		</div>
+		<!-- 오프캔버스 끝 -->
+	
 	
 </div>	
