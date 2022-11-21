@@ -20,7 +20,6 @@
 		width: 640px;
 		font-size: 18pt;
 		font-weight: bold;
-		margin: 4px 0 0 80px;
 	}
 	
 	#attendance_mainList a {
@@ -29,7 +28,7 @@
 		padding: 0.7em 0 0.9em 0;
 		color: #333;
 		text-decoration: none;
-		margin-left: 4%;
+		margin-right: 4%;
 		color: #D2D6D9;
 	}
 	
@@ -50,7 +49,7 @@
  */
 </style>
 
-<nav id="attendance_mainList">
+<nav id="attendance_mainList" class="margin-container">
 	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up" style="color: black;">내 근무</a>
 	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff/index.up" class="iscurrent">내 휴가</a>
 	<div class="list_underline"></div>
