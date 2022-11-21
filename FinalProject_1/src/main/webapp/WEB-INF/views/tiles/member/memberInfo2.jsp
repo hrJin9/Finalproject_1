@@ -190,7 +190,7 @@
 	
 	.burger-check:checked~.menu {
 	  max-width: 350px;
-	  border: 3px solid #eeeeee;
+	  border: 1px solid #eeeeee;
 	}
 	
 	.burger-check:checked~.burger-icon .burger-sticks {

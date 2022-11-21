@@ -15,7 +15,7 @@ public class MemberController {
 	
 	@RequestMapping(value = "/member/memberRegister.up")
 	public String memberRegister(HttpServletRequest request) {
-		return "member/memberRegister.tiles";
+		return "member/memberRegister";
 	}
 	
 	@RequestMapping(value = "/member/myInfo_hr.up")
@@ -30,7 +30,7 @@ public class MemberController {
 	
 	@RequestMapping(value = "/member/pwdChange.up")
 	public String pwdChange(HttpServletRequest request) {
-		return "member/pwdChange.tiles";
+		return "member/pwdChange";
 	}
 	
 	@RequestMapping(value = "/member/memberInfo.up")
