@@ -72,7 +72,7 @@ hr.HRhr{
 .font-bold{font-weight:bold;}
 
 .attendance-container{
-	width: 90%;
+	width: 98%;
 	position: relative;/* position: absolute의 기준점 */
 }
 
@@ -239,6 +239,10 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .workingweek > table{
 	width: 100%;
 	border-collapse: collapse;
+}
+
+.workingweek > table td:first-child {
+	border-left: none;
 }
 
 .workingweek > table td{
@@ -562,18 +566,19 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 /* dayoff_index.jsp */
 .dayoff-index-container{
-	width: 90%;
-	margin-left: 100px;
+	width: 98%;
+	margin-bottom: 50px;
 }
 
-.dayoff-write > div:first-child, .dayoff-record > div:first-child{
+.dayoff-write > div:first-child
+{
 	font-weight: bold;
 	font-size: 11pt;
-	margin: 30px 0 20px 0;
+	margin-top: 30px; margin-bottom: 20px;
 }
 
 .dayoff-write > div:nth-child(2) > div{
-	width: 32%;
+	width: 32.4%;
 }
 
 .dayoff-box{
@@ -581,7 +586,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius: 12px;
 	height: 150px;
 	display: inline-block;
-	margin-right: 10px;
+	margin-right: 0.33%;
 	padding: 20px 20px;
 }
 
@@ -595,7 +600,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .dayoff-box > div > div:nth-child(1){
-	font-size: 9pt; 
+	font-size: 10pt; 
 }
 .dayoff-box > div > div:nth-child(2){
 	font-size: 11pt;
@@ -604,20 +609,27 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .dayoff-record > div > div:nth-child(2),
-.dayoff-detail > div > div:nth-child(2){
+.dayoff-detail > div > div:nth-child(2),
+.payroll-dateSelect
+{
 	float: right;
 	position: relative; right: 0.25%;
 }
 
 .dayoff-record > div > div, .dayoff-record > div > div:nth-child(2) div,
 .dayoff-detail > div > div, .dayoff-detail > div > div:nth-child(2) div,
-.mettingroom-date > div > div, .mettingroom-date > div > div:nth-child(2) div{
+.mettingroom-date > div > div, .mettingroom-date > div > div:nth-child(2) div,
+.payroll-dateSelect div
+{
+	
 	display: inline-block;
 }
 
 .dayoff-record > div > div:nth-child(2) div,
 .dayoff-detail > div > div:nth-child(2) div,
-.mettingroom-date > div > div:nth-child(2) div{
+.mettingroom-date > div > div:nth-child(2) div,
+.payroll-dateSelect div
+{
 	border: solid 1px rgba(0,0,0, .1);
 	border-radius: 5px;
 	height: 30px; width: 30px;
@@ -625,7 +637,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .dayoff-record > div > div:nth-child(2) div:hover,
 .dayoff-detail > div > div:nth-child(2) div:hover,
-.mettingroom-date > div > div:nth-child(2) div:hover{
+.mettingroom-date > div > div:nth-child(2) div:hover,
+.payroll-dateSelect div:hover
+{
 	background-color: rgba(200,200,200, .2);
 	border: solid 1px rgba(0,0,0, .2);
 	cursor: pointer;
@@ -633,52 +647,126 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .dayoff-record > div > div:nth-child(2) div i,
 .dayoff-detail > div > div:nth-child(2) div i,
-.mettingroom-date > div > div:nth-child(2) div i{
+.mettingroom-date > div > div:nth-child(2) div i,
+.payroll-dateSelect div i
+{
 	margin: 7px 0 0 9px;
 }
 
 .dayoff-record > div > div input,
 .dayoff-detail > div > div input,
-.mettingroom-date > div > div input{
+.mettingroom-date > div > div input,
+.payroll-dateSelect input
+{
 	border: solid 1px rgba(0,0,0, 0.1);
 	font-size: 10pt;
 	border-radius: 5px;
 	height: 30px;
 }
 
-.dayoff-record > div:nth-child(2){
+.dayoff-none{
 	border: solid 1px rgba(0,0,0, 0.1);
 	background-color: rgba(250,250,250,.5);
 	height: 200px; width: 100%;
 	border-radius: 5px;
 }
 
-.dayoff-record > div:nth-child(2){
-	display: flex;
+.dayoff-none{
+	display: flex !important;
 }
 
-.dayoff-record > div:nth-child(2) > div{
+.dayoff-none > div{
 	margin: auto;
 	font-size: 10pt;
 	color: rgba(0,0,0,0.5);
 }
 
-.dayoff-record > div:nth-child(2) > div > i{
+.dayoff-none > div > i{
 	margin-left : 50px;
 }
+
+.dayoff-exist{
+	width: 100%;
+	border-radius: 10px;
+}
+
+.dayoff-count{
+	color: #37A652;
+	font-size: 12pt; font-weight: bold;
+	margin-left: 3px;
+}
+
+.dayoff-recordtable {
+	width: 100%;
+}
+
+.dayoff-recordtable td:first-child { border-top-left-radius: 10px; }
+.dayoff-recordtable td:last-child { border-top-right-radius: 10px; }
+.dayoff-recordtable td:first-child { border-bottom-left-radius: 10px; }
+.dayoff-recordtable td:last-child { border-bottom-right-radius: 10px; }
+
+.dayoff-recordtable tr:hover{
+	background-color: rgba(200,200,200, 0.2);
+	cursor: pointer;
+}
+
+.dayoff-recordtable td{
+	padding: 5px 5px;
+	font-size: 10pt;	
+}
+
+.dayoff-recordtable td:first-child > div{
+	border: solid 1px rgba(0,0,0,0.1);
+	border-radius: 10px;
+	background-color : white;
+	padding: 8px 10px;
+}
+
+.dayoff-line{
+	display: inline-block;
+	height: 15px; width: 1px;
+	background-color: rgba(0,0,0,0.3);
+	position: relative; top: 3px;
+	margin: 0 5px;
+}
+
+
+.dayoff-cntinfo {
+	margin-left: 10px;
+	border-radius: 5px;
+	background-color: #EAE4F2;
+	color: #594673;
+	width: 30px;
+	height: 20px;
+	font-size: 8pt;
+	display: flex;
+	text-align: center;
+}
+
+.dayoff-cntinfo > div {opacity: 1; margin: auto;}
+
+.dayoff-more{
+	width: 40px;height: 40px;
+	border-radius: 10px;
+}
+
+.dayoff-more:hover{
+	background-color: rgba(230,230,230,0.5);
+}
+
 
 
 /* dayoff_detail.jsp */
 .dayoff-detail-container{
-	width: 90%;
-	margin-left: 100px;
+	width: 96%;
 }
 
-.dayoff-detail > div:first-child, .dayoff-record > div:first-child{
+.dayoff-subject{
 	font-weight: bold;
 	font-size: 11pt;
 	margin: 30px 0 20px 0;
 }
+
 
 .dayoff-detail-sumbox{
 	height: 110px; width: 100%;
@@ -716,7 +804,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .dayoff-plus{color:green;}
-.dayoff-none{color:rgba(0,0,0,0.3);}
+.dayoff-nonecnt{color:rgba(0,0,0,0.3);}
 .dayoff-minus{color:#BF2604;}
 
 .dayoff-adjustmentbox > table{
@@ -767,8 +855,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 /* meetingroom-1.jsp */
 .mettingroom-container{
-	width: 90%;
-	margin-left : 100px;
+	width: 96%;
 }
 
 .meetingroom-info{
@@ -880,4 +967,246 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	width: 100%;
 }
 
+
+
+
+/* payroll.jsp */
+.payroll-dateSelect{
+	position: absolute; top: 60px; right: 4%;
+}
+
+
+.payroll-container {
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 4%;
+}
+
+.payroll-none{
+	border: solid 1px rgba(0,0,0, 0.1);
+	border-radius: 5px;
+	width: 100%; height: 200px;
+	display: flex;
+	font-size: 10pt;
+	background-color: rgba(250,250,250, 0.5);
+	color: rgba(0,0,0,0.5);
+}
+
+.payroll-none > div {
+	margin: auto;
+}
+
+.payroll-none > div > i {
+	margin-left: 50px;
+}
+
+.payroll-exist{
+	margin-top: 30px;
+}
+
+
+.payroll-index > div{
+	display: inline-block;
+}
+
+.payroll-index > div:nth-child(1){
+	font-size: 15pt; font-weight: bold;
+	position: relative; bottom: 5px;
+}
+
+.payroll-index > div:nth-child(2){
+	height: 25px; width: 1px;
+	background-color: rgba(0,0,0,0.1);
+	margin: 0 10px;
+}
+
+.payroll-index > div:nth-child(3){
+	font-size: 8pt;
+}
+
+
+.payroll-download{
+	float: right;
+	border: solid 1px rgba(0,0,0, 0.1);
+	padding: 5px 15px;
+	border-radius: 10px;
+}
+
+.payroll-download:hover{
+	background-color: rgba(240,240,240, 0.5);
+	border: solid 1px rgba(0,0,0, 0.3);
+	cursor: pointer;
+}
+
+
+.payroll-download > div{
+	display: inline-block;
+	font-size: 10pt;
+}
+
+
+.payroll-detail{
+	font-size: 11pt;
+}
+
+.payroll-payment, .payroll-payment2, .payroll-deduction{
+	margin-bottom: 30px;
+}
+
+.payroll-payment > div:last-child{
+	float: right;
+}
+
+.payroll-payment > div, .payroll-payment2 > div > div,
+.payroll-deduction > div > div,
+.payroll-statistics > div > div
+{
+	display: inline-block;
+}
+
+
+.payroll-payment2 > div {
+	display: inline-block;
+	width: 100%;
+	margin: 0;
+}
+
+.payroll-payment2 > div > div, .payroll-payment2 > div > div > hr,
+.payroll-deduction > div > div, .payroll-deduction > div > div > hr
+{
+	margin: 0;
+}
+
+
+.payroll-payment2 > div > div:nth-child(1),
+.payroll-deduction > div > div:nth-child(1),
+.payroll-statistics > div > div:nth-child(1),
+.payroll-payment > div:nth-child(1)
+{
+	width: 10%;
+}
+
+.payroll-payment2 > div > div:nth-child(3),
+.payroll-deduction > div > div:nth-child(3){
+	width: 10%;
+}
+
+
+.payroll-payment2 > div > div:nth-child(2),
+.payroll-deduction > div > div:nth-child(2),
+.payroll-payment > div:nth-child(2)
+{
+	width: 78.6%;
+}
+
+.payroll-statistics > div:first-child > div:nth-child(1) {width: 19%;}
+.payroll-statistics > div:first-child > div:nth-child(2) {width: 80%;}
+
+.payroll-payment2 > div:first-child > div:last-child,
+.payroll-deduction > div:first-child > div:last-child
+{
+	text-align: right;
+}
+
+
+.payroll-container table {width: 100%;}
+
+.payroll-detail-table td:first-child, .payroll-detail-table td:first-child
+{width: 40%;}
+.payroll-detail-table td:nth-child(2), .payroll-detail-table td:nth-child(2)
+{width: 40%;}
+.payroll-detail-table td:nth-child(2), .payroll-detail-table td:nth-child(2)
+{width: 40%;}
+
+.payroll-detail-table td:last-child {
+	text-align: right;
+}
+
+.payroll-detail-table td{
+	border-bottom: solid 1px rgba(0,0,0,0.1);
+	padding: 15px 10px 5px 10px;
+}
+
+.payroll-detail-table td[rowspan]{
+	border: none !important;
+	padding: 10px 0 !important;
+}
+
+
+.payroll-statistics table td:first-child {width: 30%;}
+.payroll-statistics table {height: 90px;}
+
+.payroll-st-graph > div{
+	float: right;
+	border: solid 1px rgba(0,0,0,0.1);
+	border-radius: 10px;
+	background-color: rgba(240,240,240, 0.1);
+	margin-bottom: 20px;
+	font-size: 8pt;
+	color: rgba(0,0,0, 0.5);
+}
+
+.payroll-st-graph > div:nth-child(1), .payroll-st-graph > div:nth-child(2) {
+	margin-right : 0.5%;
+}
+
+.payroll-st-graph > div:nth-child(2), .payroll-st-graph > div:nth-child(3) {
+	height: 150px;
+	margin-bottom: 100px;
+}
+
+.payroll-st-graph > div:first-child{width: 80% !important;}
+.payroll-st-graph > div:nth-child(2){width: 37% !important;}
+.payroll-st-graph > div:nth-child(3){width: 37% !important;}
+
+.payroll-st-total, .payroll-st-payment, .payroll-st-deduction {
+	padding: 10px 30px;	
+}
+
+.payroll-st-total > div:first-child ~ div{
+	display: inline-block;
+	width: 49.5%;
+}
+
+.payroll-st-total > div:nth-child(3){
+	text-align: right;
+}
+
+.payroll-st-deduction {
+	margin-right: 6%;
+}
+
+
+.payroll-st-totalbar{
+	width: 100%; height: 10px;
+	margin: 10px auto;
+	background-color: green;
+	border-radius: 10px;
+}
+
+
+.payroll-circle-graph{
+	height: 80px; width: 10%;
+	background-color: green;
+}
+
+
+.payroll-subject{
+	font-size: 14pt;
+	font-weight: bold;
+	z-index: 9999;
+}
+
+.payroll-sub{
+	font-size: 9pt;
+	color: rgba(0,0,0, 0.5);
+}
+
+
+.subject-underline{
+	height: 10px;
+	opacity: 0.6;
+	position: relative; bottom: 9px;
+	z-index: -1;
+}
 

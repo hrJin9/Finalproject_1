@@ -88,190 +88,388 @@
   } 
   
    
-  
-  
    
-  
-	body{
-	  /* font-size: 9pt; */
-	  font-family: 'Pretendard-Regular';
-	}
-	div.sidebar{
-	  width: 175px;
-	  height: 100%;
-	  background-color: rgb(249, 250, 250);
-	  position: fixed;
-	  top: 0;
-	  left: -110px;
-	  z-index: 1;
-	  transition: all .35s;
-	  padding: 26px 10px 24px 13px;
-	  display: flex;
-	  flex-direction: column;
-	  height: 100%;
-	}
-	input#menuicon:checked + label + div{
-	  left:0;
-	}
-	input#menuicon + label{
-	  display: block;
-	  /* margin: 30px; */
-	  width:30px;
-	  height: 10px;
-	  position: fixed;
-	  bottom:30px;
-	  left:28px;
-	  /* bottom: calc(50%-25px); */
-	  transition: all .35s;
-	  cursor: pointer;
-	  z-index: 2;
-	}
-	input#menuicon:checked + label{
-	  z-index: 2;
-	  /* left: 200px; */
-	}
+   /* 미니캘린더 시작 */
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+code,
+del,
+dfn,
+em,
+img,
+q,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+dialog,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: inherit;
+    vertical-align: baseline;
+    text-decoration: none;
+    list-style: none;
+}
+img {
+    width: 100%
+}
+.anim04c {
+    -webkit-transition: all .4s cubic-bezier(.5, .35, .15, 1.4);
+    transition: all .4s cubic-bezier(.5, .35, .15, 1.4);
+}
+
+html,
+body { 
+    width: 100%;
+    height: 100%;
+    font-family: 'Source Sans Pro', sans-serif;
+/*     background: #eee; */
+    color: #666;
+}
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+/*-----*/
+
+.outer {
+    position: relative;
+    top: 50%;
+    z-index: 1;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+/*-----*/
+
+.signboard {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    color: #fff;
+    border-radius: 10px;
+}
+/*-----*/
+
+.front {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background: #ff726b;
+    text-align: center;
+}
+.right {
+    position: absolute;
+    right: : 0;
+    z-index: 2;
+    -webkit-transform: rotate(-10deg) translate(7px, 8px);
+    -moz-transform: rotate(-10deg) translate(7px, 8px);
+    -ms-transform: rotate(-10deg) translate(7px, 8px);
+    -o-transform: rotate(-10deg) translate(7px, 8px);
+    transform: rotate(-10deg) translate(7px, 8px);
+    background: #EFC94C;
+}
+.left {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    -webkit-transform: rotate(5deg) translate(-4px, 4px);
+    -moz-transform: rotate(5deg) translate(-4px, 4px);
+    -ms-transform: rotate(5deg) translate(-4px, 4px);
+    -o-transform: rotate(5deg) translate(-4px, 4px);
+    transform: rotate(5deg) translate(-4px, 4px);
+    background: #3498DB;
+}
+/*-----*/
+
+.outer:hover .inner {
+    -webkit-transform: rotate(0) translate(0);
+    -moz-transform: rotate(0) translate(0);
+    -ms-transform: rotate(0) translate(0);
+    -o-transform: rotate(0) translate(0);
+    transform: rotate(0) translate(0);
+}
+/*-----*/
+
+.outer:active .inner {
+    -webkit-transform: rotate(0) translate(0) scale(0.9);
+    -moz-transform: rotate(0) translate(0) scale(0.9);
+    -ms-transform: rotate(0) translate(0) scale(0.9);
+    -o-transform: rotate(0) translate(0) scale(0.9);
+    transform: rotate(0) translate(0) scale(0.9);
+}
+.outer:active .front .date {
+    -webkit-transform: scale(2);
+}
+.outer:active .front .day,
+.outer:active .front .month {
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+}
+.outer:active .right {
+    -webkit-transform: rotate(-5deg) translateX(80px) scale(0.9);
+    -moz-transform: rotate(-5deg) translateX(80px) scale(0.9);
+    -ms-transform: rotate(-5deg) translateX(80px) scale(0.9);
+    -o-transform: rotate(-5deg) translateX(80px) scale(0.9);
+    transform: rotate(-5deg) translateX(80px) scale(0.9);
+}
+.outer:active .left {
+    -webkit-transform: rotate(5deg) translateX(-80px) scale(0.9);
+    -moz-transform: rotate(5deg) translateX(-80px) scale(0.9);
+    -ms-transform: rotate(5deg) translateX(-80px) scale(0.9);
+    -o-transform: rotate(5deg) translateX(-80px) scale(0.9);
+    transform: rotate(5deg) translateX(-80px) scale(0.9);
+}
+/*-----*/
+
+.outer:active .calendarMain {
+    -webkit-transform: scale(1.8);
+    opacity: 0;
+    visibility: hidden;
+}
+.outer:active .clock {
+    -webkit-transform: scale(1.4);
+    opacity: 1;
+    visibility: visible;
+}
+.outer:active .calendarNormal {
+    bottom: -30px;
+    opacity: 1;
+    visibility: visible;
+}
+.outer:active .year {
+    top: -30px;
+    opacity: 1;
+    visibility: visible;
+    letter-spacing: 3px;
+}
+/*-----*/
+
+.calendarMain {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 1;
+}
+.month,
+.day {
+    font-size: 10px;
+    line-height: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+.date {
+    font-size: 40px;
+    line-height: 40px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+/*-----*/
+
+.clock {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    font-size: 40px;
+    line-height: 100px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+}
+/*-----*/
+
+.year {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    color: #ff726b;
+}
+.calendarNormal {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+}
+.date2 {
+    color: #ff726b;
+}
+.day2 {
+    color: #3498DB;
+}
+.month2 {
+    color: #EFC94C;
+}
+/* -- usable codes end -- */
+
+/* -- unusable codes (text, logo, etc.) -- */
+
+.info {
+    width: 100%;
+    height: 25%;
+    position: absolute;
+    top: 15%;
+    text-align: center;
+    opacity: 0;
+}
+.info li {
+    width: 100%;
+}
+.hover,
+.click,
+.yeaa {
+    font-size: 14px;
+    line-height: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    bottom: 0;
+    opacity: 1;
+}
+.dribbble {
+    position: absolute;
+    top: -60px;
+    font-size: 14px;
+    opacity: 0;
+}
+em {
+    color: #ed4988;
+}
+.designer {
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    opacity: 0;
+}
+.designer li {
+    width: 100%;
+    position: absolute;
+    bottom: 30%;
+}
+.designer a {
+    width: 30px;
+    height: 30px;
+    display: block;
+    position: relative;
+    border-radius: 100%;
+    margin: auto;
+    color: rgba(46, 204, 113, 0.55);
+}
+.designer a:after {
+    content: "see designs";
+    position: absolute;
+    top: 0;
+    left: 40px;
+    font-size: 14px;
+    line-height: 33px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    white-space: nowrap;
+}
+.designer a:hover:after {
+    color: #2ecc71;
+}
+.designer img {
+    display: block;
+    border-radius: 100%;
+}
+body:hover .info,
+body:hover .designer {
+    opacity: 1;
+}
+::selection {
+    background: transparent;
+}
+::-moz-selection {
+    background: transparent;
+}   
+   /* 미니캘린더 끝 */
+   
+   
+   
+   /* 검색  */
 	
-	input#menuicon{display: none;}
-	input#menuicon + label span{display: block;position: absolute;width: 50%;height: 2px;border-radius: 30px;background-color: rgb(214, 214, 214);transition: all .35s;}
-	input#menuicon + label span:nth-child(1){top: 0;}
-	input#menuicon + label span:nth-child(2){top: 50%;transform: translateY(-50%);}
-	input#menuicon + label span:nth-child(3){bottom: 0;}
-	/* input#menuicon:checked + label{z-index: 2;} */
-	/* input#menuicon:checked + label span{background-color: #fff;} */
-	input#menuicon:checked + label span:nth-child(1){top: 50%;transform: translateY(-50%) rotate(45deg);}
-	input#menuicon:checked + label span:nth-child(2){opacity: 0;}
-	input#menuicon:checked + label span:nth-child(3){bottom: 50%;transform: translateY(50%) rotate(-45deg);}
-	
-	/* 확장시 아이콘만 보이게 */
-	input#menuicon + label + div > div>ul>li>a>span.menu-text, 
-	input#menuicon:checked + label + div > div>ul>li>a>span.newred, 
-	input#menuicon + label + div > div>ul>li>a>span.badge, 
-	input#menuicon + label + div > div.profile > span.my
-	{opacity: 0;transition: all .1s;cursor: default;}
-	
-	input#menuicon:checked + label + div > div>ul>li>a>span.menu-text,
-	input#menuicon + label + div > div>ul>li>a>span.newred,
-	input#menuicon:checked + label + div > div>ul>li>a>span.badge
-	{opacity: 100;transition: all .5s;cursor: pointer;}
-	input#menuicon:checked + label + div > div.profile > span.my
-	{opacity: 100;transition: all 1.7s;}
-	
-	input#menuicon:checked + label + div > div>ul>li {
-	  cursor: pointer;width: 100%;}
-	
-	input#menuicon + label + div > div>ul>li>a:nth-child(1){position:relative;right: -105px;transition: all .35s;}
-	input#menuicon + label + div > div.profile > span.pic{position:relative;right: -98px;transition: all .35s;}
-	input#menuicon:checked + label + div > div>ul>li>a:nth-child(1),
-	input#menuicon:checked + label + div > div.profile > span.pic
-	{position:relative;right: 0px;transition: all .35s;}
-	
-	
-	ul{
-	  padding-left: 5px;
-	}
-	li:hover, .profile:hover{
-	  background-color: rgb(244, 244, 244);
-	}
-	
-	li{
-	   cursor: pointer; 
-	  /* position: absolute; */
-	  color: inherit;
-	  border-radius: 8px;
-	  list-style: none;
-	  padding: 10px 0 ;
-	  color: #556372;
-	}
-	
-	/* a {
-	  -webkit-transition: .3s all ease;
-	  -o-transition: .3s all ease;
-	  transition: .3s all ease; } */
-	a, a:hover {
-	text-decoration: none !important; }
-	
-	.menu-text{
-	  color:#556372;
-	  font-size: 10pt;
-	  position: relative;
-	  bottom: 1.1px;
-	}
-	span.icon{
-	  padding-left: 10px;
-	  color:#556372;
-	  padding-right: 10px;
-	  font-size: 11.5pt;
-	}
-	.profile{
-	  color: inherit;
-	  border-radius: 8px;
-	  position: relative;
-	  cursor: pointer;
-	  padding: 0 13px;
-	  text-align: initial;
-	  display: flex;
-	}
-	.pic{
-	  height: 38px;
-	  width: 38px;
-	  font-size: 9pt;
-	  position: relative;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  flex-shrink: 0;
-	  isolation: isolate;
-	  color: #fbfbfb;
-	  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wLjUgMTAwQzAuNSA3OS40MjM5IDEuNjAzMTcgNjIuOTIzNSA0LjUzMjYyIDQ5Ljc0MjFDNy40NjA4MiAzNi41NjY0IDEyLjIwNzEgMjYuNzM3NSAxOS40NzIzIDE5LjQ3MjNDMjYuNzM3NSAxMi4yMDcxIDM2LjU2NjQgNy40NjA4MiA0OS43NDIxIDQuNTMyNjJDNjIuOTIzNSAxLjYwMzE3IDc5LjQyMzkgMC41IDEwMCAwLjVDMTIwLjU3NiAwLjUgMTM3LjA3NyAxLjYwMzE3IDE1MC4yNTggNC41MzI2MkMxNjMuNDM0IDcuNDYwODIgMTczLjI2MiAxMi4yMDcxIDE4MC41MjggMTkuNDcyM0MxODcuNzkzIDI2LjczNzUgMTkyLjUzOSAzNi41NjY0IDE5NS40NjcgNDkuNzQyMUMxOTguMzk3IDYyLjkyMzUgMTk5LjUgNzkuNDIzOSAxOTkuNSAxMDBDMTk5LjUgMTIwLjU3NiAxOTguMzk3IDEzNy4wNzcgMTk1LjQ2NyAxNTAuMjU4QzE5Mi41MzkgMTYzLjQzNCAxODcuNzkzIDE3My4yNjIgMTgwLjUyOCAxODAuNTI4QzE3My4yNjIgMTg3Ljc5MyAxNjMuNDM0IDE5Mi41MzkgMTUwLjI1OCAxOTUuNDY3QzEzNy4wNzcgMTk4LjM5NyAxMjAuNTc2IDE5OS41IDEwMCAxOTkuNUM3OS40MjM5IDE5OS41IDYyLjkyMzUgMTk4LjM5NyA0OS43NDIxIDE5NS40NjdDMzYuNTY2NCAxOTIuNTM5IDI2LjczNzUgMTg3Ljc5MyAxOS40NzIzIDE4MC41MjhDMTIuMjA3MSAxNzMuMjYyIDcuNDYwODIgMTYzLjQzNCA0LjUzMjYyIDE1MC4yNThDMS42MDMxNyAxMzcuMDc3IDAuNSAxMjAuNTc2IDAuNSAxMDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K);
-	  -webkit-mask-size: contain;
-	  background-color: #f3bd42;
-	}
-	.my{
-	  margin-left: 14px;
-	  position: relative;
-	  top: 5.5px;
-	  font-size: 13px;
-	}
-	.role{
-	  font-size: 5px;
-	  position: relative;
-	  color: #ababab;
-	}
-	.name{
-	  font-weight: bold;
-	}
-	.badge{
-	  background-color: rgb(242, 75, 23);
-	  width: 14px;
-	  height: 12px;
-	  font-size: 1px;
-	  font-weight: 600;
-	  color: #fbfbfb;
-	  border-radius: 20px;
-	  display: inline-block;
-	  position: relative;
-	  bottom: 1.3px;
-	  left: 18px;
-	  box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.04);
-	}
-	.newred{
-	  background-color: rgb(242, 75, 23);
-	  width: 5px;
-	  height: 5px;
-	  border-radius: 3px;
-	  display: inline-block;
-	  position: relative;
-	  bottom: 10px;
-	  right: 68px;
-	}
-	.newCnt{
-	  position: relative;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  flex-shrink: 0;
-	  isolation: isolate;
-	}
+   /* 검색 끝 */
+    
+   
+   
+   
   
 
 </style>
@@ -349,9 +547,57 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
   });
   
+$(document).ready(function(){  
   
-  
-</script>
+//offcanvas
+	$("#fc-dom-1").click(function(e){ 
+		$('.offcanvas').offcanvas('show');
+		
+		
+	});
+	  
+ 
+ 
+ 
+ // 미니캘린더
+	var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; 
+	var dayNames= [ "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday" ];
+
+	var newDate = new Date();
+	newDate.setDate(newDate.getDate());
+	  
+	setInterval( function() {
+	  var hours = new Date().getHours();
+	  $(".hour").html(( hours < 10 ? "0" : "" ) + hours);
+	    var seconds = new Date().getSeconds();
+	  $(".second").html(( seconds < 10 ? "0" : "" ) + seconds);
+	    var minutes = new Date().getMinutes();
+	  $(".minute").html(( minutes < 10 ? "0" : "" ) + minutes);
+	    
+	    $(".month span,.month2 span").text(monthNames[newDate.getMonth()]);
+	    $(".date span,.date2 span").text(newDate.getDate());
+	    $(".day span,.day2 span").text(dayNames[newDate.getDay()]);
+	    $(".year span").html(newDate.getFullYear());
+	}, 1000); 
+
+
+
+	$(".outer").on({
+	    mousedown:function(){
+	        $(".dribbble").css("opacity","1");
+	    },
+	    mouseup:function(){
+	        $(".dribbble").css("opacity","0");
+	    }
+	});
+ 
+ 
+ 
+}); //end of ready
+
+
+   
+</script>  
 
 
 <nav id="list">
@@ -367,38 +613,112 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id='calendar'></div>
 
 
-<input type="checkbox" id="menuicon">
-  <label for="menuicon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </label>
-  <div class="sidebar">
+<!-- 오프캔버스 시작 -->
+		<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+		  <div class="offcanvas-header">
+		    <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
+		    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		  </div>
+		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
+		  <div class="offcanvas-body">
+		  	<div> 
+	  			
+	  			<!-- 캘린더 시작 -->
+				  	<div class="info anim04c">
+			        <li class="dribbble anim04c">
+			            <span>I need to be a
+			                <em> dribbble </em>player?!.</span>
+			        </li>
+			        <li class="hover anim04c">
+			            <span>hover!</span>
+			        </li>
+			        <li class="click anim04c">
+			            <span>click!</span>
+			        </li>
+			        <li class="yeaa anim04c">
+			            <span>- yeaa! -</span>
+			        </li>
+			    </div>
+			
+			
+			    <!-- main codes start --> 
+			    <div class="signboard outer" style="margin-top: 17%;">
+			        <div class="signboard front inner anim04c">
+			            <li class="year anim04c">
+			                <span></span>
+			            </li>
+			            <ul class="calendarMain anim04c">
+			                <li class="month anim04c">
+			                    <span></span>
+			                </li>
+			                <li class="date anim04c">
+			                    <span></span>
+			                </li>
+			                <li class="day anim04c">
+			                    <span></span>
+			                </li>
+			            </ul>
+			            <li class="clock minute anim04c">
+			                <span></span>
+			            </li>
+			            <li class="calendarNormal date2 anim04c">
+			                <span></span>
+			            </li>
+			        </div>
+			        <div class="signboard left inner anim04c">
+			            <li class="clock hour anim04c">
+			                <span></span>
+			            </li>
+			            <li class="calendarNormal day2 anim04c">
+			                <span></span>
+			            </li>
+			        </div>
+			        <div class="signboard right inner anim04c">
+			            <li class="clock second anim04c">
+			                <span></span>
+			            </li>
+			            <li class="calendarNormal month2 anim04c">
+			                <span></span>
+			            </li>
+			        </div>
+			    </div>
+			    <!-- main codes end -->
+			
+			
+			    <div class="designer anim04c">
+			        <li>
+			            <a href="https://creativemarket.com/mselmany" target="_blank">
+			                <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t5/1117447_100001638983788_1284464661_q.jpg" alt="">
+			            </a>
+			        </li>
+			    </div>
+	  			<!-- 캘린더 끝 -->
+	  			  
+	  			
+	  			<div class="workadd">
+		  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt; margin-top: 20%;">일정 생성</span></div>
+	  			</div>
+	  			
+	  			 
+	  			<!-- 검색 -->   
+	  			<div class="search" style="display:inline-block;">
+				     <input type="text" placeholder="검색어를 입력해주세요.">
+				</div> 
+				<div class="button" style="display:inline-block;">
+				     <button>검색</button>
+				</div>
+	  			<!-- 검색 끝 --> 
+	  			
+	  			
+	  			
+	  			<div class="workstatus-buttoncontainer">
+	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
+		  			<button type="button" class="workstatus-save">저장하기</button>
+		  			<button type="reset" class="workstatus-cancel">취소</button>
+	  			</div>
+		  	</div>
+		  </div>
+		</div>
+		<!-- 오프캔버스 끝 -->
 
-    <div class="profile" href="#" style="margin-top: 20px;margin-bottom:30px;">
-      <span class="pic"><span>지은</span></span>
-      <span class="my"><span class="name">김지은</span><br>
-      <span class="role">개발자</span>
-      </span>
-    </div>
-
-    <div class="nav-menu">
-      <ul>
-        <li class="home"><a href="#" ><span class="icon icon-search"></span><span class="menu-text">검색</span></a></li>
-        <li class="home"><a href="#" ><span class="icon icon-bell"></span><span class="menu-text">새로운 소식</span>
-          <span class="newred"></span>
-          <span class="badge"><span class="newCnt">1</span></span></a></li>
-
-        <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
-
-        <li class="home"><a href="#" ><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-clipboard"></span><span class="menu-text">스케쥴</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-file-text2"></span><span class="menu-text">결재관리</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-coin-dollar"></span><span class="menu-text">급여관리</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-cog"></span><span class="menu-text">설정</span></a></li>
-      </ul>
-    </div>
-  </div>
+ 

@@ -23,7 +23,6 @@
 		width: 640px;
 		font-size: 18pt;
 		font-weight: bold;
-		margin: 4px 0 0 80px;
 	}
 	
 	#meetingroom_mainList a {
@@ -32,7 +31,7 @@
 		padding: 0.7em 0 0.3em 0;
 		color: #333;
 		text-decoration: none;
-		margin-left: 4%;
+		margin-right: 4%;
 		color: black;
 	}
 	
@@ -47,7 +46,6 @@
 		width: 640px;
 		font-size: 10pt;
 		font-weight: bold;
-		margin: 4px 0 0 70px;
 	}
 	
 	#meetingroom_subList a {
@@ -69,7 +67,7 @@
 		height: 2px;
 		background: #333;
 		transition: all .3s ease-in-out;
-		margin-left: 5%;
+		margin-left: 1%;
 	}
 	
 	#meetingroom_subList a:nth-child(1).iscurrent ~ .meetingroom_subList_underline {
@@ -89,14 +87,14 @@
  */
 </style>
 
-<nav id="meetingroom_mainList">
+<nav id="meetingroom_mainList" class="margin-container">
 	<a id="attendance" href="<%= request.getContextPath()%>/support/meetingroom-1.up">회의실 예약</a>
 	<div class="list_underline"></div>
 </nav>
 
-<nav id="meetingroom_subList">
-	<a id="mettingroom-1" href="<%= request.getContextPath()%>/support/meetingroom-1.up" style="margin-left: 4%;">1층</a>
-	<a id="meetingroom-3" href="<%= request.getContextPath()%>/support/meetingroom-3.up" style="margin-left: 1%;">3층</a>
+<nav id="meetingroom_subList" class="margin-container">
+	<a id="mettingroom-1" href="<%= request.getContextPath()%>/support/meetingroom-1.up">1층</a>
+	<a id="meetingroom-3" href="<%= request.getContextPath()%>/support/meetingroom-3.up">3층</a>
 	<div class="meetingroom_subList_underline"></div>
 </nav>
 

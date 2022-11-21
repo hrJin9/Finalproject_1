@@ -34,8 +34,8 @@
 
 <div class="dayoff-index-container">
 	<div class="dayoff-write">
-		<div>휴가 등록</div>
-		<div class="ml-1">
+		<div class="margin-container dayoff-subject">휴가 등록</div>
+		<div class="ml-1 margin-container">
 			<div class="dayoff-box timeoff">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="25px"/>
 				<div>
@@ -61,9 +61,64 @@
 		</div>
 		<hr class="HRhr" style="margin: 40px 0;"/>
 	</div>
-	<div class="dayoff-record">
+	
+	<!-- 예정된 휴가가 있는 경우, 없으면 아예 아래 dayoff-expected 가 뜨지 않음 -->
+	<div class="dayoff-expected margin-container">
 		<div>
-			<div>사용 기록</div>
+			<div class="dayoff-subject">예정 휴가
+				<!-- 연차사용예정이 있는 경우 -->
+				<span class="dayoff-count">1</span>
+			</div>
+			<div class="dayoff-exist">
+				<table class="dayoff-recordtable">
+					<tr>
+						<td width="2.5%">
+							<div style="margin-right: 10px;">
+								<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="20px"/>
+							</div>
+						</td>
+						<td>
+							<span>연차</span>
+							<span class="dayoff-line"></span>
+							<span>2022. 11. 18 (금)</span>
+						</td>
+						<td width="5%">
+							<div class="dayoff-cntinfo"><div>1일</div></div>
+						</td>
+						<td width="5%">
+							<div class="dayoff-more"><i class="fa-solid fa-ellipsis" style="margin:13px;"></i></div>
+						</td>
+					</tr>
+					<tr>
+						<td width="2.5%">
+							<div style="margin-right: 10px;">
+								<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="20px"/>
+							</div>
+						</td>
+						<td>
+							<span>연차</span>
+							<span class="dayoff-line"></span>
+							<span>2022. 11. 18 (금)</span>
+						</td>
+						<td width="5%">
+							<div class="dayoff-cntinfo"><div>1일</div></div>
+						</td>
+						<td width="5%">
+							<div class="dayoff-more"><i class="fa-solid fa-ellipsis" style="margin:13px;"></i></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="dayoff-record margin-container">
+		<div class="dayoff-subject">
+			<div>사용 기록 
+				<!-- 연차사용내역이 있는 경우 -->
+				<span class="dayoff-count">1</span>
+			</div>
 			<div>
 				<input type="text"/>
 				<div><i class="fa-solid fa-angle-left"></i></div>
@@ -71,9 +126,55 @@
 			</div>
 		</div>
 		<div>
-			<div>
-				<i class="fa-solid fa-circle-info"></i>
-				<div>사용 기록이 없습니다.</div>
+			<!-- 연차 사용내역이 없는 경우 -->
+			<!-- 
+			<div class="dayoff-none">
+				<div>
+					<i class="fa-solid fa-circle-info" style="display: block; margin-bottom: 5px;"></i>
+					사용 기록이 없습니다.
+				</div>
+			</div>
+			 -->
+			<!-- 연차 사용내역이 있는 경우 -->
+			<div class="dayoff-exist">
+				<table class="dayoff-recordtable">
+					<tr>
+						<td width="2.5%">
+							<div style="margin-right: 10px;">
+								<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="20px"/>
+							</div>
+						</td>
+						<td>
+							<span>연차</span>
+							<span class="dayoff-line"></span>
+							<span>2022. 11. 18 (금)</span>
+						</td>
+						<td width="5%">
+							<div class="dayoff-cntinfo"><div>1일</div></div>
+						</td>
+						<td width="5%">
+							<div class="dayoff-more"><i class="fa-solid fa-ellipsis" style="margin:13px;"></i></div>
+						</td>
+					</tr>
+					<tr>
+						<td width="2.5%">
+							<div style="margin-right: 10px;">
+								<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="20px"/>
+							</div>
+						</td>
+						<td>
+							<span>연차</span>
+							<span class="dayoff-line"></span>
+							<span>2022. 11. 18 (금)</span>
+						</td>
+						<td width="5%">
+							<div class="dayoff-cntinfo"><div>1일</div></div>
+						</td>
+						<td width="5%">
+							<div class="dayoff-more"><i class="fa-solid fa-ellipsis" style="margin:13px;"></i></div>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>
