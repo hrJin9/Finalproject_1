@@ -43,6 +43,12 @@
 
 <!-- 혜린style.css -->
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hyerin.css?after">
+
+<!-- calendar CSS, js -->
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/calendar.css">
+<script src='<%= ctxPath%>/resources/js/calendar.js'></script>
+
+
 <style type="text/css">
 	.margin-container{margin-left: 2%;}
 </style>
