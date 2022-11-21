@@ -50,7 +50,7 @@
 
 
 <style type="text/css">
-	.margin-container{margin-left: 2%;}
+	.margin-container{margin-left: 5%;}
 </style>
 
 </head>
