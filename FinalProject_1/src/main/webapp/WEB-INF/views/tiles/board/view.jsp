@@ -4,7 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style type="text/css">
 	
-	
 	p {
 		color: darken(#ccc, 10%);
 		font-weight: 300;
@@ -21,47 +20,6 @@
 	h2 {
 		font-size: 20px;
 	}
-	
-	
-	.custom-table {
-		min-width: 900px;
-		thead {
-			tr, th {
-				border-top: none;
-				border-bottom: none!important;
-			}
-		}
-		tbody {
-			th, td {
-				color: #777;
-				font-weight: 400;
-	      font-weight: 300;
-			}
-		}
-	}
-	
-	.boardth{
-		position: relative;
-		top: -6px;
-	}
-	.table td{
-		font-size: 10pt;
-	    border-top: 1px solid #ececec;
-	    padding-left: 0;
-	    border-bottom: 0px;
-	}
-	.table {
-	    color: #4c4e54;
-	}
-	table tr{
-		padding-left: 10px;
-	}
-	.topnotice{
-		background-color: #f9f9f9;
-	}
-	
-	
-	
 	
 	
 	
@@ -111,6 +69,7 @@
 	button#writecmt{
 		float:right;
 		margin:10px;
+		margin-right:0;
 		right:10px;
 		font-size:9pt;
 		padding-left:20px;
@@ -124,8 +83,9 @@
 		font-size: 5pt;
 		float:right;
 		position: absolute;
-		right: 50px;
+		right: 15%;
 	}
+	
 	div#cmtcontent{
 		width:85%;
 		margin-bottom: 10px;
@@ -148,8 +108,9 @@
 	a.share{
 	    font-size: 11pt;
 	    color:#626161;
-	    left: 581px;
+	    left: 420px;
 	    top: 10px;
+	    
 	}
 	a.bookmark::before{
 	    position: absolute;
@@ -161,6 +122,77 @@
 	    top: 0.3rem;
 	    right: 0.3rem;
 	}
+	
+	
+	.table td {
+    font-size: 10pt;
+    border-top: 1px solid #ececec;
+    padding-left: 0;
+    border-bottom: 0px;
+}
+.toastui-editor-defaultUI .ProseMirror {
+    padding: 14px 23px;
+}
+.toastui-editor-defaultUI button {
+	font-size: 9px !important;
+}
+
+
+
+.post-option .set-btn {
+    margin: -1px 0 0 20px;
+}
+.set-btn {
+    padding: 4px 8px;
+    margin: 1px 7px 0 30px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.post-option .setup-group {
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    top: 50px;
+    right: 35px;
+    background: #fff;
+    border: 1px solid #555;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+}
+.setup-group {
+    padding: 4px 0;
+}
+.setup-group>li {
+    position: relative;
+}
+button {
+    background-color: transparent;
+}
+button, input {
+    border-radius: 0;
+    border: 0;
+}
+button{
+    font-family: inherit;
+    font-size: 100%;
+    line-height: normal;
+    color: #333;
+}
+.post-option .set-btn span {
+    width: 2px;
+    height: 2px;
+    background: #777;
+}
+.set-btn span:first-child {
+    margin: 0;
+}
+.set-btn span {
+    display: block;
+    border-radius: 50%;
+}
 </style>
 
 <script type="text/javascript">
@@ -191,7 +223,7 @@ $(document).ready(function(){
     <%-- 텍스트 에디터 시작 --%>
 	const editor = new toastui.Editor({
 	    el: document.querySelector("#editor"),
-	    height: "200px",
+	    height: "140px",
 	    initialEditType: "wysiwyg",
 	    hooks: {
 	      addImageBlobHook: function (blob, callback) {
@@ -245,10 +277,11 @@ $(document).ready(function(){
        		<img class="boardprofile mr-2" width="35px" height="35px">
        		<span class="teamname">THUMBS UP</span>
      		<span class="writedate">11.16</span>
+     		<!-- <span class="icon icon-eye" style="position:relative;color:#7e7e7e;font-size:8pt;top:2px"></span>32 -->
      		<a style="float:right"href="#" class="bookmark icon icon-star-empty"></a>
      		
      		<div class="dropdown custom-dropdown text-left " style="position: absolute;;display: inline-block;right: 39rem;">
-            <a class="dropdown-link bookmark share icon icon-share2"style="float:right" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
+            <a class="dropdown-link share icon icon-share2"style="float:right" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
 	            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;" >
 	              <a class="dropdown-item" href="#">메일로 공유하기</a>
 	              <a class="dropdown-item" href="#">링크복사</a>
@@ -274,15 +307,14 @@ $(document).ready(function(){
 			... 바랍니다.<br> 
 		</p>
 	
-		<div class="cmt mt-5">댓글 11</div>
+		<div class="cmt mt-5"><span style="margin-right: 1rem;">댓글 11</span><span>읽음 11</span></div>
 		<div class="line"></div>
      	
-     	<div style="margin-bottom:11rem!important">
+     	<div style="margin-bottom:4rem!important">
      		<img class="boardprofile mr-2" width="35px" height="35px" style="display:block; position: absolute;"><br><br>
      		<div id="editor"></div>
      		<button id="writecmt"class="btn ">작성</button>
      	</div>
-     	
      	
      	
      	
@@ -301,8 +333,34 @@ $(document).ready(function(){
 		              <a class="dropdown-item" href="#">수정하기</a>
 		              <a class="dropdown-item" href="#">삭제하기</a>
 		            </div>
-	          	</div>
+	          	</div> 
+	          	<!-- <button class="js-setting-button set-btn">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </button>
+				<ul class="js-setting-ul js-setting-layer setup-group d-none" style="display: block;">
+                   <li class="js-setting-item" data-code="modify" style="display:block" data="">
+                       <a href="#"> <i class="icons-write"></i>수정
+                           <i class="edit-auth-icon icons-question js-mouseover d-none" mouseover-text="공동 수정 권한이 활성화 되어있습니다." style="display:none" data=""></i>
+                       </a>
+                   </li>
+                   <li class="js-setting-item" data-code="copy" style="display:block" data="">
+                       <a href="#"> <i class="icons-project-1"></i>다른 프로젝트에 복사</a>
+                   </li><li class="js-setting-item" data-code="url" style="display:block" data="">
+                       <a href="#"> <i class="icons-copy"></i>링크 복사</a>
+                   </li>
+                   <li class="js-setting-item" data-code="googleCalendar" style="display:none" data="">
+                       <a href="#"> <i class="ico-schedule"></i>구글 캘린더에 등록</a>
+                   </li>
+                   
 
+                   <li class="js-setting-item" data-code="delete" style="display:block" data="">
+                       <a href="#"> <i class="icons-delete-3"></i>삭제</a>
+                   </li>
+                 </ul>
+                           -->      
+                                
 		      	<div id="cmtcontent">확인했습니다!</div>
 		      </td>
 		   </tr>

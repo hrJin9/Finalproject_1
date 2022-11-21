@@ -2,33 +2,6 @@
     pageEncoding="UTF-8"%>
     
 <% String ctxPath = request.getContextPath(); %>    
-<!-- Required meta tags -->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" type="text/css" href="<%=ctxPath%>/resources/bootstrap-4.6.0-dist/css/bootstrap.min.css">
-
-
-
-
-<!-- Font Awesome 5 Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<script src="https://kit.fontawesome.com/48a76cd849.js" crossorigin="anonymous"></script>
-<!-- 폰트 목록 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<%=ctxPath%>/resources/fonts/icomoon/style.css">
-
-<!-- Optional JavaScript -->
-<script type="text/javascript" src="<%=ctxPath%>/resources/js/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="<%=ctxPath%>/resources/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- jQueryUI CSS 및 JS -->
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/jquery-ui-1.13.1.custom/jquery-ui.min.css" />
-<script type="text/javascript" src="<%= ctxPath%>/resources/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -40,47 +13,52 @@
 <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
+
+
+
 <style type="text/css">
-	@font-face {
-	    font-family: 'Pretendard-Regular';
-	    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-	    font-weight: 400;
-	    font-style: normal;
-	}
-	
-	*{
-		font-family: Pretendard-Regular;		
-	}
-	
-	hr{
-		border-top: solid 0.5px #686c6f !important;
-		background-color: white;
-	}
-	
-	#list a:hover{
+	#board_mainList a:hover{
 		color: #000000;
 		cursor: pointer;
 	}
+	
+	#board_subList a:hover{
+		background-color: rgba(200,200,200, .2);
+		cursor: pointer;
+	}
 		
-	#list {
+	#board_mainList {
 		position: relative;
 		display: flex;
-		width: 640px;
-		font-size: 14pt;
+		width: 581px;
+		font-size: 18pt;
 		font-weight: bold;
-		margin: 4px 0 0 180px;
+		margin: 4px 0 0 111px;
 	}
 	
-	#list a {
+	#board_mainList a {
 		display: block;
-		width: 17%;
-		padding: .75em 0;
-		/* color: #333; */
+		width: 18%;
+		padding: 0.7em 0 0.9em 0;
 		text-decoration: none;
-		text-align: center;
 		margin-left: 4%;
+	}
+	
+	.list_iscurrent{
+		color: #4d4f53;
+	}
+	.list_notcurrent{
 		color: #D2D6D9;
 	}
+	/* 
+	#dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
+		left: 0%;
+	}
+	#dayoff_subList a:nth-child(2).iscurrent ~ .dayoff_subList_underline {
+		left: 15%; /* width랑 margin-left랑 합친거 
+	}
+	 */
+	
 	
 	.list_underline {
 		position: absolute;
@@ -92,7 +70,6 @@
 		transition: all .3s ease-in-out;
 		margin-left: 5%;
 	}
-	
 	#list a:nth-child(1).list_iscurrent ~ .list_underline {
 		left: 0;
 	}
@@ -106,9 +83,38 @@
 		left: 20%;
 		width: 16%;
 	}
-	a.list_iscurrent{
-		color: #4d4f53;
+	/* #dayoff_subList a:hover{
+		background-color: rgba(200,200,200, .2);
+		cursor: pointer;
+	} */
+		
+	#board_list {
+		position: relative;
+		display: flex;
+		width: 640px;
+		font-size: 18pt;
+		font-weight: bold;
+		margin: 4px 0 0 70px;
 	}
+	
+	#board_list a {
+		display: block;
+		width: 11%;
+		padding: 0.7em 0 0.9em 0;
+		color: #333;
+		text-decoration: none;
+		margin-left: 4%;
+		color: #D2D6D9;
+	}
+	
+	/* #dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
+		left: 0%;
+	}
+	#dayoff_subList a:nth-child(2).iscurrent ~ .dayoff_subList_underline {
+		left: 15%; /* width랑 margin-left랑 합친거 
+	}*/
+	
+	
 	.newbadge{
 	  background-color: #dc3545;
 	  width: 12px;
@@ -200,19 +206,92 @@
 	button, select {
 	    text-transform: none;
 	}
-	
 	.toastui-editor-defaultUI-toolbar {
 		background-color: #ffffff;
 	}
 	div.toastui-editor-mode-switch{
-		display: none;
+		display: none !important;
+	}
+	.toastui-editor-defaultUI {
+		width: 95%;
+	    float: right;
+    }
+   .custom-control-input:checked~.custom-control-label::before {
+	    color: #fff;
+	    border-color: #007bff;
+	    background-color: #007bff;
+	}
+	.custom-checkbox .custom-control-label::before {
+	    border-radius: 0.25rem;
+	}
+	.custom-control-label::before, .custom-file-label, .custom-select {
+    	transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	}
+	.custom-control-label::before {
+	    position: absolute;
+	    top: 0.25rem;
+	    left: -1.5rem;
+	    display: block;
+	    width: 1rem;
+	    height: 1rem;
+	    pointer-events: none;
+	    content: "";
+	    background-color: #fff;
+	    border: #adb5bd solid 1px;
+	}
+	.custom-checkbox .custom-control-input:checked~.custom-control-label::after {
+    	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");
+	}
+	.custom-control-label::after {
+	    position: absolute;
+	    top: 0.25rem;
+	    left: -1.5rem;
+	    display: block;
+	    width: 1rem;
+	    height: 1rem;
+	    content: "";
+	    background: 50%/50% 50% no-repeat;
+	}
+	.custom-control-input {
+	    position: absolute;
+	    left: 0;
+	    z-index: -1;
+	    width: 1rem;
+	    height: 1.25rem;
+	    opacity: 0;
+	}
+	.custom-control {
+	    position: relative;
+	    z-index: 1;
+	    display: block;
+	    min-height: 1.5rem;
+	    padding-left: 1.5rem;
+	    -webkit-print-color-adjust: exact;
+	    color-adjust: exact;
+	}
+	.custom-control-label {
+	    position: relative;
+	    margin-bottom: 0;
+	    vertical-align: top;
 	}
 </style>
-
-<nav id="list">
-	<a class="list_iscurrent">공지사항</a>
-	<a>자유게시판</a>
-	<div class="list_underline"></div>
+<script>
+	$(document).ready(function(){
+		
+		$("a.mainlist").click(function(){
+			if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
+				$(this).removeClass('list_notcurrent');
+				$(this).addClass('list_iscurrent');
+				$(this).siblings().removeClass('list_iscurrent');
+			}
+		});
+		
+		
+	});
+</script>
+<nav id="board_mainList">
+	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board/notice.up">공지사항</a>
+	<a class="mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/notice.up">자유게시판</a>
+	<!-- <div class="list_underline"></div> -->
 </nav>
-
-<hr style="margin-top: 0px;"/>
+<hr class="HRhr" style="margin-top: 0px;"/>
