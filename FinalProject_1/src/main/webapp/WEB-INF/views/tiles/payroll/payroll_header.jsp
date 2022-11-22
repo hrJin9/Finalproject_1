@@ -85,7 +85,34 @@
 		width: 16%;
 	}
  */
+ 
+ 
+	.dateSelector {
+		padding: 0 10px;
+		width: 120px;
+		color: rgba(0,0,0, 0.8);
+	}
+ 	
+ 	.payroll-dateSelect > span{
+ 		position: relative;
+ 		right: 26px;
+ 	}
+ 
 </style>
+<script>
+	$(document).ready(function(){
+		//플랫피커
+		flatpickr.localize(flatpickr.l10ns.ko);
+		flatpickr($(".dateSelector"));
+		$(".dateSelector").flatpickr({
+			dateFormat: "Y년",
+			defaultDate: new Date(),
+			local: 'ko'
+		});
+		
+	}); //end of ready
+
+</script>
 
 <nav id="payroll_mainList" class="margin-container">
 	<a id="payroll" href="<%= request.getContextPath()%>/payroll.up">급여</a>
@@ -97,9 +124,8 @@
 	<div class="payroll_subList_underline"></div>
 </nav>
 <div class="payroll-dateSelect">
-	<input type="text"/>
-	<div><i class="fa-solid fa-angle-left"></i></div>
-	<div><i class="fa-solid fa-angle-right"></i></div>
+	<input class="dateSelector"/>
+	<span><i class="fas fa-chevron-down" style="font-size: 10pt; color: rgba(0,0,0,0.5);"></i></span>
 </div>
 
 <hr class="HRhr" style="margin-top: 0px;"/>

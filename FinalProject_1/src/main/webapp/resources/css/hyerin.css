@@ -94,7 +94,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	margin: 0;
 }
 
-.datepicker {
+.attendance-dateSelector {
 	height: 30px; width : 100px;
 	display: inline-block;
 	border: solid 1px rgba(0, 0, 0, .1);
@@ -779,10 +779,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	display: inline-block;
 }
 
-.do-oc-header > div:first-child {
-	width: 9%;
-}	
-
 .do-oc-header > div:nth-child(2) {
 	width: 80%;
 }
@@ -803,7 +799,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	margin: 15px 0;
 }
 .do-oc-table td{
-	padding: 5px 20px;
+	padding: 6px 20px;
 }
 
 
@@ -1002,11 +998,13 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	margin: 30px 0;
 }
 
+.mr-write-container > div:first-child ~ div{
+}
 
 .mr-write-container > div:nth-child(2) {
 	border: solid 1px rgba(0, 0, 0, .1);
 	border-radius: 5px;
-	width: 100%; height: 40px;
+	width: 90%; height: 40px;
 	padding: 0 2%;
 	margin: 10px 0;
 }
@@ -1039,14 +1037,28 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	margin: 15px 0;
 }
 
+.mr-write-allday-container{
+	display: flex;
+	width: 7%;
+	position: absolute;
+	left: 88%; top: 37%;
+	font-size: 9pt;
+}
+
+.mr-write-allday-container > label{
+	position: relative; top: 6px; margin-left: 2px;	
+}
+
 
 .mr-write{
 	width: 100%;
-	height: 100px !important;
-}
-
-.mr-write::placeholder{
+	height: 80px !important;
+	font-size: 11pt;
+	padding: 10px;
 	vertical-align: baseline;
+	resize: none;
+	border: solid 1px rgba(0,0,0,0.1);
+	border-radius: 5px;
 }
 
 
@@ -1081,10 +1093,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	margin-left: 50px;
 }
 
-.payroll-exist{
-	margin-top: 30px;
+.payroll-index{
+	display: flex;
 }
-
 
 .payroll-index > div{
 	display: inline-block;
@@ -1107,10 +1118,10 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .payroll-download{
-	float: right;
 	border: solid 1px rgba(0,0,0, 0.1);
 	padding: 5px 15px;
 	border-radius: 10px;
+	position:relative; left: 10%; bottom: 10%;
 }
 
 .payroll-download:hover{
@@ -1122,7 +1133,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .payroll-download > div{
 	display: inline-block;
-	font-size: 11pt;
+	font-size: 10pt;
 }
 
 
@@ -1136,6 +1147,10 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .payroll-payment > div:last-child{
 	float: right;
+}
+
+.payroll-payment > div:first-child ~ div{
+	position: relative; top: 13px;
 }
 
 .payroll-payment > div, .payroll-payment2 > div > div,
@@ -1164,21 +1179,22 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .payroll-statistics > div > div:nth-child(1),
 .payroll-payment > div:nth-child(1)
 {
-	width: 10%;
+	width: 13%;
 }
-
-.payroll-payment2 > div > div:nth-child(3),
-.payroll-deduction > div > div:nth-child(3){
-	width: 10%;
-}
-
 
 .payroll-payment2 > div > div:nth-child(2),
 .payroll-deduction > div > div:nth-child(2),
 .payroll-payment > div:nth-child(2)
 {
-	width: 78.6%;
+	width: 65.7%;
 }
+
+.payroll-payment2 > div > div:nth-child(3),
+.payroll-deduction > div > div:nth-child(3),
+.payroll-payment > div:last-child{
+	width: 20%;
+}
+
 
 .payroll-statistics > div:first-child > div:nth-child(1) {width: 19%;}
 .payroll-statistics > div:first-child > div:nth-child(2) {width: 80%;}
@@ -1199,7 +1215,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .payroll-detail-table td:nth-child(2), .payroll-detail-table td:nth-child(2)
 {width: 40%;}
 
-.payroll-detail-table td:last-child {
+.payroll-detail-table td:last-child, .payroll-payment > div:last-child {
 	text-align: right;
 }
 
@@ -1290,4 +1306,77 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	position: relative; bottom: 9px;
 	z-index: -1;
 }
+
+
+.paryoll-exist-list{
+	margin-top: 30px;
+}
+
+.pr-table {
+	font-size: 11pt;
+}
+
+.pr-table tr:hover {
+	background-color: rgba(242, 242, 242, .5);
+	cursor: pointer;
+}
+
+.pr-table td:first-child{
+	font-weight: bold;
+}
+.pr-table td:first-child ~ td{
+	color: rgba(0,0,0,0.4);
+	font-size: 9pt;
+	font-weight: bold;
+}
+
+.pr-table td:last-child{
+	font-size: 10pt;
+	color: rgba(0,0,0,0.5);
+}
+
+.pr-table td{
+	padding: 25px 10px;
+	border-bottom: solid 1px rgba(0,0,0,0.1);
+}
+
+
+.pr-table td:nth-child(2) ~ td > span{
+	color: black;
+	font-weight: normal;
+}
+
+.pr-table td:nth-child(2) ~ td > span > span{
+	margin-left: 15px;
+}
+
+.pr-table td:nth-child(5) > span{
+	font-size: 11pt;
+}
+
+
+.message-container{
+	width: 90%;
+	font-size: 11pt;
+}
+
+.message-container > div{
+	height: 500px;
+	width: 50%;
+	display: inline-block;
+}
+
+.mg-left-container{
+	border-right: solid 1px rgba(0,0,0,0.1);
+}
+
+.mgList-info{
+	padding: 15px 10px;
+}
+
+.mgList-info > span:last-child{ 
+	float: right;
+}
+
+
 

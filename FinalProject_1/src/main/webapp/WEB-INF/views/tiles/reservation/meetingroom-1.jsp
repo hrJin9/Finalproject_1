@@ -30,15 +30,42 @@
 	 	});
 		
 		
+		// 플랫피커
 	 	flatpickr.localize(flatpickr.l10ns.ko);
 	 	flatpickr($(".dateSelector"));
-		// 데이트피커
 		$(".dateSelector").flatpickr({
 			dateFormat: "Y-m-d H:i",
 			enableTime: true,
 			minuteIncrement: 30,
 			conjunction: " ~ ",
 			local: 'ko'
+		});
+		
+		
+		
+		//종일 체크시
+		$("#mr-write-allday").change(function(e){
+			if($(this).is(":checked")){
+				$("#mr-enddate").attr("disabled", true);
+				$("#mr-enddate").css("cursor","not-allowed");
+				
+				const allday_date = $("#mr-startdate").val().substr(0,10);
+				$("#mr-startdate").val(allday_date);
+			}
+			else{
+				$("#mr-enddate").attr("disabled", false);
+				$("#mr-enddate").css("cursor","");
+			}
+		});
+		
+		$("#mr-startdate").change(function(e){
+			if($("#mr-write-allday").is(":checked")){
+				const allday_date = $("#mr-startdate").val().substr(0,10);
+				$("#mr-startdate").val(allday_date);
+			}
+			else{
+				$("#mr-enddate").attr("disabled", false);
+			}
 		});
 
 		}); //end of ready
@@ -124,13 +151,21 @@
 			  		<div class="mr-write-container">
 			  			<div style="font-weight: bold;">예약 일정·정보 입력</div>
 			  			<div>
-			  				<div><input class="dateSelector" placeholder="ex) 2022-01-01" /></div>
+			  				<div>
+			  					<input id="mr-startdate" class="dateSelector" placeholder="ex) 2022-01-01" />
+		  					</div>
 							<i class="fa-solid fa-arrow-right" style="color: #C6C6C6; margin: 0px 2%;"></i>
-							<div style="text-align: right;"><input class="dateSelector" placeholder="ex) 2022-01-01" /></div>
+							<div style="text-align: right;">
+								<input id="mr-enddate" class="dateSelector" placeholder="ex) 2022-01-01" />
+							</div>
 			  			</div>
-			  			<input class="mr-write" type="text" placeholder="예약 목적 메시지 입력"/>
+			  			<span class="mr-write-allday-container">
+			  				<input id="mr-write-allday" type="checkbox"/> <label for="mr-write-allday">종일</label>
+			  			</span>
 			  		</div>
+		  			<textarea class="mr-write" placeholder="예약 목적 입력"></textarea>
 			  		
+			  		<%-- 
 			  		<div class="mr-writedetail-container">
 			  			<div style="font-weight: bold;">상세 일정 편집</div>
 			  			<div>
@@ -173,9 +208,12 @@
 				  			</div>
 			  			</div>
 			  		</div>
+			  		 --%>
+			  		
+			  		
 			  	<div class="workstatus-buttoncontainer">
 		  			<button type="button" class="workstatus-save">저장하기</button>
-		  			<button type="reset" class="workstatus-cancel">취소</button>
+		  			<button type="reset" class="workstatus-cancel text-reset" data-bs-dismiss="offcanvas" aria-label="Close">취소</button>
 	  			</div>
 			  </div>
 			</div>
