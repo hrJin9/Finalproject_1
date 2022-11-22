@@ -6,9 +6,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     
 <style type="text/css">
 
@@ -107,8 +104,8 @@
 		width: 16%;
 	}
 	
-	/* 인사정보, 근무정보 */
-	#hrInfo, #workInfo {
+	/* 개인정보 */
+	#personalInfo {
 		font-weight: bold;
 		font-size: 14pt;
 	}
@@ -189,21 +186,21 @@
 	#mobileCodeCheckBtn,
 	#emailCheckBtn, 
 	#emailCodeCheckBtn {
-	    background-color: #4285f4;
+	    background-color: #cfc9c9;
 	    color: white;
-	    height: 41px;
+	    height: 40px;
 	    width: 100px;
 	    border-style: none;
-	    border-radius: 4px;
+	    border-radius: 7px;
 	} 
 	
 	#addressBtn {
-	    background-color: #4285f4;
+	    background-color: #cfc9c9;
 	    color: white;
-	    height: 41px;
+	    height: 40px;
 	    width: 100px;
 	    border-style: none;
-	    border-radius: 4px;
+	    border-radius: 7px;
 	}
 	
 	#btnUpdate {
@@ -220,7 +217,6 @@
 		opacity: 1;
 	}
 	
-
 </style>   
 
 <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>  <!-- src 경로는 daum에서 준 우편번호찾기 사이트이다. -->
@@ -254,6 +250,11 @@
 	
 	
 	$(document).ready(function(){
+		
+		// nav바에서 인사정보 클릭시 인사정보 페이지로 이동
+		$(".myInfo_hView").click(function(){
+			location.href= "<%= ctxPath%>/member/myInfo_hr.up";
+		});
 		
 		// 개인정보수정- offcanvas
 	 	$(".update").click(function(e){
@@ -376,16 +377,16 @@
 	   </div>  
 	
 		<nav id="list">
-			<a class="list_iscurrent">인사 정보</a>
-			<a>개인 정보</a>
+			<a class="list_iscurrent myInfo_hView">인사 정보</a>
+			<a class="myInfo_pView">개인 정보</a>
 			<div class="list_underline"></div>
-		</nav>    
+		</nav>     
 	 
 	 	<hr style="margin-top: 0px;"/><br>
 		
 		<div class="container">
-			<%-- <div id="hrInfo">개인 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
-			<div id="hrInfo">개인 정보<span><i class="fas fa-pen update"></i></span></div><br>
+			<%-- <div id="personalInfo">개인 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
+			<div id="personalInfo">개인 정보<span><i class="fas fa-pen update"></i></span></div><br>
 		 	<table class="table table-borderless content" style="float: left;">
 		       <colgroup>
 		          <col width="250px" />
@@ -508,8 +509,8 @@
 			                <option value="018">018</option>
 			                <option value="019">019</option>
 	                </select>&nbsp;-&nbsp;
-	                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 18%;"/>&nbsp;-&nbsp; <%-- 휴대폰 중간번호 4자리 --%>
-	                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 18%; margin: 7px 7px 18px 0;"/>              <%-- 휴대폰 마지막번호 4자리 --%>
+	                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 18%;"/>&nbsp;-&nbsp;            <%-- 휴대폰 중간번호 4자리 --%>
+	                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 18%; margin: 7px 7px 18px 0;"/> <%-- 휴대폰 마지막번호 4자리 --%>
 		            <button type="button" id="mobileCheckBtn" style="cursor: pointer;">인증하기</button>
 		            <%--
 		            <span id="spinner" class="spinner-border text-success"></span>
@@ -565,8 +566,8 @@
 					<input id=accountHolder type="text" class="required" name="accountHolder" size="20" placeholder="예금주  입력" style="display: inline-block; width: 24.7%;"/>
 				
 					<div class="workstatus-buttoncontainer" style="margin-bottom: 60px;">
-			  			<button type="reset" class="workstatus-cancel">취소</button>
 			  			<button type="button" class="workstatus-save">저장하기</button>
+			  			<button type="reset" class="workstatus-cancel">취소</button>
 		  			</div>
 				
 				</form>

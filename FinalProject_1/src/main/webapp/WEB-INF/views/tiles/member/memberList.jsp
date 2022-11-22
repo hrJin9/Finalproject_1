@@ -54,7 +54,7 @@
 	.arrayIcon, .groupIcon {
 		border: 1px solid #f7f7f7;
 		padding: 15px;
-		margin-bottom: 22px;
+		margin-bottom: 20px;
 		margin-right: 10px;
 		width: 18px;  
 		height: 18px; 
@@ -96,7 +96,7 @@
 	}
 	
 	.table>:not(caption)>*>* {
-	    padding: 0.6rem 0.5rem;
+	    padding: 0.7srem 0.5rem;
 	    background-color: var(--bs-table-bg);
 	    border-bottom-width: 1px;
 	    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
@@ -105,6 +105,16 @@
 	.chkboxpnum {
 	    margin: 15px;
 	}
+	
+	.profile{
+     color: inherit;
+     border-radius: 8px;
+     position: relative;
+     cursor: pointer;
+     padding: 1px 13px;
+     text-align: initial;
+     display: flex;
+   }
 	
 	#message {
 	    border: 0.3px solid #d9d9d9;
@@ -131,10 +141,10 @@
 	}
 
 
-	/* 사이드 메뉴바 */
+	/* 조직도 */
 	.menu {
 		position: absolute;
-	    top: 140px;
+	    top: 45.5px;
 	    right: 0;
 	    height: 100vh;
 	    max-width: 0;
@@ -214,6 +224,80 @@
 		border-top: solid 1px #eeeeee !important;
 	}
 	
+	.orgmenu {
+		cursor: pointer;
+		text-decoration: none;
+		list-style: none;
+		color: #556372;
+	    font-size: 10.5pt;
+    	/* line-height: 2px; */
+	}
+	
+	li {
+		line-height: 24.2px;
+	}
+	
+	li::marker {
+	    color: #cccccc;
+	    font-size: 13pt;
+	}
+	
+	.summary {
+		padding-bottom: 8px; 
+		/* font-weight: bold;  */
+		font-size: 11pt;
+		color: #4C4E54;
+	}
+	
+	.unfold {
+		padding-top: 10px;
+		font-weight: bold;
+		font-size: 10pt;
+		color: #4c4e54;
+		position: relative;
+	}
+	
+	#cntbadge{
+	    background-color: #e6e6e6;
+	    padding: 0.5em 0.5em;
+	    width: 12.5px;
+	    height: 15px;
+	    font-weight: 600;
+	    color: #fbfbfb;
+	    display: inline-block;
+	    border-radius: 0.25rem;
+	    box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+	    position: relative;
+	    top: 9.3px;
+	    left: 5px;
+	}
+	  #newCnt{
+	    font-size: 5pt;
+	    color: #4C4E54;
+	    position: relative;
+	    top: -10px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    flex-shrink: 0;
+	    isolation: isolate;
+   }
+   
+   .unfoldAlert {
+   		border: 1px solid #f7f7f7;
+	    padding: 6.3px;
+	    text-align: center;
+	    width: 106px;
+	    height: 30px;
+	    border-radius: 8px;
+	    background-color: #4d4d4d;
+	    color: #f2f2f2;
+	    font-size: 8.5pt;
+	    position: relative;
+	    top: 1.3px;
+	    left: 194px;
+   }
+	
 </style>
 
 <script type="text/javascript">
@@ -242,8 +326,12 @@
 		const allCnt = $("input:checkbox[name='pnum']").length;  // 체크여부 상관없는 모든 체크박스개수
 		document.getElementById("memberCnt").textContent = allCnt;
 	      
+		// 프로필 클릭시 구성원 상세정보 보기로 이동
+		$(".profile").click(function(){
+			location.href= "<%= ctxPath%>/member/memberInfo_hr.up";
+		});
 		
-		<%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
+		// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 		$("input#burger-check").change(function(){
 		    if($("#burger-check").is(":checked")){
 		        $(".big").css({'width':'86%'});
@@ -254,7 +342,19 @@
 		    }
 		});  
 		
-	      
+		// 모든 조직 펼치기
+		$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
+			$(".summary").click();      // 모든 조직의 summary 클릭
+		});
+		
+		/* $(".unfold").hover(function(){
+	      	$(".unfoldAlert").css('display':'block');
+		});
+		$(".unfold").unhover(function(){
+	      	$(".unfoldAlert").css('display':'none');
+		}); */
+			 
+			
 	});// end of$(document).ready(function(){})--------------------------
 	   
 	      
@@ -272,18 +372,18 @@
 	      $(".chkboxpnum").prop("checked", bool);  // 전체선택 체크박스 체크여부에 따라 개별 선택박스 모두 체크 or 모두 해제
 	   }// end of function allCheckBox()-------------------------
 
-	
-
-	
+	   
 </script>
 
 <div class="container">
 <div id="memberInfo_mainList">구성원</div>
-<hr class="memberInfohr" style="margin-top: 0px;"/>
+<hr class="memberInfohr" />
 
 <div class="contentsmargin">
-	<form action="#" class="booking-form ml-3" style="float: right; margin-bottom: 0;">
-		<div class="row" style="margin-bottom: 13px;">
+	<form action="#" class="booking-form ml-3" style="float: right;">
+		<div class="row" style="padding-top: 11px;">
+		
+			<%-- 검색 --%>
 			<div class=" mr-2">
 				<div class="form-group">
 					<div class="form-field">
@@ -318,18 +418,38 @@
 					<input class="burger-check" type="checkbox" id="burger-check" />
 					<label class="burger-icon" for="burger-check"><span class="burger-sticks"></span></label>
 					<div class="menu">
-						<div class="menucontent" style="width: 500px; visibility: hidden; padding: 23px;">
-						<div style="font-size: 11pt;">조직도</div>
+						<div class="menucontent" style="width: 340px; visibility: hidden; padding: 27px 0 10px 42px;">
+							<div style="font-size: 12pt; font-weight: bold; color: #4C4E54; padding-bottom: 27px;">
+								<span style="padding-right: 194px;">조직도</span>
+								<span><i class="fas fa-expand-alt unfold"></i></span>
+								<span class="unfoldAlert" style="display: block;">모든 조직 펼치기</span>
+							</div>
+							
+							<details>
+								<summary class="summary">IT</summary>
+							   	<ul>
+							      <li><a href="#" class="orgmenu">개발1팀</a><span id="cntbadge" ><span id="newCnt">1</span></span></li>
+							      <li><a href="#" class="orgmenu">개발2팀</a></li>
+							      <li><a href="#" class="orgmenu">기술지원팀1팀</a></li>
+							    </ul>
+							</details>
+							<details>
+								<summary class="summary">기획</summary>
+							   	<ul>
+							      <li><a href="#" class="orgmenu">기획1팀</a><span id="cntbadge" ><span id="newCnt">1</span></span></li>
+							      <li><a href="#" class="orgmenu">기획2팀</a></li>
+							    </ul>
+							</details>
 						</div>
 					</div>
 	            </span>
 			</div>
 		</div>
 	</form>
-</div>
 
-<hr class="memberInfohr"/>
-<div style="margin-bottom: 15px;">
+<!-- <hr class="memberInfohr"/> -->
+<%-- 전체 구성원 --%>
+<div style="margin-bottom: 15px; float: left;">
 	<span style="margin: 0 12px 0 23px;">
 		<input type="checkbox" id="memberAll" onClick="allCheckBox();" />
 	</span>
@@ -338,7 +458,6 @@
 		<button type="button" id="message" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
 	</span>
 </div>
-
 <div class="big">
  	<table class="table custom-table big" style="float: left;">
        <colgroup>
@@ -351,11 +470,11 @@
               <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
               <td>
                 <div class="profile" href="#" style="padding: 1px ;">
-		      <span class="pic">
-			      <span>지은</span></span>
-			      <span class="my"><span class="name" style="font-size: 10.8pt;">김지은</span><br>
-			      <span class="role" style="font-size: 9pt;">개발자</span>
-		      </span>
+			      <span class="pic">
+				      <span>지은</span></span>
+				      <span class="my"><span class="name" style="font-size: 10.8pt;">김지은</span><br>
+				      <span class="role" style="font-size: 9pt;">개발자</span>
+			      </span>
                 </div>
               </td> 
               <td>
@@ -415,11 +534,42 @@
 	            </span>
               </td>
            </tr>
+           <tr>
+              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+              <td>
+                <div class="profile" href="#" style="padding: 1px ;">
+		      <span class="pic">
+			      <span>채영</span></span>
+			      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
+			      <span class="role" style="font-size: 9pt;">디자이너</span>
+		      </span>
+                </div>
+              </td> 
+              <td>
+              	<span class="positionIcon">
+					<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
+	            </span>
+              </td>
+           </tr>
+           <tr>
+              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+              <td>
+                <div class="profile" href="#" style="padding: 1px ;">
+		      <span class="pic">
+			      <span>예은</span></span>
+			      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
+			      <span class="role" style="font-size: 9pt;">기획자</span>
+		      </span>
+                </div>
+              </td> 
+              <td>
+              	<span class="positionIcon">
+					<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
+	            </span>
+              </td>
+           </tr>
          </tbody>
  	</table>
 </div>
-
-
-
 
 </div>

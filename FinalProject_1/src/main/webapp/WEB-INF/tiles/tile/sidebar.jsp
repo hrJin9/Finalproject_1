@@ -263,7 +263,7 @@
 
    $(document).ready(function(){
 	   
-      $(".profile").click(function(){  // 내프로필 클릭시
+      $(".profile2").click(function(){  // 내프로필 클릭시
       	 if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
       		$(".myprofile").show();
       		$(".news").hide();
