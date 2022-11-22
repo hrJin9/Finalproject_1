@@ -22,6 +22,7 @@ hr.HRhr{
 }
 
 
+/* 툴팁사이즈 */
 /* attendance.jsp */
 .spinner {
   width: 10px;
@@ -1355,6 +1356,10 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 
+
+
+/* message_recieve.jsp */
+
 .message-container{
 	width: 90%;
 	font-size: 11pt;
@@ -1371,12 +1376,112 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .mgList-info{
-	padding: 15px 10px;
+	padding: 15px 0;
+	margin-left: 11%;
 }
 
 .mgList-info > span:last-child{ 
 	float: right;
+	margin-right: 3%;
+	color: rgba(0,0,0,0.6);
+	border-radius: 5px;
+	padding: 6px 0 6px 10px;
+	font-size: 9pt;
+	font-weight: bold;
+}
+
+.mgList-info > span:last-child:hover{
+	background-color: rgba(230,230,230,0.4);
+	cursor: pointer;
+}
+
+.mgList-info > span{
+	display: inline-block;
+	width: 10%;
+}
+
+.mgList-info > span > span {
+	margin-left: 5px;
+	color: #37A652;
+	font-weight: bold;
+}
+
+.mg-selectchx + label{
+	border: solid 2px rgba(0,0,0,0.1);
+	border-radius: 5px;
+	width: 20px; height: 20px;
+	position: relative; top: 5px;
+}
+
+.mg-selectchx + label:hover{
+	cursor: pointer;
+}
+
+.mg-selectchx:checked + label{
+	background-color: #37A652;
+	transition: all 0.3s;
+}
+
+.mg-selectchx:checked + label > i{
+	display: inherit;
+	position: relative; top: 2px; left: 1px;
+}
+
+
+.mg-selectchx-all ~ div.mg-noncheckmenu {
+	display: none;
+	transition: all 0.3s;
+}
+
+
+.mgList{
+	margin-left: 11%;
+	margin-top: 3%;
+}
+
+.mgList-menu {
+	display: flex;
+}
+
+.mgList-menu > div {
+	width: 100%;
+}
+
+.mg-noncheckmenu > span {
+	position: relative; top: 4px;
+}
+
+.mg-noncheckmenu > span:first-child{
+	margin-left: 3%;
+}
+
+.mg-noncheckmenu > span:nth-child(2){
+	margin: 0 0.5%;
 }
 
 
 
+.mg-checkmenu {
+	display: flex;
+	margin-left: 3%;
+}
+
+.mg-checkmenu > button{
+	width: 30px; height: 30px;
+	background-color: white;
+	border: solid 1px rgba(0,0,0,0.1);
+	border-radius: 5px;
+	padding: 8px 10px;
+	color: rgba(0,0,0,0.7);
+	margin-right: 5px;
+}
+
+.mg-checkmenu > button:hover {
+	background-color: rgba(230,230,230,0.4);
+	cursor: pointer;
+}
+
+
+.mg-checkmenu > button > i {
+	position: relative; bottom: 5px; right: 3px;
+}
