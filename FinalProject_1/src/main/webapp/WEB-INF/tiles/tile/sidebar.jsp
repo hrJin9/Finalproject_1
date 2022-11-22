@@ -18,8 +18,8 @@
    }
    
    div.sidebar{
-     /* box-shadow: 3px -2px 11px -5px rgb(0 0 0 / 10%) !important; 
-   	 border-right: 1px solid #f1f1f1 !important;*/
+     box-shadow: 3px 3px 9px rgb(0 0 0 / 5%); 
+   	 /* border: 5px solid #f1f1f1 !important; */
      width: 186px;
      background-color: rgb(249, 250, 250);
      position: fixed;
