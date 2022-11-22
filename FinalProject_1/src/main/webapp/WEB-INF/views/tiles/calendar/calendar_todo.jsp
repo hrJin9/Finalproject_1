@@ -139,16 +139,16 @@
          할 일 일정 
     </button>   
     
-    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="color: #a6a6a6;"> 
+    <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" style="color: #a6a6a6;"> 
          모든 할 일
     </button> 
     <div class="dropdown-menu"> 
-      <a class="dropdown-item" href="#">모든 할 일</a>
+      <a class="dropdown-item" href="#">모든 할 일</a> 
       <a class="dropdown-item" href="#">진행중인 할 일</a>
       <a class="dropdown-item" href="#">완료된 할 일</a>
     </div>
      
-    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="color: #a6a6a6;"> 
+    <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" style="color: #a6a6a6;"> 
          생성 순
     </button>
     <div class="dropdown-menu">  
