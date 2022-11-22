@@ -17,7 +17,7 @@
      font-family: 'Pretendard-Regular';
    }
    div.sidebar{
-     width: 186px;
+     width: 190px;
      height: 100%;
      background-color: rgb(249, 250, 250);
      position: fixed;
@@ -25,7 +25,7 @@
      left: -104px;
      z-index: 1;
      transition: all .35s;
-     padding: 26px 10px 24px 13px;
+     padding: 26px 14px 24px 15px;
      display: flex;
      flex-direction: column;
      height: 100%;
@@ -140,8 +140,8 @@
       
    }
    .menu-text{
-     color:#556372;
-     font-size: 10pt;
+     color: #556372;
+     font-size: 11pt;
      position: relative;
      bottom: 1.1px;
    }
@@ -191,7 +191,7 @@
      font-weight: bold;
    }
    .badge{
-     background-color: rgb(242, 75, 23);
+	 background-color: rgb(242, 75, 23);
      padding: 0.5em 0.5em;
      width: 15.5px;
      height: 13.5px;
@@ -201,7 +201,7 @@
      display: inline-block;
      position: relative;
      bottom: 4.3px;
-     left: 18px;
+     left: 24px;
      box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
 	}
    .newred{
@@ -263,7 +263,7 @@
 
    $(document).ready(function(){
 	   
-      $(".profile").click(function(){  // 내프로필 클릭시
+      $(".profile2").click(function(){  // 내프로필 클릭시
       	 if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
       		$(".myprofile").show();
       		$(".news").hide();
@@ -348,9 +348,9 @@
         <span style="font-size: 8.5pt; color: #737373;">sawonwldms@gmail.com</span><br>
         <span style="font-size: 8.5pt; color: #737373; padding-bottom: 3px; ">개발자</span><br>
        </a>
-     <a class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;" data-toggle="modal" data-target="#userPwdChange" data-dismiss="modal" data-backdrop="static">
+     <a class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#userPwdChange" data-bs-dismiss="modal" data-bs-backdrop="static">
         <i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
-       </a>
+     </a>
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
     </div>
     
@@ -373,31 +373,21 @@
     
     
     
-    
-    
     <%-- **** 비밀번호 변경 Modal **** --%>
-   <div class="modal fade" id="userPwdChange">  <%-- 아이디찾기 a 태그의 data-target="#userPwdChange" data-dismiss="modal" 와 매핑됨. --%>
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal header -->
-       <button type="button" class="close pwdChangeClose" data-dismiss="modal" style="margin: 20px 0px 10px 380px; font-size: 20pt;">&times;</button>
-        
-        <!-- Modal body -->
-        <h4 class="modal-title" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
-        <div class="modal-body">
-          <div id="pwdChange">
-             <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/member/pwdChange.up">
-             <%-- <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/WEB-INF/views/tiles/member/pwdChange.jsp"> --%>
-             </iframe>
-             
-         </div>
-       </div>
-        
-        <!-- Modal footer -->
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-danger pwdChangeClose" data-dismiss="modal">Close</button>
-        </div> -->
-      </div>
-    </div>
-  </div>
+    <div class="modal fade" id="userPwdChange" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <%-- 아이디찾기 a 태그의 data-target="#userPwdFind" data-dismiss="modal" 와 매핑됨. --%>
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <!-- Modal header -->
+	      <button type="button" class="btn-close pwdChangeClose" " data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
+	      
+	      <!-- Modal body -->
+	      <div class="modal-body">
+			<h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
+			<div id="pwdChange">
+				<iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 340px;" src="<%= request.getContextPath()%>/member/pwdChange.up"></iframe>
+			</div>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<% String ctxPath = request.getContextPath(); %>  
+<% String ctxPath = request.getContextPath(); %> 
 
 <style type="text/css">
 
@@ -101,7 +101,7 @@
 	}
 	
 	/* 인사정보, 근무정보 */
-	#hrInfo, #workInfo {
+	#hrInfo {
 		font-weight: bold;
 		font-size: 14pt;
 	}
@@ -116,32 +116,17 @@
 		padding-left: 1px;
 	}
 
-	/* 우측 사이드 근무시간, 남은연차, 급여 */
-	.moreInfo {
-		border: 1px solid #e6e6e6;
-		padding: 15.5px 22px;
-		margin-bottom: 22px;
-		width: 246px;  
-		height: 130px; 
-		border-radius: 10px;
-		display: inline-block;
-		float: left;
-		font-size: 18pt;
-		/* box-shadow: 3px 3px 10px 5px #f2f2f2;    */
-	} 
-
 </style>   
 
 <script type="text/javascript">
 	$(document).ready(function(){
 		
 		// nav바에서 개인정보 클릭시 개인정보 페이지로 이동
-		$(".myInfo_pView").click(function(){
-			location.href= "<%= ctxPath%>/member/myInfo_personal.up";
+		$(".memberInfo_pView").click(function(){
+			location.href= "<%= ctxPath%>/member/memberInfo_personal.up";
 		});
 		
 	});
-	
 </script>
 
 <div class="container" style="margin-right: 145px;">
@@ -168,10 +153,10 @@
 	   </div> 
 	
 		<nav id="list">
-			<a class="list_iscurrent myInfo_hView">인사 정보</a>
-			<a class="myInfo_pView">개인 정보</a>
+			<a class="list_iscurrent memberInfo_hView">인사 정보</a>
+			<a class="memberInfo_pView">개인 정보</a>
 			<div class="list_underline"></div>
-		</nav>   
+		</nav>    
 		 
 	 	<hr style="margin-top: 0px;"/><br>
 			
@@ -186,18 +171,6 @@
 		     	</colgroup>
 		          <tbody>
 		                <tr>
-		                   <td>사번</td>   
-		                   <td>201</td>   
-		                </tr>
-		                <tr>
-		                   <td>입사일</td>   
-		                   <td>2022.10.10</td>   
-		                </tr>
-		                <tr>
-		                   <td>입사유형</td>   
-		                   <td>경력</td>   
-		                </tr>
-		                <tr>
 		                   <td>소속</td>   
 		                   <td>IT팀</td>   
 		                </tr>
@@ -209,72 +182,12 @@
 		                   <td>직무</td>   
 		                   <td>개발자</td>   
 		                </tr>
-						<tr>
-		                   <td>고용형태</td>   
-		                   <td>정직원</td>   
-		                </tr>
 		          </tbody>
 		 	</table>
 		       
-			<%-- <div id="workInfo">근무 정보<span><i class="fas fa-list-ul menubar"><i class="fas fa-pen update"></i></i></span></div><br> --%>
-			<div id="workInfo">근무 정보</div><br>
-		 	<table class="table table-borderless content" style="float: left;">
-		       <colgroup>
-		          <col width="250px" />
-		          <col />
-		     	</colgroup>
-		          <tbody>
-		                <tr>
-		                   <td>근무유형</td>   
-		                   <td>기본 근무유형</td>   
-		                </tr>
-		                <tr>
-		                   <td>일하는 방식</td>   
-		                   <td>고정 출퇴근제</td>   
-		                </tr>
-		                <tr>
-		                   <td>일하는 날</td>   
-		                   <td>월요일,화요일,수요일,목요일,금요일</td>   
-		                </tr>
-		                <tr>
-		                   <td>주휴일</td>   
-		                   <td>일요일</td>   
-		                </tr>
-		                <tr>
-		                   <td>출근 시간</td>   
-		                   <td>오전 09:00</td>   
-		                </tr>
-		                <tr>
-		                   <td>일하는 시간</td>   
-		                   <td>8시간</td>   
-		                </tr>
-		                <tr>
-		                   <td>쉬는 날 유형</td>   
-		                   <td>기본</td>   
-		                </tr>
-		          </tbody>
-		       </table>
 		  </div>
 	</form>
   
-  
-	<div style="position: absolute; right: 140px; top: 365px;"> 
-		<div class=moreInfo>
-			<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
-			<span style="font-size: 13pt;">7시간 20분</span>  
-		</div><br> 
-		<div class=moreInfo>
-			<div style="padding-bottom: 21px; transform: scaleX(-1); padding-left: 176px;"><ion-icon name="leaf-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">남은연차</span>
-			<span style="font-size: 13pt;">25일</span>  
-		</div><br> 
-		<div class=moreInfo>
-			<div style="padding-bottom: 21px;"><ion-icon name="server-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">급여</span>  
-			<span style="font-size: 13pt;">11월 급여명세서</span>  
-		</div><br> 
-	</div>
 </div>
 
 
