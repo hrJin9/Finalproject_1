@@ -16,9 +16,11 @@
      /* font-size: 9pt; */
      font-family: 'Pretendard-Regular';
    }
+   
    div.sidebar{
+     /* box-shadow: 3px -2px 11px -5px rgb(0 0 0 / 10%) !important; 
+   	 border-right: 1px solid #f1f1f1 !important;*/
      width: 186px;
-     height: 100%;
      background-color: rgb(249, 250, 250);
      position: fixed;
      top: 0;
@@ -29,6 +31,7 @@
      display: flex;
      flex-direction: column;
      height: 100%;
+     
    }
    input#menuicon:checked + label + div{
      left:0;
@@ -361,17 +364,19 @@
 
         <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
 
-        <li class="home"><a href="#" ><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-clipboard"></span><span class="menu-text">스케쥴</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-file-text2"></span><span class="menu-text">결재관리</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-coin-dollar"></span><span class="menu-text">급여관리</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-cog"></span><span class="menu-text">설정</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/" ><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/member.up" ><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/calendar.up" ><span class="icon icon-clipboard"></span><span class="menu-text">캘린더</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/message.up" ><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/attendance.up" ><span class="icon icon-alarm"></span><span class="menu-text">근무관리</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/approval.up" ><span class="icon icon-file-text2"></span><span class="menu-text">결재관리</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/payroll.up" ><span class="icon icon-coin-dollar"></span><span class="menu-text">급여관리</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/board.up" ><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
+        <%-- 관리자로 로그인했을경우에만 --%>
+        <li><a href="<%= request.getContextPath()%>/admin_login.up" ><span class="icon icon-cog"></span><span class="menu-text">설정</span></a></li>
       </ul>
     </div>
-  </div>
+  
   
   <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 14%; left: 1%; z-index: 1;">
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 14px; cursor: pointer;">
@@ -402,7 +407,7 @@
          </span>
       </div>
    </div>
-    
+  </div>
     
     
     
