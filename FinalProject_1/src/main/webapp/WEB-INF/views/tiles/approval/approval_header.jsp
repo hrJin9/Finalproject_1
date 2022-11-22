@@ -294,7 +294,7 @@
 	});
 </script>
 <nav id="board_mainList">
-	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
+	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board/notice.up">공지사항</a>
 	<a class="mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
 	<!-- <div class="list_underline"></div> -->
 </nav>
