@@ -28,6 +28,11 @@ public class BoardController {
 		return "board/notice.tiles";
 	}
 	
+	@RequestMapping(value = "/board/freeboard.up")
+	public String freeboard(HttpServletRequest request) {
+		return "board/freeboard.tiles";
+	}
+	
 	
 	
 	

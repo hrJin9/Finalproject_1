@@ -33,6 +33,7 @@
 	.viewtitle{
 		font-size: 14pt;
 		font-weight: bolder;
+		margin-bottom: 5px;
 	}
 	.writeinfo{
 		font-size: 9pt;
@@ -42,13 +43,14 @@
 	}
 	p.contents{
 		font-size: 11pt;
+		margin-left: 8px;
 	}
 	
 	span.reply{
 		color:#999494;
 		font-size:9pt;
 		position: relative;
-		top:3px;
+		top:5px;
 	}
 	span.reply:hover{
 		cursor: pointer;
@@ -75,21 +77,21 @@
 		padding-left:20px;
 		padding-right:20px;
 		border-color:white; 
-		background-color:#b9b8b8;
+		background-color:#4d4f53;
 		color:white;
 	}
 	a.dropdown-link{
-		color:#999494;
-		font-size: 5pt;
+		color:#7f7f7f;
 		float:right;
 		position: absolute;
 		right: 15%;
 	}
-	
+	a.share{
+		font-size: 11pt !important;
+	}
 	div#cmtcontent{
 		width:85%;
 		margin-bottom: 10px;
-		margin-top:10px;
 		margin-left: 52px;
 	}
 	a.bookmark, a.share{
@@ -98,19 +100,10 @@
 	    width: 26px;
 	    height: 26px;
 	    position: relative;
-	}
-	a.bookmark{
 	    margin-right: 5px;
 	    font-size: 13pt;
 	    right: -4px;
 	    top: 10px;
-	}
-	a.share{
-	    font-size: 11pt;
-	    color:#626161;
-	    left: 420px;
-	    top: 10px;
-	    
 	}
 	a.bookmark::before{
 	    position: absolute;
@@ -125,74 +118,94 @@
 	
 	
 	.table td {
-    font-size: 10pt;
-    border-top: 1px solid #ececec;
-    padding-left: 0;
-    border-bottom: 0px;
-}
-.toastui-editor-defaultUI .ProseMirror {
-    padding: 14px 23px;
-}
-.toastui-editor-defaultUI button {
-	font-size: 9px !important;
-}
-
-
-
-.post-option .set-btn {
-    margin: -1px 0 0 20px;
-}
-.set-btn {
-    padding: 4px 8px;
-    margin: 1px 7px 0 30px;
-    vertical-align: middle;
-    cursor: pointer;
-}
-.post-option .setup-group {
-    overflow: hidden;
-    position: absolute;
-    z-index: 1;
-    top: 50px;
-    right: 35px;
-    background: #fff;
-    border: 1px solid #555;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-}
-.setup-group {
-    padding: 4px 0;
-}
-.setup-group>li {
-    position: relative;
-}
-button {
-    background-color: transparent;
-}
-button, input {
-    border-radius: 0;
-    border: 0;
-}
-button{
-    font-family: inherit;
-    font-size: 100%;
-    line-height: normal;
-    color: #333;
-}
-.post-option .set-btn span {
-    width: 2px;
-    height: 2px;
-    background: #777;
-}
-.set-btn span:first-child {
-    margin: 0;
-}
-.set-btn span {
-    display: block;
-    border-radius: 50%;
-}
+	    font-size: 10pt;
+	    border-top: 1px solid #ececec;
+	    padding-left: 0;
+	    border-bottom: 0px;
+	    padding-top: 14px;
+	}
+	.toastui-editor-defaultUI .ProseMirror {
+	    padding: 14px 23px;
+	}
+	.toastui-editor-defaultUI button {
+		font-size: 9px !important;
+	}
+	
+	
+	
+	.post-option .set-btn {
+	    margin: -1px 0 0 20px;
+	}
+	.set-btn {
+	    padding: 4px 8px;
+	    margin: 1px 7px 0 30px;
+	    vertical-align: middle;
+	    cursor: pointer;
+	}
+	.post-option .setup-group {
+	    overflow: hidden;
+	    position: absolute;
+	    z-index: 1;
+	    top: 50px;
+	    right: 35px;
+	    background: #fff;
+	    border: 1px solid #555;
+	    -webkit-box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    box-sizing: border-box;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	}
+	.setup-group {
+	    padding: 4px 0;
+	}
+	.setup-group>li {
+	    position: relative;
+	}
+	button {
+	    background-color: transparent;
+	}
+	button, input {
+	    border-radius: 0;
+	    border: 0;
+	}
+	button{
+	    font-family: inherit;
+	    font-size: 100%;
+	    line-height: normal;
+	    color: #333;
+	}
+	.post-option .set-btn span {
+	    width: 2px;
+	    height: 2px;
+	    background: #777;
+	}
+	.set-btn span:first-child {
+	    margin: 0;
+	}
+	.set-btn span {
+	    display: block;
+	    border-radius: 50%;
+	}
+	#name{
+		position: relative;
+		right: -8px;
+	    top: 9.5px;
+	    font-weight: 100;
+	}
+	#picbox{
+		display: inline-block !important;
+		position: relative !important;
+		right: -6px !important;
+		top: 7px !important;
+		margin-left: -5px !important;
+		height: 35px !important;
+		width: 35px !important;
+		font-size: 8pt !important;
+	}
+	a.icon-flickr{
+		font-size: 5pt !important
+	}
 </style>
 
 <script type="text/javascript">
@@ -211,7 +224,7 @@ $(document).ready(function(){
 		  		$this.removeClass('icon-star-full');
 		  		$this.addClass('icon-star-empty');
 		  	}
-		  	e.preventDefault();
+		/*   	e.preventDefault(); */
 	});
 	
 	// 글쓰기 버튼
@@ -274,15 +287,15 @@ $(document).ready(function(){
        <!-- <span class="icon icon-attachment" style="color:#4c4e54;font-size: 10pt;position: relative; left:2px;"></span> --> 
        	</div>  
        	<div class="writeinfo">
-       		<img class="boardprofile mr-2" width="35px" height="35px">
+       		<img class="boardprofile mr-2 mt-1" width="35px" height="35px" style="border-radius: 13px;background-color: white;box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 6%);" src="<%= request.getContextPath()%>/resources/images/로고2.jpg"> 
        		<span class="teamname">THUMBS UP</span>
      		<span class="writedate">11.16</span>
      		<!-- <span class="icon icon-eye" style="position:relative;color:#7e7e7e;font-size:8pt;top:2px"></span>32 -->
      		<a style="float:right"href="#" class="bookmark icon icon-star-empty"></a>
      		
-     		<div class="dropdown custom-dropdown text-left " style="position: absolute;;display: inline-block;right: 39rem;">
-            <a class="dropdown-link share icon icon-share2"style="float:right" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
-	            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;" >
+     		<div class="dropdown custom-dropdown text-left " style="margin-right: 10px;display: inline-block;float: right;">
+            <a class="dropdown-link share icon icon-share2"href="#" id="dropdownMenuButton1" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>
+	            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton1" >
 	              <a class="dropdown-item" href="#">메일로 공유하기</a>
 	              <a class="dropdown-item" href="#">링크복사</a>
 	            </div>
@@ -311,7 +324,8 @@ $(document).ready(function(){
 		<div class="line"></div>
      	
      	<div style="margin-bottom:4rem!important">
-     		<img class="boardprofile mr-2" width="35px" height="35px" style="display:block; position: absolute;"><br><br>
+	      	<span class="pic" id="picbox" ><span id="name" >지은</span></span>
+	      	<br>
      		<div id="editor"></div>
      		<button id="writecmt"class="btn ">작성</button>
      	</div>
@@ -322,13 +336,16 @@ $(document).ready(function(){
      	 <table class="table custom-table ">
           <tr style="height: 15px;">
 		      <td>
-		      	<div style="display: inline-block;width: 50px;"><img class="boardprofile mr-2" width="35px" height="35px"></div>
+		      	<div style="display: inline-block;width: 50px;position: relative;top: -13px">
+		      		<!-- <img class="boardprofile mr-2" width="35px" height="35px"> -->
+		      		<span class="pic" id="picbox" ><span id="name" >지은</span></span>
+		      	</div>
 		      	<span class="teamname">김지은</span>
 		      	<span class="writedate">25분전</span>
 		      	<span class="reply icon icon-forward"></span>
 		      	
 		      	<div class="dropdown custom-dropdown text-left " style="position: inherit;display: inline-block;">
-	            <a class="dropdown-link icon icon-flickr" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
+	            <a class="dropdown-link icon icon-flickr" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
 		            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;" >
 		              <a class="dropdown-item" href="#">수정하기</a>
 		              <a class="dropdown-item" href="#">삭제하기</a>
@@ -367,7 +384,10 @@ $(document).ready(function(){
 		   
           <tr style="height: 15px;">
 		      <td>
-		      	<div style="display: inline-block;width: 50px;"><img class="boardprofile mr-2" width="35px" height="35px"></div>
+		      	<div style="display: inline-block;width: 50px;position: relative;top: -13px">
+		      		<!-- <img class="boardprofile mr-2" width="35px" height="35px"> -->
+		      		<span class="pic" id="picbox" style="background-color: #fbbc05" ><span id="name" >혜린</span></span>
+		      	</div>
 		      	<span class="teamname">진혜린</span>
 		      	<span class="writedate">1시간전</span>
 		      	<span class="reply icon icon-forward"></span>
@@ -376,7 +396,10 @@ $(document).ready(function(){
 		   </tr>
           <tr style="height: 15px;">
 		      <td>
-		      	<div style="display: inline-block;width: 50px;"><img class="boardprofile mr-2" width="35px" height="35px"></div>
+		      	<div style="display: inline-block;width: 50px;position: relative;top:-13px">
+		      		<!-- <img class="boardprofile mr-2" width="35px" height="35px"> -->
+		      		<span class="pic" id="picbox" style="background-color: #34a853"><span id="name" >예은</span></span>
+		      	</div>
 		      	<span class="teamname">이예은</span>
 		      	<span class="writedate">11.16</span>
 		      	<span class="reply icon icon-forward"></span>
@@ -385,7 +408,10 @@ $(document).ready(function(){
 		   </tr>
           <tr style="height: 15px;">
 		      <td>
-		      	<div style="display: inline-block;width: 50px;"><img class="boardprofile mr-2" width="35px" height="35px"></div>
+		      	<div style="display: inline-block;width: 50px;position: relative;top: -13px">
+		      		<!-- <img class="boardprofile mr-2" width="35px" height="35px"> -->
+		      		<span class="pic" id="picbox" style="background-color: #ea4335"><span id="name">채영</span></span>
+		      	</div>
 		      	<span class="teamname">강채영</span>
 		      	<span class="writedate">11.16</span>
 		      	<span class="reply icon icon-forward"></span>

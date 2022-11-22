@@ -33,13 +33,14 @@
 		width: 581px;
 		font-size: 18pt;
 		font-weight: bold;
-		margin: 4px 0 0 111px;
+    	margin: 1px 0 0 70px;
 	}
+	
 	
 	#board_mainList a {
 		display: block;
 		width: 18%;
-		padding: 0.7em 0 0.9em 0;
+		padding: 0.7em 0 0.3em 0;
 		text-decoration: none;
 		margin-left: 4%;
 	}
@@ -51,10 +52,10 @@
 		color: #D2D6D9;
 	}
 	/* 
-	#dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
+	#board_subList a:nth-child(1).iscurrent ~ .freeboard_subList_underline {
 		left: 0%;
 	}
-	#dayoff_subList a:nth-child(2).iscurrent ~ .dayoff_subList_underline {
+	#board_subList a:nth-child(2).iscurrent ~ .freeboard_subList_underline {
 		left: 15%; /* width랑 margin-left랑 합친거 
 	}
 	 */
@@ -120,7 +121,7 @@
 	  width: 12px;
 	  height: 12px;
 	  display:inline-block;
-	  border-radius: 1px;
+	  border-radius: 4px;
 	  position: relative;
 	  left:10px; 
 	  color:white;
@@ -128,13 +129,14 @@
 	  font-weight:bold; 
 	  text-align: center;
 	  position: relative;
+	  top: 3px;
 	  margin-right: 20px;
 	}
 	.titlefirst{
 		font-weight: 800;
 		font-size:11.5pt;
 		padding-top:5px;
-		padding-bottom: 9px;
+		/* padding-bottom: 9px; */
 	}
 	.categorybadge{
 	  background-color: #30353f;
@@ -148,6 +150,7 @@
 	  border-radius: 10px;
 	  position: relative;
 	  margin-right: 15px;
+	  top: 0.5px;
 	  /* top:-2px;
 	  left:10px; */ 
 	  color:white;
@@ -161,6 +164,7 @@
 	  position: relative;
 	  top:2px;
 	  margin-right: 15px;
+	  margin-left: 6px;
 	}
 	.writedate{
 	  position: relative;
@@ -291,7 +295,7 @@
 </script>
 <nav id="board_mainList">
 	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board/notice.up">공지사항</a>
-	<a class="mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/notice.up">자유게시판</a>
+	<a class="mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
 	<!-- <div class="list_underline"></div> -->
 </nav>
 <hr class="HRhr" style="margin-top: 0px;"/>
