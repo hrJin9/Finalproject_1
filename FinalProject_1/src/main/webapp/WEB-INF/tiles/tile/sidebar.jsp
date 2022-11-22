@@ -372,9 +372,10 @@
         <li><a href="<%= request.getContextPath()%>/approval.up" ><span class="icon icon-file-text2"></span><span class="menu-text">결재관리</span></a></li>
         <li><a href="<%= request.getContextPath()%>/payroll.up" ><span class="icon icon-coin-dollar"></span><span class="menu-text">급여관리</span></a></li>
         <li><a href="<%= request.getContextPath()%>/board.up" ><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
+        
         <%-- 관리자로 로그인했을경우에만 --%>
-        <li><a href="<%= request.getContextPath()%>/admin_login.up" ><span class="icon icon-cog"></span><span class="menu-text">설정</span></a></li>
-      </ul>
+        <li><a href="<%= request.getContextPath()%>/admin_login.up" ><span class="icon icon-file-text"></span><span class="menu-text">로그관리</span></a></li>
+      </ul> 
     </div>
   
   
