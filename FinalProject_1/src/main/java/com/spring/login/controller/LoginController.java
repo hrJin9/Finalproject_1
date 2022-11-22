@@ -15,17 +15,17 @@ public class LoginController {
 	
 	@RequestMapping(value = "/login.up")
 	public String login(HttpServletRequest request) {
-		return "login/login.tiles";
+		return "login/login";
 	}
 	
 	@RequestMapping(value = "/login/pwdFind.up")
 	public String pwdFind(HttpServletRequest request) {
-		return "login/pwdFind.tiles";
+		return "login/pwdFind";
 	}
 	
 	@RequestMapping(value = "/login/pwdFind_update.up")
 	public String pwdFind_update(HttpServletRequest request) {
-		return "login/pwdFind_update.tiles";
+		return "login/pwdFind_update";
 	}
 	
 }

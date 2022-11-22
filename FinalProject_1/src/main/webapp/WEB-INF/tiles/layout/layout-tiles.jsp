@@ -48,6 +48,11 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/calendar.css">
 <script src='<%= ctxPath%>/resources/js/calendar.js'></script>
 
+<!-- flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
 <style type="text/css">
 	.margin-container{margin-left: 5%;}

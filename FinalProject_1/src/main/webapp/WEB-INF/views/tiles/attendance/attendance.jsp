@@ -116,7 +116,7 @@
 <div class="attendance-container">
 	<div class="datebox margin-container">
 		<button type="button" class="datearrow" style="border-right: none;"><i class="fa-solid fa-angle-left" style="font-size:10pt;"></i></button>
-		<span><input type="" class="datepicker"/></span>
+		<span><input type="" class="datepicker" style="padding: 0 10px;"/></span>
 		<button type="button" class="datearrow" style="border-left: none;"><i class="fa-solid fa-angle-right" style="font-size:10pt;"></i></button>
 		<button type="button" class="today">오늘</button>
 	</div>
