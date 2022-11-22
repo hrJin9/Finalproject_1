@@ -1361,14 +1361,21 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 /* message_recieve.jsp */
 
 .message-container{
-	width: 90%;
+	width: 95%;
 	font-size: 11pt;
 }
 
 .message-container > div{
-	height: 500px;
-	width: 50%;
-	display: inline-block;
+	height: 610px;
+}
+
+.message-container > div:first-child {
+	float: left;
+	width: 40%;
+}
+.message-container > div:nth-child(2) {
+	float: right;
+	width: 60%;
 }
 
 .mg-left-container{
@@ -1377,7 +1384,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mgList-info{
 	padding: 15px 0;
-	margin-left: 11%;
+	margin-left: 13%;
 }
 
 .mgList-info > span:last-child{ 
@@ -1397,7 +1404,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mgList-info > span{
 	display: inline-block;
-	width: 10%;
+	width: 12%;
 }
 
 .mgList-info > span > span {
@@ -1410,7 +1417,8 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border: solid 2px rgba(0,0,0,0.1);
 	border-radius: 5px;
 	width: 20px; height: 20px;
-	position: relative; top: 5px;
+	position: relative; top: 4px;
+	background-color: white;
 }
 
 .mg-selectchx + label:hover{
@@ -1427,6 +1435,10 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	position: relative; top: 2px; left: 1px;
 }
 
+.mgList-contents .mg-selectchx:checked + label > i{
+	top: -3px; left: 2px;
+}
+
 
 .mg-selectchx-all ~ div.mg-noncheckmenu {
 	display: none;
@@ -1435,7 +1447,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .mgList{
-	margin-left: 11%;
+	margin-left: 13%;
 	margin-top: 3%;
 }
 
@@ -1448,7 +1460,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .mg-noncheckmenu > span {
-	position: relative; top: 4px;
+	position: relative; top: 3px;
 }
 
 .mg-noncheckmenu > span:first-child{
@@ -1484,4 +1496,88 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mg-checkmenu > button > i {
 	position: relative; bottom: 5px; right: 3px;
+}
+
+.mgList-contents{
+	height: 400px;
+	overflow-y: scroll;
+}
+
+.mgList-contents > table {
+	width: 95%;
+}
+
+.mgList-contents td:nth-child(3) > div:first-child > span:first-child{
+	font-size: 11pt;
+	font-weight: bold;
+	margin-right: 5px;
+}
+
+
+.mgList-contents tr:hover {
+	background-color: rgba(230,230,230, 0.4);
+	cursor: pointer;
+}
+
+.mgList-contents td:first-child {
+	border-bottom: solid 1px rgba(0,0,0,0.1);
+	padding-right: 10px;
+}
+
+.mgList-contents td:last-child{
+	text-align: right;
+}
+
+.mgList-contents td:first-child ~ td{
+	border-bottom: solid 1px rgba(0,0,0,0.1);
+	padding: 15px 10px;
+}
+
+
+.mgList-contents td div{
+	font-size: 9pt;
+}
+
+#check-star+ label > i{
+	font-size: 15pt; color: rgba(0,0,0,.1);
+	position: relative; top: 2px;
+}
+#check-star:checked + label > i{
+	color: #F29F05;
+}
+
+.mg-read {
+	color: rgba(0,0,0,0.5);
+}
+
+
+
+/* message_content.jsp */
+.mgc-container{
+	width: 95%;
+	margin-left: 2.5%;
+}
+
+.mgc-header{
+	height: 150px;
+	display: flex;
+}
+
+.mgc-header > div {
+	width: 50%;
+}
+.mgc-header-left{
+	float: left;
+}
+.mgc-header-right{
+	float: right;
+}
+
+.mgc-writebtn{
+	background: linear-gradient(to right, #2E83F2 60%, #5E9FF2);
+	border: none;
+	border-radius: 5px;
+	color: white;
+	height: 40px;
+	width: 100px;
 }
