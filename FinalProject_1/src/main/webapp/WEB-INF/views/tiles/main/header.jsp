@@ -43,11 +43,11 @@
 		position: absolute;
 		left: 0;
 		bottom: -1px;
-		width: 15%;
+		width: 16%;
 		height: 2px;
 		background: #333;
 		transition: all .3s ease-in-out;
-		margin-left: 5%;
+		margin-left: 2.5%;
 	}
 	
 	#list a:nth-child(1).list_iscurrent ~ .list_underline {
@@ -60,15 +60,15 @@
 		left: 0;
 	}
 	#list a:nth-child(2):hover ~ .list_underline {
-		left: 20%;
-		width: 10%;
+		left: 16%;
+		width: 15.5%;
 	}
 
 </style>
 <div class="row">
 	<nav id="list" class="col-10">
-		<a class="list_iscurrent">내 피드</a>
-		<a>처리할 일</a>
+		<a href="<%= request.getContextPath()%>/" class="list_iscurrent">내 피드</a>
+		<a href="<%= request.getContextPath()%>/main_todo.up">처리할 일</a>
 		<div class="list_underline"></div>
 	</nav>
 </div>

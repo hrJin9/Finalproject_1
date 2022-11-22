@@ -16,22 +16,20 @@
      /* font-size: 9pt; */
      font-family: 'Pretendard-Regular';
    }
-   
    div.sidebar{
-     box-shadow: 3px 3px 9px rgb(0 0 0 / 5%); 
-   	 /* border: 5px solid #f1f1f1 !important; */
-     width: 186px;
+    box-shadow: 3px 3px 9px rgb(0 0 0 / 5%);
+     width: 190px;
+     height: 100%;
      background-color: rgb(249, 250, 250);
      position: fixed;
      top: 0;
      left: -104px;
      z-index: 1;
      transition: all .35s;
-     padding: 26px 10px 24px 13px;
+     padding: 26px 14px 24px 15px;
      display: flex;
      flex-direction: column;
      height: 100%;
-     
    }
    input#menuicon:checked + label + div{
      left:0;
@@ -86,14 +84,14 @@
    input#menuicon:checked + label + div > div.profile > span.pic
    {position:relative;right: 0px;transition: all .35s;}
    
-   input#menuicon:checked + label + div +div+div.news{
-   	position:absolute;
-   	left: 143px;
-    top: 169px;
-    transition: all .35s;
+   input#menuicon:checked + label + div + div + div.news{
+	 position: absolute;
+     left: 180px;
+     top: 169px;
+     transition: all .35s;
    }
    div#mycontent{
-   	  transition':all 0.5s;
+        transition':all 0.5s;
    }
    input#menuicon + label + div +div+div.news {
       border: 1px solid #e6e6e6;
@@ -109,7 +107,7 @@
       
       position: absolute; 
       top: 23%;
-      left: 3.5%;
+      left: 4.5%;
       z-index: 2;
       
       overflow:hidden;
@@ -118,7 +116,7 @@
    .nav-menu ul{
      padding-left: 5px;
    }
-   .nav-menu li:hover, .profile:hover{
+   .nav-menu li:hover, .profile2:hover{
      background-color: rgb(244, 244, 244);
    }
    
@@ -143,8 +141,8 @@
       
    }
    .menu-text{
-     color:#556372;
-     font-size: 10pt;
+     color: #556372;
+     font-size: 11pt;
      position: relative;
      bottom: 1.1px;
    }
@@ -165,7 +163,7 @@
    }
    .pic{
      height: 38px;
-	 width: 38px;
+    width: 38px;
      font-size: 9pt;
      position: relative;
      display: flex;
@@ -194,19 +192,19 @@
      font-weight: bold;
    }
    .badge{
-	 background-color: rgb(242, 75, 23);
-	 padding: 0.5em 0.5em;
-	 width: 15px;
-	 height: 13px;
-	 font-size: 1px;
-	 font-weight: 600;
-	 color: #fbfbfb;
-	 display: inline-block;
-	 position: relative;
-	 bottom: 4.3px;
-	 left: 18px;
-	 box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
-	}
+    background-color: rgb(242, 75, 23);
+     padding: 0.5em 0.5em;
+     width: 15.5px;
+     height: 13.5px;
+     font-size: 1px;
+     font-weight: 600;
+     color: #fbfbfb;
+     display: inline-block;
+     position: relative;
+     bottom: 4.3px;
+     left: 24px;
+     box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+   }
    .newred{
      background-color: rgb(242, 75, 23);
      width: 5px;
@@ -220,7 +218,7 @@
    .newCnt{
      font-size: 5pt;
      position: relative;
-     top: 0px;
+     top: 1px;
      display: flex;
      align-items: center;
      justify-content: center;
@@ -250,71 +248,39 @@
       bottom: 20px;
       left: 10px;
    }
+   
+   #mycontent{
+      float: right; width: 94.6%; margin: 0 auto;
+   }
+   
+   /* 
+   #mycontent{
+      margin-left : 3%;
+   }
+    */
 </style>
 
 <script type="text/javascript">
 
    $(document).ready(function(){
-	  // $(".myprofile").hide();
-	  // $(".news").hide();
-	   
-      $(".profile").click(function(){  // 내프로필 클릭시
-         // $(".myprofile").toggle();
-      	 if($(".myprofile").css("display","none")) {
-      		$(".myprofile").css("display","block");
-      		$(".news").css("display","none");
-      	 } else {
-      		 // $(".myprofile").css("display","none");
-      		$(".myprofile").toggle();
-      	 }
+      
+      $(".profile2").click(function(){  // 내프로필 클릭시
+          if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
+            $(".myprofile").show();
+            $(".news").hide();
+          } else {
+            $(".myprofile").hide();
+          }
       });
-      
-     /*  $(".profile").click(function(){  // 내프로필 클릭시
-	      if($(".myprofile").css("display","block") ) { // 내프로필 창이 열려있다면
-	    	  $("li#newsIcon").click(function(){
-	   	         $(".myprofile").css("display","none");
-	   	      });
-	      }
-      }); */
-      
-      /* $(".profile").click(function(){  // 내프로필 클릭시
-	      if($(".myprofile").show()) { // 내프로필 창이 열려있다면
-	    	  $("li#newsIcon").click(function(){
-	   	         $(".myprofile").hide();
-	   	      });
-	      }
-      }); */
-      
       
       $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-          // $(".news").toggle();
-    	  if($(".news").css("display","none")) {
-       		 $(".news").css("display","block");
-       		 $(".myprofile").css("display","none");
-       	  } else {
-       		 // $(".news").css("display","none");
-       		 $(".myprofile").toggle();
-       	  }
+         if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
+              $(".news").show();
+              $(".myprofile").hide();
+            } else {
+              $(".news").hide();
+            }
       });
-      
-      /* $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-	      if($(".news").css("display","block")) {  // 새로운소식 창이 열려있다면
-	    	  $(".profile").click(function(){
-	   	         $(".news").css("display","none");
-	   	      });
-	      }
-      }); */
-    	  
-      /* $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-	      if($(".news").show()) {  // 새로운소식 창이 열려있다면
-	    	  $(".profile").click(function(){
-	   	         $(".news").hide();
-	   	      });
-	      }
-      }); */
-    	  
-      
-      
       
       
       // 비밀번호 변경창 닫기 버튼 클릭 시
@@ -330,9 +296,9 @@
       <%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
       $("input#menuicon").change(function(){
           if($("#menuicon").is(":checked")){
-              $("div#mycontent").css({'transition':'all 0.5s','width':'90%','margin':'0 auto'});
+              $("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
           }else{
-              $("div#mycontent").css({'width':'100%','transition':'all 0.5s'});
+              $("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
           }
       });
       
@@ -348,7 +314,7 @@
   </label>
   <div class="sidebar">
 
-    <div class="profile" href="#" style="margin-top: 29px; margin-bottom:30px;">
+    <div class="profile profile2" href="#" style="margin-top: 29px; margin-bottom:30px;">
       <span class="pic"><span>지은</span></span>
       <span class="my"><span class="name">김지은</span><br>
       <span class="role">개발자</span>
@@ -364,8 +330,8 @@
 
         <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
 
-        <li><a href="<%= request.getContextPath()%>/" ><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
-        <li><a href="<%= request.getContextPath()%>/member.up" ><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
+       <li><a href="<%= request.getContextPath()%>/" ><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/memberList.up" ><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
         <li><a href="<%= request.getContextPath()%>/calendar.up" ><span class="icon icon-clipboard"></span><span class="menu-text">캘린더</span></a></li>
         <li><a href="<%= request.getContextPath()%>/message.up" ><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
         <li><a href="<%= request.getContextPath()%>/attendance.up" ><span class="icon icon-alarm"></span><span class="menu-text">근무관리</span></a></li>
@@ -377,18 +343,18 @@
         <li><a href="<%= request.getContextPath()%>/admin_login.up" ><span class="icon icon-file-text"></span><span class="menu-text">로그관리</span></a></li>
       </ul> 
     </div>
+  </div>
   
-  
-  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 14%; left: 1%; z-index: 1;">
-     <a class="list-group-item list-group-item-action" href="#" style="font-size: 14px; cursor: pointer;">
+  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 1;">
+     <a class="list-group-item list-group-item-action" href="<%= request.getContextPath()%>/myInfo_hr.up" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
         <span style="font-size: 8.5pt; color: #737373;">sawonwldms@gmail.com</span><br>
         <span style="font-size: 8.5pt; color: #737373; padding-bottom: 3px; ">개발자</span><br>
        </a>
-     <a class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;" data-toggle="modal" data-target="#userPwdChange" data-dismiss="modal" data-backdrop="static">
+     <a class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#userPwdChange" data-bs-dismiss="modal" data-bs-backdrop="static">
         <i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
-       </a>
+     </a>
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
     </div>
     
@@ -400,7 +366,7 @@
       <div>
          <span class="newsIcon" style="font-size: 9pt; position: relative; display: inline-block;">
             <span class="newred2"></span>
-            <span class="icon icon-bell" style="color: #ffffff; position: absolute; left: 0.7px; bottom: 9px; font-size: 9pt;"></span>
+            <span class="icon icon-bell" style="color: #ffffff; position: absolute; left: 0px; bottom: 9px; font-size: 9pt;"></span>
          </span>
          <span style="padding-left:15px; position:relative; top:1px;">
             <span style="font-size:8pt; font-weight:bold; color:#595959; display: inline-block;">'비품신청'의 승인이 완료되었어요.<br>
@@ -408,34 +374,24 @@
          </span>
       </div>
    </div>
-  </div>
-    
     
     
     
     <%-- **** 비밀번호 변경 Modal **** --%>
-   <div class="modal fade" id="userPwdChange">  <%-- 아이디찾기 a 태그의 data-target="#userPwdChange" data-dismiss="modal" 와 매핑됨. --%>
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal header -->
-       <button type="button" class="close pwdChangeClose" data-dismiss="modal" style="margin: 20px 0px 10px 380px; font-size: 20pt;">&times;</button>
-        
-        <!-- Modal body -->
-        <h4 class="modal-title" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
-        <div class="modal-body">
-          <div id="pwdChange">
-             <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/member/pwdChange.up">
-             <%-- <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/WEB-INF/views/tiles/member/pwdChange.jsp"> --%>
-             </iframe>
-             
+    <div class="modal fade" id="userPwdChange" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <%-- 아이디찾기 a 태그의 data-target="#userPwdFind" data-dismiss="modal" 와 매핑됨. --%>
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <!— Modal header —>
+         <button type="button" class="btn-close pwdChangeClose" " data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
+         
+         <!— Modal body —>
+         <div class="modal-body">
+         <h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
+         <div id="pwdChange">
+            <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 340px;" src="<%= request.getContextPath()%>/pwdChange.up"></iframe>
          </div>
+         </div>
+         
        </div>
-        
-        <!-- Modal footer -->
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-danger pwdChangeClose" data-dismiss="modal">Close</button>
-        </div> -->
-      </div>
-    </div>
-  </div>
+     </div>
+   </div>

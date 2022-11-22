@@ -13,37 +13,37 @@ public class MemberController {
 	@Autowired
 	private InterFinalprojectService service;
 	
-	@RequestMapping(value = "/member/memberRegister.up")
+	@RequestMapping(value = "/memberRegister.up")
 	public String memberRegister(HttpServletRequest request) {
 		return "member/memberRegister";
 	}
 	
-	@RequestMapping(value = "/member/myInfo_hr.up")
+	@RequestMapping(value = "/myInfo_hr.up")
 	public String myInfo_hr(HttpServletRequest request) {
 		return "member/myInfo_hr.tiles";
 	}
 	
-	@RequestMapping(value = "/member/myInfo_personal.up")
+	@RequestMapping(value = "/myInfo_personal.up")
 	public String myInfo_personal(HttpServletRequest request) {
 		return "member/myInfo_personal.tiles";
 	}
 	
-	@RequestMapping(value = "/member/pwdChange.up")
+	@RequestMapping(value = "/pwdChange.up")
 	public String pwdChange(HttpServletRequest request) {
 		return "member/pwdChange";
 	}
 	
-	@RequestMapping(value = "/member/memberList.up")
+	@RequestMapping(value = "/memberList.up")
 	public String memberList(HttpServletRequest request) {
 		return "member/memberList.tiles";
 	}
 	
-	@RequestMapping(value = "/member/memberInfo_hr.up")
+	@RequestMapping(value = "/memberInfo_hr.up")
 	public String memberInfo_hr(HttpServletRequest request) {
 		return "member/memberInfo_hr.tiles";
 	}
 	
-	@RequestMapping(value = "/member/memberInfo_personal.up")
+	@RequestMapping(value = "/memberInfo_personal.up")
 	public String memberInfo_personal(HttpServletRequest request) {
 		return "member/memberInfo_personal.tiles";
 	}
