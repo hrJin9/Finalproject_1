@@ -225,18 +225,18 @@
 
 
 	.control-label {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 9px;
-    line-height: 1.43;
-    color:#9e9e9e;
-}
-#datepick {
-    width: 200px !important;
-    font-size: 29px !important;
-    background-color: white !important;
-    border: 0px !important;
-}
+	    display: block;
+	    margin-bottom: 4px;
+	    font-size: 9px;
+	    line-height: 1.43;
+	    color:#9e9e9e;
+	}
+	#datepick {
+	    width: 200px !important;
+	    font-size: 29px !important;
+	    background-color: white !important;
+	    border: 0px !important;
+	}
 </style>
 
 <script type="text/javascript">
@@ -295,20 +295,23 @@
 	                <div class="js-search-pickr-layer" data-code="unlimit">
 		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
 		                	<div class="datebox margin-container">
-		                		<span class="control-label">시작일</span>
+		                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">시작일</span>
 								<span><input id="datepick"class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
 							</div>
 						</div>
 	                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
 		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
 		                	<div class="datebox margin-container">
-		                		<span class="control-label">종료일</span>
+		                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">종료일</span>
 								<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
 							</div>
 						</div>
 	                </div>
 	            </div>
-				<div class="dropdown bootstrap-select -xs"><select class="selectpicker selectpicker-xs" name="" tabindex="-98"><option value="ALL">전체</option><option value="WORK_EVENT">근태</option><option value="WORK_TIME">근무</option><option value="BILL">비용</option><option value="STATEMENT">증명서</option><option value="NORMAL">일반</option></select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="전체" aria-expanded="false"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">전체</div></div> </div></button><div class="dropdown-menu" role="combobox" x-placement="bottom-start" style="max-height: 504.969px; overflow: hidden; min-height: 153px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 32px, 0px);"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 488.969px; overflow-y: auto; min-height: 137px;"><ul class="dropdown-menu inner show"><li class="selected active"><a role="option" class="dropdown-item selected active" aria-disabled="false" tabindex="0" aria-selected="true"><span class=" bs-ok-default check-mark"></span><span class="text">전체</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">근태</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">근무</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">비용</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">증명서</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">일반</span></a></li></ul></div></div></div>
+				<div class="dropdown bootstrap-select -xs">
+				<!-- <select class="selectpicker selectpicker-xs" name="" tabindex="-98"><option value="ALL">전체</option><option value="WORK_EVENT">근태</option><option value="WORK_TIME">근무</option><option value="BILL">비용</option><option value="STATEMENT">증명서</option><option value="NORMAL">일반</option></select> -->
+				<button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="전체" aria-expanded="false"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">전체</div></div> </div></button><div class="dropdown-menu" role="combobox" x-placement="bottom-start" style="max-height: 504.969px; overflow: hidden; min-height: 153px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 32px, 0px);"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 488.969px; overflow-y: auto; min-height: 137px;"><ul class="dropdown-menu inner show"><li class="selected active"><a role="option" class="dropdown-item selected active" aria-disabled="false" tabindex="0" aria-selected="true"><span class=" bs-ok-default check-mark"></span><span class="text">전체</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">근태</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">근무</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">비용</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">증명서</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">일반</span>
+				</a></li></ul></div></div></div>
 
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group" style="font-size: 8pt;margin-bottom:0;">
@@ -336,8 +339,8 @@
         <table class="table custom-table">   
           <thead>   
             <tr>
-              <th class="boardth" width="15%"scope="col"><button type="button" style="border: none; background-color: #ffff;">시간<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>     
-              <th class="boardth" width="12%" scope="col"><button type="button" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>  
+              <th class="boardth" width="15%"scope="col"><button type="button" style="border: none; background-color: #ffff;">종류<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>     
+              <th class="boardth" width="12%" scope="col"><button type="button" style="border: none; background-color: #ffff;">문서번호<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>  
               <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 				  <div class="dropdown-menu">
 					      <h5 class="dropdown-header">소속</h5>
@@ -350,10 +353,10 @@
 				  </div>
 			  </th>
               <th class="boardth" width="12%" scope="col"><button type="button" style="border: none; background-color: #ffff;">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>  
-              <th class="boardth" width="12%"scope="col">유형</th>
-              <th class="boardth" width="12%"scope="col">IP</th> 
-              <th class="boardth" width="12%"scope="col">디바이스</th> 
-              <th class="boardth" width="12%"scope="col">브라우저</th>
+              <th class="boardth" width="12%"scope="col">제목</th>
+              <th class="boardth" width="12%"scope="col">첨부파일</th> 
+              <th class="boardth" width="12%"scope="col">결재의견</th> 
+              <th class="boardth" width="12%"scope="col">작성일</th>
             </tr> 
           </thead>
           <tbody>
