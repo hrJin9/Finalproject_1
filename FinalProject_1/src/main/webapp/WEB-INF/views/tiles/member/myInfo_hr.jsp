@@ -167,7 +167,7 @@
 		</div>
 	   </div> 
 	
-		<nav id="list">
+		<nav id="list" class="header-nav">
 			<a class="list_iscurrent myInfo_hView">인사 정보</a>
 			<a class="myInfo_pView">개인 정보</a>
 			<div class="list_underline"></div>
