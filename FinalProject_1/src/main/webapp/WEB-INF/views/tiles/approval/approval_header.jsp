@@ -3,28 +3,24 @@
     
 <% String ctxPath = request.getContextPath(); %>    
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-
-
 <!-- 텍스트에디터 -->
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
 
-
-
 <style type="text/css">
+	
+	.currentPage{color:black;}
 	#board_mainList a:hover{
 		color: #000000;
 		cursor: pointer;
 	}
 	
-	#board_subList a:hover{
+	#freeboard_subList a:hover{
 		background-color: rgba(200,200,200, .2);
 		cursor: pointer;
+		color: #4d4f53;
 	}
 		
 	#board_mainList {
@@ -42,7 +38,8 @@
 		width: 18%;
 		padding: 0.7em 0 0.3em 0;
 		text-decoration: none;
-		margin-left: 4%;
+		margin-right: 4%;
+		text-align: center;
 	}
 	
 	.list_iscurrent{
@@ -51,71 +48,44 @@
 	.list_notcurrent{
 		color: #D2D6D9;
 	}
-	/* 
-	#board_subList a:nth-child(1).iscurrent ~ .freeboard_subList_underline {
-		left: 0%;
-	}
-	#board_subList a:nth-child(2).iscurrent ~ .freeboard_subList_underline {
-		left: 15%; /* width랑 margin-left랑 합친거 
-	}
-	 */
 	
+	#freeboard_subList{
+		position: relative;
+		display: flex;
+		width: 640px;
+		font-size: 10pt;
+		font-weight: bold;
+		margin: 4px 0 0 60px;
+	}
 	
-	.list_underline {
+	#freeboard_subList a {
+		display: block;
+		width: 10%;
+		padding: .9em 0;
+		/* color: #333; */
+		text-align: center;
+		text-decoration: none;
+		/* color: #D2D6D9; */
+		border-radius: 12px;
+	}
+	
+	.freeboard_subList_underline {
 		position: absolute;
-		left: 0;
-		bottom: -1px;
-		width: 15%;
+		left: -3px;
+    	bottom: -1px;
+		width: 9%;
 		height: 2px;
 		background: #333;
 		transition: all .3s ease-in-out;
 		margin-left: 5%;
 	}
-	#list a:nth-child(1).list_iscurrent ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2).list_iscurrent ~ .list_underline {
-		left: 20%; /* width랑 margin-left랑 합친거 */
-	}
-	#list a:nth-child(1):hover ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2):hover ~ .list_underline {
-		left: 20%;
-		width: 16%;
-	}
-	/* #dayoff_subList a:hover{
-		background-color: rgba(200,200,200, .2);
-		cursor: pointer;
-	} */
-		
-	#board_list {
-		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 18pt;
-		font-weight: bold;
-		margin: 4px 0 0 70px;
-	}
 	
-	#board_list a {
-		display: block;
-		width: 11%;
-		padding: 0.7em 0 0.9em 0;
-		color: #333;
-		text-decoration: none;
-		margin-left: 4%;
-		color: #D2D6D9;
-	}
-	
-	/* #dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
+	#freeboard_subList a:nth-child(1).iscurrent ~ .freeboard_subList_underline {
 		left: 0%;
 	}
-	#dayoff_subList a:nth-child(2).iscurrent ~ .dayoff_subList_underline {
-		left: 15%; /* width랑 margin-left랑 합친거 
-	}*/
-	
-	
+	#freeboard_subList a:nth-child(2).iscurrent ~ .freeboard_subList_underline {
+		left: 10.5%; /* width랑 margin-left랑 합친거 */
+	}
 	.newbadge{
 	  background-color: #dc3545;
 	  width: 12px;
@@ -130,7 +100,7 @@
 	  text-align: center;
 	  position: relative;
 	  top: 3px;
-	  margin-right: 20px;
+	  margin-right: 14px;
 	}
 	.titlefirst{
 		font-weight: 800;
@@ -149,7 +119,7 @@
 	  display:inline-block;
 	  border-radius: 10px;
 	  position: relative;
-	  margin-right: 15px;
+	  margin-right: 5px;
 	  top: 0.5px;
 	  /* top:-2px;
 	  left:10px; */ 
@@ -191,7 +161,7 @@
 	a, a:hover {
     	text-decoration: none !important;
 	}
-	a:hover {
+	a.icon-star-empty:hover {
 		color: #ffc107;
     }
 	.title:hover{
@@ -294,8 +264,15 @@
 	});
 </script>
 <nav id="board_mainList">
-	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board/notice.up">공지사항</a>
-	<a class="mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
+	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/approval.up">전자결재홈</a>
 	<!-- <div class="list_underline"></div> -->
 </nav>
+
+<nav id="freeboard_subList">
+	<a id="freeboard-total" class="list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">상신함</a>
+	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">수신함</a>
+	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">내 문서함</a><!-- 북마크,임시저장  -->
+	<div class="freeboard_subList_underline"></div>
+</nav>
+
 <hr class="HRhr" style="margin-top: 0px;"/>

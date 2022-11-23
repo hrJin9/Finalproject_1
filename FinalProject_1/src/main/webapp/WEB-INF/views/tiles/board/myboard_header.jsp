@@ -265,14 +265,15 @@
 </script>
 <nav id="board_mainList">
 	<a class="mainlist list_notcurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
-	<a class="mainlist list_iscurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
-	<a class="mainlist list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
+	<a class="mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
+	<a class="mainlist list_iscurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
 	<!-- <div class="list_underline"></div> -->
 </nav>
 
 <nav id="freeboard_subList">
-	<a id="freeboard-total" class="list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">전사게시판</a>
-	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">부서게시판</a>
+	<a id="freeboard-total" class="list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">내 게시물</a>
+	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">북마크</a>
+	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">임시저장</a>
 	<div class="freeboard_subList_underline"></div>
 </nav>
 

@@ -195,8 +195,8 @@ div.option {
     font-size: 18pt;
     box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
     position: absolute;
-    top: 24%;
-    left: 45.5%;
+    top: 15%;
+    left: 55.5%;
     z-index: 2;
     overflow:hidden;
  } 
@@ -276,15 +276,15 @@ ul{
  li{
  	font-size: 10pt;
  }
- 
+ /* 
  .search-period-wr .filter-input-box:first-child {
     margin: 10px 30px 0 0;
-}
+} */
 .search-period-wr .filter-input-box {
     overflow: hidden;
     display: inline-block;
     margin: 10px 0 0 0;
-    padding: 7px 44px 0 10px;
+    /* padding: 7px 44px 0 10px; */
     height: 32px;
     width: auto;
 }
@@ -294,15 +294,29 @@ ul{
     margin-top: 10px;
     padding: 10px 15px 10px 15px;
     background: #fff;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     -webkit-border-radius: 4px;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     width: 100%;
     font-size: 13px;
 }
+div.datebox > span > input {
+    bottom: 3px !important;
+    top: -10px !important;
+}    
+.attendance-dateSelector {
+    height: 30px;
+    display: inline-block;
+    border: solid 1px rgba(0, 0, 0, .1);
+    margin: 0;
+    width: 120px !important;
+    padding: 7px 20px 7px 20px;
+	border-radius: 7px;
+}
+
 .search-period-wr .filter-date-label {
     right: 10px;
 }
@@ -329,8 +343,8 @@ ul{
 	visibility:hidden;
 }
 .title:hover {
-    cursor: default;
-    text-decoration: none; 
+    cursor: pointer;
+    text-decoration: underline; 
 }
 .offcanvas {
     box-shadow: 5px 5px 20px 3px rgb(91 91 91 / 80%) !important;
@@ -377,6 +391,29 @@ ul{
     margin-right: 10px;
     
 }
+.mr-1{
+	margin-right: 10px;
+}
+#optionreset{
+	margin-left: 90px; 
+	border: none; 
+	font-size: 8pt; 
+	font-weight:bold; 
+	border-radius: 3px; 
+	background-color:#3B86C812; 
+	color: #2E5E87;
+	padding: 5px 8px;
+	float: right;
+}
+#writer{
+	box-shadow: none;
+	font-size:9pt; 
+	border-radius: 0px;
+	border-top: none;
+	border-radius: none;
+	border-left: none;
+	border-right: none;
+}
 </style>
 
 <script type="text/javascript">
@@ -385,7 +422,7 @@ $(document).ready(function(){
 	$(".search-period-wr").hide();
 	$("div#ntRplAnon").hide();
 	$("a#notice").addClass('list_iscurrent');
-	
+	$("#date_total").prop("checked", true);
 	
 	/* 북마크 표시 */
 	  $('.bookmark').click(function(e) {
@@ -495,6 +532,31 @@ $(document).ready(function(){
         }
     });
 	
+    
+ // 플랫피커
+ 	flatpickr.localize(flatpickr.l10ns.ko);
+ 	flatpickr($(".dateSelector"));
+	$(".dateSelector").flatpickr({
+		dateFormat: "Y-m-d",
+		defaultDate: new Date(),
+		local: 'ko'
+	});
+	
+	
+	
+	// 초기화 버튼 누르면 옵션 값들 비우기 
+	$("button#optionreset").click(function(){
+		$("#ctgy").val("");
+		$("#writer").val("");
+		$("#date_total").prop("checked", true);
+		
+		$("input[name='category']").each(function() {
+			if(this.checked)
+				this.checked = false;
+        });
+	})
+	
+	
 });//end of ready
 
 <%-- 카테고리 멀티 셀렉터 열리고 닫히고  --%>
@@ -580,7 +642,7 @@ function goSearch(){
 		   <div id="option" class="option">
 		      <div style="font-size: 11pt; color: #595959; font-weight: bold; padding-bottom: 20px;">검색 옵션
 		      	 <!-- <label class="filter-date-label"><i class="icon icon-redo"></i></label> -->
-		         <button style="margin-left: 90px; border: none; font-size: 8pt; font-weight:bold; border-radius: 3px; background-color:#3B86C812; color: #2E5E87; padding: 5px 8px;float: right;">초기화</button>
+		         <button type="button" id="optionreset">초기화</button>
 		      </div>
 		      <div class="detail-search-conditions">
 			    <ul class="conditions-group">
@@ -613,7 +675,7 @@ function goSearch(){
 			        <li class="js-register-name-search-filter" style="display: block;">
 			            <div class="condition-cell title">작성자</div>
 			            <div class="condition-cell">
-			            	<input class="form-control" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;"type="text" placeholder="작성자명 입력 (여러명 입력시, 콤마로 구분)">
+			            	<input id="writer"class="form-control" type="text" placeholder="작성자명 입력 (여러명 입력시, 콤마로 구분)">
 			            </div>
 			        </li>
 			        <li class="js-period-type-search-filter" data-code="unlimit" style="display: block;">
@@ -660,17 +722,17 @@ function goSearch(){
 				                <label for="date_select" class="js-period-type radio-label-checkbox" data-code="select">기간선택</label>
 					            <div class="search-period-wr" >
 					                <div class="js-search-pickr-layer" data-code="unlimit">
-					                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
-					                        <span>2012-11-20</span>
-					                        <!-- <input type="hidden" value="20121120000000"> -->
-					                        <label class="filter-date-label"><i class="icon icon-calendar"></i></label>
-					                    </div>
-					                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 14px;">~</span>
-					                    <div class="js-date-type js-pickr-layer js-end-flatpickr filter-input-box">
-					                        <span>2022-11-20</span>
-					                        <!-- <input type="hidden" value="20221120235959"> -->
-					                        <label class="filter-date-label"><i class="icon icon-calendar"></i></label>
-					                    </div>
+ 					                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
+						                	<div class="datebox margin-container">
+												<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;"/></span>
+											</div>
+										</div>
+					                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
+ 					                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
+						                	<div class="datebox margin-container">
+												<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;"/></span>
+											</div>
+										</div>
 					                </div>
 					            </div>
 				        
@@ -685,7 +747,7 @@ function goSearch(){
 		        </div> -->
 		        <div class="condition-right">
 		            <button type="reset" class="workstatus-cancel" onClick="optionForm('CLOSE'), multiSelect('CLOSE')">취소</button>
-		            <button type="button" class="workstatus-save" onClick="goSearch()">검색</button>
+		            <button type="button" class="workstatus-save mr-1"  onClick="goSearch()">검색</button>
 		        </div>
 		    </div>
 		</div>
@@ -701,15 +763,15 @@ function goSearch(){
             </tr>
           </thead>
           <tbody>
-            <tr class="topnotice"><!-- 공지 상단에 고정 -->
+          	<tr class="topnotice"><!-- 공지 상단에 고정 -->
               <td>
               	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
+              		<i class="icon icon-pushpin"style="color:#4285f4;"></i>&nbsp;<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
               		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
+              		<span class="teamname">THUMBS UP</span>
             		<span class="writedate">11.16</span>
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
@@ -722,14 +784,14 @@ function goSearch(){
             <tr class="topnotice">
               <td>
               	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
+              		<i class="icon icon-pushpin"style="color:#4285f4;"></i>&nbsp;<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
+              		<span class="categorybadge">일반공지</span>
+              		<span class="teamname">THUMBS UP</span>
             		<span class="writedate">11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
+            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
@@ -737,17 +799,18 @@ function goSearch(){
               	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
+            
             <tr class="topnotice">
                <td>
               	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
+              		<i class="icon icon-pushpin"style="color:#4285f4;"></i>&nbsp;<span class="title">[떰접식당 이용정책 변경안내]</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
+              		<span class="categorybadge">일반공지</span>
+              		<span class="teamname">THUMBS UP</span>
             		<span class="writedate">11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
+            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
@@ -758,12 +821,12 @@ function goSearch(){
             <tr>
                <td>
               	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
+              		<span class="title">[그룹웨어] 알림기능 업데이트 안내</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
+              		<span class="categorybadge">전체공지</span>
+              		<span class="teamname">IT</span>
             		<span class="writedate">11.16</span>
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
@@ -776,14 +839,13 @@ function goSearch(){
             <tr >
                <td>
               	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
+              		<span class="title">[온라인 세미나] 11/25(금) 세미나 공지</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
               		<span class="categorybadge">문진표공유</span>
               		<span class="teamname">EX</span>
             		<span class="writedate">11.16</span>
-            		<!-- <span class="newbadge">n</span> -->
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
@@ -841,7 +903,7 @@ function goSearch(){
 					</div>
 				</div>
 			
-			<hr class="HRhr  mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
+			<!-- <hr class="HRhr  mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/> -->
 			<div class="form-group"style="width:30%">
 				<div class="form-field mb-2">
 					<div class="select-wrap">
@@ -867,7 +929,7 @@ function goSearch(){
 				</div>
 			</div>
 			<div class="form-group" style="margin-top: 10px;">
-				<span class="control-label">파일첨부</span>
+				<span class="control-label">파일첨부</span>파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요
 				<div class="position-relative">
 					<input type="file" id="file" class="form-control"  name="file" >
 				</div>
@@ -908,9 +970,9 @@ function goSearch(){
 			
     		<div class="workstatus-buttoncontainer">
 	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-		  			<button type="reset" class="workstatus-cancel">취소</button>
-		  			<button type="button" style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;"class="workstatus-save">임시저장</button>
-		  			<button type="button" class="workstatus-save">저장하기</button>
+		  			<button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button>
+		  			<button type="button" class="workstatus-save mr-1">저장하기</button>
+		  			<button type="reset" class="workstatus-cancel mr-1">취소</button>
 	  			</div>
     	
 		  	</div>

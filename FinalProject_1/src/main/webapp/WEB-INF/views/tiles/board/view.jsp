@@ -298,6 +298,7 @@ $(document).ready(function(){
 	            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton1" >
 	              <a class="dropdown-item" href="#">메일로 공유하기</a>
 	              <a class="dropdown-item" href="#">링크복사</a>
+	              <a class="dropdown-item" href="#">인쇄하기</a>
 	            </div>
           	</div>
           	

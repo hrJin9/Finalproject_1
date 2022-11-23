@@ -3,807 +3,395 @@
 <%@ include file="approval_header.jsp"%> 
 <%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mdb.min.css"> --%>
 <!-- MDB -->
-<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet"/> -->
+<!-- <link href="https://dashboard.wantedspace.ai/css/common.css?version=2020.06.16" rel="stylesheet"/> -->
+<!-- <link href="https://dashboard.wantedspace.ai/css/bootstrap.min.css?__WB_REVISION__=64bbf58572732583d4b3e9a5e65725b8" rel="stylesheet"/>
+<link href="https://dashboard.wantedspace.ai/css/bootstrap-select.min.css?__WB_REVISION__=7551bdcaa335fbd51d4c6095dba2a7bf" rel="stylesheet"/> -->
 <!-- MDB -->
 <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script> -->
+
 <style type="text/css">
 
-
-p {
-	color: darken(#ccc, 10%);
-	font-weight: 300;
-}
-a {
-	transition: .3s all ease;
-	&, &:hover {
-		text-decoration: none!important;
-	}
-}
-.content {
-	padding: 7rem 0;
-}
-h2 {
-	font-size: 20px;
-}
-
-
-.custom-table {
-	min-width: 900px;
-	thead {
-		tr, th {
-			border-top: none;
-			border-bottom: none!important;
-		}
-	}
-	tbody {
-		th, td {
-			color: #777;
-			font-weight: 400;
-      font-weight: 300;
-		}
-	}
-}
-
-
-.table thead th {
-	padding-top: 0;
-    border-bottom: 2px solid #d4d5d6;
-    border-top: 1px solid white;
-}
-.boardth{
-	position: relative;
-	top: -6px;
-}
-.table td{
-	font-size: 10pt;
-    border-bottom: 1px solid #eef2f6;
-    padding-left: 22px;
-}
-.table {
-    color: #4c4e54;
-}
-table tr{
-	padding-left: 10px;
-}
-table tr:hover {
-	background-color: #f4f8f9;
-}
-.topnotice{
-	background-color: #f9f9f9;
-}
-
-
-.form-control{
-	font-size: 12pt;
-}
-.row>*{
-	width: auto;
-	padding: 0;
-}
-
-
-
-
-
-.viewtitle{
-	font-size: 14pt;
-	font-weight: bolder;
-}
-.writeinfo{
-	font-size: 9pt;
-}
-.cmt{
-	font-size: 9pt;
-}
-p.contents{
-	font-size: 11pt;
-}
-
-span.reply{
-	color:#999494;
-	font-size:9pt;
-	position: relative;
-	top:3px;
-}
-span.reply:hover{
-	cursor: pointer;
-}
-div.line{
-	border: 0.1px solid #ececec; 
-	margin:20px;
-	width:100%;
-	position:relative;
-	left:-20px;
-}
-textarea#content{
- 	float:right;
- 	width: 93%; 
- 	margin-right:10px; 
- 	height: 100px;
-}
-a.dropdown-link{
-	color:#999494;
-	font-size: 5pt;
-	float:right;
-	position: absolute;
-	right: 50px;
-} 
-#title,#tagname {
-    height: 44px;
-    padding: 6px 16px 9px 16px;
-    padding-right: 30px;
-    background-color: #fafafa !important;
-    border-radius: 4px !important;
-    box-shadow: none !important;
-    -webkit-appearance: none;
-    border: 2px solid #e8e8e8 !important;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: calc(1.5 * 10px);
-    color: #484848;
-}
-
-#file{
-	font-size: 14px;
-}
-/* #tagname {
 	
-} */
+		
+	.custom-table {
+		min-width: 900px;
+		thead {
+			tr, th {
+				border-top: none;
+				border-bottom: none!important;
+			}
+		}
+		tbody {
+			th, td {
+				color: #777;
+				font-weight: 400;
+	      font-weight: 300;
+			}
+		}
+	}
+	
+	.table>:not(:first-child) {
+	       border-top: 1.5px solid #cfcfcf;
+	}
+	 
+	
+	 
+	
+	/* Custom Checkbox */
+	.control {
+	  display: block;
+	  position: relative;
+	  margin-bottom: 25px;
+	  cursor: pointer; }
+	
+	.control input {
+	  position: absolute;
+	  z-index: -1;
+	  opacity: 0; }
+	
+	.control__indicator {
+	  position: absolute;
+	  top: 2px;
+	  left: 0;
+	  height: 15px;
+	  width: 15px;
+	  border-radius: 3px;
+	  border: 2px solid #ccc;
+	  background: transparent; }
+	
+	.control--radio .control__indicator {
+	  border-radius: 50%; }
+	
+	.control:hover input ~ .control__indicator,
+	.control input:focus ~ .control__indicator {
+	  border: 2px solid #007bff; }
+	
+	.control input:checked ~ .control__indicator {
+	  border: 2px solid #007bff;
+	  background: #007bff; }
+	
+	.control input:disabled ~ .control__indicator {
+	  background: #e6e6e6;
+	  opacity: 0.6;
+	  pointer-events: none;
+	  border: 2px solid #ccc; }
+	
+	
+	.control input:checked ~ .control__indicator:after {
+	  display: block;
+	  color: #fff; }
+	
+	.control--checkbox .control__indicator:after {
+	  top: 50%;
+	  left: 50%;
+	  -webkit-transform: translate(-50%, -52%);
+	  -ms-transform: translate(-50%, -52%);
+	  transform: translate(-50%, -52%); 
+	  }
+	
+	.control--checkbox input:disabled ~ .control__indicator:after {
+	  border-color: #7b7b7b; }
+	
+	.control--checkbox input:disabled:checked ~ .control__indicator {
+	  background-color: #007bff;
+	  opacity: .2;
+	  border: 2px solid #007bff; }
+	
+	.table thead th {
+		border-bottom: none;
+		text-align: center; 
+	}
+	.boardth{
+		position: relative;
+		top: -6px;
+	}
+	.table td, .table th {
+		font-size: 11pt;
+	    border-top: 1px solid #eef2f6;
+	}
+	.table {
+	    color: #4c4e54;
+	}
+	table td{
+		font-size: 11pt;
+		text-align: center; 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	.custom-dropdown {
+	border: none!important;
+	> a {
+		color: $black;
+		.arrow {
+			display: inline-block;
+			position: relative;
+			transition: .3s transform ease;
+		}
+	}
+	&.show {
+		> a {
+			.arrow {
+				transform: rotate(-180deg);
+			}
+		}
+	}
+	
+	.btn {
+		&:active, &:focus {
+			box-shadow: none!important;
+			outline: none;
+		}	
+		&.btn-custom {
+			border: 1px solid #efefef;	
+		}
+	}
+	
+	
+	.menu-heading {
+		font-size: 14px;
+		color: lighten($black, 70%);
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	hr {
+		display: block; height: 1px;
+	   border: 0; border-top: 1px solid darken($light, 5%);
+	   margin: .5em 0; padding: 0;
+	}
+	
+	.dropdown-menu {
+		border: 1px solid transparent!important;
+		box-shadow: 0 15px 30px 0 rgba($black, .2);
+		margin-top: -10px!important;
+		padding: 20px 0;
+		opacity: 0;
+		border-radius: 0;
+		background: $white;
+		// right: auto!important;
+		// left: auto!important;
+		transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+		visibility: hidden;
+		&.active {
+			opacity: 1;
+			visibility: visible;
+			margin-top: 0px!important;
+		}
+	
+		a {
+			// border-bottom: 1px solid rgba($black, .1);
+			font-size: 14px;
+			padding: 8px 20px;
+			position: relative;
+			color: $black;
+			&:last-child {
+				border-bottom: none;
+			}
+			.icon {
+				margin-right: 15px;
+				display: inline-block;
+			}
+			&:hover, &:active, &:focus {
+				background: $light;
+				color: $black;
+				.number {
+					color: $white;
+				}
+			}
+	
+			.number {
+				padding: 2px 6px;
+				font-size: 11px;
+				background: $orange;
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				right: 15px;
+				border-radius: 4px;
+				color: $white;
+			}
+		}		
+	
+	}
+	
 
-#title, #tagname {
-    display: block;
-    width: 100%;
-    background-clip: padding-box;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-input {
-    outline: none;
-}
-.control-label {
+
+	.control-label {
     display: block;
     margin-bottom: 4px;
-    font-size: 13px;
+    font-size: 9px;
     line-height: 1.43;
-    color: #9e9e9e;
+    color:#9e9e9e;
 }
-#title:focus {
-    background-color: #fff !important;
-    border-color: #086bde !important;
-}
-#title:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
-}
-
-
-.toastui-editor-defaultUI {
-    width: 100% !important;
-}
-
-div.option {
-    border: 1px solid #b0b0b0d9;
-    padding: 20px;
-    margin-bottom: 22px;
-    width: 600px;  
-    height: auto; 
-    border-radius: 10px;
-    background-color: white;
-    display: inline-block;
-    font-size: 18pt;
-    box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
-    position: absolute;
-    top: 24%;
-    left: 45.5%;
-    z-index: 2;
-    overflow:hidden;
- } 
-.detail-search-conditions {
-  margin: 10px 20px 0 30px;
-}
-.condition-cell.title {
-    width: 100px;
-    height: 43px;
-    /* padding-top: 14px; */
-    border: 0;
-    font-size: 13px;
-    font-weight: 500;
-    color: #333;
-    box-sizing: border-box;
-}
-.condition-cell {
-    display: table-cell;
-}
-.js-register-name-search-filter .condition-cell:last-child {
-    width: 80%;
-}
-.target-select-group {
-    margin: 16px 18px 12px 10px;
-    font-size: 10px;
-    color: #555;
-}
-.target-select-group li {
-    float: left;
-    min-width: 122px;
-    height: 28px;
-}
-.radio-label-checkbox {
-    position: relative;
-    cursor: pointer;
-    left: -23px;
-}
-.label-checkbox {
-    position: relative;
-    cursor: pointer;
-    left: 4px;
-    font-size: 11.5px;
-    top:-1px
-}
-.target-select-group .radio-label-checkbox::before {
-    margin-right: 12px;
-}
-.radio-label-checkbox::before {
-    display: inline-block;
-    content: "";
-    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
-    background-size: 560px auto;
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
-}
-ul{
-	padding-left: 0;
-	list-style: none;
-	margin-bottom: 3rem;
-}
-.custom-control-radio {
-    position: relative;
-    left: -5px;
-    top: 3px;
-    z-index: -1;
- }
- .radio-label-checkbox::before {
-    display: inline-block;
-    content: "";
-    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
-    background-size: 560px auto;
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
-}
- li{
- 	font-size: 10pt;
- }
- 
- .search-period-wr .filter-input-box:first-child {
-    margin: 10px 30px 0 0;
-}
-.search-period-wr .filter-input-box {
-    overflow: hidden;
-    display: inline-block;
-    margin: 10px 0 0 0;
-    padding: 7px 44px 0 10px;
-    height: 32px;
-    width: auto;
-}
-.filter-input-box {
-    position: relative;
-    height: 40px;
-    margin-top: 10px;
-    padding: 10px 15px 10px 15px;
-    background: #fff;
-    border: 1px solid #ddd;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    width: 100%;
-    font-size: 13px;
-}
-.search-period-wr .filter-date-label {
-    right: 10px;
-}
-.filter-date-label {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-#categorydiv{
-	position:absolute;
-	visibility:hidden;
-	font-size:12px;
-	background-color: white;
-	width:25%;
-	z-index: 2;
-	border: 1px solid gainsboro;
-    padding: 12px;
-    border-radius: 5px;
-}
-#option {
-	visibility:hidden;
-}
-.title:hover {
-    cursor: default;
-    text-decoration: none; 
-}
-.offcanvas {
-    box-shadow: 5px 5px 20px 3px rgb(91 91 91 / 80%) !important;
-}
-#ntRplAnonDiv{
-	display:none;
-}
-#iconbubble{
-	color:#4c4e54;
-	padding:0 auto;
-	font-size: 10pt;
-	position: relative; 
-	left:15px;
-	top:3px;"
-}
-#bubblecnt{
-	position: relative; 
-	left:8px;
-	top:2px;
-}
-#iconattachment{
-	color:#4c4e54;
-	font-size: 10pt;
-	position: relative; 
-	left:2px;
-}
-.radio-label-checkbox {
-    position: relative;
-    cursor: pointer;
-    left: -23px;
-}
-.custom-control-radio2 {
-    position: relative;
-    left: 21px;
-    top: -2px;
-    z-index: -1;
-}
-.radio-label-checkbox2 {
-    position: relative;
-    cursor: pointer;
-    left: 21px;
-    top: -4px;
-    font-size: 9pt;
-    margin-right: 10px;
-    
+#datepick {
+    width: 200px !important;
+    font-size: 29px !important;
+    background-color: white !important;
+    border: 0px !important;
 }
 </style>
 
 <script type="text/javascript">
 
-$(document).ready(function(){
-	$(".search-period-wr").hide();
-	$("div#ntRplAnon").hide();
-	$("a#notice").addClass('list_iscurrent');
+	$(document).ready(function(){ 
 	
-	
-	/* 북마크 표시 */
-	  $('.bookmark').click(function(e) {
-		  	const $this = $(this);
 
-		  	if ( $this.hasClass('icon-star-empty') ) {
-		  		$this.removeClass('icon-star-empty');
-		  		$this.addClass('icon-star-full');
+		$('.js-check-all').on('click', function() {
+
+		  	if ( $(this).prop('checked') ) {
+			  	$('th input[type="checkbox"]').each(function() {
+			  		$(this).prop('checked', true);
+			  	})
 		  	} else {
-		  		$this.removeClass('icon-star-full');
-		  		$this.addClass('icon-star-empty');
+		  		$('th input[type="checkbox"]').each(function() {
+			  		$(this).prop('checked', false);
+			  	})
 		  	}
-		  	/* e.preventDefault(); */
-	});
-	  
-	
-	/* 게시물뷰 링크 이동 */
-	 $('.titlefirst').click(function() {
+		  });
 		
-	});
-	
-	//offcanvas
- 	$("a#write").click(function(e){
- 		$('.offcanvas').offcanvas('show');
- 	});
-	 	
-	
- 	<%-- 텍스트 에디터 시작 --%>
-	const editor = new toastui.Editor({
-	    el: document.querySelector("#editor"),
-	    height: "500px",
-	    initialEditType: "wysiwyg",
-	    hooks: {
-	      addImageBlobHook: function (blob, callback) {
-	        const formData = new FormData();
-	        formData.append("image", blob);
-	        const imageURL = imageUpload(formData);
-	        // console.log(imageURL);
-	        callback(imageURL, "image");
-	      },
-	    },
-	    language: 'ko-KR'
-	 });
-	<%-- 텍스트 에디터 끝 --%>
-	
-	
-	
-	// 글쓰기 버튼
-    $("button#writecmt").click(function(){
-       
-       
-       // 폼(form)을 전송(submit)
-    });	  
-	
-	
-	
-	/* 익명체크뜨게하기 */
-    $("input#ntAlwReply").change(function(){
-        if($("#ntAlwReply").is(":checked")) ntRplAnonDiv.style.display="block";
-        else ntRplAnonDiv.style.display="none";
-    });
-	
-	
-	
-    
-    <%-- 옵션창 날짜 직접입력 --%>
-    $("input[name='period-type']").change(function(){
-        if($("#date_select").is(":checked")){
-		    $(".search-period-wr").show();
-        }else{
-        	$(".search-period-wr").hide();
-        }
-    });
-	
-  
-    
-    <%-- 카테고리 복수 선택 인풋태그에 보이도록하기 --%>
-    $("input[name='category']").change(function(e){
-    	const $target = $(e.target).val()
-   		let inputval = $("input#ctgy").val()
-
-   		if($(this).is(":checked")){// 체크했다면 
-	    	if($("input#ctgy").val() != ""){ // 체크된게 있다면 
-	    		inputval += ","+ $target;
-	    		$("input#ctgy").val(inputval);
-	    	}
-	    	else{ // 체크된게 없다면
-		    	$("input#ctgy").val($target);
-	    	}
-        }else{// 체크해지했다면
-        	if($target == inputval){//하나밖에 없다면  
-        		$("input#ctgy").val("");
-        	}
-        	else{// 여러개 있다면 
-	        	let arrval = [];
-	        	arrval = inputval.split(",");
-	        	for(let i=0; i<arrval.length; i++){
-	        		if(arrval[i]==$target){
-	        			arrval.splice(i,1);
-	        			break;
-	        		}
-	        	}
-	        	inputval = arrval.toString();
-	        	$("input#ctgy").val(inputval);
-        		
-        	}
-        }
-    });
-	
-});//end of ready
-
-<%-- 카테고리 멀티 셀렉터 열리고 닫히고  --%>
-function multiSelect(value){
-	 if(value=="OPEN") categorydiv.style.visibility="visible";
-	 else categorydiv.style.visibility="hidden";
-}
-
-<%-- 옵션창 열리고 닫히고  --%>
-function optionForm(value){
-	 if(value=="OPEN") option.style.visibility="visible";
-	 else option.style.visibility="hidden";
-}
-
-
-//태그 직접입력을 선택했을경우 
-function changetagname(obj){
-	$("span.error").hide();
-	let html1 = "";
-	let html2 = "";
-	if(obj.value !="plus"){
-		$("div.existhide").hide();
-		$("div#divPlusTag1").html("");
-		$("div#divPlusTag2").html("");
-	}
-	else{
-		$("div.existhide").show();
-		html1 += '<label for="tagname" class="control-label">태그명</label>';
-		html2 += '<input type="text" class="form-control" name="tagname" id="tagname" placeholder="태그명을 입력해주세요" >';
-		$("div#divPlusTag1").html(html1);
-		$("div#divPlusTag2").html(html2);
-	}
-};
-
-function goSearch(){
-	
-}
+		
+		
+		
+		$(".dropdown-toggle").click(function(){
+			$(".dropdown-menu").addClass("show");
+		})
+		
+		
+		
+		
+		 // 플랫피커
+	 	flatpickr.localize(flatpickr.l10ns.ko);
+	 	flatpickr($(".dateSelector"));
+		$(".dateSelector").flatpickr({
+			dateFormat: "Y-m-d",
+			defaultDate: new Date(),
+			local: 'ko'
+		});
+	}); //end of ready	
 
 </script>
-<div class="container col-9 mt-5">
+ 
+
+<div class="container">
+ 
+  
+
+<div class="container mt-5" style="padding-right: 5%;">
 	<div class="row">
-      <div class="table-responsive" style="width: 100%;">
-      	 
-      	 <div style="display: inline-block;float: left;">
-      	 	 <a href="#" id="write"class="btn "style="font-size: 9pt;padding-left:20px;padding-right:20px;border-color:white; background-color:#4d4f53;color:white">글쓰기</a>
-      	 </div>
-          <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
-			<div class="row" style="float: right;position: relative;left: -120px;" >
-			
-				<div class="form-group" style="margin-right: 1rem;margin-left: 1rem;">
-					<div class="form-field">
-						<div class="select-wrap">
-							<select name="" id="" class="form-control" style="font-size: 9pt;padding:6px 12px;">
-							<option>분류 선택</option>
-							<option value="">제목</option>
-							<option value="">작성자</option>
-							<option value="">팀</option>
-							</select>
+		 
+		
+		
+		<form action="#" class="booking-form ml-3"  style="float: left;margin-bottom: 0;">
+			<div class="row" >
+				<div class="search-period-wr" style="text-align: center;">
+	                <div class="js-search-pickr-layer" data-code="unlimit">
+		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
+		                	<div class="datebox margin-container">
+		                		<span class="control-label">시작일</span>
+								<span><input id="datepick"class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="">
-					<div class="form-group">
-						<div class="form-field">
-							<!-- <div class="icon"><span class="fa fa-search"></span></div> --> 
-							<input type="text" class="form-control" placeholder="제목/작성자/팀으로 검색" style="width:193%; font-size: 9pt; padding:6px 12px;padding-left: 45px;">
+	                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
+		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
+		                	<div class="datebox margin-container">
+		                		<span class="control-label">종료일</span>
+								<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
+							</div>
 						</div>
-					</div>
-				</div>
+	                </div>
+	            </div>
+				<div class="dropdown bootstrap-select -xs"><select class="selectpicker selectpicker-xs" name="" tabindex="-98"><option value="ALL">전체</option><option value="WORK_EVENT">근태</option><option value="WORK_TIME">근무</option><option value="BILL">비용</option><option value="STATEMENT">증명서</option><option value="NORMAL">일반</option></select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="전체" aria-expanded="false"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">전체</div></div> </div></button><div class="dropdown-menu" role="combobox" x-placement="bottom-start" style="max-height: 504.969px; overflow: hidden; min-height: 153px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 32px, 0px);"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 488.969px; overflow-y: auto; min-height: 137px;"><ul class="dropdown-menu inner show"><li class="selected active"><a role="option" class="dropdown-item selected active" aria-disabled="false" tabindex="0" aria-selected="true"><span class=" bs-ok-default check-mark"></span><span class="text">전체</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">근태</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">근무</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">비용</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">증명서</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">일반</span></a></li></ul></div></div></div>
+
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group" style="font-size: 8pt;margin-bottom:0;">
-						<a id="searchoption"href="#" class="btn" style="color:#0a58caa1; padding: 0.2rem 0.4rem;border-radius:0px; background-color: white;font-size: 0.7rem;position: relative;left: -540%;border-right: 1px solid #ced4da;" onClick="optionForm('OPEN')">옵션</a>
+						<a id="searchoption"href="#" class="btn" style="color:#0a58caa1; padding: 0.2rem 0.4rem;border-radius:0px; background-color: white;font-size: 0.7rem;position: relative;left: -183px;border-right: 1px solid #ced4da;">옵션</a>
 					</div>
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group" style="font-size: 10pt;margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 253%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 100px;"></a>
 					</div>
 				</div>
 			</div>
 		
-				
-		   <div id="option" class="option">
-		      <div style="font-size: 11pt; color: #595959; font-weight: bold; padding-bottom: 20px;">검색 옵션
-		      	 <!-- <label class="filter-date-label"><i class="icon icon-redo"></i></label> -->
-		         <button style="margin-left: 90px; border: none; font-size: 8pt; font-weight:bold; border-radius: 3px; background-color:#3B86C812; color: #2E5E87; padding: 5px 8px;float: right;">초기화</button>
-		      </div>
-		      <div class="detail-search-conditions">
-			    <ul class="conditions-group">
-			        <li class="js-project-name-search-filter" style="display: block;">
-						<div class="condition-cell title">카테고리</div>
-			            <div class="condition-cell">
-			                <input id="ctgy"class="form-control" onClick="multiSelect('OPEN')" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;width:260%;background-color: white;"  placeholder="카테고리를 선택하세요"readonly>
-							 <div id="categorydiv" >
-							  <ul>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk1"value="전체공지"><label for="chk1" class="label-checkbox" data-code="unlimit">전체공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk2"value="일반공지"><label for="chk2" class="label-checkbox" data-code="unlimit">일반공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk3"value="이벤트공지"><label for="chk3" class="label-checkbox" data-code="unlimit">이벤트공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk4"value="문진표공유"><label for="chk4" class="label-checkbox" data-code="unlimit">문진표공유</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk5"value="사내공지"><label for="chk5" class="label-checkbox" data-code="unlimit">사내공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk6"value="기타공지"><label for="chk5" class="label-checkbox" data-code="unlimit">기타공지</label></li>
-							    </ul>
-							    <div style="padding-top:3px;text-align:right">
-							    	<!-- <button type="reset" class="workstatus-cancel">취소</button> -->
-							    	<input type="button" class="workstatus-cancel"value="SAVE" onClick="multiSelect('CLOSE')" style="width:50%; border:none;color:#0a58caa1;">
-							    </div>
-				   			</div>
-			   			</div>
-			        </li>
-			        <!-- <li class="js-project-name-search-filter" style="display: block;">
-			            <div class="condition-cell title">프로젝트</div>
-			            <div class="condition-cell">
-			                <input class="form-control" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;"type="text" placeholder="프로젝트명을 입력하세요">
-			            </div>
-			        </li> -->
-			        <li class="js-register-name-search-filter" style="display: block;">
-			            <div class="condition-cell title">작성자</div>
-			            <div class="condition-cell">
-			            	<input class="form-control" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;"type="text" placeholder="작성자명 입력 (여러명 입력시, 콤마로 구분)">
-			            </div>
-			        </li>
-			        <li class="js-period-type-search-filter" data-code="unlimit" style="display: block;">
-			            <div class="condition-cell title" style="top: 14px;position: relative;float: left;">검색기간</div>
-			            <div class="condition-cell">
-			              <ul class="target-select-group">
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_total" name="period-type">
-				                <label for="date_total" class="js-period-type radio-label-checkbox" data-code="unlimit">전체</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_today" name="period-type">
-				                <label for="date_today" class="js-period-type radio-label-checkbox" data-code="today">오늘</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_week" name="period-type">
-				                <label for="date_week" class="js-period-type radio-label-checkbox" data-code="week">7일</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_month" name="period-type">
-				                <label for="date_month" class="js-period-type radio-label-checkbox" data-code="month">1개월</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_3month" name="period-type">
-				                <label for="date_3month" class="js-period-type radio-label-checkbox" data-code="thirdMonth">3개월</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_6month" name="period-type">
-				                <label for="date_6month" class="js-period-type radio-label-checkbox" data-code="sixthMonth">6개월</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_year" name="period-type">
-				                <label for="date_year" class="js-period-type radio-label-checkbox" data-code="year">1년</label>
-				            </li>
-				        
-				            <li>
-				            	<input type="radio" class="custom-control-radio" id="date_select" name="period-type" data-code="select" >
-				                <label for="date_select" class="js-period-type radio-label-checkbox" data-code="select">기간선택</label>
-					            <div class="search-period-wr" >
-					                <div class="js-search-pickr-layer" data-code="unlimit">
-					                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
-					                        <span>2012-11-20</span>
-					                        <!-- <input type="hidden" value="20121120000000"> -->
-					                        <label class="filter-date-label"><i class="icon icon-calendar"></i></label>
-					                    </div>
-					                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 14px;">~</span>
-					                    <div class="js-date-type js-pickr-layer js-end-flatpickr filter-input-box">
-					                        <span>2022-11-20</span>
-					                        <!-- <input type="hidden" value="20221120235959"> -->
-					                        <label class="filter-date-label"><i class="icon icon-calendar"></i></label>
-					                    </div>
-					                </div>
-					            </div>
-				        
-				            </li>
-			        	</ul>
-            		</div>
-       			 </li>
-    		</ul>
-		    <div class="condition-button-area">
-		        <!-- <div class="condition-left">
-		            <button type="button" class="js-filter-reset condition-reset">초기화</button>
-		        </div> -->
-		        <div class="condition-right">
-		            <button type="reset" class="workstatus-cancel" onClick="optionForm('CLOSE'), multiSelect('CLOSE')">취소</button>
-		            <button type="button" class="workstatus-save" onClick="goSearch()">검색</button>
-		        </div>
-		    </div>
-		</div>
-   </div>
-</form>
+					
 
+    
 		
-        <table class="table custom-table">
-          <thead>
+		</form>
+		 
+		    
+		 
+		 
+		    
+     
+        <table class="table custom-table">   
+          <thead>   
             <tr>
-              <th width="80%"scope="col"/>
-              <th width="6%"scope="col"/>
-            </tr>
+              <th class="boardth" width="15%"scope="col"><button type="button" style="border: none; background-color: #ffff;">시간<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>     
+              <th class="boardth" width="12%" scope="col"><button type="button" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>  
+              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+				  <div class="dropdown-menu">
+					      <h5 class="dropdown-header">소속</h5>
+					      <a class="dropdown-item" href="#">인사·총무</a>
+					      <a class="dropdown-item" href="#">회계·재무</a>
+					      <a class="dropdown-item" href="#">법무</a>
+					      <a class="dropdown-item" href="#">감사</a> 
+					      <a class="dropdown-item" href="#">업무지원</a>
+					      <a class="dropdown-item" href="#">경영지원</a> 
+				  </div>
+			  </th>
+              <th class="boardth" width="12%" scope="col"><button type="button" style="border: none; background-color: #ffff;">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>  
+              <th class="boardth" width="12%"scope="col">유형</th>
+              <th class="boardth" width="12%"scope="col">IP</th> 
+              <th class="boardth" width="12%"scope="col">디바이스</th> 
+              <th class="boardth" width="12%"scope="col">브라우저</th>
+            </tr> 
           </thead>
           <tbody>
-            <tr class="topnotice"><!-- 공지 상단에 고정 -->
-              <td>
-              	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
-            		<span class="writedate">11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr class="topnotice">
-              <td>
-              	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
-            		<span class="writedate">11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr class="topnotice">
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
-            		<span class="writedate">11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr>
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
-            		<span class="writedate">11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr >
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">문진표공유</span>
-              		<span class="teamname">EX</span>
-            		<span class="writedate">11.16</span>
-            		<!-- <span class="newbadge">n</span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-
-            
-          </tbody>
+            <tr> 
+              <td>2020-12-25(금) 00:17</td>
+              <td>김상후</td>
+              <td>영업본부</td>
+              <td>로그인 성공</td>
+              <td>USER</td>
+              <td>210.178.232.1</td>
+              <td>PC</td>
+              <td>Chrom</td>
+            </tr> 
+             <tr> 
+              <td>2020-12-25(금) 00:17</td>
+              <td>김상후</td>
+              <td>영업본부</td>
+              <td>로그인 성공</td>
+              <td>USER</td>
+              <td>210.178.232.1</td>
+              <td>PC</td>
+              <td>Chrom</td>
+            </tr> 
+             
+          </tbody>  
         </table>
-     
-     
-     
-     
-     
+      </div>
+		
+ 
 	</div>
-</div>
-</div>
+	
+ 
 
+
+
+
+
+</div>
 <!-- 오프캔버스 시작 -->
 		<div class="offcanvas offcanvas-end" style="width: 800px;" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 		  <div class="offcanvas-header">

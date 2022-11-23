@@ -2,11 +2,11 @@
     pageEncoding="UTF-8"%>
     
 <% String ctxPath = request.getContextPath(); %>    
-
+<!-- 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-
+ -->
 
 <!-- 텍스트에디터 -->
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
@@ -42,7 +42,8 @@
 		width: 18%;
 		padding: 0.7em 0 0.3em 0;
 		text-decoration: none;
-		margin-left: 4%;
+		margin-right: 4%;
+		text-align: center;
 	}
 	
 	.list_iscurrent{
@@ -130,7 +131,7 @@
 	  text-align: center;
 	  position: relative;
 	  top: 3px;
-	  margin-right: 20px;
+	  margin-right: 14px;
 	}
 	.titlefirst{
 		font-weight: 800;
@@ -149,7 +150,7 @@
 	  display:inline-block;
 	  border-radius: 10px;
 	  position: relative;
-	  margin-right: 15px;
+	  margin-right: 5px;
 	  top: 0.5px;
 	  /* top:-2px;
 	  left:10px; */ 
@@ -296,6 +297,6 @@
 <nav id="board_mainList">
 	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
 	<a class="mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
-	<!-- <div class="list_underline"></div> -->
+	<a class="mainlist list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
 </nav>
 <hr class="HRhr" style="margin-top: 0px;"/>
