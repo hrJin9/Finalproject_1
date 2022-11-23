@@ -2,6 +2,19 @@
     pageEncoding="UTF-8"%>
 <%@ include file="payroll_header.jsp"%>
 <style>
+	.offcanvas-body::-webkit-scrollbar {
+	    width: 8px;  /* 스크롤바의 너비 */
+	}
+	
+	.offcanvas-body::-webkit-scrollbar-thumb {
+	    height: 30%; /* 스크롤바의 길이 */
+		background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+	    border-radius: 10px;
+	}
+	
+	.offcanvas-body::-webkit-scrollbar-track {
+		background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+	}
 </style>
 <script>
 	$(document).ready(function(){

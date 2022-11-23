@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
     
 <% String ctxPath = request.getContextPath(); %>    
-  
-  
-<style type="text/css">
+
+    
+<style type="text/css"> 
 
 	
 	#memberInfo_mainList {
@@ -244,25 +244,240 @@
 
 
 
+/* 검색 */
+   
+
+#mycontent > div > div.container.mt-5 > div > form > div > div.form-group > div > div > select{
+
+    position: absolute;
+    width: 5%;
+    text-align: center;
+    left: 164px;
+
+}
+
+
+
+
+div.option {
+    border: 1px solid #e6e6e6;
+    padding: 20px;
+    margin-bottom: 22px;
+    width: 600px;  
+    height: auto; 
+    border-radius: 10px;
+    background-color: white;
+    display: inline-block;
+    font-size: 18pt;
+    box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
+    position: absolute;
+    border: 1px solid #545454d9; 
+    top: 34%;
+    left: 19.5%;
+    z-index: 2;
+    overflow:hidden;
+ } 
+  .detail-search-conditions {
+    margin: 10px 20px 0 30px;
+}
+.condition-cell.title {
+    width: 100px;
+    height: 43px;
+    /* padding-top: 14px; */
+    border: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    box-sizing: border-box;
+}
+.condition-cell {
+    display: table-cell;
+}
+.js-register-name-search-filter .condition-cell:last-child {
+    width: 80%;
+}
+.target-select-group {
+    margin: 16px 18px 12px 10px;
+    font-size: 10px;
+    color: #555;
+}
+.target-select-group li {
+    float: left;
+    min-width: 122px;
+    height: 28px;
+}
+.radio-label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: -23px;
+}
+.label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: 4px;
+    font-size: 11.5px;
+    top:-1px
+}
+.target-select-group .radio-label-checkbox::before {
+    margin-right: 12px;
+}
+.radio-label-checkbox::before {
+    display: inline-block;
+    content: "";
+    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
+    background-size: 560px auto;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+ul{
+	padding-left: 0;
+	list-style: none;
+	margin-bottom: 3rem;
+}
+.custom-control-radio {
+    position: relative;
+    left: -5px;
+    top: 3px;
+    z-index: -1;
+ }
+ .radio-label-checkbox::before {
+    display: inline-block;
+    content: "";
+    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
+    background-size: 560px auto;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+ li{
+ 	font-size: 10pt;
+ }
+ 
+ .search-period-wr .filter-input-box:first-child {
+    margin: 10px 30px 0 0;
+}
+.search-period-wr .filter-input-box {
+    overflow: hidden;
+    display: inline-block;
+    margin: 10px 0 0 0;
+    padding: 7px 44px 0 10px;
+    height: 32px;
+    width: auto;
+}
+.filter-input-box {
+    position: relative;
+    height: 40px;
+    margin-top: 10px;
+    padding: 10px 15px 10px 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 13px;
+}
+.search-period-wr .filter-date-label {
+    right: 10px;
+}
+.filter-date-label {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+#categorydiv{
+	position:absolute;
+	visibility:hidden;
+	font-size:12px;
+	background-color: white;
+	width:25%;
+	z-index: 2;
+	border: 1px solid gainsboro;
+    padding: 12px;
+    border-radius: 5px;
+}
+  
+  
+  
+
+.selectbox {
+  position: relative;
+  width: 200px;
+  border: 1px solid #999;
+  z-index: 1;
+}
+
+.selectbox:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 0;
+  height: 0;
+  margin-top: -1px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #333;
+}
+
+.selectbox label {
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  padding: .8em .5em;
+  color: #999;
+  z-index: -1;
+}
+
+.selectbox select {
+  width: 100%;
+  height: auto;
+  line-height: normal;
+  font-family: inherit;
+  padding: .8em .5em;
+  border: 0;
+  opacity: 0;
+  filter:alpha(opacity=0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+  
+  
+  
+  
+/* 검색 끝 */
+
+
+
+
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){ 
 	
+		 
+		var selectTarget = $('.selectbox select');
 
-		$('.js-check-all').on('click', function() {
+		 selectTarget.on('blur', function(){
+		   $(this).parent().removeClass('focus');
+		 });
 
-		  	if ( $(this).prop('checked') ) {
-			  	$('th input[type="checkbox"]').each(function() {
-			  		$(this).prop('checked', true);
-			  	})
-		  	} else {
-		  		$('th input[type="checkbox"]').each(function() {
-			  		$(this).prop('checked', false);
-			  	})
-		  	}
+		  selectTarget.change(function(){
+		    var select_name = $(this).children('option:selected').text();
+
+		  $(this).siblings('label').text(select_name);
 		  });
+ 
+		  
+		  
 		
 		
 	}); //end of ready	
@@ -275,155 +490,59 @@
 <hr class="memberInfohr" style="margin-top: 0px;"/>
  
   
-
+ 
 <div class="container mt-5" style="padding-right: 5%;">
-	<div class="row">
+	<div class="row"> 
+		  
 		 
-		
-		
-		<form action="#" class="booking-form ml-3"  style="float: left;margin-bottom: 0;">
+		 
+		<form action="#" class="booking-form ml-3"  style="float: left;margin-bottom: 1%;">
 			<div class="row" >
-				<div class="">
-					<div class="form-group">
+				<div class="form-group" style="margin-right: 1rem;margin-left: 1rem;">
 						<div class="form-field">
-							<!-- <div class="icon"><span class="fa fa-search"></span></div> --> 
-							<input type="text" class="form-control" placeholder="제목/작성자/팀으로 검색" style="width:193%; font-size: 9pt; padding:6px 12px;padding-left: 45px;">
+							<div class="select-wrap">
+								<select name="" id="" class="form-control" style="font-size: 9pt;padding:6px 12px;position: absolute;width: 5%;text-align: center;left: 684px;font-size: 11pt;">
+								<option>태그선택</option>  
+								<option value="">이름</option>
+				 				<option value="">소속</option>
+								</select>
+							</div>    
 						</div>
-					</div>
-				</div>
-				<div class="align-items-end mt-1 mr-4">
-					<div class="form-group" style="font-size: 8pt;margin-bottom:0;">
-						<a id="searchoption"href="#" class="btn" style="color:#0a58caa1; padding: 0.2rem 0.4rem;border-radius:0px; background-color: white;font-size: 0.7rem;position: relative;left: -183px;border-right: 1px solid #ced4da;">옵션</a>
-					</div>
+					</div>  
+				<div class="">  
+					<div class="form-group">  
+						<div class="form-field">
+							<!-- <div class="icon"><span class="fa fa-search"></span></div> -->  
+							<input type="text" class="form-control" placeholder="이름/소속으로 검색" style="font-size: 9pt; padding:6px 12px; width: 30%; position: absolute; left: 50%;font-size: 11pt;">
+						</div>
+					</div>  
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group" style="font-size: 10pt;margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 100px;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 83%;"></a>
 					</div>
-				</div>
-			</div>
-		
-				
-		   <div class="option" style="display:none;">
-		      <div style="font-size: 11pt; color: #595959; font-weight: bold; padding-bottom: 20px;">검색 옵션
-		      	 <!-- <label class="filter-date-label"><i class="icon icon-redo"></i></label> -->
-		         <button style="margin-left: 90px; border: none; font-size: 8pt; font-weight:bold; border-radius: 3px; background-color:#3B86C812; color: #2E5E87; padding: 5px 8px;float: right;">초기화</button>
-		      </div>
-		      <div class="detail-search-conditions">
-			    <ul class="conditions-group">
-			        <li class="js-project-name-search-filter" style="display: block;">
-						<div class="condition-cell title">프로젝트</div>
-			            <div class="condition-cell">
-			                <input id="ctgy"class="form-control" onClick="multiSelect('OPEN')" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;"type="text" placeholder="프로젝트명을 입력하세요">
-							 <div id="categorydiv" >
-							  <ul>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk1"value="전체공지"><label for="chk1" class="label-checkbox" data-code="unlimit">전체공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk2"value="일반공지"><label for="chk2" class="label-checkbox" data-code="unlimit">일반공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk3"value="이벤트공지"><label for="chk3" class="label-checkbox" data-code="unlimit">이벤트공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk4"value="문진표공유"><label for="chk4" class="label-checkbox" data-code="unlimit">문진표공유</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk5"value="사내공지"><label for="chk5" class="label-checkbox" data-code="unlimit">사내공지</label></li>
-							    </ul>
-							    <div style="padding-top:3px;text-align:right">
-							    	<!-- <button type="reset" class="workstatus-cancel">취소</button> -->
-							    	<input type="button" class="workstatus-cancel"value="확인" onClick="multiSelect('CLOSE')" style="width:50%">
-							    </div>
-				   			</div>
-			   			</div>
-			        </li>
-			        <!-- <li class="js-project-name-search-filter" style="display: block;">
-			            <div class="condition-cell title">프로젝트</div>
-			            <div class="condition-cell">
-			                <input class="form-control" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;"type="text" placeholder="프로젝트명을 입력하세요">
-			            </div>
-			        </li> -->
-			        <li class="js-register-name-search-filter" style="display: block;">
-			            <div class="condition-cell title">작성자</div>
-			            <div class="condition-cell">
-			            	<input class="form-control" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;"type="text" placeholder="작성자명 입력 (여러명 입력시, 콤마로 구분)">
-			            </div>
-			        </li>
-			        <li class="js-period-type-search-filter" data-code="unlimit" style="display: block;">
-			            <div class="condition-cell title" style="top: 14px;position: relative;float: left;">검색기간</div>
-			            <div class="condition-cell">
-		              <ul class="target-select-group">
-			            <li>
-			                <input type="radio" class="custom-control-radio" id="date_total" name="period-type">
-			                <label for="date_total" class="js-period-type radio-label-checkbox" data-code="unlimit">전체</label>
-			            </li>
-			        
-			            <li>
-			                <input type="radio" class="custom-control-radio" id="date_today" name="period-type">
-			                <label for="date_today" class="js-period-type radio-label-checkbox" data-code="today">오늘</label>
-			            </li>
-			        
-			            <li>
-			                <input type="radio" class="custom-control-radio" id="date_week" name="period-type">
-			                <label for="date_week" class="js-period-type radio-label-checkbox" data-code="week">7일</label>
-			            </li>
-			        
-			            <li>
-			                <input type="radio" class="custom-control-radio" id="date_month" name="period-type">
-			                <label for="date_month" class="js-period-type radio-label-checkbox" data-code="month">1개월</label>
-			            </li>
-			        
-			            <li>
-			                <input type="radio" class="custom-control-radio" id="date_3month" name="period-type">
-			                <label for="date_3month" class="js-period-type radio-label-checkbox" data-code="thirdMonth">3개월</label>
-			            </li>
-			        
-			            <li>
-			                <input type="radio" class="custom-control-radio" id="date_6month" name="period-type">
-			                <label for="date_6month" class="js-period-type radio-label-checkbox" data-code="sixthMonth">6개월</label>
-			            </li>
-			        
-			            <li>
-			                <input type="radio" class="custom-control-radio" id="date_year" name="period-type">
-			                <label for="date_year" class="js-period-type radio-label-checkbox" data-code="year">1년</label>
-			            </li>
-			        
-			            <li>
-			            	<input type="radio" class="custom-control-radio" id="date_select" name="period-type" data-code="select" >
-			                <label for="date_select" class="js-period-type radio-label-checkbox" data-code="select">기간선택</label>
-				            <div class="search-period-wr" >
-				                <div class="js-search-pickr-layer" data-code="unlimit">
-				                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
-				                        <span>2012-11-20</span>
-				                        <!-- <input type="hidden" value="20121120000000"> -->
-				                        <label class="filter-date-label"><i class="icon icon-calendar"></i></label>
-				                    </div>
-				                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 14px;">~</span>
-				                    <div class="js-date-type js-pickr-layer js-end-flatpickr filter-input-box">
-				                        <span>2022-11-20</span>
-				                        <!-- <input type="hidden" value="20221120235959"> -->
-				                        <label class="filter-date-label"><i class="icon icon-calendar"></i></label>
-				                    </div>
-				                </div>
-				            </div>
-			        
-							            </li>
-						        </ul>
-				            </div>
-				        </li>
-				    </ul>
-				    <div class="condition-button-area">
-				        <!-- <div class="condition-left">
-				            <button type="button" class="js-filter-reset condition-reset">초기화</button>
-				        </div> -->
-				        <div class="condition-right">
-				            <button type="reset" class="workstatus-cancel">취소</button>
-				            <button type="button" class="workstatus-save">검색</button>
-				        </div>
-				    </div>
-				</div>
-		   </div>
-    
-		
+				</div>  
+				 
+				<div class="form-field">  
+					<div class="select-wrap">   
+						<i class="fa-solid fa-sort" style="position: absolute;left: 90%;top: 19%;z-index: 1;color: #6e6e6e;"></i> 
+						<select name="" id="" class="form-control" style="font-size: 9pt;padding:6px 12px;position: absolute;width: 10%;left: 1252px; top: 17.8%;font-size: 11pt;">
+						<option value="">10개씩 보기</option> 
+		 				<option value="">20개씩 보기</option>  
+		 				<option value="">30개씩 보기</option> 
+						</select> 
+					</div>     
+				</div>     
+			</div>   
 		</form>
+		      
+		<hr style="margin: 1% 0 1% 0;;">    
 		 
-		    
-		 
-		 
-		    
+		<div class="payroll-download" style="width: 15%; margin: 0 0 2% 85%;"> 
+			<i class="fa-solid fa-download" style="font-size: 10pt; display:inline-block;"></i>
+			<div>목록 다운로드</div>
+		</div>  
+		      
      
         <table class="table custom-table">   
           <thead>   
@@ -451,6 +570,16 @@
           <tbody>
             <tr> 
               <td>2020-12-25(금) 00:17</td>
+              <td>김상후</td> 
+              <td>영업본부</td> 
+              <td style="background-color: light green;">로그인 성공</td> 
+              <td>USER</td>
+              <td>210.178.232.1</td>
+              <td>PC</td>
+              <td>Chrom</td>
+            </tr> 
+             <tr> 
+              <td>2020-12-25(금) 00:17</td>
               <td>김상후</td>
               <td>영업본부</td>
               <td>로그인 성공</td>
@@ -459,7 +588,37 @@
               <td>PC</td>
               <td>Chrom</td>
             </tr> 
-             <tr> 
+            <tr> 
+              <td>2020-12-25(금) 00:17</td>
+              <td>김상후</td>
+              <td>영업본부</td>
+              <td>로그인 성공</td>
+              <td>USER</td>
+              <td>210.178.232.1</td>
+              <td>PC</td>
+              <td>Chrom</td>
+            </tr> 
+            <tr> 
+              <td>2020-12-25(금) 00:17</td>
+              <td>김상후</td>
+              <td>영업본부</td>
+              <td>로그인 성공</td>
+              <td>USER</td>
+              <td>210.178.232.1</td>
+              <td>PC</td>
+              <td>Chrom</td>
+            </tr> 
+            <tr> 
+              <td>2020-12-25(금) 00:17</td>
+              <td>김상후</td>
+              <td>영업본부</td>
+              <td>로그인 성공</td>
+              <td>USER</td>
+              <td>210.178.232.1</td>
+              <td>PC</td>
+              <td>Chrom</td>
+            </tr> 
+            <tr> 
               <td>2020-12-25(금) 00:17</td>
               <td>김상후</td>
               <td>영업본부</td>
