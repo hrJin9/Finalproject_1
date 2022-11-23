@@ -472,8 +472,8 @@ var FullCalendar = (function (exports) {
 
     var DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     // Adding
-    function addWeeks(m, n) {
-        var a = dateToUtcArray(m);
+    function addWeeks(m, n) { 
+        var a = dateToUtcArray(m); 
         a[2] += n * 7;
         return arrayToUtcDate(a);
     }
@@ -4177,11 +4177,11 @@ var FullCalendar = (function (exports) {
             prevYear: 'prev year',
             nextYear: 'next year',
             year: 'year',
-            today: 'today',
-            month: 'month',
-            week: 'week',
-            day: 'day',
-            list: 'list',
+            today: '오늘', 
+            month: '월', 
+            week: '주', 
+            day: '일',
+            list: '목록',
         },
         weekText: 'W',
         weekTextLong: 'Week',
@@ -4190,7 +4190,7 @@ var FullCalendar = (function (exports) {
         eventHint: 'Event',
         allDayText: 'all-day',
         moreLinkText: 'more',
-        noEventsText: 'No events to display',
+        noEventsText: '지정된 이벤트가 없습니다.',  
     };
     var RAW_EN_LOCALE = __assign(__assign({}, MINIMAL_RAW_EN_LOCALE), { 
         // Includes things we don't want other locales to inherit,

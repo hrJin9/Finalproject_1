@@ -1,97 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
     
-<% String ctxPath = request.getContextPath(); %>    
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
    
-  
-  
+<%@ include file="calendar_header.jsp"%>   
+   
 <style type="text/css">
 
-
-	@font-face {
-	    font-family: 'Pretendard-Regular';
-	    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-	    font-weight: 400;
-	    font-style: normal;
-	}
-	
-	*{
-		font-family: Pretendard-Regular;		
-	}
-	
-	hr{
-		border-top: solid 1px #949DA6 !important;
-	}
-	
-	#list a:hover{
-		color: #000000;
-		cursor: pointer;
-	}
-		
-	#list {
-		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 14pt;
-		font-weight: bold;
-		margin: 4px 0 0 180px;
-	}
-	
-	#list a {
-		display: block;
-		width: 17%;
-		padding: .75em 0;
-		color: #333;
-		text-decoration: none;
-		text-align: center;
-		margin-left: 4%;
-		color: #D2D6D9;
-	}
-	
-	.list_underline {
-		position: absolute;
-		left: 0;
-		bottom: -1px;
-		width: 15%;
-		height: 2px;
-		background: #333;
-		transition: all .3s ease-in-out;
-		margin-left: 5%;
-	}
-	
-	#list a:nth-child(1).list_iscurrent ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2).list_iscurrent ~ .list_underline {
-		left: 20%; /* width랑 margin-left랑 합친거 */
-	}
-	#list a:nth-child(1):hover ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2):hover ~ .list_underline {
-		left: 20%;
-		width: 16%;
-	}
-	
 
 
 
 	body {
-/*     margin: 40px 10px; */ 
-    padding: 0;
-    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-    font-size: 14px;
-  }
-
+/*     margin: 40px 10px; */  
+    padding: 0; 
+    font-size: 11px; 
+  }  
+ 
   #calendar {
     max-width: 1100px;
-    margin: 0 auto;  
-    padding-top: 3%;  
+    margin: 0 auto;   
+    padding-top: 3%; 
+    font-size: 11pt;  
+/*     margin-bottom: 5%;  */
   } 
-  
+   
    
    
    /* 미니캘린더 시작 */
@@ -151,12 +87,12 @@
 	    margin: 0;
 	    padding: 0;
 	    border: 0;
-	    font-weight: inherit;
-	    font-style: inherit;
-	    font-size: 100%;
-	    font-family: inherit;
+/* 	    font-weight: inherit; */
+/* 	    font-style: inherit; */
+/* 	    font-size: 100%; */
+/* 	    font-family: inherit; */
 	    vertical-align: baseline;
-	    text-decoration: none;
+	    text-decoration: none; 
 	    list-style: none;
 	}
 	img {
@@ -170,10 +106,9 @@
 	html,
 	body { 
 	    width: 100%;
-	    height: 100%;
-	    font-family: 'Source Sans Pro', sans-serif;
+	    height: 100%; 
+/* 	    font-family: 'Source Sans Pro', sans-serif; */
 	/*     background: #eee; */
-	    color: #666;
 	}
 	body {
 	    overflow-x: hidden;
@@ -509,88 +444,66 @@
    
    }
    
-   
-   
-   
-
+    
+    
+    
+ 
 </style>
 
 <script type="text/javascript">
 
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+
+document.addEventListener('DOMContentLoaded', function() {
+	
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, { 
       headerToolbar: {
-        left: 'prev,next today',
+        left: 'prev,next today', 
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
       },
-      initialDate: '2020-09-12',
+     
+      locale: 'ko', 
       navLinks: true, // can click day/week names to navigate views
       businessHours: true, // display business hours
       editable: true,
       selectable: true,
-      events: [
-        {
-          title: 'Business Lunch',
-          start: '2020-09-03T13:00:00',
-          constraint: 'businessHours'
-        },
-        {
-          title: 'Meeting',
-          start: '2020-09-13T11:00:00',
-          constraint: 'availableForMeeting', // defined below
-          color: '#257e4a'
-        },
-        {
-          title: 'Conference',
-          start: '2020-09-18',
-          end: '2020-09-20'
-        },
-        {
-          title: 'Party',
-          start: '2020-09-29T20:00:00'
-        },
+      select: function(arg) {
+          var title = prompt('일정 추가','입력해주세요..');
+          if (title) { 
+              calendar.addEvent({ 
+                  title: title,
+                  start: arg.start,
+                  end: arg.end,
+                  allDay: arg.allDay
+              })
+          }
+          calendar.unselect()
+      },
+      eventClick: function(arg) { 
+          if (confirm('일정을 삭제하시겠습니까?')) {
+              arg.event.remove()
+          }
+      }
 
-        // areas where "Meeting" must be dropped
-        {
-          groupId: 'availableForMeeting',
-          start: '2020-09-11T10:00:00',
-          end: '2020-09-11T16:00:00',
-          display: 'background'
-        },
-        {
-          groupId: 'availableForMeeting',
-          start: '2020-09-13T10:00:00',
-          end: '2020-09-13T16:00:00',
-          display: 'background'
-        },
-
-        // red areas where no events can be dropped
-        {
-          start: '2020-09-24',
-          end: '2020-09-28',
-          overlap: false,
-          display: 'background',
-          color: '#ff9f89'
-        },
-        {
-          start: '2020-09-06',
-          end: '2020-09-08',
-          overlap: false,
-          display: 'background',
-          color: '#ff9f89'
-        }
-      ]
+	
     });
 
     calendar.render();
+    
+    
+    
+    
   });
+   
   
+	
   
 	$(document).ready(function(){  
 		  
+		
+		
 		//offcanvas
 			$("#fc-dom-1").click(function(e){ 
 				$('.offcanvas').offcanvas('show');
@@ -646,160 +559,115 @@ document.addEventListener('DOMContentLoaded', function() {
 	 
 	}); //end of ready
 
-	
-	
+	 
 	
  
-   
+    
 </script>  
-
-
-<nav id="list">
-	<a class="list_iscurrent">캘린더</a>
-	<a>할 일</a>
-	<div class="list_underline"></div>
-</nav>
-
-<hr style="margin-top: 0px;"/>
-
-
-
-<div id='calendar'></div>
+ 
+ 
+<div id='calendar' style="margin-bottom: 5%;"></div> 
 
 
 <!-- 오프캔버스 시작 -->
-		<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+		<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel" style="width: 40%;">
 		  <div class="offcanvas-header">
 		    <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
 		    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		  </div>
 		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 		  <div class="offcanvas-body">
-		  	<div> 
-	  			
-	  			<!-- 캘린더 시작 -->
-				  	<div class="info anim04c">
-			        <li class="dribbble anim04c">
-			            <span>I need to be a
-			                <em> dribbble </em>player?!.</span>
-			        </li>
-			        <li class="hover anim04c">
-			            <span>hover!</span>
-			        </li>
-			        <li class="click anim04c">
-			            <span>click!</span>
-			        </li>
-			        <li class="yeaa anim04c">
-			            <span>- yeaa! -</span>
-			        </li>
+		  	 
+		  	
+		  	<div style="display: flex; width: 100%;">        
+			  <fieldset style="width: 900px; "> 
+			    <div class="form-group" style=" margin-top: 20px;"> 
+			      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="제목을 입력하세요(필수)" style="border: none;">
 			    </div>
-			
-			
-			    <!-- main codes start --> 
-			    <div class="signboard outer" style="margin-top: 17%;">
-			        <div class="signboard front inner anim04c">
-			            <li class="year anim04c">
-			                <span></span>
-			            </li>
-			            <ul class="calendarMain anim04c">
-			                <li class="month anim04c">
-			                    <span></span>
-			                </li>
-			                <li class="date anim04c">
-			                    <span></span>
-			                </li>
-			                <li class="day anim04c">
-			                    <span></span>
-			                </li>
-			            </ul>
-			            <li class="clock minute anim04c">
-			                <span></span>
-			            </li>
-			            <li class="calendarNormal date2 anim04c">
-			                <span></span>
-			            </li>
-			        </div>
-			        <div class="signboard left inner anim04c">
-			            <li class="clock hour anim04c">
-			                <span></span>
-			            </li>
-			            <li class="calendarNormal day2 anim04c">
-			                <span></span>
-			            </li>
-			        </div>
-			        <div class="signboard right inner anim04c">
-			            <li class="clock second anim04c">
-			                <span></span>
-			            </li>
-			            <li class="calendarNormal month2 anim04c">
-			                <span></span>
-			            </li>
-			        </div>
-			    </div>
-			    <!-- main codes end -->
-			
-			 
-	  			<!-- 캘린더 끝 --> 
-	  			  
-	  			 
-	  			<div class="workadd">
-		  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt; margin-top: 20%;">일정 생성</span></div>
-	  			</div>
-	  			
-	  			  
-	  			<!-- 검색 -->  
-	  			<div class="row" style="margin-bottom: 13px;">   
-					<div>    
-						<div class="form-group" style="margin-top: 5%;"> 
-							<div class="form-field" style="padding-left:15px; margin-right: -130%;">
-								<input type="text" class="form-control" placeholder="검색" style="width:90%; font-size: 9pt; padding:6px 12px;">
-							</div>
-						</div>
-					</div>
-					<div class="align-items-end mt-1 mr-4"> 
-						<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-							<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.5%; top: 44.5%;"></a>
-						</div>
-					</div>
-				</div>  
-	  			<!-- 검색 끝 -->      
-	  			   
-	  			<div>  
-		  			<hr style="margin: 30px 0; background-color: none;">  	    
-		  			<i class="fa-solid fa-user"></i>   
-		  			<button type="button" class="btn" data-toggle="collapse" data-target="#demo" style="width: 94%; text-align: inherit;">나의 캘린더  
-		  			<i class="fa-solid fa-circle-plus" type="button" style="color: #5E9FF2; float: right;"></i> </button>
-		  			
-		  			<div id="demo" class="collapse"> 
-		  			<div style="margin-left: 20px; margin-top: 10px;">	
-			  			<input type="checkbox" /> 
-					    <label><span></span>내일정</label> 
-					    <div class="count"><button type="button" class="count-save">수정</button> </div>   
-					    <p>  
-					    <input type="checkbox" />
-					    <label><span></span>팀일정</label>  
-					    <div class="count"><button type="button" class="count-save">수정</button> </div>
-					    <p> 
-					    <input type="checkbox" /> 
-					    <label><span></span>부서일정</label>	
-					    <p> 
-					    <input type="checkbox" />
-					    <label><span></span>전사일정</label>	 
-			  	   </div>	 
-			  	 </div>   
-	  			</div>    
-	  			  
-	  			<hr style="margin: 30px 0;">   
-   
-				<button type="button" class="btn-wt"><i class="fa-solid fa-star" style="margin-right: 5%;"></i>중요일정 보기</button> 
-				<button type="button" class="btn-wt"><i class="fa-solid fa-trash-can"></i>삭제된 일정 보기</button> 
-
-	  			
+			      
+			    <hr style="margin-bottom: 7%;">   
+			       
+			    <div class="form-group"  style="display: flex;"> 
+			      <i class="fa-solid fa-calendar-days fa-2x"></i>  
+			      <select class="form-select" id="exampleSelect1" style="margin-left: 20px;">   
+			        <option>팀일정</option>
+			        <option>내일정</option> 
+			        <option>부서일정</option> 
+			        <option>전사일정</option>  
+			      </select>
+			    </div>     
+			     
+			    <div class="form-group"   style="display: flex; margin-top: 5%;">     
+				    <i class="fa-regular fa-clock fa-2x" style=""></i>     
+			<!-- 	    <form  name="dateFrm" style="float: left;">   -->
+						<input type="date" id="date1" name="date1" class="form-select" style="margin: 0 20px;">
+						~
+						<input type="date" id="date2" name="date2"  class="form-select"  style="margin-left: 20px;">  
+						<input type="hidden" name="userid" value=""/>
+			<!-- 		</form> -->  
+					  
+			    </div>  
+			     <div style="font-size: small;margin: 2% 0 0 8%;">     
+			        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
+			        <label class="form-check-label" for="flexCheckChecked">   
+			       	   종일 
+			        </label> 
+		         </div>  
+			      
+			      
+			      
+			    <div class="form-group"   style="display: flex; margin-top: 5%;">   
+			   		 <i class="fa-solid fa-user fa-2x"></i> 
+			   		 <input class="form-control" style="margin-left: 20px;"  placeholder="초대할 멤버를 검색하세요">     
+			   		 <button style="border: none; margin-left: 5px;"> 
+			   		 	<i class="fa-solid fa-user-plus"></i>   
+			   		 </button> 
+			    </div>     
+			            
+			          
+			    <div class="form-group"   style="display: flex; margin-top: 3%;">   
+			   		 <i class="fa-solid fa-location-dot fa-2x"></i>
+			   		 <input class="form-control" style="margin-left: 20px;"  placeholder="장소를 입력하세요">      
+			    </div>    
+			    
+			    
+			    <div class="form-group"  style="display: flex; margin-top: 3%;">  
+			      <i class="fa-solid fa-rotate-right fa-2x"></i>
+			      <select class="form-select" id="exampleSelect1" style="margin-left: 20px;">   
+			        <option>반복 안 함 </option>    
+			        <option>매일</option> 
+			        <option>매주</option>   
+			        <option>매월</option>       
+			        <option>매년</option>   
+			      </select>
+			    </div>     
+			       
+			     
+			    <div class="form-group"   style="display: flex; margin-top: 3%;">    
+			   		 <i class="fa-solid fa-location-dot fa-2x"></i>
+			  		 <textarea class="form-control" rows="5" id="comment" style="margin-left: 20px; resize: none;" placeholder="설명을 입력하세요"></textarea>          
+			    </div> 
+			    
+			     
+			    <div class="form-group"  style="display: flex; margin-top: 3%;">  
+			      <i class="fa-solid fa-lock fa-2x"></i> 
+			      <select class="form-select" id="exampleSelect1" style="margin-left: 20px;">   
+			        <option>일정 공개</option>    
+			        <option>일정 유무 공개</option> 
+			      </select> 
+			    </div>   
+			        
+			     
+			  </fieldset>
+			  
+			   
+			  
+			</div>   
+		  	
 	  			<div class="workstatus-buttoncontainer">
 		  			<button type="button" class="workstatus-save">저장하기</button>
 		  			<button type="reset" class="workstatus-cancel">취소</button>
 	  			</div>
-		  	</div>
 		  </div>
 		</div>
 		<!-- 오프캔버스 끝 -->

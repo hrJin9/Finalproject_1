@@ -2,91 +2,22 @@
 	pageEncoding="UTF-8"%>
 
     
-<% String ctxPath = request.getContextPath(); %>    
+<%@ include file="calendar_header.jsp"%>    
 
 
 <style type="text/css">
-
-@font-face {
-	    font-family: 'Pretendard-Regular';
-	    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-	    font-weight: 400;
-	    font-style: normal;
-	}
+	 
 	
-	*{
-		font-family: Pretendard-Regular;		
-	}
-	
-	hr{
-		border-top: solid 1px #949DA6 !important;
-	}
-	
-	#list a:hover{
-		color: #000000;
-		cursor: pointer;
-	}
-		
-	#list {
-		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 14pt;
-		font-weight: bold;
-		margin: 4px 0 0 180px;
-	}
-	
-	#list a {
-		display: block;
-		width: 17%;
-		padding: .75em 0;
-		color: #333;
-		text-decoration: none;
-		text-align: center;
-		margin-left: 4%;
-		color: #D2D6D9;
-	}
-	
-	.list_underline {
-		position: absolute;
-		left: 0;
-		bottom: -1px;
-		width: 15%;
-		height: 2px;
-		background: #333;
-		transition: all .3s ease-in-out;
-		margin-left: 5%;
-	}
-	
-	#list a:nth-child(1).list_iscurrent ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2).list_iscurrent ~ .list_underline {
-		left: 20%; /* width랑 margin-left랑 합친거 */
-	}
-	#list a:nth-child(1):hover ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2):hover ~ .list_underline {
-		left: 20%;
-		width: 16%;
-	}
-
-
-
-
-	
-	
-	
-	.container{
-		background-color: #f2f2f2; 
+	 
+	.container2{ 
+		background-color: #f2f2f2b0;   
 		height: 200px;    
 		color: #a6a6a6;  
-		display: grid;
+		display: grid; 
 		align-content: center; 
 		margin-bottom: 20px;  
-		width: 70%;   
-		font-size: small;   
+		width: 40%;     
+		font-size: small;    
 	}    
 	
 	.more{ 
@@ -94,7 +25,7 @@
 		text-align: center;
 		color: #404040;
 		background-color: #f2f2f2; 
-		width: 70%;  
+		width: 90%;   
 		display: grid;
 		align-content: center; 
 		margin: auto; 
@@ -121,18 +52,9 @@
 	   
 	});// end of $(document).ready(function(){})-----------------------------	
 
-</script>
+</script> 
 
-
-
-<nav id="list">
-	<a class="list_iscurrent">캘린더</a>
-	<a>할 일</a>
-	<div class="list_underline"></div>
-</nav>
-
-<hr style="margin-top: 0px;"/>
-
+ <div class="todo-container" style="margin-left: 5%;"> 
 
 <div class="dropdown" style="display:flex; flex-direction: row-reverse; margin-right: 250px; margin-bottom: 20px;">      
     <button type="button" class="btn" style="color: #ffffff; background-color: #404040;">  
@@ -158,9 +80,9 @@
     </div>
 </div>  
 
-
+ 
    
-<div class="container rounded">  
+<div class="container2 rounded" style="float: left; margin-right: 2%;">   
 	  <div style="padding-left: 20px;">
 		  <p style="font-size: small; float: left; margin-right: 5px;">진행률 : </p>    
 		  <p style="font-size: small;">25%</p>  
@@ -171,7 +93,7 @@
 	  <h6 style="padding-left: 20px;">일정: 2022/11/08 15:00 ~ 2022/11/10 12:00</h6>    
 </div>
 
-<div class="container rounded"> 
+<div class="container2 rounded"> 
 	  <div style="padding-left: 20px;">
 		  <p style="font-size: small; float: left; margin-right: 5px;">진행률 : </p>    
 		  <p style="font-size: small;">25%</p>  
@@ -182,16 +104,7 @@
 	  <h6 style="padding-left: 20px;">일정: 2022/11/08 15:00 ~ 2022/11/10 12:00</h6>  
 </div>
  
-<div class="container rounded"> 
-	  <div style="padding-left: 20px;">
-		  <p style="font-size: small; float: left; margin-right: 5px;">진행률 : </p>    
-		  <p style="font-size: small;">25%</p>  
-	  </div>  
-	  <h6 style="font-weight: bold; color: #404040; padding-left: 20px;">신규 프로젝트 기획안 작성</h6>  
-	  <h6 style="padding-left: 20px;">신규 프로젝트 기획안 작성하기 ...</h6>  
-	  <hr> 
-	  <h6 style="color: #ff0000; padding-left: 20px;">일정: 2022/09/01 15:00 ~ 2022/09/10 12:00</h6>        
-</div>  
+
 
 <!-- <button id="searchMoreNotify" class="btn btn-outline-primary btn-block col-sm-10 mx-auto">더 보기</button>  -->
 
@@ -201,4 +114,4 @@
     </button>    
 </div>   
     
-      
+</div>      

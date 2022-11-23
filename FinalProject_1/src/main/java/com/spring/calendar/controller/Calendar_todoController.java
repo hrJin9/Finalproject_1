@@ -9,12 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class Calendar_todoController {
-
-	@RequestMapping(value = "/calendar_todo.up")
-	public ModelAndView meetingroom(HttpServletRequest request, ModelAndView mav) {
-		
-		mav.setViewName("calendar/calendar_todo.tiles");
-		return mav;
-	}
-	
+	/*
+	 * @RequestMapping(value = "/calendar_todo.up") public ModelAndView
+	 * meetingroom(HttpServletRequest request, ModelAndView mav) {
+	 * 
+	 * mav.setViewName("calendar/calendar_todo.tiles"); return mav; }
+	 */
 }
