@@ -68,7 +68,7 @@
 <div class="row">
 	<nav id="list" class="col-10">
 		<a href="<%= request.getContextPath()%>/" class="list_iscurrent">내 피드</a>
-		<a href="<%= request.getContextPath()%>/main_todo.up">처리할 일</a>
+		<a href="<%= request.getContextPath()%>/main_todo.up">요청사항</a>
 		<div class="list_underline"></div>
 	</nav>
 </div>

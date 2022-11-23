@@ -56,6 +56,8 @@
 
 <style type="text/css">
 	.margin-container{margin-left: 5%;}
+	.container{width: 90% !important;}
+	
 </style>
 
 </head>
