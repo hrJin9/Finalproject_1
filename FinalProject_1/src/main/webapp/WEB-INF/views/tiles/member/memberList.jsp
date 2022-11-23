@@ -334,7 +334,7 @@
 	      
 		// 프로필 클릭시 구성원 상세정보 보기로 이동
 		$(".profile").click(function(){
-			location.href= "<%= ctxPath%>/member/memberInfo_hr.up";
+			location.href= "<%= ctxPath%>/memberInfo_hr.up";
 		});
 		
 		// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
@@ -378,7 +378,6 @@
 	      $(".chkboxpnum").prop("checked", bool);  // 전체선택 체크박스 체크여부에 따라 개별 선택박스 모두 체크 or 모두 해제
 	   }// end of function allCheckBox()-------------------------
 
-	   
 </script>
 
 <div class="container">
