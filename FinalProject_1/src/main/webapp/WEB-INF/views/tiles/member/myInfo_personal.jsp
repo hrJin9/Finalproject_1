@@ -107,19 +107,19 @@
 	/* 개인정보 */
 	#personalInfo {
 		font-weight: bold;
-		font-size: 14pt;
+		font-size: 15pt;
+	}
+	
+	.content {
+		color: #556372; 
+		font-size: 11.5pt;
+		margin-bottom: 70px;
 	}
 	
 	.update {
 		margin-left: 810px;
 		color: #a6a6a6; 
 		font-size: 10pt;
-	}
-	
-	.content {
-		color: #556372; 
-		font-size: 11pt;
-		margin-bottom: 70px;
 	}
 	
 	.content td {
@@ -255,11 +255,14 @@
 	 		$('.offcanvas').offcanvas('show');
 	 		$("#offcanvasScrollingLabel").text("개인 정보 수정");
 			
-	 		// 생년월일
+	 		flatpickr.localize(flatpickr.l10ns.ko);
+	        flatpickr($(".dateSelector"));
+	        // 생년월일 데이트피커
 	        $(".dateSelector").flatpickr({
-        	  dateFormat: "Y-m-d",
-        	});
-	 		
+	           dateFormat: "Y-m-d",
+	           conjunction: " ~ ",
+	           local: 'ko'
+	        });
 				
 			// 우편번호찾기 버튼 클릭시
 			$("button#addressBtn").click(function(){
@@ -531,7 +534,7 @@
 					<div style="vertical-align: middle;">은행 선택</div>
 					<select id="bank" name="bank" class="required" style="display: inline-block; width: 22%;">
 						<option value="1">은행 선택</option>
-						<option value=2>KEB하나은행</option>
+						<option value="2">KEB하나은행</option>
 						<option value="3">SC제일은행</option>
 						<option value="4">경남은행</option>
 						<option value="5">광주은행</option>

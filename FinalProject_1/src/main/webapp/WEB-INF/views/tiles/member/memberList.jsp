@@ -7,9 +7,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 
-
-
-
 <style type="text/css">
 		
 	#memberInfo_mainList {
@@ -381,7 +378,7 @@
 </script>
 
 <div class="container">
-	<div id="memberInfo_mainList">구성원</div>
+	<div id="memberInfo_mainList" class="header-nav">구성원</div>
 	<hr class="memberInfohr" /><br>
 	
 	<div class="contentsmargin">

@@ -106,12 +106,12 @@
 	/* 개인정보 */
 	#personalInfo {
 		font-weight: bold;
-		font-size: 14pt;
+		font-size: 15pt;
 	}
 	
 	.content {
 		color: #556372; 
-		font-size: 11pt;
+		font-size: 11.5pt;
 		margin-bottom: 70px;
 	}
 	

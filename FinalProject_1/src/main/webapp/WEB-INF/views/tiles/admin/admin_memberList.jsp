@@ -426,7 +426,7 @@
 					      <a class="dropdown-item" href="#">주임연구원</a> 
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">사용자그룹<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">고용형태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">정직원</a>
 					      <a class="dropdown-item" href="#">계약직</a>

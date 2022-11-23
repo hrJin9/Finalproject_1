@@ -13,7 +13,7 @@
 	}
 	
 	*{
-		font-family: Pretendard-Regular;		
+		font-family: Pretendard-Regular;	
 	}
 
 	/* 상단 프로필 */
@@ -103,12 +103,12 @@
 	/* 인사정보, 근무정보 */
 	#hrInfo, #workInfo {
 		font-weight: bold;
-		font-size: 14pt;
+		font-size: 15pt;
 	}
 	
 	.content {
 		color: #556372; 
-		font-size: 11pt;
+		font-size: 11.5pt;
 		margin-bottom: 70px;
 	}
 	
@@ -242,15 +242,11 @@
 		                </tr>
 		                <tr>
 		                   <td>출근 시간</td>   
-		                   <td>오전 09:00</td>   
+		                   <td>09:00</td>   
 		                </tr>
 		                <tr>
 		                   <td>일하는 시간</td>   
 		                   <td>8시간</td>   
-		                </tr>
-		                <tr>
-		                   <td>쉬는 날 유형</td>   
-		                   <td>기본</td>   
 		                </tr>
 		          </tbody>
 		       </table>
