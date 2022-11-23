@@ -23,8 +23,8 @@ public class BoardController {
 		return "board/add.tiles";
 	}
 	
-	@RequestMapping(value = "/board/notice.up")
-	public String notice(HttpServletRequest request) {
+	@RequestMapping(value = "/board.up")
+	public String boardAndNotice(HttpServletRequest request) {
 		return "board/notice.tiles";
 	}
 	

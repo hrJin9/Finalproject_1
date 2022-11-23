@@ -123,7 +123,7 @@
 		
 		// nav바에서 개인정보 클릭시 개인정보 페이지로 이동
 		$(".memberInfo_pView").click(function(){
-			location.href= "<%= ctxPath%>/member/memberInfo_personal.up";
+			location.href= "<%= ctxPath%>/memberInfo_personal.up";
 		});
 		
 	});

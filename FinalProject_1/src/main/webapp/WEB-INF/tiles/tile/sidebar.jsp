@@ -17,6 +17,7 @@
      font-family: 'Pretendard-Regular';
    }
    div.sidebar{
+    box-shadow: 3px 3px 9px rgb(0 0 0 / 5%);
      width: 190px;
      height: 100%;
      background-color: rgb(249, 250, 250);
@@ -83,14 +84,14 @@
    input#menuicon:checked + label + div > div.profile > span.pic
    {position:relative;right: 0px;transition: all .35s;}
    
-   input#menuicon:checked + label + div +div+div.news{
-   	position:absolute;
-   	left: 165px;
-    top: 169px;
-    transition: all .35s;
+   input#menuicon:checked + label + div + div + div.news{
+	 position: absolute;
+     left: 180px;
+     top: 169px;
+     transition: all .35s;
    }
    div#mycontent{
-   	  transition':all 0.5s;
+        transition':all 0.5s;
    }
    input#menuicon + label + div +div+div.news {
       border: 1px solid #e6e6e6;
@@ -162,7 +163,7 @@
    }
    .pic{
      height: 38px;
-	 width: 38px;
+    width: 38px;
      font-size: 9pt;
      position: relative;
      display: flex;
@@ -191,7 +192,7 @@
      font-weight: bold;
    }
    .badge{
-	 background-color: rgb(242, 75, 23);
+    background-color: rgb(242, 75, 23);
      padding: 0.5em 0.5em;
      width: 15.5px;
      height: 13.5px;
@@ -203,7 +204,7 @@
      bottom: 4.3px;
      left: 24px;
      box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
-	}
+   }
    .newred{
      background-color: rgb(242, 75, 23);
      width: 5px;
@@ -249,12 +250,12 @@
    }
    
    #mycontent{
-   	float: right; width: 94.6%; margin: 0 auto;
+      float: right; width: 94.6%; margin: 0 auto;
    }
    
    /* 
    #mycontent{
-		margin-left : 3%;
+      margin-left : 3%;
    }
     */
 </style>
@@ -262,23 +263,23 @@
 <script type="text/javascript">
 
    $(document).ready(function(){
-	   
+      
       $(".profile2").click(function(){  // 내프로필 클릭시
-      	 if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
-      		$(".myprofile").show();
-      		$(".news").hide();
-      	 } else {
-      		$(".myprofile").hide();
-      	 }
+          if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
+            $(".myprofile").show();
+            $(".news").hide();
+          } else {
+            $(".myprofile").hide();
+          }
       });
       
       $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-    	  if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
-       		 $(".news").show();
-       		 $(".myprofile").hide();
-       	  } else {
-       		 $(".news").hide();
-       	  }
+         if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
+              $(".news").show();
+              $(".myprofile").hide();
+            } else {
+              $(".news").hide();
+            }
       });
       
       
@@ -329,20 +330,23 @@
 
         <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
 
-        <li class="home"><a href="#" ><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-clipboard"></span><span class="menu-text">스케쥴</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-file-text2"></span><span class="menu-text">결재관리</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-coin-dollar"></span><span class="menu-text">급여관리</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
-        <li class="member"><a href="#" ><span class="icon icon-cog"></span><span class="menu-text">설정</span></a></li>
-      </ul>
+       <li><a href="<%= request.getContextPath()%>/" ><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/memberList.up" ><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/calendar.up" ><span class="icon icon-clipboard"></span><span class="menu-text">캘린더</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/message.up" ><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/attendance.up" ><span class="icon icon-alarm"></span><span class="menu-text">근무관리</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/approval.up" ><span class="icon icon-file-text2"></span><span class="menu-text">결재관리</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/payroll.up" ><span class="icon icon-coin-dollar"></span><span class="menu-text">급여관리</span></a></li>
+        <li><a href="<%= request.getContextPath()%>/board.up" ><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
+        
+        <%-- 관리자로 로그인했을경우에만 --%>
+        <li><a href="<%= request.getContextPath()%>/admin_login.up" ><span class="icon icon-file-text"></span><span class="menu-text">로그관리</span></a></li>
+      </ul> 
     </div>
   </div>
   
   <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 1;">
-     <a class="list-group-item list-group-item-action" href="#" style="font-size: 14px; cursor: pointer;">
+     <a class="list-group-item list-group-item-action" href="<%= request.getContextPath()%>/myInfo_hr.up" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
         <span style="font-size: 8.5pt; color: #737373;">sawonwldms@gmail.com</span><br>
@@ -375,19 +379,19 @@
     
     <%-- **** 비밀번호 변경 Modal **** --%>
     <div class="modal fade" id="userPwdChange" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <%-- 아이디찾기 a 태그의 data-target="#userPwdFind" data-dismiss="modal" 와 매핑됨. --%>
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <!-- Modal header -->
-	      <button type="button" class="btn-close pwdChangeClose" " data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
-	      
-	      <!-- Modal body -->
-	      <div class="modal-body">
-			<h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
-			<div id="pwdChange">
-				<iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 340px;" src="<%= request.getContextPath()%>/member/pwdChange.up"></iframe>
-			</div>
-	      </div>
-	      
-	    </div>
-	  </div>
-	</div>
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <!— Modal header —>
+         <button type="button" class="btn-close pwdChangeClose" " data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
+         
+         <!— Modal body —>
+         <div class="modal-body">
+         <h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
+         <div id="pwdChange">
+            <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 340px;" src="<%= request.getContextPath()%>/pwdChange.up"></iframe>
+         </div>
+         </div>
+         
+       </div>
+     </div>
+   </div>

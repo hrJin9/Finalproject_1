@@ -27,7 +27,7 @@ public class FinalprojectController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/main/index_todo.up")
+	@RequestMapping(value = "/main_todo.up")
 	public ModelAndView index_todo(HttpServletRequest request, ModelAndView mav) {
 		
 		mav.setViewName("main/index_todo.tiles");
