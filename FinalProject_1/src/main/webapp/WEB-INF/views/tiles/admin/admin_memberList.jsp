@@ -154,16 +154,6 @@
 		text-align: center; 
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	.custom-dropdown {
 	border: none!important;
 	> a {
@@ -317,14 +307,20 @@
 		       	<span>멤버생성</span>
 	       	</a>
       	 </div>
-		<div class="mbbtn" style="display: inline-block;">
+		<div style="display: inline-block;">
       	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
 		       	<span><i class="fas fa-times"></i></span>
 		       	<span>멤버삭제</span>
       	 	</a>
       	 </div>
-		<div class="mbbtn" style="display: inline-block;">
+		<div style="display: inline-block;">
       	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
+		       	<span><i class="fas fa-pencil-alt"></i></span>
+		       	<span>멤버수정</span>
+      	 	</a>
+      	 </div>
+		<div style="display: inline-block;">
+      	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
 		       	<span><i class="fa-solid fa-download"></i></span>
 		       	<span>목록 다운로드</span>
       	 	</a>
@@ -463,7 +459,7 @@
 			<tbody>
 	            <tr> 
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
-	              <td style="padding-left: 0px;">김지은</td>
+	              <td>김지은</td>
 	              <td>영업</td>
 	              <td>대리</td>
 	              <td>정직원</td>
