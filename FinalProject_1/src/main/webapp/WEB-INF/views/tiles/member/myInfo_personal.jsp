@@ -253,7 +253,7 @@
 		
 		// nav바에서 인사정보 클릭시 인사정보 페이지로 이동
 		$(".myInfo_hView").click(function(){
-			location.href= "<%= ctxPath%>/member/myInfo_hr.up";
+			location.href= "<%= ctxPath%>/myInfo_hr.up";
 		});
 		
 		// 개인정보수정- offcanvas

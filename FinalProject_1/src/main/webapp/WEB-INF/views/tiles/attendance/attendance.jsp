@@ -6,31 +6,19 @@
 
 <script>
 	$(document).ready(function(){
-	/* 
-		$("label[for='menuicon']").click(function(){
-			$(".attendance_container").css("margin-left","150px");
-		});
-	 */
+
 		$("a#attendance").addClass("list_iscurrent");
 	 	$("a#dayoff").removeClass("list_iscurrent");
-	 
-	    $('.datepicker').datepicker({
-			 dateFormat: 'yy-mm-dd'  //Input Display Format 변경
-					,showOtherMonths: true   //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-					,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
-					,changeYear: true        //콤보박스에서 년 선택 가능
-					,changeMonth: true       //콤보박스에서 월 선택 가능                
-					,showOn: "both"          //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-					,yearSuffix: "년"         //달력의 년도 부분 뒤에 붙는 텍스트
-					,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
-					,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
-					,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
-					,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
-					//,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-					//,maxDate: "+1M" //최대 선택일자(+1D:하루후, +1M:한달후, +1Y:일년후)                
+		
+	 	// 플랫피커
+	 	flatpickr.localize(flatpickr.l10ns.ko);
+	 	flatpickr($(".dateSelector"));
+		$(".dateSelector").flatpickr({
+			dateFormat: "Y. m",
+			defaultDate: new Date(),
+			local: 'ko'
 		});
-	 	$('.datepicker').datepicker('setDate', 'today');
-	 	$(".ui-datepicker-trigger").hide();
+	 	
 	 	
 	 	// 시간 infobox
 	 	$(".workingiweek-infobox").hide();
@@ -93,11 +81,12 @@
 	
 	// function declaration
 	function getCurrentWeek() {
-		const day = new Date();
-		
-		const monday = day.getDate()+10 - day + (day == 0 ? -6 : 1)
+		const paramDate = new Date();
+		const day = paramDate.getDay();
+		const diff = paramDate.getDate() - day + (day == 0 ? -6 : 1);
 		//const sunday = day.getTime() - 86400000 * day.getDay();
-	
+		const monday = new Date(paramDate.setDate(diff)).toISOString().substring(0, 10);
+		
 		let date = day.toISOString().slice(5, 7);
 		date +=  ". "+day.toISOString().slice(8, 10);
 		const result = [ date ];
@@ -109,6 +98,7 @@
 			result.push(date);
 		}
 		return result;
+		
 	}
 
 	
@@ -116,7 +106,7 @@
 <div class="attendance-container">
 	<div class="datebox margin-container">
 		<button type="button" class="datearrow" style="border-right: none;"><i class="fa-solid fa-angle-left" style="font-size:10pt;"></i></button>
-		<span><input type="" class="datepicker" style="padding: 0 10px;"/></span>
+		<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;"/></span>
 		<button type="button" class="datearrow" style="border-left: none;"><i class="fa-solid fa-angle-right" style="font-size:10pt;"></i></button>
 		<button type="button" class="today">오늘</button>
 	</div>

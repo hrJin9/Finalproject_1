@@ -2,11 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@ include file="header.jsp"%> 
-<%-- 
-<%@ include file="sidebar.jsp"%>    
-<%@ include file="sidebar2.jsp"%>      
 
- --%>
 <style type="text/css">
 	/* 메인 상단 */
 	#boardList a:hover{
