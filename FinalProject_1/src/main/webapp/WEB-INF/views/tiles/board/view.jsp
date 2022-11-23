@@ -6,7 +6,7 @@
 	
 	p {
 		color: darken(#ccc, 10%);
-		font-weight: 300;
+		font-weight: 400;
 	}
 	a {
 		transition: .3s all ease;
@@ -32,7 +32,7 @@
 	
 	.viewtitle{
 		font-size: 14pt;
-		font-weight: bolder;
+		/* font-weight: bolder; */
 		margin-bottom: 5px;
 	}
 	.writeinfo{
@@ -84,7 +84,7 @@
 		color:#7f7f7f;
 		float:right;
 		position: absolute;
-		right: 15%;
+		right:91px;
 	}
 	a.share{
 		font-size: 11pt !important;
@@ -191,7 +191,6 @@
 		position: relative;
 		right: -8px;
 	    top: 9.5px;
-	    font-weight: 100;
 	}
 	#picbox{
 		display: inline-block !important;
@@ -321,7 +320,14 @@ $(document).ready(function(){
 			... 바랍니다.<br> 
 		</p>
 	
-		<div class="cmt mt-5"><span style="margin-right: 1rem;">댓글 11</span><span>읽음 11</span></div>
+		<div class="cmt mt-5" style="display: inline-block;"><span style="margin-right: 1rem;">댓글 11</span><span>읽음 11</span></div>
+		<div class="dropdown custom-dropdown text-left " style="position: inherit;display: inline-block;">
+            <a class="dropdown-link icon icon-flickr" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;" >
+              <a class="dropdown-item" href="#">수정하기</a>
+              <a class="dropdown-item" href="#">삭제하기</a>
+            </div>
+	    </div> 
 		<div class="line"></div>
      	
      	<div style="margin-bottom:4rem!important">

@@ -9,22 +9,41 @@
  -->
 
 <!-- 텍스트에디터 -->
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
+
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
 
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
 
 
+
+
+<script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
+ <!-- Editor -->
+
+<!-- Color Picker -->
+<script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
+<!-- Editor -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<!-- Editor's Plugin -->
+<script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
+
+<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
+
+
+  
+  
 <style type="text/css">
 	#board_mainList a:hover{
 		color: #000000;
 		cursor: pointer;
 	}
 	
-	#board_subList a:hover{
+	#freeboard_subList a:hover{
 		background-color: rgba(200,200,200, .2);
 		cursor: pointer;
+		color: #4d4f53;
 	}
 		
 	#board_mainList {
@@ -40,7 +59,7 @@
 	#board_mainList a {
 		display: block;
 		width: 18%;
-		padding: 0.7em 0 0.3em 0;
+		padding: 0.8em 0 0.8em 0;
 		text-decoration: none;
 		margin-right: 4%;
 		text-align: center;
@@ -52,70 +71,44 @@
 	.list_notcurrent{
 		color: #D2D6D9;
 	}
-	/* 
-	#board_subList a:nth-child(1).iscurrent ~ .freeboard_subList_underline {
-		left: 0%;
-	}
-	#board_subList a:nth-child(2).iscurrent ~ .freeboard_subList_underline {
-		left: 15%; /* width랑 margin-left랑 합친거 
-	}
-	 */
 	
+	#freeboard_subList{
+		position: relative;
+		display: flex;
+		width: 640px;
+		font-size: 10pt;
+		font-weight: bold;
+		margin: 4px 0 0 60px;
+	}
 	
-	.list_underline {
+	#freeboard_subList a {
+		display: block;
+		width: 10%;
+		padding: .9em 0;
+		/* color: #333; */
+		text-align: center;
+		text-decoration: none;
+		/* color: #D2D6D9; */
+		border-radius: 12px;
+	}
+	
+	.freeboard_subList_underline {
 		position: absolute;
-		left: 0;
-		bottom: -1px;
-		width: 15%;
+		left: -3px;
+    	bottom: -1px;
+		width: 9%;
 		height: 2px;
 		background: #333;
 		transition: all .3s ease-in-out;
 		margin-left: 5%;
 	}
-	#list a:nth-child(1).list_iscurrent ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2).list_iscurrent ~ .list_underline {
-		left: 20%; /* width랑 margin-left랑 합친거 */
-	}
-	#list a:nth-child(1):hover ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2):hover ~ .list_underline {
-		left: 20%;
-		width: 16%;
-	}
-	/* #dayoff_subList a:hover{
-		background-color: rgba(200,200,200, .2);
-		cursor: pointer;
-	} */
-		
-	#board_list {
-		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 18pt;
-		font-weight: bold;
-		margin: 4px 0 0 70px;
-	}
 	
-	#board_list a {
-		display: block;
-		width: 11%;
-		padding: 0.7em 0 0.9em 0;
-		color: #333;
-		text-decoration: none;
-		margin-left: 4%;
-		color: #D2D6D9;
-	}
-	
-	/* #dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
+	#freeboard_subList a:nth-child(1).iscurrent ~ .freeboard_subList_underline {
 		left: 0%;
 	}
-	#dayoff_subList a:nth-child(2).iscurrent ~ .dayoff_subList_underline {
-		left: 15%; /* width랑 margin-left랑 합친거 
-	}*/
-	
+	#freeboard_subList a:nth-child(2).iscurrent ~ .freeboard_subList_underline {
+		left: 10.5%; /* width랑 margin-left랑 합친거 */
+	}
 	
 	.newbadge{
 	  background-color: #dc3545;
@@ -134,7 +127,7 @@
 	  margin-right: 14px;
 	}
 	.titlefirst{
-		font-weight: 800;
+		font-weight: 600;
 		font-size:11.5pt;
 		padding-top:5px;
 		/* padding-bottom: 9px; */
@@ -161,7 +154,7 @@
 	}
 	.teamname{
 	  color:#6d7077;
-	  font-weight:bold;
+	  font-weight: 600;
 	  position: relative;
 	  top:2px;
 	  margin-right: 15px;
@@ -214,9 +207,9 @@
 	.toastui-editor-defaultUI-toolbar {
 		background-color: #ffffff;
 	}
-	div.toastui-editor-mode-switch{
+/* 	div.toastui-editor-mode-switch{
 		display: none !important;
-	}
+	} */
 	.toastui-editor-defaultUI {
 		width: 95%;
 	    float: right;
@@ -279,6 +272,15 @@
 	    margin-bottom: 0;
 	    vertical-align: top;
 	}
+	#writebtn{
+		font-size: 11pt;
+		padding: 10px 25px;
+		border-color: white;
+		font-weight: 600;
+		/* background-image:linear-gradient(57deg,#003ee9 21.04%,#5998ffd6 100%); */
+		color: white;
+		border-radius: 10px;	
+	}
 </style>
 <script>
 	$(document).ready(function(){
@@ -295,8 +297,24 @@
 	});
 </script>
 <nav id="board_mainList">
-	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
-	<a class="mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
-	<a class="mainlist list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
+	<a class="header-nav mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
+	<a class="header-nav mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
+	<a class="header-nav mainlist list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
 </nav>
+
+<!-- 권한부여받은사람만 글쓰기버튼 뜨기 -->
+ <div style="display: inline-block;position: relative;float: right;right: 90px;top: -49px;">
+  	<a href="#" id="writebtn"class="btn gradientbtn"><i class="icon icon-quill" style="margin-right: 5px;"></i>글쓰기</a>
+</div>
+
+
+
+
+<nav id="freeboard_subList">
+	<a id="freeboard-total" class="list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">전사공지</a>
+	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">팀공지</a>
+	<div class="freeboard_subList_underline"></div>
+</nav>
+
+
 <hr class="HRhr" style="margin-top: 0px;"/>
