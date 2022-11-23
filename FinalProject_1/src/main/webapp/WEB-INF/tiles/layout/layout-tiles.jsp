@@ -63,7 +63,11 @@
 	.margin-container{margin-left: 5%;}
 	.container{width: 90% !important;}
 	body{font-family: 'Pretendard'; font-weight: 500;}
-	.header-nav{font-weight: 800;}
+	/* 서브메뉴 없는 헤더 */
+	.header-nonsub{font-weight: 800 !important; padding: 0.9em 0 !important; font-size: 18pt !important;}
+	/* 서브메뉴 있는 헤더 */
+	.header-main{font-weight: 800 !important; padding: 0.9em 0 0.3em 0 !important; font-size: 18pt !important; }
+	.header-sub{font-weight: 800 !important;  padding: 0.9em 0 !important; font-size: 12pt !important;}
 </style>
 
 </head>

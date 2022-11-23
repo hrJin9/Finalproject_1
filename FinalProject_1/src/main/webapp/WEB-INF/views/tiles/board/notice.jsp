@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="board_header.jsp"%> 
-<%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mdb.min.css"> --%>
-<!-- MDB -->
-<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet"/> -->
-<!-- MDB -->
-<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script> -->
+
 <style type="text/css">
 
 
@@ -445,13 +441,14 @@ $(document).ready(function(){
 	});
 	
 	//offcanvas
- 	$("a#write").click(function(e){
+ 	$("a#writebtn").click(function(e){
  		$('.offcanvas').offcanvas('show');
  	});
 	 	
 	
+	
  	<%-- 텍스트 에디터 시작 --%>
-	const editor = new toastui.Editor({
+	/* const editor = new toastui.Editor({
 	    el: document.querySelector("#editor"),
 	    height: "500px",
 	    initialEditType: "wysiwyg",
@@ -465,7 +462,37 @@ $(document).ready(function(){
 	      },
 	    },
 	    language: 'ko-KR'
-	 });
+	 }); */
+	
+	 
+	 
+	 const { Editor } = toastui; 
+	 const { colorSyntax } = Editor.plugin;
+	 
+	 /* const colorSyntaxOptions = {
+			 preset: ['#181818', '#292929', '#393939']
+	 }; */
+
+	 
+
+	const editor = new Editor({
+	      el: document.querySelector('#editor'),
+	      height: '500px',
+	      initialEditType:"wysiwyg",
+	      previewStyle: 'vertical',
+	      plugins: [colorSyntax],
+	      language: "ko-KR",
+	      hooks: {
+		      addImageBlobHook: function (blob, callback) {
+		        const formData = new FormData();
+		        formData.append("image", blob);
+		        const imageURL = imageUpload(formData);
+		        // console.log(imageURL);
+		        callback(imageURL, "image");
+		      },
+		    } 
+	    });
+     
 	<%-- 텍스트 에디터 끝 --%>
 	
 	
@@ -596,13 +623,10 @@ function goSearch(){
 }
 
 </script>
-<div class="container col-9 mt-5">
+<div class="container mt-5">
 	<div class="row">
       <div class="table-responsive" style="width: 100%;">
       	 
-      	 <div style="display: inline-block;float: left;">
-      	 	 <a href="#" id="write"class="btn "style="font-size: 9pt;padding-left:20px;padding-right:20px;border-color:white; background-color:#4d4f53;color:white">글쓰기</a>
-      	 </div>
           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
 			<div class="row" style="float: right;position: relative;left: -120px;" >
 			
@@ -869,7 +893,7 @@ function goSearch(){
 <!-- 오프캔버스 시작 -->
 		<div class="offcanvas offcanvas-end" style="width: 800px;" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 		  <div class="offcanvas-header">
-		    <div class="offcanvas-title headeroffcanvas" style="font-weight: 1000;font-size: 16pt;"id="offcanvasScrollingLabel">공지사항</div>
+		    <div class="offcanvas-title headeroffcanvas" style="font-weight: 700;font-size: 16pt;"id="offcanvasScrollingLabel">공지사항</div>
 		    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		  </div>
 		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
@@ -929,7 +953,7 @@ function goSearch(){
 				</div>
 			</div>
 			<div class="form-group" style="margin-top: 10px;">
-				<span class="control-label">파일첨부</span>파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요
+				<span class="control-label">파일첨부</span><span style="color: #d8d8d8;font-size:9pt">파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요</span>
 				<div class="position-relative">
 					<input type="file" id="file" class="form-control"  name="file" >
 				</div>
@@ -938,13 +962,12 @@ function goSearch(){
 			<div class="form-group" style="margin-top: 10px;">
 				<span class="control-label">내용</span>
 				<div class="position-relative">
-					<div id="editor"></div>
-					<!-- <textarea  class="" title="" placeholder="내용을 입력해주세요" name="content" value=""></textarea> -->
+				      <div id="editor"></div>
 				</div>
 			</div>
 	    	<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 	    	
-	    	<div class="form-group" style="margin-top: 10px;">
+	    	<!-- <div class="form-group" style="margin-top: 10px;">
 				<div class="control-label" style="float: left;">공개범위</div>
 	            <div class="condition-cell">
 	                <input type="radio" class="custom-control-radio2" id="entire" name="showrange">
@@ -954,7 +977,7 @@ function goSearch(){
 	                <input type="radio" class="custom-control-radio2" id="manager" name="showrange">
 	                <label for="manager" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리자공개</label>
 				</div>
-			</div>
+			</div> -->
 	    	<div class="form-group" style="margin-top: 5px;">
 				<div class="control-label" style="float: left;">알림설정</div>
 	            <div class="condition-cell">

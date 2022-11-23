@@ -259,8 +259,6 @@
 				$(this).siblings().removeClass('list_iscurrent');
 			}
 		});
-		
-		
 	});
 </script>
 <nav id="board_mainList">
@@ -269,9 +267,9 @@
 </nav>
 
 <nav id="freeboard_subList">
-	<a id="freeboard-total" class="list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">상신함</a>
-	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">수신함</a>
-	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">내 문서함</a><!-- 북마크,임시저장  -->
+	<a id="freeboard-total" class="header-nav list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">상신함</a>
+	<a id="freeboard-dept" class="header-nav list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">수신함</a>
+	<a id="freeboard-dept" class="header-nav list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">내 문서함</a><!-- 북마크,임시저장  -->
 	<div class="freeboard_subList_underline"></div>
 </nav>
 

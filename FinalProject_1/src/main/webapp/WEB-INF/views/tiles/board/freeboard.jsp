@@ -2,10 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="freeboard_header.jsp"%> 
 <%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mdb.min.css"> --%>
-<!-- MDB -->
-<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet"/> -->
-<!-- MDB -->
-<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script> -->
 <style type="text/css">
 
 
@@ -445,13 +441,13 @@ $(document).ready(function(){
 	});
 	
 	//offcanvas
- 	$("a#write").click(function(e){
+ 	$("a#writebtn").click(function(e){
  		$('.offcanvas').offcanvas('show');
  	});
 	 	
-	
+
  	<%-- 텍스트 에디터 시작 --%>
-	const editor = new toastui.Editor({
+	/* const editor = new toastui.Editor({
 	    el: document.querySelector("#editor"),
 	    height: "500px",
 	    initialEditType: "wysiwyg",
@@ -465,7 +461,37 @@ $(document).ready(function(){
 	      },
 	    },
 	    language: 'ko-KR'
-	 });
+	 }); */
+	
+	 
+	 
+	 const { Editor } = toastui; 
+	 const { colorSyntax } = Editor.plugin;
+	 
+	 /* const colorSyntaxOptions = {
+			 preset: ['#181818', '#292929', '#393939']
+	 }; */
+
+	 
+
+	const editor = new toastui.Editor({
+	      el: document.querySelector('#editor'),
+	      height: '500px',
+	      initialEditType: 'WYSIWYG',
+	      previewStyle: 'vertical',
+	      plugins: [colorSyntax],
+	      hooks: {
+		      addImageBlobHook: function (blob, callback) {
+		        const formData = new FormData();
+		        formData.append("image", blob);
+		        const imageURL = imageUpload(formData);
+		        // console.log(imageURL);
+		        callback(imageURL, "image");
+		      },
+		    }/*  ,
+		    language: 'ko-KR'  */
+	    });
+     
 	<%-- 텍스트 에디터 끝 --%>
 	
 	
@@ -596,13 +622,10 @@ function goSearch(){
 }
 
 </script>
-<div class="container col-9 mt-5">
+<div class="container mt-5">
 	<div class="row">
       <div class="table-responsive" style="width: 100%;">
       	 
-      	 <div style="display: inline-block;float: left;">
-      	 	 <a href="#" id="write"class="btn "style="font-size: 9pt;padding-left:20px;padding-right:20px;border-color:white; background-color:#4d4f53;color:white">글쓰기</a>
-      	 </div>
           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
 			<div class="row" style="float: right;position: relative;left: -120px;" >
 			
@@ -763,10 +786,10 @@ function goSearch(){
             </tr>
           </thead>
           <tbody>
-          	<tr class="topnotice"><!-- 공지 상단에 고정 -->
+          	<tr>
               <td>
               	<div class="titlefirst">
-              		<i class="icon icon-pushpin"style="color:#dc3545;"></i>&nbsp;<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
+              		<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -781,10 +804,10 @@ function goSearch(){
               	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
-            <tr class="topnotice">
+            <tr>
               <td>
               	<div class="titlefirst">
-              		<i class="icon icon-pushpin"style="color:#dc3545;"></i>&nbsp;<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
+              		<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -800,10 +823,10 @@ function goSearch(){
               </td>
             </tr>
             
-            <tr class="topnotice">
+            <tr>
                <td>
               	<div class="titlefirst">
-              		<i class="icon icon-pushpin"style="color:#dc3545;"></i>&nbsp;<span class="title">[떰접식당 이용정책 변경안내]</span>
+              		<span class="title">[떰접식당 이용정책 변경안내]</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -869,7 +892,7 @@ function goSearch(){
 <!-- 오프캔버스 시작 -->
 		<div class="offcanvas offcanvas-end" style="width: 800px;" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 		  <div class="offcanvas-header">
-		    <div class="offcanvas-title headeroffcanvas" style="font-weight: 1000;font-size: 16pt;"id="offcanvasScrollingLabel">공지사항</div>
+		    <div class="offcanvas-title headeroffcanvas" style="font-weight: 700;font-size: 16pt;"id="offcanvasScrollingLabel">자유게시판</div>
 		    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		  </div>
 		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
@@ -929,7 +952,7 @@ function goSearch(){
 				</div>
 			</div>
 			<div class="form-group" style="margin-top: 10px;">
-				<span class="control-label">파일첨부</span>
+				<span class="control-label">파일첨부</span><span style="color: #d8d8d8;font-size:9pt">파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요</span>
 				<div class="position-relative">
 					<input type="file" id="file" class="form-control"  name="file" >
 				</div>
@@ -944,7 +967,7 @@ function goSearch(){
 			</div>
 	    	<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 	    	
-	    	<div class="form-group" style="margin-top: 10px;">
+	    	<!-- <div class="form-group" style="margin-top: 10px;">
 				<div class="control-label" style="float: left;">공개범위</div>
 	            <div class="condition-cell">
 	                <input type="radio" class="custom-control-radio2" id="entire" name="showrange">
@@ -954,7 +977,7 @@ function goSearch(){
 	                <input type="radio" class="custom-control-radio2" id="manager" name="showrange">
 	                <label for="manager" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리자공개</label>
 				</div>
-			</div>
+			</div> -->
 	    	<div class="form-group" style="margin-top: 5px;">
 				<div class="control-label" style="float: left;">알림설정</div>
 	            <div class="condition-cell">
