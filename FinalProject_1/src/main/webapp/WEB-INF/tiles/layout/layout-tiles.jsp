@@ -46,6 +46,7 @@
 
 <!-- calendar CSS, js -->
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/calendar.css">
+
 <script src='<%= ctxPath%>/resources/js/calendar.js'></script>
 
 <!-- flatpickr -->
@@ -54,19 +55,14 @@
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
+<!-- pretendard-font -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css" />
+
+
 <style type="text/css">
 	.margin-container{margin-left: 5%;}
 	.container{width: 90% !important;}
-	@font-face {
-	  font-family: 'Pretendard-Regular';
-	  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-	  font-weight: 700;
-	  font-style: normal;
-	}
-	body{
-	  /* font-size: 9pt; */
-	  font-family: 'Pretendard-Regular';
-	}
+	body{font-family: 'Pretendard';}
 </style>
 
 </head>
