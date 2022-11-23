@@ -37,5 +37,12 @@ public class MessageController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/message/memberList.up")
+	public ModelAndView messageMemberList(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("tiles/message/message_memberList");
+		return mav;
+	}
+	
 	
 }

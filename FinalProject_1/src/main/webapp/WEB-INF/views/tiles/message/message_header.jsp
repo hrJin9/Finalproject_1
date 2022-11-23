@@ -61,9 +61,9 @@
 	
 	.subList_underline {
 		position: absolute;
-		left: 1%;
+		left: 0.5%;
 		bottom: -1px;
-		width: 10%;
+		width: 11%;
 		height: 2px;
 		background: #333;
 		transition: all .3s ease-in-out;
@@ -71,13 +71,13 @@
 	}
 	
 	#subList a:nth-child(1).iscurrent ~ .subList_underline {
-		left: 1%;
+		left: 0.5%;
 	}
 	#subList a:nth-child(2).iscurrent ~ .subList_underline {
-		left: 14%; /* width랑 margin-left랑 합친거 */
+		left: 13.5%; /* width랑 margin-left랑 합친거 */
 	}
 	#subList a:nth-child(3).iscurrent ~ .subList_underline {
-		left: 27%; 	
+		left: 26.5%; 	
 	}
 	/* 
 	#subList a:nth-child(1):hover ~ .subList_underline {
