@@ -90,14 +90,14 @@
 </style>
 
 <nav id="attendance_mainList" class="margin-container">
-	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up">내 근무</a>
-	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff.up">내 휴가</a>
+	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up" class="header-main">내 근무</a>
+	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff.up" class="header-main">내 휴가</a>
 	<div class="list_underline"></div>
 </nav>
 
 <nav id="dayoff_subList" class="margin-container">
-	<a id="dayoff-index" href="<%= request.getContextPath()%>/dayoff/index.up">휴가 개요</a>
-	<a id="dayoff-detail" href="<%= request.getContextPath()%>/dayoff/detail.up">연차 상세</a>
+	<a id="dayoff-index" href="<%= request.getContextPath()%>/dayoff/index.up" class="header-sub">휴가 개요</a>
+	<a id="dayoff-detail" href="<%= request.getContextPath()%>/dayoff/detail.up" class="header-sub">연차 상세</a>
 	<div class="dayoff_subList_underline"></div>
 </nav>
 

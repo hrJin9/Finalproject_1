@@ -88,13 +88,13 @@
 </style>
 
 <nav id="meetingroom_mainList" class="margin-container">
-	<a id="attendance" href="<%= request.getContextPath()%>/support/meetingroom-1.up">회의실 예약</a>
+	<a id="attendance" href="<%= request.getContextPath()%>/support/meetingroom-1.up" class="header-main">회의실 예약</a>
 	<div class="list_underline"></div>
 </nav>
 
 <nav id="meetingroom_subList" class="margin-container">
-	<a id="mettingroom-1" href="<%= request.getContextPath()%>/support/meetingroom-1.up">1층</a>
-	<a id="meetingroom-3" href="<%= request.getContextPath()%>/support/meetingroom-3.up">3층</a>
+	<a id="mettingroom-1" href="<%= request.getContextPath()%>/support/meetingroom-1.up" class="header-sub">1층</a>
+	<a id="meetingroom-3" href="<%= request.getContextPath()%>/support/meetingroom-3.up" class="header-sub">3층</a>
 	<div class="meetingroom_subList_underline"></div>
 </nav>
 

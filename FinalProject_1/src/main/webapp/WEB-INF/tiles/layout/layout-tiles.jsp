@@ -67,7 +67,7 @@
 	.header-nonsub{font-weight: 800 !important; padding: 0.9em 0 !important; font-size: 18pt !important;}
 	/* 서브메뉴 있는 헤더 */
 	.header-main{font-weight: 800 !important; padding: 0.9em 0 0.3em 0 !important; font-size: 18pt !important; }
-	.header-sub{font-weight: 800 !important;  padding: 0.9em 0 !important; font-size: 12pt !important;}
+	.header-sub{font-weight: 700 !important;  padding: 0.9em 0 !important; font-size: 12pt !important;}
 </style>
 
 </head>

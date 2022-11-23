@@ -91,14 +91,14 @@
 </style>
 
 <nav id="mainList" class="margin-container header-nav">
-	<a id="message" href="<%= request.getContextPath()%>/message.up">메시지</a>
+	<a id="message" href="<%= request.getContextPath()%>/message.up" class="header-main">메시지</a>
 	<div class="list_underline"></div>
 </nav>
 
 <nav id="subList" class="margin-container">
-	<a id="mg-recieve" href="<%= request.getContextPath()%>/message/recieve.up">받은메시지</a>
-	<a id="mg-send" href="<%= request.getContextPath()%>/message/send.up">보낸메시지</a>
-	<a id="mg-temp" href="<%= request.getContextPath()%>/message/temp.up">임시보관함</a>
+	<a id="mg-recieve" href="<%= request.getContextPath()%>/message/recieve.up" class="header-sub">받은메시지</a>
+	<a id="mg-send" href="<%= request.getContextPath()%>/message/send.up" class="header-sub">보낸메시지</a>
+	<a id="mg-temp" href="<%= request.getContextPath()%>/message/temp.up" class="header-sub">임시보관함</a>
 	<div class="subList_underline"></div>
 </nav>
 
