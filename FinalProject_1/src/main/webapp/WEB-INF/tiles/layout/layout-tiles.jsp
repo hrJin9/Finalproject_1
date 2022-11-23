@@ -63,6 +63,7 @@
 	.margin-container{margin-left: 5%;}
 	.container{width: 90% !important;}
 	body{font-family: 'Pretendard';}
+	.header-nav{font-weight: 800;}
 </style>
 
 </head>
