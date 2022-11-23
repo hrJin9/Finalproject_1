@@ -22,10 +22,18 @@ public class MessageController {
 		mav.setViewName("message/message_send.tiles");
 		return mav;
 	}
+	
 	@RequestMapping(value = "/message/temp.up")
 	public ModelAndView messageTemp(HttpServletRequest request, ModelAndView mav) {
 		
 		mav.setViewName("message/message_temp.tiles");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/message/write.up")
+	public ModelAndView messageWrite(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("message/message_write.tiles");
 		return mav;
 	}
 	

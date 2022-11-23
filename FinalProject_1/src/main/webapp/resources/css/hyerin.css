@@ -1383,11 +1383,11 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .mgList-info{
-	padding: 15px 0;
-	margin-left: 13%;
+	padding: 10px 0;
+	margin-left: 12%;
 }
 
-.mgList-info > span:last-child{ 
+#mg-filter{ 
 	float: right;
 	margin-right: 3%;
 	color: rgba(0,0,0,0.6);
@@ -1397,18 +1397,42 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	font-weight: bold;
 }
 
-.mgList-info > span:last-child:hover{
+#mg-filter:hover{
 	background-color: rgba(230,230,230,0.4);
 	cursor: pointer;
 }
 
-.mgList-info > span{
+.mg-search{
 	display: inline-block;
-	width: 12%;
+	float: right;
+	width: 54%;
 }
 
+.mg-form{
+	display: flex;
+}
+
+.mg-form .form-control {
+	
+	
+}
+
+.mgList-info > span{
+	display: inline-block;
+	width: 13%;
+	text-align: center;
+	padding: 5px;
+}
+
+.mgList-info > span:hover{
+	background-color: rgba(230,230,230, 0.4);
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+
 .mgList-info > span > span {
-	margin-left: 5px;
+	margin-left: 1px;
 	color: #37A652;
 	font-weight: bold;
 }
@@ -1476,6 +1500,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mg-checkmenu {
 	display: flex;
 	margin-left: 3%;
+	width: 90%;
 }
 
 .mg-checkmenu > button{
@@ -1497,6 +1522,13 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mg-checkmenu > button > i {
 	position: relative; bottom: 5px; right: 3px;
 }
+
+.mg-checkmenu > span {
+	margin: auto 0 auto 48.2%;
+	color: #37A652;
+	font-weight: 600;
+}
+
 
 .mgList-contents{
 	height: 400px;
@@ -1556,21 +1588,22 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mgc-container{
 	width: 95%;
 	margin-left: 2.5%;
+	margin-top: 3%;
 }
 
 .mgc-header{
-	height: 150px;
+	height: 130px;
 	display: flex;
 }
 
-.mgc-header > div {
-	width: 50%;
-}
 .mgc-header-left{
 	float: left;
+	width: 75%;
 }
 .mgc-header-right{
 	float: right;
+	width: 25%;
+	text-align: right;
 }
 
 .mgc-writebtn{
@@ -1579,5 +1612,155 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius: 5px;
 	color: white;
 	height: 40px;
-	width: 100px;
+	width: 110px;
+	font-weight: 600;
 }
+
+.mgc-writebtn > span{
+	margin-right: 5px;
+}
+
+.mgc-subject > span {
+	font-size: 20pt;
+}
+
+.mgc-subject > span:first-child{
+	color: rgba(0,0,0,0.1);
+}
+
+.mgc-subject > span:nth-child(2){
+	font-weight: 700;
+	margin-left: 10px;
+}
+
+.mgc-subject > span:last-child {
+	font-size: 15pt;
+	margin-left: 5px;
+}
+
+.mgc-people {
+	display: flex;
+	margin-left: 8%;
+	margin-top: 10px;
+}
+
+.mgc-people > div:first-child{
+	margin-right: 20px;
+	font-weight: 700;
+}
+
+
+.mgc-to {
+	margin-top: 5px;
+}
+
+#mgc-date {
+	margin-top: 10px;
+	color: rgba(0,0,0,0.7);
+}
+
+.mgc-content {
+	height: 250px;
+	padding: 20px 0 20px 5%;
+}
+
+.mgc-ac {
+	margin-left: 3%;
+	font-size: 10pt !important;
+}
+
+.mgc-ac button {
+	font-size: 11pt !important;
+}
+
+.mgc-ac button > div > span {
+	font-weight: 700;
+}
+
+.mgc-ac button > div:first-child{
+	margin-right: 5px;
+}
+
+.mgc-ac .accordion-body {
+	padding: 0.25rem 2.25rem;
+}
+
+.mgc-ac-content > div > span:first-child{
+	margin-right: 5px;
+}
+
+.mgc-ac-content > div {
+	padding: 10px 5px;
+}
+
+.mgc-ac-content > div:hover {
+	cursor: pointer;
+}
+
+.mgc-ac-content > div:hover > span:nth-child(2) {
+	text-decoration: underline;
+}
+
+.mgc-ac-ref > div > span:nth-child(2) {
+	display: inline-block;
+	width: 75%;
+}
+
+.mgc-ac-ref > div > span:nth-child(3) {
+	font-size: 9pt;
+	color: rgba(0,0,0,0.7);
+}
+
+
+.mgc-header-attach {
+	font-size: 15pt;
+}
+
+.mg-write{
+	float: right;
+	position: absolute; top: 6%; right: 5.5%;
+}
+
+.mg-writebtn{
+	border-radius: 5px;
+	height: 45px;
+	width: 140px;
+	border: none;
+	color: white;
+	font-weight: 700;
+}
+
+.mg-writebtn > span:first-child {
+	margin-right: 5px;
+}
+
+
+.mgList-contents::-webkit-scrollbar {
+   width: 8px;  /* 스크롤바의 너비 */
+}
+
+.mgList-contents::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+
+.mgList-contents::-webkit-scrollbar-track {
+	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+}
+
+.mg-now {
+	background-color: rgba(230,230,230, 0.4);
+}
+
+
+
+
+
+/* message_write.jsp */
+.mw-top, .mw-bottom{
+	margin-left: 5%;
+	width: 90%;
+}
+
+
