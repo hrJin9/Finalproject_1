@@ -57,7 +57,16 @@
 <style type="text/css">
 	.margin-container{margin-left: 5%;}
 	.container{width: 90% !important;}
-	
+	@font-face {
+	  font-family: 'Pretendard-Regular';
+	  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+	  font-weight: 700;
+	  font-style: normal;
+	}
+	body{
+	  /* font-size: 9pt; */
+	  font-family: 'Pretendard-Regular';
+	}
 </style>
 
 </head>

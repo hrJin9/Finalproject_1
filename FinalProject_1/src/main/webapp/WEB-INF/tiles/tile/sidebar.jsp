@@ -6,16 +6,7 @@
     
 <style type="text/css">
 
-   @font-face {
-     font-family: 'Pretendard-Regular';
-     src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-     /* font-weight: 400; */
-     /* font-style: normal; */
-   }
-   body{
-     /* font-size: 9pt; */
-     font-family: 'Pretendard-Regular';
-   }
+  
    div.sidebar{
     box-shadow: 3px 3px 9px rgb(0 0 0 / 5%);
      width: 190px;
