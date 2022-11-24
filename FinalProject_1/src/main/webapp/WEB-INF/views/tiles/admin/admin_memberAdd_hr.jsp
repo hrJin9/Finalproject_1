@@ -16,23 +16,13 @@
 		font-family: Pretendard-Regular;		
 	}
 	
+	/* 상단 nav바 */
 	#admin_memberadd {
 		position: relative;
-	    display: flex;
-	    width: 11%;
-	    font-size: 18pt;
-	    font-weight: bold;
-	    margin: 4px 0 0 70px;
-	    padding: 0.8em 0 0.8em 0;
-	    color: #333;
-	}
-
-	hr.memberaddhr{
-		width: 100%;
-		background-color: rgba(0,0,0, .3) !important;
-		border: none; 
-		height: 1px;
-		margin-top: 0px;
+		display: flex;
+		width: 640px;
+		font-size: 18pt;
+		font-weight: bold;
 	}
 
 	/* 상단 프로필 */
@@ -210,8 +200,10 @@
 </script>
 
 <div class="container" style="margin-right: 145px;">
-	<div id="admin_memberadd">멤버생성</div>
-	<hr class="memberaddhr" /><br>
+	<nav id="admin_memberadd" class="margin-container">
+		<div id="memberadd" style="color: black;" class="header-nonsub">멤버생성</div>
+	</nav>
+	<hr class="HRhr" style="margin-top: 0px;"/><br>
 	
 	<form name="myInfo">
 		<div class="col-md-16" style="float: left; margin-right: 70px;">
@@ -455,7 +447,7 @@
 		  </div>
 		  
 		  <div class="workstatus-buttoncontainer" style="margin-right: 585px;">
-  			<button type="button" class="workstatus-save">저장하기</button>
+  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
   			<button type="reset" class="workstatus-cancel">취소</button><br><br><br><br>
 		  </div>
 		  

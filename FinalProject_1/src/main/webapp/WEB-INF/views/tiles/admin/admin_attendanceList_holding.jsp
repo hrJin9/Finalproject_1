@@ -284,7 +284,7 @@
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-							<input type="text" class="form-control" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+							<input type="text" class="form-control" placeholder="이름 검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
 						</div>
 					</div>
 				</div>
