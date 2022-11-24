@@ -12,18 +12,18 @@
 <style type="text/css">
 	
 	.currentPage{color:black;}
-	#board_mainList a:hover{
+	#approval_mainList a:hover{
 		color: #000000;
 		cursor: pointer;
 	}
 	
-	#freeboard_subList a:hover{
+	#freeapproval_subList a:hover{
 		background-color: rgba(200,200,200, .2);
 		cursor: pointer;
 		color: #4d4f53;
 	}
 		
-	#board_mainList {
+	#approval_mainList {
 		position: relative;
 		display: flex;
 		width: 581px;
@@ -33,7 +33,7 @@
 	}
 	
 	
-	#board_mainList a {
+	#approval_mainList a {
 		display: block;
 		width: 18%;
 		padding: 0.7em 0 0.3em 0;
@@ -49,7 +49,7 @@
 		color: #D2D6D9;
 	}
 	
-	#freeboard_subList{
+	#freeapproval_subList{
 		position: relative;
 		display: flex;
 		width: 640px;
@@ -58,7 +58,7 @@
 		margin: 4px 0 0 60px;
 	}
 	
-	#freeboard_subList a {
+	#freeapproval_subList a {
 		display: block;
 		width: 10%;
 		padding: .9em 0;
@@ -69,7 +69,7 @@
 		border-radius: 12px;
 	}
 	
-	.freeboard_subList_underline {
+	.freeapproval_subList_underline {
 		position: absolute;
 		left: -3px;
     	bottom: -1px;
@@ -80,10 +80,10 @@
 		margin-left: 5%;
 	}
 	
-	#freeboard_subList a:nth-child(1).iscurrent ~ .freeboard_subList_underline {
+	#freeapproval_subList a:nth-child(1).iscurrent ~ .freeapproval_subList_underline {
 		left: 0%;
 	}
-	#freeboard_subList a:nth-child(2).iscurrent ~ .freeboard_subList_underline {
+	#freeapproval_subList a:nth-child(2).iscurrent ~ .freeapproval_subList_underline {
 		left: 10.5%; /* width랑 margin-left랑 합친거 */
 	}
 	.newbadge{
@@ -168,7 +168,7 @@
 		cursor: pointer; 
 		text-decoration: underline;
 	}
-	img.boardprofile{
+	img.approvalprofile{
 		border: 0px;
 		border-radius: 17.5px;
 		background-color: #D2D6D9;
@@ -261,16 +261,16 @@
 		});
 	});
 </script>
-<nav id="board_mainList">
+<nav id="approval_mainList" class="margin-container header-nav">
 	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/approval.up">전자결재홈</a>
 	<!-- <div class="list_underline"></div> -->
 </nav>
 
-<nav id="freeboard_subList">
-	<a id="freeboard-total" class="header-nav list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">상신함</a>
-	<a id="freeboard-dept" class="header-nav list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">수신함</a>
-	<a id="freeboard-dept" class="header-nav list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">내 문서함</a><!-- 북마크,임시저장  -->
-	<div class="freeboard_subList_underline"></div>
+<nav id="subList" class="margin-container">
+	<a id="freeapproval-total" class="header-sub list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">발신함</a>
+	<a id="freeapproval-dept" class="header-sub list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">수신함</a>
+	<a id="freeapproval-dept" class="header-sub list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">내 문서함</a><!-- 북마크,임시저장  -->
+	<div class="freeapproval_subList_underline"></div>
 </nav>
 
 <hr class="HRhr" style="margin-top: 0px;"/>
