@@ -11,35 +11,34 @@
 
 <style type="text/css">
 	
-	.currentPage{color:black;}
-	#approval_mainList a:hover{
+	#mainList a:hover{
 		color: #000000;
 		cursor: pointer;
 	}
-	
-	#freeapproval_subList a:hover{
+	#subList a:hover{
 		background-color: rgba(200,200,200, .2);
 		cursor: pointer;
 		color: #4d4f53;
 	}
 		
-	#approval_mainList {
+	#mainList {
 		position: relative;
-		display: flex;
-		width: 581px;
-		font-size: 18pt;
-		font-weight: bold;
-    	margin: 1px 0 0 70px;
+	    display: flex;
+	    width: 640px;
+	    font-size: 18pt;
 	}
 	
-	
-	#approval_mainList a {
+	.header-main {
+	    font-weight: 800 !important;
+	    padding: 0.9em 0 0.3em 0 !important;
+	    font-size: 18pt !important;
+	}
+	#mainList a {
 		display: block;
-		width: 18%;
-		padding: 0.7em 0 0.3em 0;
+    	width: 17%;
+    	text-align: center;
 		text-decoration: none;
 		margin-right: 4%;
-		text-align: center;
 	}
 	
 	.list_iscurrent{
@@ -49,16 +48,16 @@
 		color: #D2D6D9;
 	}
 	
-	#freeapproval_subList{
+	#subList{
 		position: relative;
 		display: flex;
 		width: 640px;
-		font-size: 10pt;
+		font-size: 11pt;
 		font-weight: bold;
-		margin: 4px 0 0 60px;
+		/* margin: 4px 0 0 60px; */
 	}
 	
-	#freeapproval_subList a {
+	#subList a {
 		display: block;
 		width: 10%;
 		padding: .9em 0;
@@ -69,21 +68,27 @@
 		border-radius: 12px;
 	}
 	
-	.freeapproval_subList_underline {
-		position: absolute;
-		left: -3px;
-    	bottom: -1px;
-		width: 9%;
-		height: 2px;
-		background: #333;
-		transition: all .3s ease-in-out;
-		margin-left: 5%;
+	.subList_underline {
+	    position: absolute;
+	    left: 2%;
+	    bottom: -1px;
+	    width: 10%;
+	    height: 2px;
+	    background: #333;
+	    transition: all .3s ease-in-out;
+	    margin-right: 5%;
 	}
-	
-	#freeapproval_subList a:nth-child(1).iscurrent ~ .freeapproval_subList_underline {
+	#subList {
+	    position: relative;
+	    display: flex;
+	    width: 640px;
+	    font-size: 11pt;
+	    font-weight: bold;
+	}
+	#subList a:nth-child(1).iscurrent ~ .subList_underline {
 		left: 0%;
 	}
-	#freeapproval_subList a:nth-child(2).iscurrent ~ .freeapproval_subList_underline {
+	#subList a:nth-child(2).iscurrent ~ .subList_underline {
 		left: 10.5%; /* width랑 margin-left랑 합친거 */
 	}
 	.newbadge{
@@ -146,14 +151,12 @@
 		padding:0 auto;
 		font-size: 15pt;
 		position: relative;
-		top:12px;
 	}
 	.icon-star-empty{
 		color:#bfbfbf;
 		padding:0 auto;
 		font-size: 15pt;
 		position: relative;
-		top:12px;
 	}
 	a.icon-star-empty:hover, a.icon-star-full:hover {
 		color: #ffc107;
@@ -248,6 +251,14 @@
 	    margin-bottom: 0;
 	    vertical-align: top;
 	}
+	#writebtn{
+		font-size: 11pt;
+		padding: 10px 25px;
+		border-color: white;
+		font-weight: 600;
+		color: white;
+		border-radius: 10px;	
+	}
 </style>
 <script>
 	$(document).ready(function(){
@@ -261,16 +272,20 @@
 		});
 	});
 </script>
-<nav id="approval_mainList" class="margin-container header-nav">
-	<a class="mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/approval.up">전자결재홈</a>
-	<!-- <div class="list_underline"></div> -->
+<nav id="mainList" class="margin-container header-nav">
+	<a class="header-main list_iscurrent" id="notice" href="<%= request.getContextPath()%>/approval.up">전자결재홈</a>
 </nav>
 
+ <div style="display: inline-block;position: relative;float: right;right: 90px;top: -49px;">
+  	<a href="<%= request.getContextPath()%>/approval/writing.up" id="writebtn"class="btn gradientbtn"><i class="icon icon-quill" style="margin-right: 5px;"></i>작성하기</a>
+</div>
+
+
 <nav id="subList" class="margin-container">
-	<a id="freeapproval-total" class="header-sub list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">발신함</a>
-	<a id="freeapproval-dept" class="header-sub list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">수신함</a>
-	<a id="freeapproval-dept" class="header-sub list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">내 문서함</a><!-- 북마크,임시저장  -->
-	<div class="freeapproval_subList_underline"></div>
+	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up" style="margin-left: 2%;">발신함</a>
+	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/tome.up" style="margin-left: 3%;">수신함</a>
+	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a>
+	<div class="subList_underline"></div>
 </nav>
 
 <hr class="HRhr" style="margin-top: 0px;"/>

@@ -103,7 +103,7 @@
 </nav>
 
 <div class="mg-write">
-	<button type="button" class="mg-writebtn" onclick="location.href='<%= request.getContextPath()%>/message/write.up'">
+	<button type="button" class="mg-writebtn gradientbtn" onclick="location.href='<%= request.getContextPath()%>/message/write.up'">
 		<span><i class="icon icon-pencil"></i></span>
 		<span>메시지 보내기</span>
 	</button>	

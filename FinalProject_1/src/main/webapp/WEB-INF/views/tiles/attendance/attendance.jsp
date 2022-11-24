@@ -18,6 +18,24 @@
 			defaultDate: new Date(),
 			local: 'ko'
 		});
+		
+		// 오프캔버스 타임피커
+	 	flatpickr.localize(flatpickr.l10ns.ko);
+	 	flatpickr($(".timeSelector"));
+		$(".timeSelector").flatpickr({
+			enableTime: true,
+		    noCalendar: true,
+		    dateFormat: "H:i",
+			local: 'ko'
+		});
+		
+		// 오늘 버튼 클릭시 오늘로 날짜 설정
+		$(".today").click(function(){
+			$(".dateSelector").flatpickr({
+				defaultDate:new Date(),
+				dateFormat: "Y. m"
+			});
+		});
 	 	
 	 	
 	 	// 시간 infobox
@@ -43,6 +61,29 @@
 	 	}, function(){
 	 		$(".workingweek-sumbar-goal-infobox").fadeOut("fast");
 	 	});
+	 	
+	 	
+	 	// 주차 구하기
+		var currentDay = new Date();  
+		var theYear = currentDay.getFullYear();
+		var theMonth = currentDay.getMonth();
+		var theDate  = currentDay.getDate();
+		var theDayOfWeek = currentDay.getDay();
+		 
+		var thisWeek = [];
+		 
+		for(var i=0; i<7; i++) {
+		  var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
+		  var yyyy = resultDay.getFullYear();
+		  var mm = Number(resultDay.getMonth()) + 1;
+		  var dd = resultDay.getDate();
+		 
+		  mm = String(mm).length === 1 ? '0' + mm : mm;
+		  dd = String(dd).length === 1 ? '0' + dd : dd;
+		 
+		  thisWeek[i] = yyyy + '-' + mm + '-' + dd;
+		  console.log(thisWeek[i]);
+		}
 	 	
 	 	
 	 	// 이번주 날짜 
@@ -107,9 +148,10 @@
 </script>
 <div class="attendance-container">
 	<div class="datebox margin-container">
-		<button type="button" class="datearrow" style="border-right: none;"><i class="fa-solid fa-angle-left" style="font-size:10pt;"></i></button>
-		<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;"/></span>
-		<button type="button" class="datearrow" style="border-left: none;"><i class="fa-solid fa-angle-right" style="font-size:10pt;"></i></button>
+		<span class="" style="display: inline-block; width: 121px; ">
+			<input class="dateSelector attendance-dateSelector">
+			<i class="fas fa-chevron-down ad-downarrow"></i>
+		</span>
 		<button type="button" class="today">오늘</button>
 	</div>
 	<hr class="HRhr"/>
@@ -238,33 +280,16 @@
 						</li>
 					</ul>
 					
-					<div class="dropdown-toggle workStartbox" id="workwriteStart" data-bs-toggle="dropdown" aria-expanded="false">
-						시작 시각
+					<div class="workStartbox" id="workwriteStart">
+						<input type="text" class="timeSelector" placeholder="시작 시각"/>						
 					</div>
-					<ul class="dropdown-menu workstarttime" aria-labelledby="workwriteStart" style="min-width: 6rem;">
-						<c:forEach var="i" begin="0" end="23">
-							<c:forEach var="j" begin="0" end="1">
-								<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-								<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-							</c:forEach>
-						</c:forEach>
-					</ul>
-					
 					<div style="display:inline-block;">
 						<i class="fa-solid fa-arrow-right" style="color: #C6C6C6"></i>
 					</div>
 					
-					<div class="dropdown-toggle workEndbox" id="workwriteEnd" data-bs-toggle="dropdown" aria-expanded="false">
-						종료 시각						
+					<div class="workEndbox" id="workwriteEnd">
+						<input type="text" class="timeSelector" placeholder="종료 시각"/>						
 					</div>
-					<ul class="dropdown-menu workendtime" aria-labelledby="workwriteEnd" style="min-width: 6rem;">
-						<c:forEach var="i" begin="0" end="23">
-							<c:forEach var="j" begin="0" end="1">
-								<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-								<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-							</c:forEach>
-						</c:forEach>
-					</ul>
 				</div>
 				
 				<!-- 근무 1개 끝  -->

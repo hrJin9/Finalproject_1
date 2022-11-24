@@ -44,5 +44,12 @@ public class MessageController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/message/book.up")
+	public ModelAndView messageBook(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("tiles/message/message_book");
+		return mav;
+	}
+	
 	
 }

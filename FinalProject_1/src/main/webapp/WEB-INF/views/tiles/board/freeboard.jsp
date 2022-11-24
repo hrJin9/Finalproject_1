@@ -410,6 +410,20 @@ div.datebox > span > input {
 	border-left: none;
 	border-right: none;
 }
+.empty-heart{
+	 display: inline-block;
+	 font-size: 18pt;
+	 color: #bfbfbf;
+	 position: relative;
+	 right: 5px;
+}
+.full-heart{
+	 display: none;
+	 font-size: 18pt;
+	 color: #f53e50;
+	 position: relative;
+    right: 5px;
+}
 </style>
 
 <script type="text/javascript">
@@ -421,17 +435,24 @@ $(document).ready(function(){
 	$("#date_total").prop("checked", true);
 	
 	/* 북마크 표시 */
-	  $('.bookmark').click(function(e) {
-		  	const $this = $(this);
+	$('.bookmark').click(function(e) {
+	  	const $this = $(this);
 
-		  	if ( $this.hasClass('icon-star-empty') ) {
-		  		$this.removeClass('icon-star-empty');
-		  		$this.addClass('icon-star-full');
-		  	} else {
-		  		$this.removeClass('icon-star-full');
-		  		$this.addClass('icon-star-empty');
-		  	}
-		  	/* e.preventDefault(); */
+	  	if ( $this.hasClass('icon-star-empty') ) {
+	  		$this.removeClass('icon-star-empty');
+	  		$this.addClass('icon-star-full');
+	  	} else {
+	  		$this.removeClass('icon-star-full');
+	  		$this.addClass('icon-star-empty');
+	  	}
+	});
+	  $('.empty-heart').click(function() {
+  		$(this).css('display',"none");
+  		$(this).next().css('display',"inline-block");
+	});
+	  $('.full-heart').click(function() {
+  		$(this).css('display',"none");
+  		$(this).prev().css('display',"inline-block");
 	});
 	  
 	
@@ -447,39 +468,17 @@ $(document).ready(function(){
 	 	
 
  	<%-- 텍스트 에디터 시작 --%>
-	/* const editor = new toastui.Editor({
-	    el: document.querySelector("#editor"),
-	    height: "500px",
-	    initialEditType: "wysiwyg",
-	    hooks: {
-	      addImageBlobHook: function (blob, callback) {
-	        const formData = new FormData();
-	        formData.append("image", blob);
-	        const imageURL = imageUpload(formData);
-	        // console.log(imageURL);
-	        callback(imageURL, "image");
-	      },
-	    },
-	    language: 'ko-KR'
-	 }); */
-	
-	 
 	 
 	 const { Editor } = toastui; 
 	 const { colorSyntax } = Editor.plugin;
 	 
-	 /* const colorSyntaxOptions = {
-			 preset: ['#181818', '#292929', '#393939']
-	 }; */
-
-	 
-
-	const editor = new toastui.Editor({
+	 const editor = new Editor({
 	      el: document.querySelector('#editor'),
 	      height: '500px',
-	      initialEditType: 'WYSIWYG',
+	      initialEditType:"wysiwyg",
 	      previewStyle: 'vertical',
 	      plugins: [colorSyntax],
+	      /* language: "ko-KR", */
 	      hooks: {
 		      addImageBlobHook: function (blob, callback) {
 		        const formData = new FormData();
@@ -488,9 +487,9 @@ $(document).ready(function(){
 		        // console.log(imageURL);
 		        callback(imageURL, "image");
 		      },
-		    }/*  ,
-		    language: 'ko-KR'  */
+		    } 
 	    });
+    
      
 	<%-- 텍스트 에디터 끝 --%>
 	
@@ -580,7 +579,7 @@ $(document).ready(function(){
 			if(this.checked)
 				this.checked = false;
         });
-	})
+	});
 	
 	
 });//end of ready
@@ -616,7 +615,7 @@ function changetagname(obj){
 		$("div#divPlusTag2").html(html2);
 	}
 };
-
+ 
 function goSearch(){
 	
 }
@@ -629,18 +628,16 @@ function goSearch(){
           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
 			<div class="row" style="float: right;position: relative;left: -120px;" >
 			
-				<div class="form-group" style="margin-right: 1rem;margin-left: 1rem;">
-					<div class="form-field">
-						<div class="select-wrap">
-							<select name="" id="" class="form-control" style="font-size: 9pt;padding:6px 12px;">
-							<option>분류 선택</option>
-							<option value="">제목</option>
-							<option value="">작성자</option>
-							<option value="">팀</option>
+				<div class="form-group mr-1">
+						<div class="form-field">
+							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
+								<option value="" selected>전체</option>
+								<option value="">작성자</option>
+								<option value="">제목</option>
+								<option value="">제목+내용</option>
 							</select>
 						</div>
 					</div>
-				</div>
 				<div class="">
 					<div class="form-group">
 						<div class="form-field">
@@ -801,7 +798,7 @@ function goSearch(){
               	</div>	
               </td>
               <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
               </td>
             </tr>
             <tr>
@@ -819,7 +816,7 @@ function goSearch(){
               	</div>	
               </td>
               <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
               </td>
             </tr>
             
@@ -838,7 +835,7 @@ function goSearch(){
               	</div>	
               </td>
               <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
               </td>
             </tr>
             <tr>
@@ -856,7 +853,7 @@ function goSearch(){
               	</div>	
               </td>
               <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
               </td>
             </tr>
             <tr >
@@ -873,7 +870,7 @@ function goSearch(){
               	</div>	
               </td>
               <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
               </td>
             </tr>
 

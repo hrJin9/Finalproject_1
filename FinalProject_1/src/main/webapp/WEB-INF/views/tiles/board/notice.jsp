@@ -463,9 +463,6 @@ $(document).ready(function(){
 	    },
 	    language: 'ko-KR'
 	 }); */
-	
-	 
-	 
 	 const { Editor } = toastui; 
 	 const { colorSyntax } = Editor.plugin;
 	 
@@ -473,15 +470,13 @@ $(document).ready(function(){
 			 preset: ['#181818', '#292929', '#393939']
 	 }; */
 
-	 
-
 	const editor = new Editor({
 	      el: document.querySelector('#editor'),
 	      height: '500px',
 	      initialEditType:"wysiwyg",
 	      previewStyle: 'vertical',
 	      plugins: [colorSyntax],
-	      language: "ko-KR",
+	      /* language: "ko-KR", */
 	      hooks: {
 		      addImageBlobHook: function (blob, callback) {
 		        const formData = new FormData();
@@ -630,16 +625,14 @@ function goSearch(){
           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
 			<div class="row" style="float: right;position: relative;left: -120px;" >
 			
-				<div class="form-group" style="margin-right: 1rem;margin-left: 1rem;">
+				<div class="form-group mr-1">
 					<div class="form-field">
-						<div class="select-wrap">
-							<select name="" id="" class="form-control" style="font-size: 9pt;padding:6px 12px;">
-							<option>분류 선택</option>
-							<option value="">제목</option>
+						<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
+							<option value="" selected>전체</option>
 							<option value="">작성자</option>
-							<option value="">팀</option>
-							</select>
-						</div>
+							<option value="">제목</option>
+							<option value="">제목+내용</option>
+						</select>
 					</div>
 				</div>
 				<div class="">
@@ -779,7 +772,7 @@ function goSearch(){
 </form>
 
 		
-        <table class="table custom-table">
+        <table class="table">
           <thead>
             <tr>
               <th width="80%"scope="col"/>
@@ -790,7 +783,7 @@ function goSearch(){
           	<tr class="topnotice"><!-- 공지 상단에 고정 -->
               <td>
               	<div class="titlefirst">
-              		📌&nbsp;<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
+              		📌&nbsp;<span class="title" onclick="location.href='/thumbsup/board/view.up'">[코로나 문진표] 11/15일자 결과 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -883,7 +876,7 @@ function goSearch(){
           </tbody>
         </table>
      
-     
+     		<h2 class="mt-3"style="text-align: center;">페이징처리</h2>
      
      
      
@@ -930,18 +923,19 @@ function goSearch(){
 			
 			<!-- <hr class="HRhr  mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/> -->
 			<div class="form-group"style="width:30%">
-				<div class="form-field mb-2">
-					<div class="select-wrap">
-						<select name="selectTag" id="selectTag" class="form-control mb-1" style="font-size: 10pt;padding: 6px 12px;height:36px;" onchange="changetagname(this)">
-						<option>태그선택</option>
-						<option value="">전체공지</option>
-						<option value="">일반공지</option>
-						<option value="">사내공지</option>
-						<option value="">이벤트공지</option>
-						<option value="">문진표공유</option>
-						<option value="plus">태그추가</option>
+			
+				<div class="form-group mr-1  mb-2">
+					<div class="form-field">
+						<select name="selectTag" id="selectTag" class="mb-1" style="padding: 10px 13px; background-color: #fafafa;font-size: 14px;color: #484848;font-weight: 500;border-radius: 5px; border:1px solid #ced4da; font-size: 10pt;" onchange="changetagname(this)">
+							<option value="" selected>태그선택</option>
+							<option value="">전체공지</option>
+							<option value="">일반공지</option>
+							<option value="">사내공지</option>
+							<option value="">이벤트공지</option>
+							<option value="">문진표공유</option>
+							<option value="plus">태그추가</option>
 						</select>
-					</div>
+						</div>
 				</div>
 				  <div id="divPlusTag1"></div><!-- <span class="error">태그명을 입력해주세요</span> -->
 				  <div id="divPlusTag2"></div>
@@ -993,7 +987,7 @@ function goSearch(){
 			</div>
     	</form>
 			
-    		<div class="workstatus-buttoncontainer">
+    			<div class="workstatus-buttoncontainer">
 	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
 		  			<button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button>
 		  			<button type="button" class="workstatus-save mr-1">저장하기</button>

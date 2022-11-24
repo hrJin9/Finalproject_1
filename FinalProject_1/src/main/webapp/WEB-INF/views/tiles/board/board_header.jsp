@@ -4,34 +4,34 @@
 <% String ctxPath = request.getContextPath(); %>    
   
 <style type="text/css">
-	#board_mainList a:hover{
+	#mainList a:hover{
 		color: #000000;
 		cursor: pointer;
 	}
-	
-	#freeboard_subList a:hover{
+	#subList a:hover{
 		background-color: rgba(200,200,200, .2);
 		cursor: pointer;
 		color: #4d4f53;
 	}
 		
-	#board_mainList {
+	#mainList {
 		position: relative;
-		display: flex;
-		width: 581px;
-		font-size: 18pt;
-		font-weight: bold;
-    	margin: 1px 0 0 70px;
+	    display: flex;
+	    width: 640px;
+	    font-size: 18pt;
 	}
 	
-	
-	#board_mainList a {
+	.header-main {
+	    font-weight: 800 !important;
+	    padding: 0.9em 0 0.3em 0 !important;
+	    font-size: 18pt !important;
+	}
+	#mainList a {
 		display: block;
-		width: 18%;
-		padding: 0.8em 0 0.8em 0;
+    	width: 17%;
+    	text-align: center;
 		text-decoration: none;
 		margin-right: 4%;
-		text-align: center;
 	}
 	
 	.list_iscurrent{
@@ -41,16 +41,16 @@
 		color: #D2D6D9;
 	}
 	
-	#freeboard_subList{
+	#subList{
 		position: relative;
 		display: flex;
 		width: 640px;
-		font-size: 10pt;
+		font-size: 11pt;
 		font-weight: bold;
-		margin: 4px 0 0 60px;
+		/* margin: 4px 0 0 60px; */
 	}
 	
-	#freeboard_subList a {
+	#subList a {
 		display: block;
 		width: 10%;
 		padding: .9em 0;
@@ -63,7 +63,7 @@
 	
 	.subList_underline {
 	    position: absolute;
-	    left: 1%;
+	    left: 2%;
 	    bottom: -1px;
 	    width: 10%;
 	    height: 2px;
@@ -78,10 +78,10 @@
 	    font-size: 11pt;
 	    font-weight: bold;
 	}
-	#freeboard_subList a:nth-child(1).iscurrent ~ .noticeboard_subList_underline {
+	#subList a:nth-child(1).iscurrent ~ .subList_underline {
 		left: 0%;
 	}
-	#freeboard_subList a:nth-child(2).iscurrent ~ .noticeboard_subList_underline {
+	#subList a:nth-child(2).iscurrent ~ .subList_underline {
 		left: 10.5%; /* width랑 margin-left랑 합친거 */
 	}
 	
@@ -154,13 +154,16 @@
 		position: relative;
 		top:12px;
 	}
+	a#empty-heart:hover, a#full-heart:hover {
+		color: #f53e50;
+    }
 	a.icon-star-empty:hover, a.icon-star-full:hover {
 		color: #ffc107;
 	}
 	a, a:hover {
     	text-decoration: none !important;
 	}
-	a:hover {
+	a.icon-star-empty:hover {
 		color: #ffc107;
     }
 	.title:hover{
@@ -252,9 +255,11 @@
 		padding: 10px 25px;
 		border-color: white;
 		font-weight: 600;
-		/* background-image:linear-gradient(57deg,#003ee9 21.04%,#5998ffd6 100%); */
 		color: white;
 		border-radius: 10px;	
+	}
+	ul{
+		list-style: none;
 	}
 </style>
 <script>
@@ -271,7 +276,7 @@
 		
 	});
 </script>
-<nav id="board_mainList" class="margin-container header-nav">
+<nav id="mainList" class="margin-container header-nav">
 	<a class="header-main list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
 	<a class="header-main list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
 	<a class="header-main list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
@@ -286,8 +291,8 @@
 
 
 <nav id="subList" class="margin-container">
-	<a id="noticeboard-total" class="header-sub list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 2%;">전사공지</a>
-	<a id="noticeboard-team" class="header-sub list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">팀공지</a>
+	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/board.up" style="margin-left: 2%;">전사공지</a>
+	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/board/myteam.up" style="margin-left: 3%;">팀공지</a>
 	<div class="subList_underline"></div>
 </nav>
 

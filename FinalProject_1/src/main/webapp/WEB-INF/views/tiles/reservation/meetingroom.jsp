@@ -30,7 +30,18 @@
 	 	});
 		
 		
-		// 플랫피커
+		// 날짜 플랫피커
+	 	flatpickr.localize(flatpickr.l10ns.ko);
+	 	flatpickr($(".mr-date"));
+		$(".mr-date").flatpickr({
+			dateFormat: "Y-m-d",
+			defaultDate: new Date(),
+			local: 'ko'
+		});
+		
+		
+		
+		// 오프캔버스 플랫피커
 	 	flatpickr.localize(flatpickr.l10ns.ko);
 	 	flatpickr($(".dateSelector"));
 		$(".dateSelector").flatpickr({
@@ -76,9 +87,8 @@
 		<div style="display: block;">
 			<div>예약현황</div>
 			<div>
-				<input type="text"/>
-				<div><i class="fa-solid fa-angle-left"></i></div>
-				<div><i class="fa-solid fa-angle-right"></i></div>
+				<input type="text" class="mr-date"/>
+				<i class="fas fa-chevron-down mr-downarrow"></i>
 			</div>
 		</div>
 		<div class="workingweek" style="clear:both; display:block;">
@@ -164,55 +174,8 @@
 			  			</span>
 			  		</div>
 		  			<textarea class="mr-write" placeholder="예약 목적 입력"></textarea>
-			  		
-			  		<%-- 
-			  		<div class="mr-writedetail-container">
-			  			<div style="font-weight: bold;">상세 일정 편집</div>
-			  			<div>
-			  				<div>
-					  			2022. 11. 9 (수)
-			  				</div>
-				  			<div>
-				  				<div>
-				  					<div class="dropdown-toggle" id="mr-status" data-bs-toggle="dropdown" aria-expanded="false">
-				  						하루 종일
-				  					</div>
-				  					<ul class="dropdown-menu" aria-labelledby="mr-status" style="min-width: 6rem;">
-										<li><a class="dropdown-item" href="#">시간 입력</a></li>
-										<li><a class="dropdown-item" href="#">하루 종일</a></li>
-									</ul>
-				  				</div>
-				  				<div class="dropdown-toggle workStartbox" id="workwriteStart" data-bs-toggle="dropdown" aria-expanded="false">
-									시작 시각
-								</div>
-								<ul class="dropdown-menu workstarttime" aria-labelledby="workwriteStart" style="min-width: 6rem;">
-									<c:forEach var="i" begin="0" end="23">
-										<c:forEach var="j" begin="0" end="1">
-											<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-											<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-										</c:forEach>
-									</c:forEach>
-								</ul>
-								<i class="fa-solid fa-arrow-right" style="color: #C6C6C6; margin: 0px 2%;"></i>
-								<div class="dropdown-toggle workEndbox" id="workwriteEnd" data-bs-toggle="dropdown" aria-expanded="false">
-									종료 시각						
-								</div>
-								<ul class="dropdown-menu workendtime" aria-labelledby="workwriteEnd" style="min-width: 6rem;">
-									<c:forEach var="i" begin="0" end="23">
-										<c:forEach var="j" begin="0" end="1">
-											<c:if test="${i<10}"><li><a class="dropdown-item" href="#">0${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-											<c:if test="${i>=10}"><li><a class="dropdown-item" href="#">${i}:<fmt:formatNumber pattern="00" value="${j*30}" /></a></li></c:if>
-										</c:forEach>
-									</c:forEach>
-								</ul>
-				  			</div>
-			  			</div>
-			  		</div>
-			  		 --%>
-			  		
-			  		
 			  	<div class="workstatus-buttoncontainer">
-		  			<button type="button" class="workstatus-save">저장하기</button>
+		  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
 		  			<button type="reset" class="workstatus-cancel text-reset" data-bs-dismiss="offcanvas" aria-label="Close">취소</button>
 	  			</div>
 			  </div>

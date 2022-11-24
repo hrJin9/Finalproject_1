@@ -9,15 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MeetingroomController {
 	
-	@RequestMapping(value="/support/meetingroom-1.up")
-	public ModelAndView meetingroom_1(HttpServletRequest request, ModelAndView mav){
-		mav.setViewName("reservation/meetingroom-1.tiles");
+	@RequestMapping(value="/support/meetingroom.up")
+	public ModelAndView meetingroom(HttpServletRequest request, ModelAndView mav){
+		mav.setViewName("reservation/meetingroom.tiles");
 		return mav;
 	}
-	@RequestMapping(value="/support/meetingroom-3.up")
-	public ModelAndView meetingroom_3(HttpServletRequest request, ModelAndView mav){
-		mav.setViewName("reservation/meetingroom-3.tiles");
-		return mav;
-	}
-	
 }
