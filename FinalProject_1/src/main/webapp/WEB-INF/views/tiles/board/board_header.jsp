@@ -2,37 +2,6 @@
     pageEncoding="UTF-8"%>
     
 <% String ctxPath = request.getContextPath(); %>    
-<!-- 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
- -->
-
-<!-- 텍스트에디터 -->
-
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-
-
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
-
-
-
-
-<script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
- <!-- Editor -->
-
-<!-- Color Picker -->
-<script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
-<!-- Editor -->
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-<!-- Editor's Plugin -->
-<script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
-
-<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
-
-
-  
   
 <style type="text/css">
 	#board_mainList a:hover{
@@ -92,21 +61,27 @@
 		border-radius: 12px;
 	}
 	
-	.freeboard_subList_underline {
-		position: absolute;
-		left: -3px;
-    	bottom: -1px;
-		width: 9%;
-		height: 2px;
-		background: #333;
-		transition: all .3s ease-in-out;
-		margin-left: 5%;
+	.subList_underline {
+	    position: absolute;
+	    left: 1%;
+	    bottom: -1px;
+	    width: 10%;
+	    height: 2px;
+	    background: #333;
+	    transition: all .3s ease-in-out;
+	    margin-right: 5%;
 	}
-	
-	#freeboard_subList a:nth-child(1).iscurrent ~ .freeboard_subList_underline {
+	#subList {
+	    position: relative;
+	    display: flex;
+	    width: 640px;
+	    font-size: 11pt;
+	    font-weight: bold;
+	}
+	#freeboard_subList a:nth-child(1).iscurrent ~ .noticeboard_subList_underline {
 		left: 0%;
 	}
-	#freeboard_subList a:nth-child(2).iscurrent ~ .freeboard_subList_underline {
+	#freeboard_subList a:nth-child(2).iscurrent ~ .noticeboard_subList_underline {
 		left: 10.5%; /* width랑 margin-left랑 합친거 */
 	}
 	
@@ -296,10 +271,10 @@
 		
 	});
 </script>
-<nav id="board_mainList">
-	<a class="header-nav mainlist list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
-	<a class="header-nav mainlist list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
-	<a class="header-nav mainlist list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
+<nav id="board_mainList" class="margin-container header-nav">
+	<a class="header-main list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
+	<a class="header-main list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
+	<a class="header-main list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
 </nav>
 
 <!-- 권한부여받은사람만 글쓰기버튼 뜨기 -->
@@ -310,10 +285,10 @@
 
 
 
-<nav id="freeboard_subList">
-	<a id="freeboard-total" class="list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 4%;">전사공지</a>
-	<a id="freeboard-dept" class="list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">팀공지</a>
-	<div class="freeboard_subList_underline"></div>
+<nav id="subList" class="margin-container">
+	<a id="noticeboard-total" class="header-sub list_iscurrent" <%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 2%;">전사공지</a>
+	<a id="noticeboard-team" class="header-sub list_notcurrent"<%-- href="<%= request.getContextPath()%>"  --%>style="margin-left: 3%;">팀공지</a>
+	<div class="subList_underline"></div>
 </nav>
 
 

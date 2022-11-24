@@ -790,7 +790,7 @@ function goSearch(){
           	<tr class="topnotice"><!-- 공지 상단에 고정 -->
               <td>
               	<div class="titlefirst">
-              		<i class="icon icon-pushpin"style="color:#4285f4;"></i>&nbsp;<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
+              		📌&nbsp;<span class="title">[코로나 문진표] 11/15일자 결과 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -808,7 +808,8 @@ function goSearch(){
             <tr class="topnotice">
               <td>
               	<div class="titlefirst">
-              		<i class="icon icon-pushpin"style="color:#4285f4;"></i>&nbsp;<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
+              		<!-- <i class="icon icon-pushpin"style="color:#4285f4;"></i> -->
+              		📌&nbsp;<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -827,7 +828,7 @@ function goSearch(){
             <tr class="topnotice">
                <td>
               	<div class="titlefirst">
-              		<i class="icon icon-pushpin"style="color:#4285f4;"></i>&nbsp;<span class="title">[떰접식당 이용정책 변경안내]</span>
+              		📌&nbsp;<span class="title">[떰접식당 이용정책 변경안내]</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -931,7 +932,7 @@ function goSearch(){
 			<div class="form-group"style="width:30%">
 				<div class="form-field mb-2">
 					<div class="select-wrap">
-						<select name="selectTag" id="selectTag" class="form-control" style="font-size: 10pt;padding: 6px 12px;height:36px;" onchange="changetagname(this)">
+						<select name="selectTag" id="selectTag" class="form-control mb-1" style="font-size: 10pt;padding: 6px 12px;height:36px;" onchange="changetagname(this)">
 						<option>태그선택</option>
 						<option value="">전체공지</option>
 						<option value="">일반공지</option>
@@ -952,17 +953,18 @@ function goSearch(){
 					<input type="text" id="title" class="form-control" title="" placeholder="제목을 입력해주세요" name="title" value="">
 				</div>
 			</div>
+			
+			
+			<div class="form-group" style="margin-top: 10px;">
+				<span class="control-label">내용</span>
+				<div class="position-relative mb-1">
+				      <div id="editor"></div>
+				</div>
+			</div>
 			<div class="form-group" style="margin-top: 10px;">
 				<span class="control-label">파일첨부</span><span style="color: #d8d8d8;font-size:9pt">파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요</span>
 				<div class="position-relative">
 					<input type="file" id="file" class="form-control"  name="file" >
-				</div>
-			</div>
-			
-			<div class="form-group" style="margin-top: 10px;">
-				<span class="control-label">내용</span>
-				<div class="position-relative">
-				      <div id="editor"></div>
 				</div>
 			</div>
 	    	<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
