@@ -337,7 +337,7 @@
 		// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 		$("input#burger-check").change(function(){
 		    if($("#burger-check").is(":checked")){
-		        $(".big").css({'width':'84.48%'});
+		        $(".big").css({'width':'84.4%'});
 		        $(".menucontent").css({'visibility':'visible'});
 		    }else{
 		        $(".big").css({'width':'100%'});
@@ -376,7 +376,6 @@
 	   }// end of function allCheckBox()-------------------------
 
 </script>
-
 <div class="container">
 	<div id="memberInfo_mainList" class="header-nav">구성원</div>
 	<hr class="memberInfohr" /><br>
@@ -407,7 +406,7 @@
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 16%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 16.5%;"></a>
 					</div>
 				</div>
 				<div>
@@ -417,6 +416,7 @@
 				</div>
 				<div>
 					<span class="groupIcon">
+					
 						<input class="burger-check" type="checkbox" id="burger-check" />
 						<label class="burger-icon" for="burger-check"><span class="burger-sticks"></span></label>
 						<div class="menu">
@@ -444,134 +444,136 @@
 								</details>
 							</div>
 						</div>
+						
 		            </span>
 				</div>
 			</div>
 		</form>
-	
-	<!-- <hr class="memberInfohr"/> -->
-	<%-- 전체 구성원 --%>
-	<div style="margin-bottom: 15px; float: left;">
-		<span style="margin: 0 12px 0 23px;">
-			<input type="checkbox" id="memberAll" onClick="allCheckBox();" />
-		</span>
-		<span>전체 구성원 &nbsp; <span style="color:#4285f4;" id="memberCnt"></span>명</span>
-		<span>
-			<button type="button" id="message" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
-		</span>
-	</div>
-	<div class="big">
-	 	<table class="table custom-table big" style="float: left;">
-	       <colgroup>
-		          <col width="5px" />
-		          <col width="650px" />
-		          <col width="220px" />
-	      	</colgroup>
-	     	<tbody>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+		
+		<!-- <hr class="memberInfohr"/> -->
+		<%-- 전체 구성원 --%>
+		<div style="margin-bottom: 15px; float: left;">
+			<span style="margin: 0 12px 0 23px;">
+				<input type="checkbox" id="memberAll" onClick="allCheckBox();" />
+			</span>
+			<span>전체 구성원 &nbsp; <span style="color:#4285f4;" id="memberCnt"></span>명</span>
+			<span>
+				<button type="button" id="message" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
+			</span>
+		</div>
+		<div class="big">
+		 	<table class="table custom-table big" style="float: left;">
+		       <colgroup>
+			          <col width="5px" />
+			          <col width="650px" />
+			          <col width="220px" />
+		      	</colgroup>
+		     	<tbody>
+		           <tr>
+		              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+		              <td>
+		                <div class="profile" href="#" style="padding: 1px ;">
+					      <span class="pic">
+						      <span>지은</span></span>
+						      <span class="my"><span class="name" style="font-size: 10.8pt;">김지은</span><br>
+						      <span class="role" style="font-size: 9pt;">개발자</span>
+					      </span>
+		                </div>
+		              </td> 
+		              <td>
+		              	<span class="positionIcon">
+							<span>IT 개발1팀&nbsp;|&nbsp;대리</span>
+			            </span>
+		              </td>
+		           </tr>
+		           <tr>
+		              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+		              <td>
+		                <div class="profile" href="#" style="padding: 1px ;">
 				      <span class="pic">
-					      <span>지은</span></span>
-					      <span class="my"><span class="name" style="font-size: 10.8pt;">김지은</span><br>
+					      <span>혜린</span></span>
+					      <span class="my"><span class="name" style="font-size: 10.8pt;">진혜린</span><br>
 					      <span class="role" style="font-size: 9pt;">개발자</span>
 				      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>IT 개발1팀&nbsp;|&nbsp;대리</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>혜린</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">진혜린</span><br>
-				      <span class="role" style="font-size: 9pt;">개발자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>IT 기술지원팀&nbsp;|&nbsp;사원</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>채영</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
-				      <span class="role" style="font-size: 9pt;">디자이너</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>예은</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
-				      <span class="role" style="font-size: 9pt;">기획자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>채영</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
-				      <span class="role" style="font-size: 9pt;">디자이너</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>예은</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
-				      <span class="role" style="font-size: 9pt;">기획자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
-		            </span>
-	              </td>
-	           </tr>
-	         </tbody>
-	 	</table>
+		                </div>
+		              </td> 
+		              <td>
+		              	<span class="positionIcon">
+							<span>IT 기술지원팀&nbsp;|&nbsp;사원</span>
+			            </span>
+		              </td>
+		           </tr>
+		           <tr>
+		              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+		              <td>
+		                <div class="profile" href="#" style="padding: 1px ;">
+				      <span class="pic">
+					      <span>채영</span></span>
+					      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
+					      <span class="role" style="font-size: 9pt;">디자이너</span>
+				      </span>
+		                </div>
+		              </td> 
+		              <td>
+		              	<span class="positionIcon">
+							<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
+			            </span>
+		              </td>
+		           </tr>
+		           <tr>
+		              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+		              <td>
+		                <div class="profile" href="#" style="padding: 1px ;">
+				      <span class="pic">
+					      <span>예은</span></span>
+					      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
+					      <span class="role" style="font-size: 9pt;">기획자</span>
+				      </span>
+		                </div>
+		              </td> 
+		              <td>
+		              	<span class="positionIcon">
+							<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
+			            </span>
+		              </td>
+		           </tr>
+		           <tr>
+		              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+		              <td>
+		                <div class="profile" href="#" style="padding: 1px ;">
+				      <span class="pic">
+					      <span>채영</span></span>
+					      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
+					      <span class="role" style="font-size: 9pt;">디자이너</span>
+				      </span>
+		                </div>
+		              </td> 
+		              <td>
+		              	<span class="positionIcon">
+							<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
+			            </span>
+		              </td>
+		           </tr>
+		           <tr>
+		              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+		              <td>
+		                <div class="profile" href="#" style="padding: 1px ;">
+				      <span class="pic">
+					      <span>예은</span></span>
+					      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
+					      <span class="role" style="font-size: 9pt;">기획자</span>
+				      </span>
+		                </div>
+		              </td> 
+		              <td>
+		              	<span class="positionIcon">
+							<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
+			            </span>
+		              </td>
+		           </tr>
+		         </tbody>
+		 	</table>
+		</div>
+	
 	</div>
-
 </div>

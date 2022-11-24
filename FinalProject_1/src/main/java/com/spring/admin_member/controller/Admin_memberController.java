@@ -15,9 +15,27 @@ public class Admin_memberController {
 		return mav;
 	} 
 	
-	@RequestMapping(value = "/admin_memberAdd.up")
-	public ModelAndView admin_memberAdd(HttpServletRequest request, ModelAndView mav) {
-		mav.setViewName("admin/admin_memberAdd.tiles");
+	@RequestMapping(value = "/admin_memberAdd_hr.up")
+	public ModelAndView admin_memberAdd_hr(HttpServletRequest request, ModelAndView mav) {
+		mav.setViewName("admin/admin_memberAdd_hr.tiles");
+		return mav;
+	} 
+	
+	@RequestMapping(value = "/admin_memberAdd_personal.up")
+	public ModelAndView admin_memberAdd_personal(HttpServletRequest request, ModelAndView mav) {
+		mav.setViewName("admin/admin_memberAdd_personal.tiles");
+		return mav;
+	} 
+	
+	@RequestMapping(value = "/admin_memberView_hr.up")
+	public ModelAndView admin_memberView_hr(HttpServletRequest request, ModelAndView mav) {
+		mav.setViewName("admin/admin_memberView_hr.tiles");
+		return mav;
+	} 
+	
+	@RequestMapping(value = "/admin_memberView_personal.up")
+	public ModelAndView admin_memberView_personal(HttpServletRequest request, ModelAndView mav) {
+		mav.setViewName("admin/admin_memberView_personal.tiles");
 		return mav;
 	} 
 	

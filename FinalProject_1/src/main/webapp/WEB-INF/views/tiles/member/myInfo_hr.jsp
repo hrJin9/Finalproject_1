@@ -153,7 +153,7 @@
 		<span>김지은</span>
 	</div>
 	<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
-	    <span class="pic" style="height: 135px; width: 135px; font-size: 25pt; font-weight: bold;">
+	    <span class="pic" style="height: 150px; width: 150px; font-size: 25pt; font-weight: bold;">
 	    	<span>지은</span>
 	   	</span>
 	    <span class="myInfo">
@@ -187,7 +187,7 @@
 		          <tbody>
 		                <tr>
 		                   <td>사번</td>   
-		                   <td>201</td>   
+		                   <td>102503</td>   
 		                </tr>
 		                <tr>
 		                   <td>입사일</td>   

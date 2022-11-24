@@ -96,7 +96,19 @@
 	
 	/* 이름, 영문이름, 생년월일, 성별  */
 	.topinfo {
-		width: 60%;
+		width:50.5%;
+	}
+	
+	.topinfo input, .topinfo select {
+		border: 1.5px solid #cccccc;
+	    border-radius: 3.5px;
+	    width: 100%;
+	    padding: 5px 24px;
+	    height: 38px;
+	    opacity: 0.85;
+	    font-size: 11pt;
+	    line-height: 17px;
+	    color: #737373!important;
 	}
 	
 	
@@ -110,18 +122,24 @@
 		margin-left: 155px;
 	}
 	
+	.table>:not(caption)>*>* {
+	    padding: 0.47rem 0.5rem;
+	    background-color: var(--bs-table-bg);
+	    /* border-bottom-width: 1px; */
+	    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+	}
+	
 	form input, form select {
 		border: 1.5px solid #cccccc;
 	    border-radius: 3.5px;
 	    width: 60%;
-	    padding: 5px 17px;
+	    padding: 5px 24px;
 	    height: 38px;
 	    opacity: 0.85;
-	    font-size: 10pt;
+	    font-size: 11pt;
 	    line-height: 17px;
 	    color: #737373!important;
 	}
-	
 	
 	input:focus {
 		border: 1.8px solid #4285f4;
@@ -142,7 +160,9 @@
 	.condition-cell {
 	    display: table-cell;
 	}
-	
+	.condition-cell:last-child {
+	    width: 80%;
+	}	
 	
 	#btnRegister {
 		width: 190px;
@@ -164,8 +184,8 @@
 	$(document).ready(function(){
 		
 		// nav바에서 개인정보 클릭시 개인정보 페이지로 이동
-		$(".myInfo_pView").click(function(){
-			location.href= "<%= ctxPath%>/myInfo_personal.up";
+		$(".memberInfo_pAdd").click(function(){
+			location.href= "<%= ctxPath%>/admin_memberAdd_personal.up";
 		});
 		
         flatpickr.localize(flatpickr.l10ns.ko);
@@ -177,6 +197,7 @@
            local: 'ko'
         });
         
+        // 출근시간 데이트피커
         $(".timeSelector").flatpickr({
         	enableTime: true,
             noCalendar: true,
@@ -195,17 +216,17 @@
 	<form name="myInfo">
 		<div class="col-md-16" style="float: left; margin-right: 70px;">
 			<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
-			    <span class="pic" style="height: 135px; width: 135px; font-size: 25pt; font-weight: bold;">
+			    <span class="pic" style="height: 150px; width: 150px; font-size: 25pt; font-weight: bold; margin-right: -15px;">
 			    	<span>지은</span>
 			   	</span>
 			</div>
 		</div> 
 		<%-- 이름, 영문이름, 생년월일, 성별 --%>
 		<div class="topinfo" style="float: left;">
-	    	<table class="table table-borderless content" style="float: left;">
+	    	<table class="table table-borderless content" style="float: left; margin-top: 24px;">
 		       <colgroup>
-		          <col width="110px" />
-		          <col width="300px" />
+		          <col width="200px" />
+		          <col width="350px" />
 		          <col width="50px" />
 		          <col width="150px" />
 		     	</colgroup>
@@ -222,7 +243,7 @@
 		                   <td>생년월일</td>   
 		                   <td style="float:left; margin-right:0;"><input id="birthday" name="birthday" class="dateSelector" placeholder="ex) 2020-09-01" /></td>   
 		                   <td style="margin-left:0;">성별</td> 
-		                   <td style="">	
+		                   <td>	
 		                   	<select class="required" id="gender" name="gender">
 								<option value="">성별</option>
 								<option value="male">남자</option>
@@ -236,15 +257,15 @@
 		 
 		 
 		<nav id="list" class="header-nav" style="clear: both;">
-			<a class="list_iscurrent myInfo_hView">인사 정보</a>
-			<a class="myInfo_pView">개인 정보</a>
+			<a class="list_iscurrent memberInfo_hAdd">인사 정보</a>
+			<a class="memberInfo_pAdd">개인 정보</a>
 			<div class="list_underline"></div>
 		</nav> 
 		 
 		 
 	 	<hr style="margin-top: 0px;"/><br>
 			
-		<div class="container">
+		<div class="infocontainer" style="margin-left: 100px;">
 			<%-- <div id="hrInfo">인사 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
 			<div id="hrInfo">인사 정보</div><br>
 		 	<table class="table table-borderless content" style="float: left;">
@@ -395,36 +416,50 @@
 		          <col />
 		     	</colgroup>
 		        <tbody>
-	                <tr>
+		        	<tr>
 	                   <td>권한</td>   
 	                   <td>
-	                   	<div class="condition-cell">
-			                <input type="radio" class="custom-control-radio2" id="entire" name="showrange">
-			                <label for="entire" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리</label>
-			                <input type="radio" class="custom-control-radio2" id="dept" name="showrange">
-			                <label for="dept" class="js-period-type radio-label-checkbox2" data-code="unlimit">일반</label>
-						</div>
+	                   	<div>
+		                   	<div class="condition-cell">
+		                   	 <span style="margin-right: 30px;">
+				                <input type="radio" class="custom-control-radio2" id=general name="authority" style="width: 15%; height: 8%;" checked>
+				                <label for="general" class="js-period-type radio-label-checkbox2" data-code="unlimit">일반</label>
+		                   	 </span>
+		                   	 <span>
+				                <input type="radio" class="custom-control-radio2" id="admin" name="authority" style="width: 15%; height: 8%;">
+				                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리</label>
+		                   	 </span>
+							</div>
+	                   	</div>
 	                   </td>   
 	                </tr>
 	                <tr>
 	                   <td>계정상태</td>
-	                   <td>	
-	                   	<div class="condition-cell">
-			                <input type="radio" class="custom-control-radio2" id="entire" name="showrange">
-			                <label for="entire" class="js-period-type radio-label-checkbox2" data-code="unlimit">정상</label>
-			                <input type="radio" class="custom-control-radio2" id="dept" name="showrange">
-			                <label for="dept" class="js-period-type radio-label-checkbox2" data-code="unlimit">중지</label>
-						</div>
-	                   </td>       
+	                   <td>
+	                   	<div>
+		                   	<div class="condition-cell">
+		                   	 <span style="margin-right: 30px;">
+				                <input type="radio" class="custom-control-radio2" id="nomal" name="accountStatus" style="width: 15%; height: 8%;" checked>
+				                <label for="nomal" class="js-period-type radio-label-checkbox2" data-code="unlimit">정상</label>
+		                   	 </span>
+		                   	 <span>
+				                <input type="radio" class="custom-control-radio2" id="stop" name="accountStatus" style="width: 15%; height: 8%;">
+				                <label for="stop" class="js-period-type radio-label-checkbox2" data-code="unlimit">중지</label>
+		                   	 </span>
+							</div>
+	                   	</div>
+	                   </td>     
 	                </tr>
 		        </tbody>
 		 	</table>
-		       
-		       
-		       
 		  </div>
+		  
+		  <div class="workstatus-buttoncontainer" style="margin-right: 585px;">
+  			<button type="button" class="workstatus-save">저장하기</button>
+  			<button type="reset" class="workstatus-cancel">취소</button><br><br><br><br>
+		  </div>
+		  
 	</form>
-  
 </div>
 
 
