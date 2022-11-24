@@ -8,7 +8,7 @@
 
 	
 	#memberInfo_mainList {
-		position: relative;
+		position: relative;  
 		display: flex;
 		width: 11%;
 		font-size: 18pt;
