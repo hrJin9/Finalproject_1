@@ -210,7 +210,7 @@
 </script>
 
 <div class="container" style="margin-right: 145px;">
-	<div id="admin_memberadd">멤버관리</div>
+	<div id="admin_memberadd">멤버생성</div>
 	<hr class="memberaddhr" /><br>
 	
 	<form name="myInfo">
