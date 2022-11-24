@@ -18,7 +18,8 @@
 </style>
 <script>
 	$(document).ready(function(){
-		$(".pr-table tr").click(function(){
+		$(".pr-table tr").click(function(e){
+			if($(e.target).is("td:last-child") || $(e.target).is("td:last-child *")) return;
 			$('.offcanvas').offcanvas('show');
 		});
 	});
@@ -43,10 +44,10 @@
 				<tr>
 					<td width="11%"><span>10</span>월 급여명세서</td>
 					<td width="50%"><span>2022. 11. 5</span> 지급</td>
-					<td>지급<span><span>5,000,000</span>원</span></td>
-					<td>공제<span><span>2,000,000</span>원</span></td>
-					<td><span><span>3,000,000</span>원</span></td>
-					<td><i class="fa-solid fa-download"></i></td>
+					<td width="10%">지급<span><span>5,000,000</span>원</span></td>
+					<td width="10%">공제<span><span>2,000,000</span>원</span></td>
+					<td width="10%"><span><span>3,000,000</span>원</span></td>
+					<td width="9%"><i class="fa-solid fa-download"></i></td>
 				</tr>
 				<tr>
 					<td><span>11</span>월 급여명세서</td>

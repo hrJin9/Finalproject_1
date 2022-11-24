@@ -35,6 +35,9 @@
 				defaultDate:new Date(),
 				dateFormat: "Y. m. d"
 			});
+			getSelectedDate();
+			putDate();
+			putTodayDot();
 		});
 		
 		// flatpickr에서 선택된 날짜 구하고 날짜를 넣어주기
