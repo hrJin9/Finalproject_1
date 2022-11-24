@@ -79,15 +79,15 @@
 		      			<span>메시지 제목</span>
 		      			<span>2022. 11. 13(화) 오후  1:00</span>
 		      		</div>
-		      		<!-- 안읽은 메시지 -->
+		      		<!-- 읽은 메시지 -->
 		      		<div class="mg-read">
-		      			<span><i class="fas fa-envelope"></i></span>
+		      			<span><i class="fas fa-envelope-open"></i></span>
 		      			<span>메시지 제목</span>
 		      			<span>2022. 11. 13(화) 오후  1:00</span>
 		      		</div>
-		      		<!-- 읽은 메시지 -->
+		      		<!-- 안읽은 메시지 -->
 		      		<div class="mg-unread">
-		      			<span><i class="fas fa-envelope-open"></i></span>
+		      			<span><i class="fas fa-envelope"></i></span>
 		      			<span>메시지 제목</span>
 		      			<span>2022. 11. 13(화) 오후  1:00</span>
 		      		</div>

@@ -1367,7 +1367,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .message-container > div{
-	height: 610px;
+	height: 600px;
 }
 
 .message-container > div:first-child {
@@ -1834,7 +1834,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .mw-bottom {
-	margin-top: 30px;
+	margin-top: 20px;
 }
 
 .mw-table td{

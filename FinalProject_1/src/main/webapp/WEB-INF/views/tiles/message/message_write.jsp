@@ -3,6 +3,7 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+<% String ctxPath = request.getContextPath(); %>
 <style>
 	.toastui-editor-defaultUI-toolbar{background-color: white;}
 </style>
@@ -34,7 +35,7 @@
 	<div class="mw-top">
 		<div style="float:left;">
 			<div class="mw-top-1">
-				<span class="header-nonsub" style="padding:1.4em 0 !important;"><i class="fa-solid fa-chevron-left" style="font-size: 15pt;"></i></span>
+				<span class="header-nonsub" style="padding:1.4em 0 !important;" onclick="javascript:location.href='<%= ctxPath%>/message.up'"><i class="fa-solid fa-chevron-left" style="font-size: 15pt;"></i></span>
 				<span class="header-nonsub" style="padding:1.4em 0 !important;">메시지 보내기</span>
 			</div>
 		</div>		
@@ -71,7 +72,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="3"><div id="editor"></div></td>
+				<td colspan="3"><div id="editor" style="font-weight: 500;"></div></td>
 			</tr>
 		</table>
 	</div>
@@ -82,7 +83,7 @@
 		<div class="modal-dialog modal-lg modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title" id="exampleModalToggleLabel">주소록</h4>
+					<h4 class="modal-title" id="exampleModalToggleLabel" style="margin-left: 15px; font-weight: 800;">주소록</h4>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">

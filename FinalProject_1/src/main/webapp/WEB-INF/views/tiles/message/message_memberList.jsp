@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- === #24. tiles 를 사용하는 레이아웃1 페이지 만들기 === --%>
-<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% String ctxPath = request.getContextPath(); %>    
 <!DOCTYPE html>
 <html>
@@ -58,7 +57,23 @@
 <!-- pretendard-font -->
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css" />
 
+<link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
+
 <style type="text/css">
+	.big::-webkit-scrollbar {
+	    width: 8px;  /* 스크롤바의 너비 */
+	}
+	
+	.big::-webkit-scrollbar-thumb {
+	    height: 30%; /* 스크롤바의 길이 */
+		background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+	    border-radius: 10px;
+	}
+	
+	.big::-webkit-scrollbar-track {
+		background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+	}
+   body{font-family: 'Pretendard'; font-weight: 500; overflow-x: hidden; }
 		
 	#memberInfo_mainList {
 		position: relative;
@@ -119,10 +134,10 @@
 	.positionIcon {
 		border: 1px solid #f7f7f7;
 	    margin-left: 25px;
-	    padding: 9px 23px 9px 0;
+	    padding: 9px;
 	    margin-top: 5px;
-	    text-align: right;
-	    width: 163px;
+	    text-align: center;
+	    width: 160px;
 	    height: 38px;
 	    border-radius: 10px;
 	    float: left;
@@ -198,9 +213,9 @@
 	/* 조직도 */
 	.menu {
 		position: absolute;
-        top: 45px;
+        top: 51px;
 	    right: 0;
-	    height: 100vh;
+	    height: 403px;
 	    max-width: 0;
 	    z-index: 1;
 	    background-color: white;
@@ -351,47 +366,93 @@
 	    top: 1.3px;
 	    left: 194px;
    }
+   
+   .pic{
+     height: 38px;
+    width: 38px;
+     font-size: 9pt;
+     position: relative;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-shrink: 0;
+     isolation: isolate;
+     color: #fbfbfb;
+     -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wLjUgMTAwQzAuNSA3OS40MjM5IDEuNjAzMTcgNjIuOTIzNSA0LjUzMjYyIDQ5Ljc0MjFDNy40NjA4MiAzNi41NjY0IDEyLjIwNzEgMjYuNzM3NSAxOS40NzIzIDE5LjQ3MjNDMjYuNzM3NSAxMi4yMDcxIDM2LjU2NjQgNy40NjA4MiA0OS43NDIxIDQuNTMyNjJDNjIuOTIzNSAxLjYwMzE3IDc5LjQyMzkgMC41IDEwMCAwLjVDMTIwLjU3NiAwLjUgMTM3LjA3NyAxLjYwMzE3IDE1MC4yNTggNC41MzI2MkMxNjMuNDM0IDcuNDYwODIgMTczLjI2MiAxMi4yMDcxIDE4MC41MjggMTkuNDcyM0MxODcuNzkzIDI2LjczNzUgMTkyLjUzOSAzNi41NjY0IDE5NS40NjcgNDkuNzQyMUMxOTguMzk3IDYyLjkyMzUgMTk5LjUgNzkuNDIzOSAxOTkuNSAxMDBDMTk5LjUgMTIwLjU3NiAxOTguMzk3IDEzNy4wNzcgMTk1LjQ2NyAxNTAuMjU4QzE5Mi41MzkgMTYzLjQzNCAxODcuNzkzIDE3My4yNjIgMTgwLjUyOCAxODAuNTI4QzE3My4yNjIgMTg3Ljc5MyAxNjMuNDM0IDE5Mi41MzkgMTUwLjI1OCAxOTUuNDY3QzEzNy4wNzcgMTk4LjM5NyAxMjAuNTc2IDE5OS41IDEwMCAxOTkuNUM3OS40MjM5IDE5OS41IDYyLjkyMzUgMTk4LjM5NyA0OS43NDIxIDE5NS40NjdDMzYuNTY2NCAxOTIuNTM5IDI2LjczNzUgMTg3Ljc5MyAxOS40NzIzIDE4MC41MjhDMTIuMjA3MSAxNzMuMjYyIDcuNDYwODIgMTYzLjQzNCA0LjUzMjYyIDE1MC4yNThDMS42MDMxNyAxMzcuMDc3IDAuNSAxMjAuNTc2IDAuNSAxMDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K);
+     -webkit-mask-size: contain;
+     background-color: #4285f4;
+   }
+	
+	.my{
+		margin-left: 10px;
+		font-weight: 600;
+	}
+	
+	.role{
+		color: #ababab;
+		position: relative; bottom: 5px;
+	}
+	
+	#ml-save {
+		border: none;
+		border-radius: 10px;
+	}
 	
 </style>
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		
-		// 모든 체크박스가 체크가 되었다가 그 중 하나만 이라도 체크를 해제하면 전체선택 체크박스에도 체크를 해제하도록 한다.
-		$(".chkboxpnum").click(function(){
-		      
-		   var bFlag = false;
-		   $(".chkboxpnum").each(function(){
-		      var bChecked = $(this).prop("checked"); // 체크된 체크박스
-		      if(!bChecked) { // 체크된 것이 아니라면
-		         $("#memberAll").prop("checked",false);
-		         bFlag = true;
-		         return false;
-		      }
-		   });
-		   
-		   if(!bFlag) {
-		      $("#memberAll").prop("checked",true);
-		   }
-		   
+		// 체크박스 개수
+		var total = $(".chkboxpnum").length;
+		// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
+		$("#memberAll").change(function(){
+			if($("#memberAll").is(":checked")){
+				$("input[name='memberChx']").prop("checked",true);
+				show_checkmenu();
+				$("#check_ctn").text(total);
+				
+			} else {
+				$("input[name='memberChx']").prop("checked",false);
+				show_noncheckmenu();
+			}
 		});
-	      
-		// 찜목록 전체개수 값
-		const allCnt = $("input:checkbox[name='pnum']").length;  // 체크여부 상관없는 모든 체크박스개수
-		document.getElementById("memberCnt").textContent = allCnt;
-	      
-		// 프로필 클릭시 구성원 상세정보 보기로 이동
-		$(".profile").click(function(){
-			location.href= "<%= ctxPath%>/memberInfo_hr.up";
+		
+		$("input[name='memberChx']").change(function() {
+			var checked = $("input[name='memberChx']:checked").length;
+			show_checkmenu();
+			
+			if(checked<=0)
+				show_noncheckmenu();
+			$("#check_ctn").text(checked);
+			
+			if(total != checked)
+				$("#memberAll").prop("checked", false);
+			else
+				$("#memberAll").prop("checked", true); 
+			
+		});
+		
+		// 프로필 클릭시 구성원 선택
+		$(".mem-tr").click(function(e){
+			//체크박스 선택시 함수 종료
+			if( $(e.target).is('input:checkbox') ) return;
+			
+			var memcheck = $(this).find("td:first-child > input");
+			if(memcheck.prop("checked"))
+				memcheck.prop("checked",false);
+			else
+				memcheck.prop("checked",true);
 		});
 		
 		// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 		$("input#burger-check").change(function(){
 		    if($("#burger-check").is(":checked")){
-		        $(".big").css({'width':'84.48%'});
+		        $(".big").css({'width':'55%','position':'relative','top':'24px'});
+		        $(".big table").css({"width":"100%","top":""});
 		        $(".menucontent").css({'visibility':'visible'});
 		    }else{
-		        $(".big").css({'width':'100%'});
+		        $(".big").css({'width':'100%','position':'','top':''});
+		        $(".big table").css("width","100%");
 		        $(".menucontent").css({'visibility':'hidden'});
 		    }
 		});  
@@ -401,43 +462,32 @@
 			$(".summary").click();      // 모든 조직의 summary 클릭
 		});
 		
-		/* $(".unfold").hover(function(){
-	      	$(".unfoldAlert").css('display':'block');
-		});
-		$(".unfold").unhover(function(){
-	      	$(".unfoldAlert").css('display':'none');
-		}); */
-			 
 			
 	});// end of$(document).ready(function(){})--------------------------
 	   
-	      
-	   // Function declaration
-	   // 전체선택 체크박스 클릭시
-	   function allCheckBox() {
-	   
-	      var bool = $("#memberAll").is(":checked");
-	      /*
-	         $("#memberAll").is(":checked"); 은
-	           선택자 $("#memberAll") 이 체크되어지면 true를 나타내고,
-	           선택자 $("#memberAll") 이 체크가 해제되어지면 false를 나타내어주는 것이다.
-	      */
-	      
-	      $(".chkboxpnum").prop("checked", bool);  // 전체선택 체크박스 체크여부에 따라 개별 선택박스 모두 체크 or 모두 해제
-	   }// end of function allCheckBox()-------------------------
-
+	///////////////////////////////////////////////////////////////////////////////////////////////////////    
+	// Function declaration
+	//체크시 나타나는 메뉴
+	function show_checkmenu(){
+		$(".ml-noncheckmenu").hide();
+		$(".ml-checkmenu").fadeIn("fast");
+	}//end of show_checkmenu
+	
+	// 체크안되었을때 나타나는 메뉴
+	function show_noncheckmenu(){
+		$(".ml-checkmenu").hide();
+		$(".ml-noncheckmenu").fadeIn("fast");
+	}//end of show_noncheckmenu
+	
+	
 </script>
 </head>
 <body>
 
-<div class="container">
-	<div id="memberInfo_mainList" class="header-nav">구성원</div>
-	<hr class="memberInfohr" /><br>
-	
-	<div class="contentsmargin">
-		<form action="#" class="booking-form ml-3" style="float: right;">
+<div>
+	<div>
+		<form action="#" class="booking-form" style="float: right; margin-right: 20px;">
 			<div class="row" style="padding-top: 11px;">
-			
 				<%-- 검색 --%>
 				<div class=" mr-2">
 					<div class="form-group">
@@ -460,7 +510,7 @@
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 16%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 14%;"></a>
 					</div>
 				</div>
 				<div>
@@ -479,7 +529,6 @@
 									<span><i class="fas fa-expand-alt unfold"></i></span>
 									<span class="unfoldAlert" style="display: none;">모든 조직 펼치기</span> <%-- 호버 이벤트시 jQuery 효과주기 --%>
 								</div>
-								
 								<details>
 									<summary class="summary">IT</summary>
 								   	<ul>
@@ -502,129 +551,44 @@
 			</div>
 		</form>
 	
-	<!-- <hr class="memberInfohr"/> -->
 	<%-- 전체 구성원 --%>
-	<div style="margin-bottom: 15px; float: left;">
+	<div style="margin-top: 15px; float: left;">
 		<span style="margin: 0 12px 0 23px;">
-			<input type="checkbox" id="memberAll" onClick="allCheckBox();" />
+			<input type="checkbox" id="memberAll" />
 		</span>
-		<span>전체 구성원 &nbsp; <span style="color:#4285f4;" id="memberCnt"></span>명</span>
-		<span>
-			<button type="button" id="message" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
+		<span class="ml-noncheckmenu">전체 구성원 &nbsp; <span style="color:#4285f4;" id="memberCnt"></span>명</span>
+		<span class="ml-checkmenu">
+			<button type="button" id="ml-save" class="gradientbtn">선택</button>		
+			<span id="check_ctn"></span>명 선택
 		</span>
 	</div>
-	<div class="big">
-	 	<table class="table custom-table big" style="float: left;">
-	       <colgroup>
-		          <col width="5px" />
-		          <col width="650px" />
-		          <col width="220px" />
-	      	</colgroup>
-	     	<tbody>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-				      <span class="pic">
-					      <span>지은</span></span>
-					      <span class="my"><span class="name" style="font-size: 10.8pt;">김지은</span><br>
-					      <span class="role" style="font-size: 9pt;">개발자</span>
-				      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>IT 개발1팀&nbsp;|&nbsp;대리</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>혜린</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">진혜린</span><br>
-				      <span class="role" style="font-size: 9pt;">개발자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>IT 기술지원팀&nbsp;|&nbsp;사원</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>채영</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
-				      <span class="role" style="font-size: 9pt;">디자이너</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>예은</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
-				      <span class="role" style="font-size: 9pt;">기획자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>채영</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
-				      <span class="role" style="font-size: 9pt;">디자이너</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>예은</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
-				      <span class="role" style="font-size: 9pt;">기획자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
-		            </span>
-	              </td>
-	           </tr>
-	         </tbody>
-	 	</table>
+	<div class="big" style="height: 400px; overflow-y: auto; width: 100%;">
+		<table class="table custom-table big" style="float: left;">
+			<colgroup>
+				<col width="5px" />
+				<col width="650px" />
+				<col width="220px" />
+			</colgroup>
+			<c:forEach var="i" begin="1" end="10">
+				<tr class="mem-tr">
+					<td><input type="checkbox" name="memberChx" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
+					<td>
+						<div class="profile" href="#" style="padding: 1px ;">
+							<span class="pic"><span>지은</span></span>
+							<span class="my">
+								<span class="name" style="font-size: 10.8pt;">김지은</span><br>
+								<span class="role" style="font-size: 9pt;">개발자</span>
+							</span>
+						</div>
+					</td> 
+					<td>
+						<span class="positionIcon">
+							<span>IT 개발1팀&nbsp;|&nbsp;대리</span>
+						</span>
+					</td>
+				</tr>
+			</c:forEach>
+		</table>
 	</div>
 </div>
 </div>

@@ -12,34 +12,34 @@
 		$("#mg-recieve").addClass("iscurrent");
 		$("#mg-recieve").css("color","black");
 		
+		// 체크박스 개수
+		var total = $("input[name='mg-selectchx']").length;
 		// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
 		$("#mg-selectchx-all").change(function(){
 			if($("#mg-selectchx-all").is(":checked")){
 				$("input[name='mg-selectchx']").prop("checked",true);
 				show_checkmenu();
-				var total = $("input[name='mg-selectchx']").length;
 				$("#check_ctn").text(total);
 				
-			}
-			else {
+			} else {
 				$("input[name='mg-selectchx']").prop("checked",false);
 				show_noncheckmenu();
 			}
 		});
 		
 		$("input[name='mg-selectchx']").change(function() {
-			var total = $("input[name='mg-selectchx']").length;
 			var checked = $("input[name='mg-selectchx']:checked").length;
 			show_checkmenu();
-			if(checked<=0) show_noncheckmenu();
+			
+			if(checked<=0)
+				show_noncheckmenu();
 			$("#check_ctn").text(checked);
 			
-			if(total != checked) {
+			if(total != checked)
 				$("#mg-selectchx-all").prop("checked", false);
-			}
-			else {
+			else
 				$("#mg-selectchx-all").prop("checked", true); 
-			}
+			
 		});
 		
 		//툴팁 사용
