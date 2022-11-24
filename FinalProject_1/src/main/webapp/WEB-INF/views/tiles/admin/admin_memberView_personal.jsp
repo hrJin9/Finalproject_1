@@ -180,7 +180,7 @@
 </script>
 
 <div class="container" style="margin-right: 145px;">
-	<div id="admin_memberadd">멤버관리</div>
+	<div id="admin_memberadd">멤버 상세보기</div>
 	<hr class="memberaddhr" /><br>
 	
 	<form name="myInfo">
@@ -270,7 +270,7 @@
 		 	</table>
 		       
 		  <div class="workstatus-buttoncontainer" style="margin-right: 585px;">
-  			<button type="button" class="workstatus-save">저장하기</button>
+  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
   			<button type="reset" class="workstatus-cancel">취소</button><br><br><br><br>
 		  </div>
 		</div>
