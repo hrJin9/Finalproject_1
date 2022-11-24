@@ -27,7 +27,12 @@
 		 });
 		<%-- 텍스트 에디터 끝 --%>
 	});//end of ready
-
+	
+	// function declaration
+	// 보내기 버튼
+	function goSend(){ 
+		
+	};// end of goSend
 
 </script>    
     
@@ -41,13 +46,13 @@
 		</div>		
 		<div class="mw-top-right" style="float:right; padding: 2.65em 0; margin-right: 10px;">
 			<span>
-				<button type="button" id="mw-book">예약</button>
+				<button type="button" id="mw-book" data-bs-toggle="modal" data-bs-target="#mw-book-modal" data-bs-dismiss="modal">예약</button>
 			</span>
 			<span>
-				<button type="button" id="mw-send">
+				<button type="button" id="mw-send" class="gradientbtn" onclick="goSend();">
 					<span><i class="fa-regular fa-paper-plane"></i></span>
 					<span>보내기</span>
-				</button>
+				</button> <!-- 보낸메일함의 보낸 메일으로 이동. -->
 			</span>		
 		</div>
 	</div>
@@ -77,6 +82,22 @@
 		</table>
 	</div>
 
+	<%-- **** 예약버튼  Modal **** --%> <!-- 이거 기능하다가 벅차면 빼자요 -->
+	<div class="modal fade" id="mw-book-modal" aria-hidden="true" aria-labelledby="mw-address-label" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="exampleModalToggleLabel" style="margin-left: 15px; font-weight: 800;">발송 예약</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+			  		<div id="mwa-container">
+						<iframe id="mwa" style="border: none; width: 100%; height: 400px;" src="<%= request.getContextPath()%>/message/book.up"></iframe>
+					</div>
+			  	</div>
+			</div>
+		</div>
+	</div>
 
 	<%-- **** 주소록 Modal **** --%>
 	<div class="modal fade" id="mw-address-modal" aria-hidden="true" aria-labelledby="mw-address-label" tabindex="-1">
@@ -94,6 +115,11 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	
+	
 
 
 </div>

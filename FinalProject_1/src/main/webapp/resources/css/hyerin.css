@@ -95,13 +95,25 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	margin: 0;
 }
 
+
+
 .attendance-dateSelector {
-	height: 30px; width : 100px;
+	height: 30px; width: 85%;
 	display: inline-block;
 	border: solid 1px rgba(0, 0, 0, .1);
+	border-radius: 5px;
 	margin: 0;
-	width: 100px;
+	width: 105px;
+	color: rgba(0,0,0,0.7);
+	font-weight: 500;
+	padding: 0 15px;
 }
+
+.ad-datesel {
+	border: none;
+	width: 130px;
+}
+
 
 .ui-widget-header {border: 0px solid #dddddd;background: #fff;}
 .ui-datepicker-calendar>thead>tr>th {font-size: 14px !important;}
@@ -139,7 +151,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	background-color: transparent;
 	height: 30px; width: 50px;
 	font-size: 11pt;
-	position: relative; bottom: 1px;
+	position: relative; bottom: 1px; right:1%;
+	font-weight: 500;
+	color: rgba(0,0,0,0.7);
 }
 
 .workingweek-sum{
@@ -421,7 +435,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workStartbox, .workEndbox{
-	display: inline-block;
+	display: flex;
 }
 
 .workStartbox, .workEndbox{
@@ -496,6 +510,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	background-color: white;
 	margin-right: 10px;
 	float: right;
+	font-weight: 600;
 }
 
 .workstatus-save{
@@ -504,13 +519,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border: none;
 	border-radius : 10px;
 	width: 90px; height: 40px;
-	
-	background-color: #42A5F5;
-	/* 
-	background-color: #5F98F6;
-	 */
 	color: white;
 	float: right;
+	font-weight: 600;
 }
 
 
@@ -608,6 +619,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .dayoff-box > div > div:nth-child(1){
 	font-size: 11pt; 
+	font-weight: 600;
 }
 .dayoff-box > div > div:nth-child(2){
 	font-size: 11pt;
@@ -1608,7 +1620,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .mgc-writebtn{
-	background: linear-gradient(to right, #2E83F2 60%, #5E9FF2);
 	border: none;
 	border-radius: 10px;
 	color: white;
@@ -1723,7 +1734,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .mg-writebtn{
-	background: linear-gradient(to right, #2E83F2 60%, #5E9FF2);
 	border-radius: 10px;
 	height: 45px;
 	width: 140px;
@@ -1814,7 +1824,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 #mw-send{
 	width: 90px;
-	background: linear-gradient(to right, #2E83F2 60%, #5E9FF2);
 	color: white;
 	font-weight: 700;
 }
@@ -1862,5 +1871,86 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	color: white;
 	border: none;
 	border-radius: 5px;
+}
+
+
+.mr-date {
+	font-size: 10pt;
+	padding: 10px 20px;
+	width: 140px;
+	height: 35px;
+}
+
+.mr-downarrow{
+	font-size: 9pt;
+	position: absolute;
+	top: 118px; right: 5.5%;
+}
+
+
+.ad-downarrow{
+	position: relative;
+	right: 21%;
+	font-size: 9pt;
+	bottom: 1px;
+}
+
+.timeSelector{
+	border: none;
+	width: 100px;
+	height: 30px;
+	margin: auto;
+}
+
+
+.dayoff-datepicker{
+	width: 110px;
+	padding: 0 15px;
+	font-size: 10pt;
+	
+}
+
+.dayoff-datepicker + i {
+	font-size: 9pt;
+	position: relative;
+	right: 28px; bottom: 1px;
+	
+}
+/* 
+.do-more-cancel {
+	border: solid 1px rgba(0,0,0,0.1);
+	background-color: white;
+	height: 40px;
+	width: 120px;
+	color: #BF2604;
+	font-weight: 600;
+	border-radius: 10px;
+	display: flex;
+	box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+	display: none;
+}
+
+.do-more-cancel > div{
+	margin: 3px auto;
+	width: 100px;
+	text-align: center;
+	padding: 5px 0;
+}
+ */
+
+.dayoff-more{
+	padding: 8px 18px;
+	border: solid 1px rgba(0,0,0,0.1);
+	background-color: white;
+	height: 40px;
+	width: 120px;
+	color: #BF2604;
+	font-weight: 600;
+	border-radius: 10px;
+	display: flex;
+	box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+	opacity: 0;
+	transition: all 0.2s;
+	z-index: 9999;
 }
 
