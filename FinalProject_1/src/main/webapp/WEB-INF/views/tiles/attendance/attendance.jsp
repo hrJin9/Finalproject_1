@@ -14,7 +14,7 @@
 	 	flatpickr.localize(flatpickr.l10ns.ko);
 	 	flatpickr($(".dateSelector"));
 		$(".dateSelector").flatpickr({
-			dateFormat: "Y. m",
+			dateFormat: "Y. m. d",
 			defaultDate: new Date(),
 			local: 'ko'
 		});
@@ -25,7 +25,7 @@
 		$(".timeSelector").flatpickr({
 			enableTime: true,
 		    noCalendar: true,
-		    dateFormat: "H:i",
+		    dateFormat: "H:i K",
 			local: 'ko'
 		});
 		
@@ -33,8 +33,19 @@
 		$(".today").click(function(){
 			$(".dateSelector").flatpickr({
 				defaultDate:new Date(),
-				dateFormat: "Y. m"
+				dateFormat: "Y. m. d"
 			});
+		});
+		
+		// flatpickr에서 선택된 날짜 구하고 날짜를 넣어주기
+		getSelectedDate();
+		putDate();
+		putTodayDot();
+		// flatpickr 날짜 변경 이벤트
+		$(".dateSelector").change(function(){
+			getSelectedDate();
+			putDate();
+			putTodayDot();
 		});
 	 	
 	 	
@@ -54,7 +65,7 @@
 	 		$(".workingweek-sumbar-infobox").fadeOut("fast");
 	 	});
 	 	
-	 	// 
+	 	// hover
 	 	$(".workingweek-sumbar-goal-infobox").hide();
 	 	$(".workingweek-sumbar-goal").hover(function(){
 	 		$(".workingweek-sumbar-goal-infobox").fadeIn("fast");
@@ -62,93 +73,87 @@
 	 		$(".workingweek-sumbar-goal-infobox").fadeOut("fast");
 	 	});
 	 	
-	 	
-	 	// 주차 구하기
-		var currentDay = new Date();  
-		var theYear = currentDay.getFullYear();
-		var theMonth = currentDay.getMonth();
-		var theDate  = currentDay.getDate();
-		var theDayOfWeek = currentDay.getDay();
-		 
-		var thisWeek = [];
-		 
-		for(var i=0; i<7; i++) {
-		  var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
-		  var yyyy = resultDay.getFullYear();
-		  var mm = Number(resultDay.getMonth()) + 1;
-		  var dd = resultDay.getDate();
-		 
-		  mm = String(mm).length === 1 ? '0' + mm : mm;
-		  dd = String(dd).length === 1 ? '0' + dd : dd;
-		 
-		  thisWeek[i] = yyyy + '-' + mm + '-' + dd;
-		  console.log(thisWeek[i]);
-		}
-	 	
-	 	
-	 	// 이번주 날짜 
-	 	/* 
-	 	for(var i=0; i<7; i++){
-		 	$(".date").eq(i).html(getCurrentWeek()[i]);
-	 	}
-	 	 */
-	 	// 오늘 날짜 dot
-	 	const now = new Date();
-	 	const week = ['sun', 'mon','tue','wed','thu','fri','sat'];
-	 	let dayOfweek = week[now.getDay()];
-	 	html = '<div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>';
-	 	if(dayOfweek=="mon"){$(".mon").append(html);}
-	 	if(dayOfweek=="tue"){$(".tue").append(html);}
-	 	if(dayOfweek=="wed"){$(".wed").append(html);}
-	 	if(dayOfweek=="thu"){$(".thu").append(html);}
-	 	if(dayOfweek=="fri"){$(".fri").append(html);}
-	 	if(dayOfweek=="sat"){$(".sat").append(html);}
-	 	if(dayOfweek=="sun"){$(".sun").append(html);}
-	 	
-	 	 
 	 	//offcanvas
 	 	$(".workingweek > table > tbody > tr:first-child ~ tr").click(function(e){
 	 		$('.offcanvas').offcanvas('show');
 	 		
+	 		// header에 날짜를 알아오기
 	 		const mmdd = $(e.target).parent().find("span.date").text();
 	 		const mm = mmdd.substr(0,2);
-	 		const dd = mmdd.substr(4);
+	 		const dd = mmdd.substr(4,2);
 	 		$("#offcanvasScrollingLabel").text(mm+"월 "+dd+"일");
 	 		
 	 	});
 	 	
-	 	
 	}); //end of ready
-
 	
+	/////////////////////////////////////////////////////////////////////////////////////////////
 	// function declaration
-	/* 
-	function getCurrentWeek() {
-		const paramDate = new Date();
-		const day = paramDate.getDay();
-		const diff = paramDate.getDate() - day + (day == 0 ? -6 : 1);
-		//const sunday = day.getTime() - 86400000 * day.getDay();
-		const monday = new Date(paramDate.setDate(diff)).toISOString().substring(0, 10);
+	
+	// flatpickr에 선택된 날짜를 구하는 함수
+	var thisWeek = []; // 주차 데이터 넣는 용
+	var thisWeekArr = []; //오늘날짜 dot 검사용
+	function getSelectedDate(){
+		//flatpickr에 선택된 날짜 구하기
+	 	var selected_date = $(".dateSelector").val();
+	 	var selected_yy = selected_date.substr(0,4);
+	 	var selected_mm = selected_date.substr(6,2);
+	 	var selected_dd = selected_date.substr(10,2);
+	 	var valDate = new Date(selected_yy, selected_mm-1, selected_dd);
+
+	 	// 주차 구하기
+		var currentDay = new Date(valDate);
+		var theYear = currentDay.getFullYear();
+		var theMonth = currentDay.getMonth();
+		var theDate  = currentDay.getDate();
+		var theDayOfWeek = currentDay.getDay();
 		
-		let date = day.toISOString().slice(5, 7);
-		date +=  ". "+day.toISOString().slice(8, 10);
-		const result = [ date ];
-		
-		for (let i = 1; i < 8; i++) {
-			day.setTime(day.getTime() + 86400000);
-			let date = day.toISOString().slice(5, 7);
-			date += ". "+day.toISOString().slice(8, 10);
-			result.push(date);
+		for(var i=1; i<8; i++) {
+			var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
+			var yyyy = resultDay.getFullYear();
+			var mm = Number(resultDay.getMonth()) + 1;
+			var dd = resultDay.getDate();
+			
+			mm = String(mm).length === 1 ? '0' + mm : mm;
+			dd = String(dd).length === 1 ? '0' + dd : dd;
+			
+			thisWeek[i] = mm + '. ' + dd;
+			thisWeekArr[i] = new Date(yyyy, mm-1, dd);
 		}
-		return result;
-		
-	}
- */
+	}//end of getSelectedDate()
+	
+	// 선택된 날짜를 넣어주는 함수
+	function putDate(){
+		$(".date").each(function(index, item){
+			$(item).html(thisWeek[index+1]);
+		});
+	}//end of putDate()
+	
+	// 선택된 날짜가 오늘날짜와 같으면 오늘날짜 dot를 넣어주는 함수
+	function putTodayDot(){
+		html = '<div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>';
+		//같은 날짜인지 비교하는 함수
+		const isSameDate = (date1, date2) => {
+			return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
+		}
+		var nowdate = new Date();
+		thisWeekArr.forEach(function(item, index, array){
+			if(isSameDate(nowdate, item)){ //같은 날짜라면
+				$("#datedot"+index).html(html);
+				return; //반복문 종료
+			} else{
+				$("#datedot"+index).html("");
+			}
+			
+			
+		});
+	}//end of putTodayDot()
+	
 	
 </script>
 <div class="attendance-container">
 	<div class="datebox margin-container">
-		<span class="" style="display: inline-block; width: 121px; ">
+		<span class="" style="display: inline-block; width: 140px; ">
 			<input class="dateSelector attendance-dateSelector">
 			<i class="fas fa-chevron-down ad-downarrow"></i>
 		</span>
@@ -156,7 +161,7 @@
 	</div>
 	<hr class="HRhr"/>
 	<div class="workingweek-sum margin-container">
-		<span class="fontsize-basic"><span style="font-weight: bold; font-size: 12pt;">16시간</span> / 52시간</span>
+		<span class="fontsize-basic"><span style="font-weight: 600; font-size: 14pt;">16시간</span> / 52시간</span>
 		<div class="workingweek-info">
 			<i class="fa-solid fa-circle-info ml-2" style="color: #C6C6C6; font-size: 9pt;"></i>
 			<div class="workingiweek-infobox">
@@ -194,32 +199,32 @@
 				</c:forEach>
 			</tr>
 			<tr>
-				<td class="mon"><span class="date"></span>(월)<div class="workingtotalhourByday"><span>9시간</span></div></td>
+				<td class="mon"><span class="date"></span>(월)<span id="datedot1"></span><div class="workingtotalhourByday"><span>9시간</span></div></td>
 				<c:forEach var="i" begin="0" end="47"><td></td></c:forEach>
 				<div class="working-recordbar"></div>
 			</tr>
 			<tr>
-				<td class="tue"><span class="date"></span>(화)</td>
+				<td class="tue"><span class="date"></span>(화)<span id="datedot2"></span></td>
 				<c:forEach var="i" begin="0" end="47"><td></td></c:forEach>
 			</tr>
 			<tr>
-				<td class="wed"><span class="date"></span>(수)</td>
+				<td class="wed"><span class="date"></span>(수)<span id="datedot3"></span></td>
 				<c:forEach var="i" begin="0" end="47"><td></td></c:forEach>
 			</tr>
 			<tr>
-				<td class="thu"><span class="date"></span>(목)</td>
+				<td class="thu"><span class="date"></span>(목)<span id="datedot4"></span></td>
 				<c:forEach var="i" begin="0" end="47"><td></td></c:forEach>
 			</tr>
 			<tr>
-				<td class="fri"><span class="date"></span>(금)</td>
+				<td class="fri"><span class="date"></span>(금)<span id="datedot5"></span></td>
 				<c:forEach var="i" begin="0" end="47"><td></td></c:forEach>
 			</tr>
 			<tr class="font-red">
-				<td class="sat"><span class="date"></span>(토)</td>
+				<td class="sat"><span class="date"></span>(토)<span id="datedot6"></span></td>
 				<c:forEach var="i" begin="0" end="47"><td></td></c:forEach>
 			</tr>
 			<tr class="font-red">
-				<td class="sun"><span class="date"></span>(일)</td>
+				<td class="sun"><span class="date"></span>(일)<span id="datedot7"></span></td>
 				<c:forEach var="i" begin="0" end="47"><td></td></c:forEach>
 			</tr>
 		</table>
@@ -299,7 +304,7 @@
 	  			</div>
 	  			<div class="workstatus-buttoncontainer">
 	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-		  			<button type="button" class="workstatus-save">저장하기</button>
+		  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
 		  			<button type="reset" class="workstatus-cancel">취소</button>
 	  			</div>
 		  	</div>
