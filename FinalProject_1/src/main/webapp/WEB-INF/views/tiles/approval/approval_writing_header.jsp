@@ -3,6 +3,10 @@
     
 <% String ctxPath = request.getContextPath(); %>    
 
+<!-- 텍스트에디터 -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
 
 <style type="text/css">
@@ -87,7 +91,6 @@
 	#subList a:nth-child(2).iscurrent ~ .subList_underline {
 		left: 10.5%; /* width랑 margin-left랑 합친거 */
 	}
-	
 	.newbadge{
 	  background-color: #dc3545;
 	  width: 12px;
@@ -105,7 +108,7 @@
 	  margin-right: 14px;
 	}
 	.titlefirst{
-		font-weight: 600;
+		font-weight: 800;
 		font-size:11.5pt;
 		padding-top:5px;
 		/* padding-bottom: 9px; */
@@ -143,10 +146,19 @@
 	  top:2px;
 	  color:#bfbfbf;
 	}
-	a.empty-heart:hover, a.full-heart:hover {
-		color: #f53e50;
-    }
-    a.icon-star-empty:hover, a.icon-star-full:hover {
+	.icon-star-full{
+		color:#ffc107;
+		padding:0 auto;
+		font-size: 15pt;
+		position: relative;
+	}
+	.icon-star-empty{
+		color:#bfbfbf;
+		padding:0 auto;
+		font-size: 15pt;
+		position: relative;
+	}
+	a.icon-star-empty:hover, a.icon-star-full:hover {
 		color: #ffc107;
 	}
 	a, a:hover {
@@ -159,7 +171,7 @@
 		cursor: pointer; 
 		text-decoration: underline;
 	}
-	img.boardprofile{
+	img.approvalprofile{
 		border: 0px;
 		border-radius: 17.5px;
 		background-color: #D2D6D9;
@@ -174,9 +186,9 @@
 	.toastui-editor-defaultUI-toolbar {
 		background-color: #ffffff;
 	}
-/* 	div.toastui-editor-mode-switch{
+	div.toastui-editor-mode-switch{
 		display: none !important;
-	} */
+	}
 	.toastui-editor-defaultUI {
 		width: 95%;
 	    float: right;
@@ -239,21 +251,28 @@
 	    margin-bottom: 0;
 	    vertical-align: top;
 	}
-	
 	#writebtn{
 		font-size: 11pt;
 		padding: 10px 25px;
+		border-color: white;
 		font-weight: 600;
 		color: white;
 		border-radius: 10px;	
 	}
-	#writebtnDiv{
-		display: inline-block;
-	    position: absolute;
-	    right: 79px;
-	    top: 24px;
+	#prevList:hover {
+	    color: #000000;
+	    cursor: pointer;
 	}
-	
+	#prevList{
+	    display: block;
+	    text-align: center;
+	    text-decoration: none;
+	    margin-right: 4%;
+	    font-weight: 800 !important;
+    	padding: 0.9em 0 0.3em 0 !important;
+    	font-size: 18pt !important;
+    	width: 0 !important;
+	}
 </style>
 <script>
 	$(document).ready(function(){
@@ -265,17 +284,12 @@
 				$(this).siblings().removeClass('list_iscurrent');
 			}
 		});
-		
-		
 	});
 </script>
 <nav id="mainList" class="margin-container header-nav">
-	<a class="header-nonsub list_notcurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
-	<a class="header-nonsub list_iscurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
-	<a class="header-nonsub list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
+	<a id="prevList" class="list_iscurrent" href="<%= request.getContextPath()%>/approval.up">〈 </a>
+	<a class="header-nonsub list_iscurrent" id="notice" href="#">작성하기</a>
 </nav>
-<div id="writebtnDiv">
-  	<a href="#" id="writebtn"class="btn gradientbtn"><i class="icon icon-quill" style="margin-right: 5px;"></i>글쓰기</a>
-</div>
 
-<hr class="HRhr"/> <!-- style="margin-top: 0px;" -->
+
+<hr class="HRhr" style="margin-top: 0px;"/>

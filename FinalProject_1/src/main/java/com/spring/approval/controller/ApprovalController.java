@@ -14,8 +14,14 @@ public class ApprovalController {
 	private InterFinalprojectService service;
 	
 	@RequestMapping(value = "/approval.up")
-	public String view(HttpServletRequest request) {
+	public String approval_view(HttpServletRequest request) {
 		return "/approval/approval.tiles";
+	}
+	
+	
+	@RequestMapping(value = "/approval/writing.up")
+	public String approval_writing(HttpServletRequest request) {
+		return "/approval/approval_writing.tiles";
 	}
 	
 	

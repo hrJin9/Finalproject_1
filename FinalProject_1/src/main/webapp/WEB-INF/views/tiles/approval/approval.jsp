@@ -103,7 +103,7 @@
 	}
 	.boardth{
 		position: relative;
-		top: -6px;
+		top: -2px;
 	}
 	.table td, .table th {
 		font-size: 11pt;
@@ -237,12 +237,37 @@
 	    background-color: white !important;
 	    border: 0px !important;
 	}
+	th{
+		top: 0px !important;
+	}
+	.button {
+		font-weight: bold;
+		width: 44px;
+		height: 28px;
+		padding: 3.5px 8px;
+		font-size: 10pt;
+	}
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){ 
-	
+		
+		
+		/* 북마크 표시 */
+		  $('.bookmark').click(function(e) {
+			  	const $this = $(this);
+
+			  	if ( $this.hasClass('icon-star-empty') ) {
+			  		$this.removeClass('icon-star-empty');
+			  		$this.addClass('icon-star-full');
+			  	} else {
+			  		$this.removeClass('icon-star-full');
+			  		$this.addClass('icon-star-empty');
+			  	}
+			  	/* e.preventDefault(); */
+		});
+		
 
 		$('.js-check-all').on('click', function() {
 
@@ -280,49 +305,53 @@
 </script>
  
 
-<div class="container">
  
   
 
-<div class="container mt-5" style="padding-right: 5%;">
+<div class="mt-5 container" >
 	<div class="row">
 		 
 		
 		
-		<form action="#" class="booking-form ml-3"  style="float: left;margin-bottom: 0;">
+		<form action="#" class="booking-form ml-3 mb-3"  style="float: left;">
 			<div class="row" >
 				<div class="search-period-wr" style="text-align: center;">
-	                <div class="js-search-pickr-layer" data-code="unlimit">
-		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
+                	<div class="js-search-pickr-layer" data-code="unlimit">
+	                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
 		                	<div class="datebox margin-container">
 		                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">시작일</span>
 								<span><input id="datepick"class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
 							</div>
-						</div>
-	                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
-		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
+					</div>
+                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
+	                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
 		                	<div class="datebox margin-container">
 		                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">종료일</span>
 								<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
 							</div>
 						</div>
-	                </div>
+                	</div>
+                	<a href="#" class="btn icon icon-search" style="color: #959ca7;background-color: white;font-size: 1.3rem;position: relative;left: 213px;top: -38px;"></a>
 	            </div>
-				<div class="dropdown bootstrap-select -xs">
-				<!-- <select class="selectpicker selectpicker-xs" name="" tabindex="-98"><option value="ALL">전체</option><option value="WORK_EVENT">근태</option><option value="WORK_TIME">근무</option><option value="BILL">비용</option><option value="STATEMENT">증명서</option><option value="NORMAL">일반</option></select> -->
-				<button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="전체" aria-expanded="false"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">전체</div></div> </div></button><div class="dropdown-menu" role="combobox" x-placement="bottom-start" style="max-height: 504.969px; overflow: hidden; min-height: 153px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 32px, 0px);"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 488.969px; overflow-y: auto; min-height: 137px;"><ul class="dropdown-menu inner show"><li class="selected active"><a role="option" class="dropdown-item selected active" aria-disabled="false" tabindex="0" aria-selected="true"><span class=" bs-ok-default check-mark"></span><span class="text">전체</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">근태</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">근무</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">비용</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">증명서</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">일반</span>
-				</a></li></ul></div></div></div>
-
-				<div class="align-items-end mt-1 mr-4">
-					<div class="form-group" style="font-size: 8pt;margin-bottom:0;">
-						<a id="searchoption"href="#" class="btn" style="color:#0a58caa1; padding: 0.2rem 0.4rem;border-radius:0px; background-color: white;font-size: 0.7rem;position: relative;left: -183px;border-right: 1px solid #ced4da;">옵션</a>
+				
+				<!-- <div class="form-group mr-1 mb-3">
+					<div class="form-field">
+						<select name="searchCondition" id="searchCondition" style="font-size: 11pt;padding: 8.7px 20px; border-radius: 5px; border:1px solid #fafafa;background-color: #fafafa; ">
+							<option value="" selected>전체</option>
+							<option value="">근태</option>
+							<option value="">근무</option>
+							<option value="">비용</option>
+							<option value="">증명서</option>
+							<option value="">일반</option>
+						</select>
 					</div>
-				</div>
-				<div class="align-items-end mt-1 mr-4">
-					<div class="form-group" style="font-size: 10pt;margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 100px;"></a>
-					</div>
-				</div>
+					
+					
+					
+				</div> -->
+				
+				
+				
 			</div>
 		
 					
@@ -339,50 +368,95 @@
         <table class="table custom-table">   
           <thead>   
             <tr>
-              <th class="boardth" width="15%"scope="col"><button type="button" style="border: none; background-color: #ffff;">종류<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>     
-              <th class="boardth" width="12%" scope="col"><button type="button" style="border: none; background-color: #ffff;">문서번호<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>  
-              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+              <th class="boardth" width="3%"scope="col"></th>
+              <th class="boardth" width="6%"scope="col">북마크</th>
+              <th class="boardth" width="8%"scope="col"><button type="button" data-bs-toggle="dropdown"style="color: #4c4e54;font-weight: bold;border: none; background-color: #ffff;">종류<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+              	<div class="dropdown-menu">
+				      <h5 class="dropdown-header">문서종류</h5>
+				      <a class="dropdown-item" href="#">전체</a>
+				      <a class="dropdown-item" href="#">근태</a>
+				      <a class="dropdown-item" href="#">근무</a>
+				      <a class="dropdown-item" href="#">비용</a>
+				      <a class="dropdown-item" href="#">증명서</a>
+				      <a class="dropdown-item" href="#">일반</a>
+				 </div>
+			</th>	       
+              <th class="boardth" width="17%" scope="col">문서번호</th>  
+              <th class="boardth" width="17%"scope="col">제목</th>
+              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="color: #4c4e54;font-weight: bold;border: none; background-color: #ffff;">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 				  <div class="dropdown-menu">
-					      <h5 class="dropdown-header">소속</h5>
-					      <a class="dropdown-item" href="#">인사·총무</a>
-					      <a class="dropdown-item" href="#">회계·재무</a>
-					      <a class="dropdown-item" href="#">법무</a>
-					      <a class="dropdown-item" href="#">감사</a> 
-					      <a class="dropdown-item" href="#">업무지원</a>
-					      <a class="dropdown-item" href="#">경영지원</a> 
+				      <h5 class="dropdown-header">진행상태</h5>
+				      <a class="dropdown-item" href="#">전체</a>
+				      <a class="dropdown-item" href="#">진행</a>
+				      <a class="dropdown-item" href="#">완료</a>
+				      <a class="dropdown-item" href="#">반려</a>
 				  </div>
 			  </th>
-              <th class="boardth" width="12%" scope="col"><button type="button" style="border: none; background-color: #ffff;">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button></th>  
-              <th class="boardth" width="12%"scope="col">제목</th>
-              <th class="boardth" width="12%"scope="col">첨부파일</th> 
-              <th class="boardth" width="12%"scope="col">결재의견</th> 
-              <th class="boardth" width="12%"scope="col">작성일</th>
+              <th class="boardth" width="7%"scope="col">첨부파일</th> 
+              <th class="boardth" width="6%"scope="col">의견</th> 
+              <th class="boardth" width="15%"scope="col">작성일</th>
             </tr> 
           </thead>
           <tbody>
             <tr> 
-              <td>2020-12-25(금) 00:17</td>
-              <td>김상후</td>
-              <td>영업본부</td>
-              <td>로그인 성공</td>
-              <td>USER</td>
-              <td>210.178.232.1</td>
-              <td>PC</td>
-              <td>Chrom</td>
+              <td> 
+              	<label class="control control--checkbox">
+                  <input type="checkbox" class="js-check-all"/>
+                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                </label>
+              </td>
+              <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
+              <td><span style="margin-top: 5px;">일반</span></td>
+              <td>2022-11-23-1282450</td>
+              <td>지출결의서-법인카드</td>
+              <td>
+              	<button type="button" class="btn btn-sm button" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em;">승인</button>
+              </td>
+              <td>O</td>
+              <td>1개</td>
+              <td>2022-11-23 11:21</td>
             </tr> 
-             <tr> 
-              <td>2020-12-25(금) 00:17</td>
-              <td>김상후</td>
-              <td>영업본부</td>
-              <td>로그인 성공</td>
-              <td>USER</td>
-              <td>210.178.232.1</td>
-              <td>PC</td>
-              <td>Chrom</td>
+             <tr>
+              <td> 
+              	<label class="control control--checkbox">
+                  <input type="checkbox" class="js-check-all"/>
+                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                </label>
+              </td> 
+              <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
+              <td>일반</td>
+              <td>2022-11-23-1282450</td>
+              <td>지출결의서-법인카드</td>
+              <td>
+              	<button type="button" class="btn btn-sm button" style="background-color: #F24B171F; color: #661400; border-radius: 2em;">반려</button>
+			  </td>
+              <td>O</td>
+              <td>1개</td>
+              <td>2022-11-23 11:21</td>
+            </tr> 
+             <tr>
+              <td> 
+              	<label class="control control--checkbox">
+                  <input type="checkbox" class="js-check-all"/>
+                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                </label>
+              </td> 
+              <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
+              <td>일반</td>
+              <td>2022-11-23-1282450</td>
+              <td>지출결의서-법인카드</td>
+              <td>
+              	<button type="button" class="btn btn-sm button" style="background-color: #17a6f21f;color: #06689c; border-radius: 2em;">진행중</button>
+			  </td>
+              <td>O</td>
+              <td>1개</td>
+              <td>2022-11-23 11:21</td>
             </tr> 
              
           </tbody>  
         </table>
+        
+        	<h2 class="mt-3"style="text-align: center;">페이징처리</h2>
       </div>
 		
  
@@ -394,7 +468,6 @@
 
 
 
-</div>
 <!-- 오프캔버스 시작 -->
 		<div class="offcanvas offcanvas-end" style="width: 800px;" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 		  <div class="offcanvas-header">
