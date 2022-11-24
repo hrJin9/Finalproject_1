@@ -46,10 +46,11 @@
 	 	
 	 	
 	 	// 이번주 날짜 
+	 	/* 
 	 	for(var i=0; i<7; i++){
 		 	$(".date").eq(i).html(getCurrentWeek()[i]);
 	 	}
-	 	
+	 	 */
 	 	// 오늘 날짜 dot
 	 	const now = new Date();
 	 	const week = ['sun', 'mon','tue','wed','thu','fri','sat'];
@@ -80,6 +81,7 @@
 
 	
 	// function declaration
+	/* 
 	function getCurrentWeek() {
 		const paramDate = new Date();
 		const day = paramDate.getDay();
@@ -100,7 +102,7 @@
 		return result;
 		
 	}
-
+ */
 	
 </script>
 <div class="attendance-container">

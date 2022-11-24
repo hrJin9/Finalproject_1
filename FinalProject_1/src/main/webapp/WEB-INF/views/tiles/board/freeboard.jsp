@@ -965,7 +965,7 @@ function goSearch(){
 					<!-- <textarea  class="" title="" placeholder="내용을 입력해주세요" name="content" value=""></textarea> -->
 				</div>
 			</div>
-	    	<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
+	    	<!-- <hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/> -->
 	    	
 	    	<!-- <div class="form-group" style="margin-top: 10px;">
 				<div class="control-label" style="float: left;">공개범위</div>

@@ -50,8 +50,8 @@
 </style>
 
 <nav id="attendance_mainList" class="margin-container">
-	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up" style="color: black;">내 근무</a>
-	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff/index.up" class="iscurrent">내 휴가</a>
+	<a id="attendance" href="<%= request.getContextPath()%>/attendance.up" style="color: black;" class="header-nonsub">내 근무</a>
+	<a id="dayoff" href="<%= request.getContextPath()%>/dayoff/index.up" class="iscurrent header-nonsub">내 휴가</a>
 	<div class="list_underline"></div>
 </nav>
 

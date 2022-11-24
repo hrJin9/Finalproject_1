@@ -216,7 +216,7 @@
 <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>  <!-- src 경로는 daum에서 준 우편번호찾기 사이트이다. -->
 <script type="text/javascript">
 	// "우편번호찾기" 를 클릭했는지 클릭을 안했는지 여부를 알아오기 위한 용도.
-	let b_flag_addressBtn_click = false;  // 초기값을 false 로 줌. 
+	let b_flag_addressBtn_click = false;
 
 	// 휴대전화 변경했는지 알아오기 위한 용도
 	let b_flag_mobile_update = false;
@@ -319,33 +319,11 @@
 	        $("input#postcode, input#address, input#extra_address").bind("click", function() {
 	   	        alert("우편번호찾기를 클릭하셔서 주소를 입력하세요.");
 	        });
-				
-	        
- 		});// $(".update").click(function(e){});---------------------------
+			
+	 	});// $(".update").click(function(e){});---------------------------
 		
-		
+	 	
 	});// end of $(document).ready(function(){})-------------------------------
-	
- 	// >>> Function Declaration <<< //
-	// 휴대전화 인증확인하기
-	/* function mobileVerifyCodeCheck() {
-		
-		const userVerifyCode = $("input#mobileCode").val();
-
-		if(smsCertificationCode == userVerifyCode){
-			b_flag_mobileVerifyCode_click = true; // 인증확인 버튼 클릭함.
-			$('div#mobileVerify').hide();        // 휴대전화 인증코드입력란 및 인증확인버튼 숨기기
-			$('span#mobileCodeConfirm').show();  // 인증결과 보여준다.
-			$("#editCompletion").prop("disabled", false); // 수정버튼 활성화
-		}
-		else{
-			alert("인증번호가 틀렸습니다. 인증하기 버튼을 눌러 인증코드를 다시 발급받으세요.");
-			b_flag_mobileVerifyCode_click = false;  // 휴대전화 인증확인 버튼 초기화
-			$("input#mobileCode").val("");       // 인증코드 입력란 비우기
-			$("div#mobileVerify").hide();        // 인증코드 입력란과 인증확인버튼 숨기고 시작한다.
-			$("span#mobileCodeConfirm").hide();  // 인증결과도 숨기고 시작한다.
-		} */
-		
 
 	
 </script>
@@ -359,7 +337,7 @@
 		<span>김지은</span>
 	</div>
 	<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
-	    <span class="pic" style="height: 135px; width: 135px; font-size: 25pt; font-weight: bold;">
+	    <span class="pic" style="height: 150px; width: 150px; font-size: 25pt; font-weight: bold;">
 	    	<span>지은</span>
 	   	</span>
 	    <span class="myInfo">
@@ -523,15 +501,15 @@
 		            --%>
 					
 					<div style="vertical-align: middle;">주소</div>
-					<span style="display: block; margin-bottom: 7px;"><input class="addressInput mt-2" type="text" id="postcode" name="postcode" value="${sessionScope.loginuser.postcode}" size="20" maxlength="5" style="width: 45.5%; margin: 7px 7px 0 0;" placeholder="우편번호" readonly />
+					<span style="display: block; margin-bottom: 7px;"><input class="addressInput mt-2" type="text" id="postcode" name="postcode" value="" size="20" maxlength="5" style="width: 45.5%; margin: 7px 7px 0 0;" placeholder="우편번호" readonly />
 					<button type="button" id="addressBtn">우편번호찾기</button></span>
 					<%-- <span class="error" style="color: red">우편번호 형식이 아닙니다.</span><br> --%>
-					<input class="addressInput mt-2" type="text" id="address" name="address" value="${sessionScope.loginuser.address}" size="50" style="display: block; margin-bottom: 7px;" placeholder="주소" readonly  />
-	                <input class="addressInput mt-2" type="text" id="extra_address" name="extra_address" value="${sessionScope.loginuser.extra_address}" size="50" style="display: block; margin-bottom: 7px;" placeholder="추가주소" readonly />
-	                <input class="addressInput mt-2" type="text" id="detail_address" name="detail_address" value="${sessionScope.loginuser.detail_address}" size="50" style="display: block; margin-bottom: 18px;" placeholder="상세주소 입력" />
+					<input class="addressInput mt-2" type="text" id="address" name="address" value="" size="50" style="display: block; margin-bottom: 7px;" placeholder="주소" readonly  />
+	                <input class="addressInput mt-2" type="text" id="extra_address" name="extra_address" value="" size="50" style="display: block; margin-bottom: 7px;" placeholder="추가주소" readonly />
+	                <input class="addressInput mt-2" type="text" id="detail_address" name="detail_address" value="" size="50" style="display: block; margin-bottom: 18px;" placeholder="상세주소 입력" />
 					<%-- <span class="error" style="color: red">주소를 입력하세요.</span> --%>
 				
-					<div style="vertical-align: middle;">은행 선택</div>
+					<div style="vertical-align: middle;">급여계좌</div>
 					<select id="bank" name="bank" class="required" style="display: inline-block; width: 22%;">
 						<option value="1">은행 선택</option>
 						<option value="2">KEB하나은행</option>

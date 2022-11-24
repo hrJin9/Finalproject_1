@@ -3,27 +3,7 @@
     
 <% String ctxPath = request.getContextPath(); %>    
 
-<!-- 텍스트에디터 -->
-<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
-
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
-
-
-
-
-<script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
- <!-- Editor -->
-
-<!-- Color Picker -->
-<script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
-<!-- Editor -->
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-<!-- Editor's Plugin -->
-<script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
-  
 
 <style type="text/css">
 	
@@ -32,11 +12,6 @@
 		cursor: pointer;
 	}
 	
-	#freeboard_subList a:hover{
-		background-color: rgba(200,200,200, .2);
-		cursor: pointer;
-		color: #4d4f53;
-	}
 		
 	#board_mainList {
 		position: relative;
@@ -64,43 +39,6 @@
 		color: #D2D6D9;
 	}
 	
-	#freeboard_subList{
-		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 10pt;
-		font-weight: bold;
-		margin: 4px 0 0 60px;
-	}
-	
-	#freeboard_subList a {
-		display: block;
-		width: 10%;
-		padding: .9em 0;
-		/* color: #333; */
-		text-align: center;
-		text-decoration: none;
-		/* color: #D2D6D9; */
-		border-radius: 12px;
-	}
-	
-	.freeboard_subList_underline {
-		position: absolute;
-		left: -3px;
-    	bottom: -1px;
-		width: 9%;
-		height: 2px;
-		background: #333;
-		transition: all .3s ease-in-out;
-		margin-left: 5%;
-	}
-	
-	#freeboard_subList a:nth-child(1).iscurrent ~ .freeboard_subList_underline {
-		left: 0%;
-	}
-	#freeboard_subList a:nth-child(2).iscurrent ~ .freeboard_subList_underline {
-		left: 10.5%; /* width랑 margin-left랑 합친거 */
-	}
 	.newbadge{
 	  background-color: #dc3545;
 	  width: 12px;
@@ -267,11 +205,17 @@
 	#writebtn{
 		font-size: 11pt;
 		padding: 10px 25px;
-		border-color: white;
 		font-weight: 600;
 		color: white;
 		border-radius: 10px;	
 	}
+	#writebtnDiv{
+		display: inline-block;
+	    position: absolute;
+    right: 79px;
+    top: 24px;
+	}
+	
 </style>
 <script>
 	$(document).ready(function(){
@@ -287,13 +231,12 @@
 		
 	});
 </script>
-<nav id="board_mainList">
-	<a class="header-nav mainlist list_notcurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
-	<a class="header-nav mainlist list_iscurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
-	<a class="header-nav mainlist list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
-	<!-- <div class="list_underline"></div> -->
+<nav id="board_mainList" class="margin-container header-nav">
+	<a class="header-nonsub list_notcurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
+	<a class="header-nonsub list_iscurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
+	<a class="header-nonsub list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
 </nav>
-<div style="display: inline-block;position: relative;float: right;right: 90px;top: -49px;">
+<div id="writebtnDiv">
   	<a href="#" id="writebtn"class="btn gradientbtn"><i class="icon icon-quill" style="margin-right: 5px;"></i>글쓰기</a>
 </div>
 

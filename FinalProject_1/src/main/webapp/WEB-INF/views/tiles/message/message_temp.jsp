@@ -17,7 +17,7 @@ $(document).ready(function(){
 </script>
 
 <div>
-
+	이거 일단 안하고... 나중에 시간남으면 하자
 
 
 

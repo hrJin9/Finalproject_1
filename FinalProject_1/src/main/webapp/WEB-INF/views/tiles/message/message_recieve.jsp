@@ -4,20 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
-	.mgList-contents::-webkit-scrollbar {
-	    width: 8px;  /* 스크롤바의 너비 */
-	}
-	
-	.mgList-contents::-webkit-scrollbar-thumb {
-	    height: 30%; /* 스크롤바의 길이 */
-		background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
-	    border-radius: 10px;
-	}
-	
-	.mgList-contents::-webkit-scrollbar-track {
-		background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
-	}
-	
+	.mg-current{ font-weight: bold; }
 </style>
 <script>
 	$(document).ready(function(){
@@ -25,34 +12,34 @@
 		$("#mg-recieve").addClass("iscurrent");
 		$("#mg-recieve").css("color","black");
 		
+		// 체크박스 개수
+		var total = $("input[name='mg-selectchx']").length;
 		// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
 		$("#mg-selectchx-all").change(function(){
 			if($("#mg-selectchx-all").is(":checked")){
 				$("input[name='mg-selectchx']").prop("checked",true);
 				show_checkmenu();
-				var total = $("input[name='mg-selectchx']").length;
 				$("#check_ctn").text(total);
 				
-			}
-			else {
+			} else {
 				$("input[name='mg-selectchx']").prop("checked",false);
 				show_noncheckmenu();
 			}
 		});
 		
 		$("input[name='mg-selectchx']").change(function() {
-			var total = $("input[name='mg-selectchx']").length;
 			var checked = $("input[name='mg-selectchx']:checked").length;
 			show_checkmenu();
-			if(checked<=0) show_noncheckmenu();
+			
+			if(checked<=0)
+				show_noncheckmenu();
 			$("#check_ctn").text(checked);
 			
-			if(total != checked) {
+			if(total != checked)
 				$("#mg-selectchx-all").prop("checked", false);
-			}
-			else {
+			else
 				$("#mg-selectchx-all").prop("checked", true); 
-			}
+			
 		});
 		
 		//툴팁 사용
@@ -78,10 +65,41 @@
 <div class="message-container">
 	<div class="mg-left-container">
 		<div class="mgList-info">
-			<span>전체<span>10</span></span>
+			<span class="mg-current">전체<span>10</span></span>
 			<span>안읽음<span>5</span></span>
 			<span>중요<span>2</span></span>
+			<div class="mg-search">
+				<form action="#" class="mg-form">
+				<%-- 검색 --%>
+				<div>
+					<div class="form-group">
+						<div class="form-field">
+							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
+								<option value="" selected>전체</option>
+								<option value="">보낸이</option>
+								<option value="">제목</option>
+								<option value="">내용</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="form-group">
+						<div class="form-field" style="padding-left:5px; margin-right: -9px;">
+							<input type="text" class="form-control" placeholder="검색" style="width:90%; font-size: 9pt; padding:6px 12px;">
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: relative; right: 147%; top:2px;"></a>
+					</div>
+				</div>
+				</form>
+			</div>
+			<!-- 
 			<span id="mg-filter"><i class="fas fa-filter" style="margin-right: 5px; color:rgba(0,0,0,0.3);"></i>필터</span>
+			 -->
 		</div>
 		<hr class="HRhr" style="margin: 0;"/>
 		<div class="mgList">

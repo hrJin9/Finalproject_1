@@ -9,14 +9,42 @@
 
 <style type="text/css">
 		
-	/* 상단 nav바 */
-	#memberInfo_mainList {
+	/* 상단 nav바 */	
+	#admin_attendance a:hover{
+		color: #000000;
+		cursor: pointer;
+	}
+	
+	/* #dayoff_subList a:hover{
+		background-color: rgba(200,200,200, .2);
+		cursor: pointer;
+	} */
+		
+	#admin_attendance {
 		position: relative;
 		display: flex;
 		width: 640px;
 		font-size: 18pt;
 		font-weight: bold;
 	}
+	
+	#admin_attendance a {
+		display: block;
+		width: 22%;
+		padding: 0.7em 0 0.9em 0;
+		color: #333;
+		text-decoration: none;
+		margin-right: 4%;
+		color: #D2D6D9;
+	}
+	
+	/* #dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
+		left: 0%;
+	}
+	#dayoff_subList a:nth-child(2).iscurrent ~ .dayoff_subList_underline {
+		left: 15%; /* width랑 margin-left랑 합친거 
+	} */
+		
 	
 	/* 검색 */
 	#searchCondition, #cntselect {
@@ -229,75 +257,22 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		// 모든 체크박스가 체크가 되었다가 그 중 하나만 이라도 체크를 해제하면 전체선택 체크박스에도 체크를 해제하도록 한다.
-		$(".chkboxpnum").click(function(){
-		      
-		   var bFlag = false;
-		   $(".chkboxpnum").each(function(){
-		      var bChecked = $(this).prop("checked"); // 체크된 체크박스
-		      if(!bChecked) { // 체크된 것이 아니라면
-		         $("#memberAll").prop("checked",false);
-		         bFlag = true;
-		         return false;
-		      }
-		   });
-		   
-		   if(!bFlag) {
-		      $("#memberAll").prop("checked",true);
-		   }
-		   
-		});
-	      
-		// 목록 전체개수
-		const allCnt = $("input:checkbox[name='pnum']").length;  // 체크여부 상관없는 모든 체크박스개수
-		document.getElementById("memberCnt").textContent = allCnt;
-
-		
 	});// end of$(document).ready(function(){})--------------------------
-	   
-	      
-	   // Function declaration
-	   // 전체선택 체크박스 클릭시
-	   function allCheckBox() {
-	   
-	      var bool = $("#memberAll").is(":checked");
-	      
-	      $(".chkboxpnum").prop("checked", bool);  // 전체선택 체크박스 체크여부에 따라 개별 선택박스 모두 체크 or 모두 해제
-	   }// end of function allCheckBox()-------------------------
-
 	   
 </script>
 
 <div class="container">
-	<nav id="memberInfo_mainList" class="margin-container">
-		<div id="attendance" style="color: black;" class="header-nonsub">멤버관리</div>
+	<nav id="admin_attendance" class="margin-container">
+		<a id="attendance" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" style="color: black;" class="header-nonsub">휴가 보유 현황</a>
+		<a id="dayoff" href="<%= request.getContextPath()%>/admin_attendanceList_usage.up" class="iscurrent header-nonsub">휴가 사용 내역</a>
+		<div class="list_underline"></div>
 	</nav>
 	<hr class="HRhr" style="margin-top: 0px;"/><br>
 
-	<div style="margin-bottom: 15px; float: left;">
-		<span>전체 구성원 &nbsp; <span style="color:#4285f4;" id="memberCnt"></span>명</span>
-	</div>
-	<div class="contentsmargin" style="clear: both;">
+	
+	<div class="contentsmargin">
 		<div style="display: inline-block;">
-		    <a href="#" id="memberadd" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
-		       	<span><i class="fas fa-plus"></i></span>
-		       	<span>멤버생성</span>
-	       	</a>
-      	 </div>
-		<div style="display: inline-block;">
-      	 	<a href="#" id="memberdelete" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
-		       	<span><i class="fas fa-times"></i></span>
-		       	<span>멤버삭제</span>
-      	 	</a>
-      	 </div>
-		<div style="display: inline-block;">
-      	 	<a href="#" id="memberupdate" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
-		       	<span><i class="fas fa-pencil-alt"></i></span>
-		       	<span>멤버수정</span>
-      	 	</a>
-      	 </div>
-		<div style="display: inline-block;">
-      	 	<a href="#" id="listdownload" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
+      	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
 		       	<span><i class="fa-solid fa-download"></i></span>
 		       	<span>목록 다운로드</span>
       	 	</a>
@@ -306,18 +281,6 @@
 		<%-- 검색 --%>
 		<form action="#" class="booking-form ml-3" style="float: right;">
 			<div class="row" style="padding-bottom: 20px;">
-				<%-- 검색 --%>
-				<div class=" mr-2">
-					<div class="form-group">
-						<div class="form-field">
-							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;">
-								<option value="">이름</option>
-								<option value="">이메일</option>
-								<option value="">연락처</option>
-							</select>
-						</div>
-					</div>
-				</div>
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
@@ -352,7 +315,6 @@
 		<table class="table custom-table">   
 	    	<thead>   
 	            <tr>
-	              <th><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th>
 	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">오름차순</a>
@@ -402,82 +364,73 @@
 					      <a class="dropdown-item" href="#">주임연구원</a> 
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">고용형태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+	              <th class="boardth" width="12%" scope="col">기간</th>
+	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
 					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">정직원</a>
-					      <a class="dropdown-item" href="#">계약직</a>
-					      <a class="dropdown-item" href="#">관리자</a>
-					      <a class="dropdown-item" href="#">임원</a> 
-					      <a class="dropdown-item" href="#">경영진</a> 
-					      <a class="dropdown-item" href="#">대표</a> 
-					      <a class="dropdown-item" href="#">부서장</a> 
-					      <a class="dropdown-item" href="#">수습</a> 
-					      <a class="dropdown-item" href="#">인턴</a> 
-					      <a class="dropdown-item" href="#">알바</a> 
+					      <a class="dropdown-item" href="#">연차</a>
+					      <a class="dropdown-item" href="#">병가</a>
+					      <a class="dropdown-item" href="#">기타</a>
 					  </div>
-	              </th>  
-	              <th class="boardth" width="12%"scope="col">이메일</th> 
-	              <th class="boardth" width="12%"scope="col">연락처</th> 
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">권한<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+				  </th>
+	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">세부 항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
 					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">일반</a>
-					      <a class="dropdown-item" href="#">관리</a>
+					      <a class="dropdown-item" href="#">연차</a>
+					      <a class="dropdown-item" href="#">반차</a>
+					      <a class="dropdown-item" href="#">병가</a>
+					      <a class="dropdown-item" href="#">조의</a>
+					      <a class="dropdown-item" href="#">결혼</a>
+					      <a class="dropdown-item" href="#">배우자출산</a>
+					      <a class="dropdown-item" href="#">군소집훈련</a>
+					      <a class="dropdown-item" href="#">여름휴가</a>
+					      <a class="dropdown-item" href="#">기타 사유</a>
 					  </div>
-	              </th>  
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">계정상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+				  </th>
+	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">승인 여부<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
 					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">정상</a>
-					      <a class="dropdown-item" href="#">중지</a>
+					      <a class="dropdown-item" href="#">승인</a>
+					      <a class="dropdown-item" href="#">반려</a>
 					  </div>
-	              </th>  
+				  </th>
 	            </tr> 
 			</thead>
 			<tbody>
 	            <tr> 
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
 	              <td>김지은</td>
 	              <td>영업</td>
 	              <td>대리</td>
-	              <td>정직원</td>
-	              <td>thumbs_up@gmail.com</td>
-	              <td>010-4532-5678</td>
-	              <td>일반</td>
-	              <td>정상</td>
+	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
+	              <td>연차</td>
+	              <td>연차</td>
+	              <td>승인</td>
 	            </tr> 
 	            <tr> 
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
 	              <td>이예은</td>
 	              <td>기획</td>
 	              <td>부장</td>
-	              <td>정직원</td>
-	              <td>thumbs_up@gmail.com</td>
-	              <td>010-4532-5678</td>
-	              <td>관리</td>
-	              <td>정상</td>
+	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
+	              <td>연차</td>
+	              <td>반차</td>
+	              <td>승인</td>
 	            </tr> 
 	            <tr> 
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
 	              <td>강채영</td>
 	              <td>디자이너</td>
 	              <td>과장</td>
-	              <td>정직원</td>
-	              <td>thumbs_up@gmail.com</td>
-	              <td>010-4532-5678</td>
-	              <td>일반</td>
-	              <td>중지</td>
+	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
+	              <td>병가</td>
+	              <td>병가</td>
+	              <td>승인</td>
 	            </tr> 
 	            <tr> 
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
 	              <td>진혜린</td>
 	              <td>IT</td>
 	              <td>차장</td>
-	              <td>계약직</td>
-	              <td>thumbs_up@gmail.com</td>
-	              <td>010-4532-5678</td>
-	              <td>일반</td>
-	              <td>정상</td>
+	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
+	              <td>기타</td>
+	              <td>기타 사유</td>
+	              <td>반려</td>
 	            </tr> 
-	    	</tbody>        
+	    	</tbody>            
 		</table>
 	
 	</div>

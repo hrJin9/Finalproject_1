@@ -49,7 +49,7 @@
 	
 	#payroll_subList a {
 		display: block;
-		width: 100px;
+		width: 110px;
 		padding: .9em 0;
 		color: black !important;
 		text-align: center;
@@ -62,7 +62,7 @@
 		position: absolute;
 		left: 0;
 		bottom: -1px;
-		width: 96px;
+		width: 105px;
 		height: 2px;
 		background: #333;
 		transition: all .3s ease-in-out;
@@ -115,12 +115,12 @@
 </script>
 
 <nav id="payroll_mainList" class="margin-container">
-	<a id="payroll" href="<%= request.getContextPath()%>/payroll.up">급여</a>
+	<a id="payroll" href="<%= request.getContextPath()%>/payroll.up" class="header-main">급여</a>
 	<div class="list_underline"></div>
 </nav>
 
 <nav id="payroll_subList" class="margin-container">
-	<a id="payroll-list" href="<%= request.getContextPath()%>/payroll.up">급여명세서 목록</a>
+	<a id="payroll-list" href="<%= request.getContextPath()%>/payroll.up" class="header-sub">급여명세서 목록</a>
 	<div class="payroll_subList_underline"></div>
 </nav>
 <div class="payroll-dateSelect">
