@@ -5,8 +5,6 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
     
 <style type="text/css">
-
-  
    div.sidebar{
     box-shadow: 3px 3px 9px rgb(0 0 0 / 5%);
      width: 190px;
@@ -266,8 +264,8 @@
       
       $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
          if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
-              $(".news").fadeIn(100);
-              $(".myprofile").fadeOut(100);
+              $(".news").fadeIn(100);  // 보이기
+              $(".myprofile").fadeOut(100);  // 숨기기
             } else {
               $(".news").fadeOut(100);
             }
@@ -293,13 +291,15 @@
       });
       
       
-      // 서치모달 닫힐 때 초기화
+        // 서치모달 닫힐 때 초기화
 		$('#sideSearch').on('hidden.bs.modal', function () {
 			 $('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up');
 			 $("#se-searchicon").removeClass("fas"); $("#se-searchicon").removeClass("fa-chevron-left");
 			 $("#se-searchicon").addClass("icon"); $("#se-searchicon").addClass("icon-search");
 		});
       
+        
+        
    });// end of $(document).ready(function(){})---------------
 	
    
@@ -385,7 +385,7 @@
         <i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
      </a>
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
-    </div>
+  </div>
     
     
    <div class=news style="display:none;">

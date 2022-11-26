@@ -4,6 +4,11 @@
 <%@ include file="header.jsp"%> 
 
 <style type="text/css">
+/* 페이지 전체 레이아웃 */
+.main_container {
+	width: 88%;
+	margin: 0 auto;
+}
 
 div#alert {
 	width: 200px; 
@@ -46,7 +51,7 @@ div#alert {
 
 </script>
 
-<div class="container col-8">
+<div class="main_container">
 	<div style="font-weight: bold; font-size: 13pt; color: #595959; margin-top: 50px; margin-bottom: 30px;">진행중인 일&nbsp;<span style="font-weight: normal; font-size: 11.5pt; color: #8c8c8c;">(1)</span></div>
     <div class="bg-light text-dark">
 	   	<i class="fas fa-user-circle" style="color:#737373; font-size:33px; float: left; padding: 20px 0 20px 35px;"></i>

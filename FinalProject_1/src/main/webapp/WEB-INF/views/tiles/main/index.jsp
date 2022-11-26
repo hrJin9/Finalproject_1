@@ -4,6 +4,12 @@
 <%@ include file="header.jsp"%> 
 
 <style type="text/css">
+	/* 페이지 전체 레이아웃 */
+	.main_container {
+		width: 88%;
+		margin: 0 auto;
+	}
+	
 	/* 메인 상단 */
 	#boardList a:hover{
 		color: #949DA6;
@@ -311,6 +317,20 @@ $(document).ready(function(){
 	$(".list_iscurrent").css("color","black");
 	$(".boardList_iscurrent").css("color","black");
 	
+	
+	// 컨테츠 아무곳이나 클릭시
+	$("div.main_container").mouseup(function(){
+		if($(".news").css('display') == 'block') {
+            $(".news").fadeOut(100);
+        }
+		if($(".myprofile").css('display') == 'block') {
+            $(".myprofile").fadeOut(100);
+        }  // 왜 안먹냐... 
+	});	
+	
+	
+	
+	
 });//end of ready
 
 // 외부 클릭시 닫기
@@ -368,7 +388,7 @@ $(function(){function c(){p();var e=h();var r=0;var u=false;l.empty();while(!u){
 
 </script>
 
-<div class="container col-11">
+<div class="main_container">
 	<div class="row">
 		<div id="today" class="col-3">
 			<table width="90%" align="center">

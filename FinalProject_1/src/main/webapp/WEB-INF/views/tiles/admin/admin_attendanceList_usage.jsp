@@ -8,29 +8,33 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 
 <style type="text/css">
-		
-	/* 상단 nav바 */	
-	#admin_attendance a:hover{
+	.admin_container {
+		width: 88%;
+		margin: 0 auto;
+	}
+
+	/* 상단 nav바  */	
+	#admin_mainList a:hover{
 		color: #000000;
 		cursor: pointer;
 	}
 	
-	/* #dayoff_subList a:hover{
+	#dayoff_subList a:hover{
 		background-color: rgba(200,200,200, .2);
 		cursor: pointer;
-	} */
+	}
 		
-	#admin_attendance {
+	#admin_mainList {
 		position: relative;
 		display: flex;
-		width: 640px;
+		width: 77%;
 		font-size: 18pt;
 		font-weight: bold;
 	}
 	
-	#admin_attendance a {
+	#admin_mainList a {
 		display: block;
-		width: 22%;
+		width: 13%;
 		padding: 0.7em 0 0.9em 0;
 		color: #333;
 		text-decoration: none;
@@ -38,12 +42,12 @@
 		color: #D2D6D9;
 	}
 	
-	/* #dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
+	#dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
 		left: 0%;
 	}
 	#dayoff_subList a:nth-child(2).iscurrent ~ .dayoff_subList_underline {
-		left: 15%; /* width랑 margin-left랑 합친거 
-	} */
+		left: 15%; /* width랑 margin-left랑 합친거 */
+	}
 		
 	
 	/* 검색 */
@@ -95,12 +99,14 @@
 	  display: block;
 	  position: relative;
 	  margin-bottom: 25px;
-	  cursor: pointer; }
+	  cursor: pointer; 
+	}
 	
 	.control input {
 	  position: absolute;
 	  z-index: -1;
-	  opacity: 0; }
+	  opacity: 0; 
+	}
 	
 	.control__indicator {
 	  position: absolute;
@@ -110,7 +116,8 @@
 	  width: 15px;
 	  border-radius: 3px;
 	  border: 2px solid #ccc;
-	  background: transparent; }
+	  background: transparent; 
+	}
 	
 	.control--radio .control__indicator {
 	  border-radius: 50%; }
@@ -248,8 +255,8 @@
 				border-radius: 4px;
 				color: $white;
 			}
-		}		
-	
+		  }		
+	   }
 	}
 	
 </style>
@@ -257,19 +264,66 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-	});// end of$(document).ready(function(){})--------------------------
-	   
+		/* if($('#searchCondition').val('period').prop("selected",true)) {
+	        // 데이트피커
+			flatpickr.localize(flatpickr.l10ns.ko);
+	        flatpickr($(".daterangeSelector"));
+	        $(".daterangeSelector").flatpickr({
+	        	mode: "range",
+	            local: 'ko'
+	        });
+		} else if($('#searchCondition').val('username').prop("selected",true)) {
+			$("#attendanceLsit_search").val('');
+		} */
+			
+		
+		/* if($('#searchCondition').val('username').prop("selected",true)) {
+			$("#attendanceLsit_search").val('');
+		} else {
+	        // 데이트피커
+			flatpickr.localize(flatpickr.l10ns.ko);
+	        flatpickr($(".daterangeSelector"));
+	        $(".daterangeSelector").flatpickr({
+	        	mode: "range",
+	            local: 'ko'
+	        });
+		} */
+				
+		
+		$("#searchCondition").on("change", function(){
+		    //selected value
+		    $(this).val();
+		    
+		    if($("option:selected", this).attr("period")) {
+		        // 데이트피커
+				flatpickr.localize(flatpickr.l10ns.ko);
+		        flatpickr($(".daterangeSelector"));
+		        $(".daterangeSelector").flatpickr({
+		        	mode: "range",
+		            local: 'ko'
+		        });
+			} else {
+				$("#attendanceLsit_search").val('');
+			}
+		    
+		});
+		
+			
+		
+	});// end of $(".period").click(function(){})-------------------
+	
+	
 </script>
 
-<div class="container">
-	<nav id="admin_attendance" class="margin-container">
-		<a id="attendance" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" style="color: black;" class="header-nonsub">휴가 보유 현황</a>
-		<a id="dayoff" href="<%= request.getContextPath()%>/admin_attendanceList_usage.up" class="iscurrent header-nonsub">휴가 사용 내역</a>
-		<div class="list_underline"></div>
-	</nav>
-	<hr class="HRhr" style="margin-top: 0px;"/><br>
+<nav id="admin_mainList" class="margin-container">
+	<a id="admin_attendance_holding" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" style="color: black;" class="header-nonsub">휴가 보유 현황</a>
+	<a id="admin_attendance_usage" href="<%= request.getContextPath()%>/admin_attendanceList_usage.up" class="header-nonsub">휴가 사용 내역</a>
+	<div class="list_underline"></div>
+</nav>
+<hr class="HRhr" style="margin-top: 0px;"/><br>
 
-	
+
+<div class="admin_container">	
 	<div class="contentsmargin">
 		<div style="display: inline-block;">
       	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
@@ -281,16 +335,26 @@
 		<%-- 검색 --%>
 		<form action="#" class="booking-form ml-3" style="float: right;">
 			<div class="row" style="padding-bottom: 20px;">
+			    <div class=" mr-2">
+					<div class="form-group">
+						<div class="form-field">
+							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;">
+								<option value="username" class="username">이름</option>
+								<option value="period" class="period">기간</option>
+							</select>
+						</div>
+					</div>
+				</div>
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-							<input type="text" class="form-control" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+							<input type="text" class="form-control daterangeSelector" id="" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
 						</div>
 					</div>
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 14%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.2%;"></a>
 					</div>
 				</div>
 				<div class=" mr-2">
@@ -310,12 +374,12 @@
 		
 		<%-- 전체 구성원 --%>
 		<div style="margin-bottom: 15px; float: left;">
-			<%-- 테이블 상단 버튼 만들기 --%>
+	    <%-- 테이블 상단 버튼 만들기 --%>
 		</div>
 		<table class="table custom-table">   
 	    	<thead>   
 	            <tr>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">오름차순</a>
 					      <a class="dropdown-item" href="#">내림차순</a>
@@ -341,7 +405,7 @@
 					      <a class="dropdown-item" href="#">서비스</a> 
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">대표</a>
 					      <a class="dropdown-item" href="#">부대표</a>
@@ -364,15 +428,15 @@
 					      <a class="dropdown-item" href="#">주임연구원</a> 
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col">기간</th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="16%" scope="col">기간</th>
+	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">연차</a>
 					      <a class="dropdown-item" href="#">병가</a>
 					      <a class="dropdown-item" href="#">기타</a>
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">세부 항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="13%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">세부 항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">연차</a>
 					      <a class="dropdown-item" href="#">반차</a>
@@ -385,7 +449,7 @@
 					      <a class="dropdown-item" href="#">기타 사유</a>
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">승인 여부<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">승인 여부<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">승인</a>
 					      <a class="dropdown-item" href="#">반려</a>
@@ -401,7 +465,7 @@
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>연차</td>
 	              <td>연차</td>
-	              <td>승인</td>
+	              <td><button type="button" class="btn btn-sm button" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em; font-weight: bold;">승인</button></td>
 	            </tr> 
 	            <tr> 
 	              <td>이예은</td>
@@ -410,7 +474,7 @@
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>연차</td>
 	              <td>반차</td>
-	              <td>승인</td>
+	              <td><button type="button" class="btn btn-sm button" style="background-color: #F24B171F; color: #661400; border-radius: 2em; font-weight: bold;">반려</button></td>
 	            </tr> 
 	            <tr> 
 	              <td>강채영</td>
@@ -419,7 +483,7 @@
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>병가</td>
 	              <td>병가</td>
-	              <td>승인</td>
+	              <td><button type="button" class="btn btn-sm button" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em; font-weight: bold;">승인</button></td>
 	            </tr> 
 	            <tr> 
 	              <td>진혜린</td>
@@ -428,7 +492,7 @@
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>기타</td>
 	              <td>기타 사유</td>
-	              <td>반려</td>
+	              <td><button type="button" class="btn btn-sm button" style="background-color: #F24B171F; color: #661400; border-radius: 2em; font-weight: bold;">반려</button></td>
 	            </tr> 
 	    	</tbody>            
 		</table>

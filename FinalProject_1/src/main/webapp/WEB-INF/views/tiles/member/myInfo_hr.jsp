@@ -4,7 +4,12 @@
 <% String ctxPath = request.getContextPath(); %>  
 
 <style type="text/css">
-
+	/* 페이지 전체 레이아웃 */
+	.member_container {
+		width: 88%;
+		margin: 0 auto;
+	}
+	
 	@font-face {
 	    font-family: 'Pretendard-Regular';
 	    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
@@ -144,7 +149,7 @@
 	
 </script>
 
-<div class="container" style="margin-right: 145px;">
+<div class="member_container">
 	<form name="myInfo">
 	
 	<div class="col-md-16">
@@ -242,7 +247,7 @@
 		                </tr>
 		                <tr>
 		                   <td>출근 시간</td>   
-		                   <td>09:00</td>   
+		                   <td>오전 09:00</td>   
 		                </tr>
 		                <tr>
 		                   <td>일하는 시간</td>   
