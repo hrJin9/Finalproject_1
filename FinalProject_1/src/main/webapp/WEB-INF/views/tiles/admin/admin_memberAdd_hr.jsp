@@ -202,7 +202,7 @@
 		$(".timeSelector2").flatpickr({
 			enableTime: true,
 		    noCalendar: true,
-		    dateFormat: "K H:i",
+		    dateFormat: "H:i",
 			local: 'ko'
 		});
 		

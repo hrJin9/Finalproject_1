@@ -34,7 +34,7 @@
 	
 	#admin_mainList a {
 		display: block;
-		width: 13%;
+		width: 14%;
 		padding: 0.7em 0 0.9em 0;
 		color: #333;
 		text-decoration: none;
