@@ -47,7 +47,7 @@
 					<td width="10%">지급<span><span>5,000,000</span>원</span></td>
 					<td width="10%">공제<span><span>2,000,000</span>원</span></td>
 					<td width="10%"><span><span>3,000,000</span>원</span></td>
-					<td width="9%"><i class="fa-solid fa-download"></i></td>
+					<td width="9%"><i class="fa-solid fa-download" style="padding: 10px;"></i></td>
 				</tr>
 				<tr>
 					<td><span>11</span>월 급여명세서</td>
@@ -55,11 +55,11 @@
 					<td><span>지급<span>5,000,000</span>원</span></td>
 					<td><span>공제<span>2,000,000</span>원</span></td>
 					<td><span><span>3,000,000</span>원</span></td>
-					<td><i class="fa-solid fa-download"></i></td>
+					<td><i class="fa-solid fa-download" style="padding: 10px;"></i></td>
 				</tr>
 			</table>
 		</div>
-		
+			
 		
 		
 		
@@ -75,7 +75,7 @@
 						<div>급여지급일</div>
 						<div>2022년 12월 26일</div>
 					</div>
-					<div class="payroll-download">
+					<div class="payroll-download btn">
 						<i class="fa-solid fa-download" style="font-size: 10pt; display:inline-block;"></i>
 						<div>급여명세서 다운로드</div>
 					</div>

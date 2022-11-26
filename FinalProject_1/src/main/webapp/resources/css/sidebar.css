@@ -257,3 +257,39 @@
    	overflow-y: scroll;
    	overflow-x: hidden;
    }
+   
+   
+   #side-expand{
+   	display: inline-block;
+   	width: 35px;
+   	height: 20px;
+   	border-radius: 15px;
+    border: solid 1px rgba(0,0,0,0.1);
+    float: right;
+    background-color: rgba(0,0,0,0.1);
+   }
+   
+   label[for='side-expandcx']{
+   	height: 16px; width: 16px;
+   	background-color: white;
+   	border-radius: 20px;
+   	position: relative; top: 0.5px;
+   	border: solid 1px rgba(0,0,0,0.1);
+   }
+   
+   #side-expandcx:checked #side-expand{
+   	background-color: red;
+   }
+   
+   #side-expandcx:checked + label{
+   	position: relative;
+   	left: 16.5px;
+   	transition: all 0.7s;
+   }
+   
+   
+   .myprofile{
+   	background-color: white;
+   	z-index: 9999;
+   }
+   

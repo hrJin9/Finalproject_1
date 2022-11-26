@@ -231,8 +231,8 @@
 			<label for="memberAll">
 				<span id="check_ctn"></span>명 선택
 			</label>
-			<button type="button" id="ml-save" class="gradientbtn" style="font-size: 9pt;">저장</button>		
-			<button type="button" id="ml-cancel">취소</button>
+			<button type="button" id="ml-save" class="gradientbtn btn" style="font-size: 9pt;">저장</button>		
+			<button type="button" id="ml-cancel" class="btn">취소</button>
 		</span>
 	</div>
 	<div class="big" style="height: 400px; overflow-y: auto; width: 100%;">

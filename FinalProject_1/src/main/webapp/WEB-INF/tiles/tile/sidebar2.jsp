@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<% String ctxPath = request.getContextPath(); %>
 <style type="text/css">
 
 .sidebar2 {
@@ -32,9 +32,9 @@
 
 <div class="sidebar2">
 	<div id="list-example" class="list-group bookmark">
-	  <a class="list-group-item list-group-item-action" href="#" style="padding-left: 10px; font-size: 15px;"><i class="fas fa-user-friends"></i></a>
-	  <a class="list-group-item list-group-item-action" href="#" style="padding-left: 12px; font-size: 18px;"><i class="far fa-file-alt"></i></a>
-	  <a class="list-group-item list-group-item-action" href="#" style="padding-left: 10px; font-size: 18px;"><i class="far fa-envelope"></i></a>
+	  <a class="list-group-item list-group-item-action" href="" style="padding-left: 10px; font-size: 15px;"><i class="fas fa-user-friends"></i></a>
+	  <a class="list-group-item list-group-item-action" href="<%= ctxPath%>/approval/writing.up" style="padding-left: 12px; font-size: 18px;"><i class="far fa-file-alt"></i></a>
+	  <a class="list-group-item list-group-item-action" href="<%= ctxPath%>/message/write.up" style="padding-left: 10px; font-size: 18px;"><i class="far fa-envelope"></i></a>
 	  <a class="list-group-item list-group-item-action" href="#" style="padding-left: 10px; font-size: 18px;"><i class="far fa-comment-dots"></i></a>
  	</div>
 </div>

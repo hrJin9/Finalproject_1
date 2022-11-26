@@ -5,7 +5,7 @@
     
 <style type="text/css">
 	#list a:hover{
-		color: #000000;
+		color: #4d4f53;
 		transition: all 0.2s;
 		cursor: pointer;
 	}
@@ -35,7 +35,7 @@
 		left: 15%; /* width랑 margin-left랑 합친거 */
 	}
 	#list a:nth-child(1):hover ~ .list_underline {
-		left: 0;
+		left: 0;R
 	}
 	#list a:nth-child(2):hover ~ .list_underline {
 		left: 16%;

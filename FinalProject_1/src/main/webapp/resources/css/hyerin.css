@@ -150,10 +150,11 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius: 5px;
 	background-color: transparent;
 	height: 30px; width: 50px;
-	font-size: 11pt;
+	font-size: 10pt;
 	position: relative; bottom: 1px; right:1%;
 	font-weight: 500;
 	color: rgba(0,0,0,0.7);
+	padding: 0;
 }
 
 .workingweek-sum{
@@ -169,7 +170,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border-radius : 10px;
 	box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
 	background-color: #566573;
-	position: absolute; left: 90px; bottom: 450px; 
+	position: absolute; left: 90px; bottom: 460px; 
 }
 
 .workingiweek-infobox > table{
@@ -606,12 +607,11 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	padding: 20px 20px;
 }
 
-/* 
 .dayoff-box:hover{
 	background-color: rgba(200,200,200,.1);
+	transition: all 0.2s;
 	cursor: pointer;
 }
- */
 
 .dayoff-box > div {
 	margin-top: 40px;
@@ -1360,7 +1360,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .pr-table td:nth-child(2) ~ td > span{
-	color: black;
+	color: #4d4f53;
 	font-weight: normal;
 }
 
@@ -1824,7 +1824,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 #mw-send{
-	width: 90px;
+	width: 95px;
 	color: white;
 	font-weight: 700;
 }

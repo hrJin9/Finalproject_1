@@ -58,9 +58,34 @@
 		});
       
         
+        //넓게보기 클릭 이벤트
+        $("#side-expand-a").click(function(){
+        	if($("#side-expandcx").is(":checked")){
+        		$("#side-expandcx").prop("checked",false);
+        		$("#menuicon").prop("checked",false);
+        		$("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
+        		$("#side-expand").css({"background-color":"","transition":"all 0.5s"});
+        	} else {
+        		$("#side-expandcx").prop("checked",true);
+        		$("#menuicon").prop("checked",true);
+        		$("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
+        		$("#side-expand").css({"background-color":"#4285f4","transition":"all 0.5s"});
+        	}
+        });
+        
+        
         
    });// end of $(document).ready(function(){})---------------
 	
+   $(document).mouseup(function(e){
+	   if( !(($(".news").has(e.target).length))){
+	      $(".news").fadeOut(100);
+	 	}
+		if( !(($(".myprofile").has(e.target).length))){
+		     $(".myprofile").fadeOut(100);
+		}
+	});
+   
    
    // 검색Modal에서 검색어를 입력할 때 get방식으로 검색어값을 보내기 ==> 이방법 아니면 ajax를 써보기
    // ajax 쓰려면 modal body를 iframe 쓰지 말고 (sidebar_search.jsp)내용을 그냥 갖다붙여서 써도,, ㄱㅊ을듯.. 따로 파일을 빼던가.. 
@@ -90,6 +115,10 @@
 		$("#se-searchicon").removeClass("fas"); $("#se-searchicon").removeClass("fa-chevron-left");
 		$("#se-searchicon").addClass("icon"); $("#se-searchicon").addClass("icon-search");
    }
+   
+   
+   
+   
    
    
 </script>
@@ -128,10 +157,10 @@
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/board.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
 	        
 	        <%-- 관리자로 로그인했을경우에만 --%>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">인사이트</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">로그관리</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">구성원관리</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">급여정산</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_insight.up'"><a><span class="icon icon-stats-dots"></span><span class="menu-text">인사이트</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-history"></span><span class="menu-text">로그관리</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_memberList.up'"><a><span class="icon icon-user-tie"></span><span class="menu-text">구성원관리</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_payroll.up'"><a><span class="icon icon-magic-wand"></span><span class="menu-text">급여정산</span></a></li>
      		</div>
       </ul> 
     </div>
@@ -144,6 +173,10 @@
         <span style="font-size: 8.5pt; color: #737373;">sawonwldms@gmail.com</span><br>
         <span style="font-size: 8.5pt; color: #737373; padding-bottom: 3px; ">개발자</span><br>
        </a>
+     <a id="side-expand-a" class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;">
+        <i class="icon icon-enlarge" style="color: #666666; padding-right: 8px; font-size: 10pt; position:relative; top:1px;"></i>넓게보기
+        <div id="side-expand"><input type="checkbox" id="side-expandcx" style="display: none;"/><label for="side-expandcx"></label></div>
+     </a>
      <a class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#userPwdChange" data-bs-dismiss="modal" data-bs-backdrop="static">
         <i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
      </a>
