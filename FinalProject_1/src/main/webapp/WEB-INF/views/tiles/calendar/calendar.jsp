@@ -3,13 +3,13 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
     
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
    
 <%@ include file="calendar_header.jsp"%>   
    
-<style type="text/css">
+<style type="text/css">  
   
 
  
@@ -29,9 +29,9 @@
   }   
   a { 
      color: black;
-	 text-decoration: none;
+	 text-decoration: none; 
 	}
-  .calendar-side{
+	.workadd{ 
   	width: 238px;    
     height: 429px;
     background-color: #f3f3f3b3; 
@@ -39,28 +39,66 @@
     top: 194px;  
     left: 1195px;
     border-radius: 22px;
+  } 
+       
+  .calendar-side{
+  	width: 238px;     
+    height: auto;
+    background-color: #f3f3f3b3; 
+    position: absolute;   
+    top: 261px;  
+    left: 1195px; 
+    border-radius: 22px;  
+    padding: 7px 0 18px 0;
+  }    
+    
+/*    button:hover {  
+	color: white;    
+	opacity: 50%; 
+	}  */
+	 
+    .delete:hover {   
+	color: #ed0000;   
+	opacity: 50%; 
+	}
+	  
+	.edit:hover {  
+	color: white;    
+	opacity: 50%; 
+	}
+	  
+	
+	  
+	.edit{ 
+   font-size: 8pt;  
+   border: none;   
+   border-radius: 10px;
+   width: 44px; 
+   height: 17px;
+   background-color: #5F98F6;
+   color: white; 
+   margin-right: 2px;  
+ }
+   
+ .delete{  
+   font-size: 8pt;
+   border: none; 
+   border-radius: 10px;
+   width: 44px;  
+   height: 17px;  
+   background-color: #b4b4b4;
+   color: white;
   
-  }
-   
-    
-   
-   /* 검색  */
-	.row >*{
-		width: auto;
-		padding: 0;
-	}
-	.row {
-    --bs-gutter-x: 1.5rem;
-    --bs-gutter-y: 0; 
-	}
-
-   /* 검색 끝 */
-    
+ } 
+ .button-ab{
+ 	position: absolute;
+    right: 8%;
+ }
  
  
  
  
-   /* 나의 캘린더 */	
+   /* 나의 캘린더 */	 
  	.thumbnail, .count {
 	    width:300px;
 	} 	
@@ -69,11 +107,12 @@
    		font-size: 9pt;
 	    border: none;
 	    border-radius: 10px;
-	    width: 54px;
+	    width: 54px; 
 	    height: 26px;
 	    background-color: #5F98F6;
 	    color: white;
-	    float: right;  
+	    float: right;   
+	    
    }
    
    /* 나의 캘린더 끝 */	
@@ -136,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     
     
-  });
+  }); 
    
   
 	 
@@ -163,79 +202,50 @@ document.addEventListener('DOMContentLoaded', function() {
 	   
 	 
    
-    
+      
 </script>  
- 
-  
-<div id='calendar' style="margin-bottom: 5%;"></div> 
+   
+     
+<div id='calendar' style="margin-bottom: 5%;"></div>   
 
+<div class="workadd" style="margin-top: 0pt;border-radius: 23px;background-color: #f7f7f7;width: 15.5%;height: 60px;">
+	<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt; margin-top: 20%;">일정 생성</span></div>
+</div>
+ 
+   
 <div> 
-	<div class="calendar-side"> 
-	  			 
-  			<div class="workadd" style="    margin-top: 0pt;border-radius: 23px;background-color: #ececec;width: 100%;height: 60px;">
-	  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt; margin-top: 20%;">일정 생성</span></div>
-  			</div>
-  			  
-  			    
-  			<div>      
-	  			<hr style="margin: 30px 0; background-color: none;">  	       
-	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 135px;"></i>       
+	<div class="calendar-side">      
+  			                    
+  			<div style="margin-top: 10px;">         
+	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
+					<a href="#" class="btn fa-solid fa-circle-plus fa-lg"  style="color: #5E9FF2; margin-top: 6px; position: absolute; top: 22px; left: 188px;"></a>
+				</div>
 	  			<button type="button" class="btn" data-toggle="collapse" data-target="#demo" style="width: 88%; text-align: inherit; margin-left: 18px;">나의 캘린더    
-	  			<i class="fa-solid fa-circle-plus" type="button" style="color: #5E9FF2; float: right; margin-top: 6px;"></i> </button> 
+	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 28px;"></i> </button>  
 	  			 
-	  			<div id="demo" class="collapse">       
-	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	  
-		  			<p>
-		  			<input type="checkbox" />    
-				    <label><span></span>내일정<button type="button" class="count-save" style="width: 36px;height: 16px;margin-left: 4px;font-size: 8pt;background-color: #b4b4b4;">삭제</button><button type="button" class="count-save" style="width: 36px;height: 16px;margin-left: 79px;font-size: 8pt;">수정</button> 
-				    </label> 
+	  			<div id="demo" class="collapse show">       
+	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   
+		  			<p> 
+		  			<input type="checkbox" />     
+				    <label><span></span>내일정</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+				    
 				    <p>   
 				    <input type="checkbox" />    
-				    <label><span></span>팀일정<button type="button" class="count-save" style="width: 36px;height: 16px;margin-left: 4px;font-size: 8pt;background-color: #b4b4b4;">삭제</button><button type="button" class="count-save" style="width: 36px;height: 16px;margin-left: 79px;font-size: 8pt;">수정</button> 
-				    </label>  
+				    <label><span></span>팀일정</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+				      
+				    <p> 
+				    <input type="checkbox" />     
+				    <label><span></span>부서일정</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+				      
 				    <p> 
 				    <input type="checkbox" />    
-				    <label><span></span>부서일정<button type="button" class="count-save" style="width: 36px;height: 16px;margin-left: 4px;font-size: 8pt;background-color: #b4b4b4;">삭제</button><button type="button" class="count-save" style="width: 36px;height: 16px;margin-left: 70px;font-size: 8pt;">수정</button> 
-				    </label> 
-				    <p> 
-				    <input type="checkbox" />    
-				    <label><span></span>전사일정<button type="button" class="count-save" style="width: 36px;height: 16px;margin-left: 4px;font-size: 8pt;background-color: #b4b4b4;">삭제</button><button type="button" class="count-save" style="width: 36px;height: 16px;margin-left: 70px;font-size: 8pt;">수정</button> 
-				    </label> 	 
+				    <label><span></span>전사일정</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+				    	 
 		  	   </div>	 
 		  	 </div>   
-  			</div>    
-  			   
-  			<hr style="margin: 30px 0;">     
-  			  
-  			<!-- 검색 -->  
-  			<div class="row" style="margin-bottom: 13px;">     
-				<div>      
-					<div class="form-group" style="margin-top: 5%;">      
-						<div class="form-field" style="padding-left:15px;display: inline-flex;">   
-							<input type="text" class="form-control" placeholder="검색" style="font-size: 9pt; width: 234px;"> 
-						
-						<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">  
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem;"></a>
-						</div>
-						</div>
-					</div> 
-				</div>  
-			</div>      
-  			<!-- 검색 끝 -->              
-  			<div style="display: flex;">
-				<button type="button" class="btn" style="font-size: 9pt;width: 109px;"><i class="fa-solid fa-star" style="margin-right: 5%;"></i>중요일정 보기</button> 
-				<button type="button" class="btn" style="font-size: 9pt;width: 125px;"><i class="fa-solid fa-trash-can" style="margin-right: 5%;"></i>삭제된 일정 보기</button> 
-			</div>
-  			 
-  			<div class="workstatus-buttoncontainer" style="margin-right: 13px;"> 
-	  			<button type="button" class="workstatus-save gradientbtn">확인하기</button>
-	  			<button type="reset" class="workstatus-cancel">취소</button> 
-  			</div> 
-  		
-
- 
+  			</div>     
 	</div>
-</div>
+</div> 
 
 
 
@@ -332,10 +342,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			  </fieldset>
 			  
 			   
-			   
+			       
 			</div>    
 		  	
-	  			<div class="workstatus-buttoncontainer">
+	  			<div class="workstatus-buttoncontainer" style="margin-bottom: 12%;">
 		  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
 		  			<button type="reset" class="workstatus-cancel">취소</button>
 	  			</div>

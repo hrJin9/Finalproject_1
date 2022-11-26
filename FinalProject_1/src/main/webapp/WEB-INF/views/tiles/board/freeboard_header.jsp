@@ -270,9 +270,9 @@
 	});
 </script>
 <nav id="mainList" class="margin-container header-nav">
-	<a class="header-nonsub list_notcurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
+	<a class="header-nonsub list_notcurrent" id="notice" href="<%= request.getContextPath()%>/board_all.up">공지사항</a>
 	<a class="header-nonsub list_iscurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
-	<a class="header-nonsub list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
+	<%-- <a class="header-nonsub list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a> --%><!-- 작성한 게시물, 북마크, 임시저장 -->
 </nav>
 <div id="writebtnDiv">
   	<a href="#" id="writebtn"class="btn gradientbtn"><i class="icon icon-quill" style="margin-right: 5px;"></i>글쓰기</a>

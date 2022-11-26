@@ -30,32 +30,70 @@ ul {
 li * {
 	float: left;
 }
+.todo_li{
+ 
+	border-bottom: 1px solid #eee;
+    width: 538px;
+} 
 
 li,
 h3 {
 	clear: both;
 	list-style: none;
-}
+} 
 
 input,
 button {
 	outline: none;
 }
-
+ 
 button {
 	background: none;
 	border: 0px; 
-	color: #888;
-	font-size: 15px;
+	font-size: 15px; 
 	width: 60px; 
-	margin: 10px 0 0;
-	font-family: Lato, sans-serif;
+	margin: 10px 0 0; 
 	cursor: pointer;
 }
+  
+button:hover {  
+	color: white;    
+	opacity: 50%; 
+} 
+.ok_btn{  
+   font-size: 9pt;  
+   border: none; 
+   border-radius: 10px;
+   width: 64px;     
+   height: 43px;
+   background-color: #5F98F6;
+   color: white;
+   margin-left: 5px;
+} 
+
+.edit{ 
+   font-size: 9pt;
+   border: none;   
+   border-radius: 10px;
+   width: 54px;
+   height: 26px;
+   background-color: #5F98F6;
+   color: white;
+   float: right;   
+   margin-right: 4px; 
+ }
+  
+ .delete{ 
+   font-size: 9pt;
+   border: none; 
+   border-radius: 10px;
+   width: 54px;  
+   height: 26px;
+   background-color: #b4b4b4;
+   color: white;
+   float: right;  
  
-button:hover {
-	color: #333;
-}
+ }
  
 
 /* Heading */ 
@@ -73,26 +111,25 @@ label[for='new-task'] {
 }
 
 input[type="text"] {
-	margin-top: 10px;
+	margin-top: 10px; 
 	font-size: 18px; 
 	line-height: 18px;
 	height: 18px;
 	padding: 10px;
 	border: 1px solid #ddd;
-	background: #fff;
+	background: #fff; 
 	border-radius: 6px;
-	font-family: Lato, sans-serif;
 	color: #888;
-}
+} 
 
 input[type="text"]:focus {
-	color: #333;
+	color: black; 
 }
 
-
+ 
 /* New Task */
  
-label[for='new-task'] {
+label[for='new-task'] { 
 	display: block;
 	margin: 0 0 20px;
 }
@@ -102,12 +139,12 @@ input#new-task {
 	width: 1087px;
     height: 44px; 
 }
-
+    
 p > button:hover {
-	color: #0FC57C;
-}
+	 
+} 
 
-
+ 
 /* Task list */ 
 
 li {
@@ -125,17 +162,17 @@ li > input[type="checkbox"] {
 li > label {
 	font-size: 18px;  
 	line-height: 40px;
-	width: 993px;  
+	width: 383px;    
 	padding: 0 0 0 11px;
 }
 
 li > input[type="text"] {
 	width: 226px;
 }
-
+ 
 li > .delete:hover {
-	color: #CF2323;
-}
+	color: #ed0000;
+} 
 
 
 /* Completed */
@@ -161,7 +198,7 @@ ul li.editMode label {
 }  
      
 </style> 
-   
+    
 <script type="text/javascript">  
 
 
@@ -175,8 +212,8 @@ var completedTasksHolder = document.getElementById("completed-tasks"); //complet
 //New Task List Item
 var createNewTaskElement = function(taskString) {
 	//Create List Item
-	var listItem = document.createElement("li");
-
+	var listItem = document.createElement("li"); 
+ 
 	//input (checkbox)
 	var checkBox = document.createElement("input"); // checkbox
 	//label
@@ -316,27 +353,27 @@ for (var i = 0; i < completedTasksHolder.children.length; i++) {
 
  
 //todo 끝
- 
-</script>   
   
- <div class="container">      
+</script>    
+      
+ <div class="container">       
 		<h3>추가하기</h3>   
 		<p style="margin-top: 10px;">  
-			<input id="new-task" type="text"><button style="margin-top: 22px;">확인</button>
-		</p>
+			<input id="new-task" type="text"><button class="ok_btn">확인</button>
+		</p>  
 
-		<div> 
-			<h3>할 일</h3> 
+		<div style="width: 600px;">  
+			<h3>할 일</h3>   
 			<ul id="incomplete-tasks">
-				<li><input type="checkbox"><label>지출하기</label><input type="text"><button class="edit">수정</button><button class="delete">삭제</button></li>
-				<li><input type="checkbox"><label>요청사항 처리하기</label><input type="text" value="Go Shopping"><button class="edit">수정</button><button class="delete">삭제</button></li>
+				<li class="todo_li"><input type="checkbox"><label>지출하기</label><input type="text"><input type="text" value=""><button class="delete">삭제</button><button class="edit">수정</button></li>
+				<li class="todo_li"><input type="checkbox"><label>요청사항 처리하기</label><input type="text" value=""><button class="delete">삭제</button><button class="edit">수정</button></li>
 			</ul>
 		</div>
-		
-		<div>
+		   
+		<div style="width: 600px;position: absolute;top: 228px;right: 153px;">
 			<h3>완료</h3>
 			<ul id="completed-tasks">
-				<li><input type="checkbox" checked><label>연차올리기</label><input type="text"><button class="edit">수정</button><button class="delete">삭제</button></li>
+				<li class="todo_li"><input type="checkbox" checked><label>연차올리기</label><input type="text"><button class="delete">삭제</button><button class="edit">수정</button></li>
 			</ul>
-		</div>
-	</div>     
+		</div> 
+	</div>      

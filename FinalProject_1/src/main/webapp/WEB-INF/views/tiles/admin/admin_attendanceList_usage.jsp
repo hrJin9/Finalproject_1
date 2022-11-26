@@ -353,12 +353,7 @@
 		<table class="table custom-table">   
 	    	<thead>   
 	            <tr>
-	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
-					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">오름차순</a>
-					      <a class="dropdown-item" href="#">내림차순</a>
-					  </div>
-				  </th>
+	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
 	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">인사·총무</a>

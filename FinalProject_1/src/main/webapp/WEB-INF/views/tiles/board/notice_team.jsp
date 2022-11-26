@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="freeboard_header.jsp"%> 
-<%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mdb.min.css"> --%>
+<%@ include file="board_header.jsp"%> 
+
 <style type="text/css">
 
 
@@ -180,7 +180,7 @@ input {
 }
 
 div.option {
-    border: 1px solid #b0b0b0d9;
+    border: 0px solid #b0b0b0d9;
     padding: 20px;
     margin-bottom: 22px;
     width: 600px;  
@@ -410,23 +410,6 @@ div.datebox > span > input {
 	border-left: none;
 	border-right: none;
 }
-.empty-heart{
-	 display: inline-block;
-	 font-size: 18pt;
-	 color: #bfbfbf;
-	 position: relative;
-	 right: 5px;
-}
-.full-heart{
-	 display: none;
-	 font-size: 18pt;
-	 color: #f53e50;
-	 position: relative;
-    right: 5px;
-}
-div.toastui-editor-mode-switch {
-    display: none !important;
-}
 </style>
 
 <script type="text/javascript">
@@ -438,24 +421,17 @@ $(document).ready(function(){
 	$("#date_total").prop("checked", true);
 	
 	/* 북마크 표시 */
-	$('.bookmark').click(function(e) {
-	  	const $this = $(this);
+	  $('.bookmark').click(function(e) {
+		  	const $this = $(this);
 
-	  	if ( $this.hasClass('icon-star-empty') ) {
-	  		$this.removeClass('icon-star-empty');
-	  		$this.addClass('icon-star-full');
-	  	} else {
-	  		$this.removeClass('icon-star-full');
-	  		$this.addClass('icon-star-empty');
-	  	}
-	});
-	  $('.empty-heart').click(function() {
-  		$(this).css('display',"none");
-  		$(this).next().css('display',"inline-block");
-	});
-	  $('.full-heart').click(function() {
-  		$(this).css('display',"none");
-  		$(this).prev().css('display',"inline-block");
+		  	if ( $this.hasClass('icon-star-empty') ) {
+		  		$this.removeClass('icon-star-empty');
+		  		$this.addClass('icon-star-full');
+		  	} else {
+		  		$this.removeClass('icon-star-full');
+		  		$this.addClass('icon-star-empty');
+		  	}
+		  	/* e.preventDefault(); */
 	});
 	  
 	
@@ -469,13 +445,32 @@ $(document).ready(function(){
  		$('.offcanvas').offcanvas('show');
  	});
 	 	
-
+	
+	
  	<%-- 텍스트 에디터 시작 --%>
-	 
+	/* const editor = new toastui.Editor({
+	    el: document.querySelector("#editor"),
+	    height: "500px",
+	    initialEditType: "wysiwyg",
+	    hooks: {
+	      addImageBlobHook: function (blob, callback) {
+	        const formData = new FormData();
+	        formData.append("image", blob);
+	        const imageURL = imageUpload(formData);
+	        // console.log(imageURL);
+	        callback(imageURL, "image");
+	      },
+	    },
+	    language: 'ko-KR'
+	 }); */
 	 const { Editor } = toastui; 
 	 const { colorSyntax } = Editor.plugin;
 	 
-	 const editor = new Editor({
+	 /* const colorSyntaxOptions = {
+			 preset: ['#181818', '#292929', '#393939']
+	 }; */
+
+	const editor = new Editor({
 	      el: document.querySelector('#editor'),
 	      height: '500px',
 	      initialEditType:"wysiwyg",
@@ -492,7 +487,6 @@ $(document).ready(function(){
 		      },
 		    } 
 	    });
-    
      
 	<%-- 텍스트 에디터 끝 --%>
 	
@@ -582,7 +576,7 @@ $(document).ready(function(){
 			if(this.checked)
 				this.checked = false;
         });
-	});
+	})
 	
 	
 });//end of ready
@@ -618,7 +612,7 @@ function changetagname(obj){
 		$("div#divPlusTag2").html(html2);
 	}
 };
- 
+
 function goSearch(){
 	
 }
@@ -632,15 +626,15 @@ function goSearch(){
 			<div class="row" style="float: right;position: relative;left: -120px;" >
 			
 				<div class="form-group mr-1">
-						<div class="form-field">
-							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
-								<option value="" selected>전체</option>
-								<option value="">작성자</option>
-								<option value="">제목</option>
-								<option value="">제목+내용</option>
-							</select>
-						</div>
+					<div class="form-field">
+						<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
+							<option value="" selected>전체</option>
+							<option value="">작성자</option>
+							<option value="">제목</option>
+							<option value="">제목+내용</option>
+						</select>
 					</div>
+				</div>
 				<div class="">
 					<div class="form-group">
 						<div class="form-field">
@@ -680,7 +674,7 @@ function goSearch(){
 							     <li class="mb-1"><input type="checkbox" name="category" id="chk3"value="이벤트공지"><label for="chk3" class="label-checkbox" data-code="unlimit">이벤트공지</label></li>
 							     <li class="mb-1"><input type="checkbox" name="category" id="chk4"value="문진표공유"><label for="chk4" class="label-checkbox" data-code="unlimit">문진표공유</label></li>
 							     <li class="mb-1"><input type="checkbox" name="category" id="chk5"value="사내공지"><label for="chk5" class="label-checkbox" data-code="unlimit">사내공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk6"value="기타공지"><label for="chk5" class="label-checkbox" data-code="unlimit">기타공지</label></li>
+							     <li class="mb-1"><input type="checkbox" name="category" id="chk6"value="기타공지"><label for="chk6" class="label-checkbox" data-code="unlimit">기타공지</label></li>
 							    </ul>
 							    <div style="padding-top:3px;text-align:right">
 							    	<!-- <button type="reset" class="workstatus-cancel">취소</button> -->
@@ -778,7 +772,7 @@ function goSearch(){
 </form>
 
 		
-        <table class="table custom-table">
+        <table class="table">
           <thead>
             <tr>
               <th width="80%"scope="col"/>
@@ -786,89 +780,97 @@ function goSearch(){
             </tr>
           </thead>
           <tbody>
-            <tr>
+          	<tr class="topnotice"><!-- 공지 상단에 고정 -->
               <td>
-              	<div class="titlefirst">
-              		<span class="title">맛집 추천합니다!</span>
+              	<div class="titlefirst"> 
+	              	<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+	              	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[팀 회식] 11/28일 팀 회식 일정 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="username">이예은 대리</span>
-            		<span class="writedate">11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
-              </td>
-            </tr>
-            <tr>
-              <td>
-              	<div class="titlefirst">
-              		<span class="title">3층 여자화장실 청결 관리 신경써주세요.</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="username">이예은 대리</span>
-            		<span class="writedate">11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
-              </td>
-            </tr>
-            
-            <tr>
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">이번주 사내식당 메뉴 공유합니다.</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="username">이예은 대리</span>
-            		<span class="writedate">11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
-              </td>
-            </tr>
-            <tr>
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">회사 근처 헬스장 추천 부탁드려요.</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="username">이예은 대리</span>
+              		<span class="categorybadge">일반공지</span>
+              		<span class="username">진혜린 과장</span>
             		<span class="writedate">11.16</span>
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
               <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr class="topnotice">
+              <td>
+              	<div class="titlefirst">
+              		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+              		<span class="title">[내부 미팅] 11/5일 신규 프로젝트 관련 미팅 일정 공유</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div>  
+              	<div>
+              		<span class="categorybadge">일반공지</span>
+              		<span class="username">진혜린 과장</span>
+            		<span class="writedate">11.16</span>
+            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
+              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            
+            <tr class="topnotice">
+               <td>
+              	<div class="titlefirst">
+              		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+              		<span class="title">[떰접 ver.2] 떰접 버전 업데이트 안내</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div>  
+              	<div>
+              		<span class="categorybadge">일반공지</span>
+              		<span class="username">진혜린 과장</span>
+            		<span class="writedate">11.16</span>
+            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
+              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[인사] 김지은 과장 승진 공지</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div>  
+              	<div>
+              		<span class="categorybadge">일반공지</span>
+              		<span class="username">진혜린 과장</span>
+            		<span class="writedate">11.16</span>
+            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
+              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
             <tr >
                <td>
               	<div class="titlefirst">
-              		<span class="title">남은 3주 화이팅해봅시다:)! 오늘도 다들 수고 많았어요.</span>
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="username">이예은 대리</span>
+              		<span class="categorybadge">일반공지</span>
+              		<span class="username">진혜린 과장</span>
             		<span class="writedate">11.16</span>
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
               <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
 
@@ -876,7 +878,7 @@ function goSearch(){
           </tbody>
         </table>
      
-     
+     		<h2 class="mt-3"style="text-align: center;">페이징처리</h2>
      
      
      
@@ -887,7 +889,7 @@ function goSearch(){
 <!-- 오프캔버스 시작 -->
 		<div class="offcanvas offcanvas-end" style="width: 800px;" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 		  <div class="offcanvas-header">
-		    <div class="offcanvas-title headeroffcanvas" style="font-weight: 700;font-size: 16pt;"id="offcanvasScrollingLabel">자유게시판</div>
+		    <div class="offcanvas-title headeroffcanvas" style="font-weight: 700;font-size: 16pt;"id="offcanvasScrollingLabel">공지사항</div>
 		    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		  </div>
 		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
@@ -923,18 +925,19 @@ function goSearch(){
 			
 			<!-- <hr class="HRhr  mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/> -->
 			<div class="form-group"style="width:30%">
-				<div class="form-field mb-2">
-					<div class="select-wrap">
-						<select name="selectTag" id="selectTag" class="form-control" style="font-size: 10pt;padding: 6px 12px;height:36px;" onchange="changetagname(this)">
-						<option>태그선택</option>
-						<option value="">전체공지</option>
-						<option value="">일반공지</option>
-						<option value="">사내공지</option>
-						<option value="">이벤트공지</option>
-						<option value="">문진표공유</option>
-						<option value="plus">태그추가</option>
+			
+				<div class="form-group mr-1  mb-2">
+					<div class="form-field">
+						<select name="selectTag" id="selectTag" class="mb-1" style="padding: 10px 13px; background-color: #fafafa;font-size: 14px;color: #484848;font-weight: 500;border-radius: 5px; border:1px solid #ced4da; font-size: 10pt;" onchange="changetagname(this)">
+							<option value="" selected>태그선택</option>
+							<option value="">전체공지</option>
+							<option value="">일반공지</option>
+							<option value="">사내공지</option>
+							<option value="">이벤트공지</option>
+							<option value="">문진표공유</option>
+							<option value="plus">태그추가</option>
 						</select>
-					</div>
+						</div>
 				</div>
 				  <div id="divPlusTag1"></div><!-- <span class="error">태그명을 입력해주세요</span> -->
 				  <div id="divPlusTag2"></div>
@@ -946,21 +949,21 @@ function goSearch(){
 					<input type="text" id="title" class="form-control" title="" placeholder="제목을 입력해주세요" name="title" value="">
 				</div>
 			</div>
+			
+			
+			<div class="form-group" style="margin-top: 10px;">
+				<span class="control-label">내용</span>
+				<div class="position-relative mb-1">
+				      <div id="editor"></div>
+				</div>
+			</div>
 			<div class="form-group" style="margin-top: 10px;">
 				<span class="control-label">파일첨부</span><span style="color: #d8d8d8;font-size:9pt">파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요</span>
 				<div class="position-relative">
 					<input type="file" id="file" class="form-control"  name="file" >
 				</div>
 			</div>
-			
-			<div class="form-group" style="margin-top: 10px;">
-				<span class="control-label">내용</span>
-				<div class="position-relative">
-					<div id="editor"></div>
-					<!-- <textarea  class="" title="" placeholder="내용을 입력해주세요" name="content" value=""></textarea> -->
-				</div>
-			</div>
-	    	<!-- <hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/> -->
+	    	<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 	    	
 	    	<!-- <div class="form-group" style="margin-top: 10px;">
 				<div class="control-label" style="float: left;">공개범위</div>
@@ -976,6 +979,8 @@ function goSearch(){
 	    	<div class="form-group" style="margin-top: 5px;">
 				<div class="control-label" style="float: left;">알림설정</div>
 	            <div class="condition-cell">
+	                <!-- <input type="radio" class="custom-control-radio2" id="mail" name="boardalarm">
+	                <label for="mail" class="js-period-type radio-label-checkbox2" data-code="unlimit">메일알림</label> -->
 	                <input type="radio" class="custom-control-radio2" id="popup" name="boardalarm">
 	                <label for="popup" class="js-period-type radio-label-checkbox2" data-code="unlimit">팝업알림</label>
 	                <input type="radio" class="custom-control-radio2" id="none" name="boardalarm">
@@ -984,7 +989,7 @@ function goSearch(){
 			</div>
     	</form>
 			
-    		<div class="workstatus-buttoncontainer">
+    			<div class="workstatus-buttoncontainer">
 	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
 		  			<button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button>
 		  			<button type="button" class="workstatus-save mr-1">저장하기</button>
