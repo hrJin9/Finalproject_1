@@ -264,51 +264,24 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		/* if($('#searchCondition').val('period').prop("selected",true)) {
-	        // 데이트피커
-			flatpickr.localize(flatpickr.l10ns.ko);
-	        flatpickr($(".daterangeSelector"));
-	        $(".daterangeSelector").flatpickr({
-	        	mode: "range",
-	            local: 'ko'
-	        });
-		} else if($('#searchCondition').val('username').prop("selected",true)) {
-			$("#attendanceLsit_search").val('');
-		} */
-			
+    	// 기간 데이트피커
+		flatpickr.localize(flatpickr.l10ns.ko);
+        flatpickr($(".daterangeSelector"));
+        $(".daterangeSelector").flatpickr({
+        	mode: "range",
+            local: 'ko'
+        });
 		
-		/* if($('#searchCondition').val('username').prop("selected",true)) {
-			$("#attendanceLsit_search").val('');
-		} else {
-	        // 데이트피커
-			flatpickr.localize(flatpickr.l10ns.ko);
-	        flatpickr($(".daterangeSelector"));
-	        $(".daterangeSelector").flatpickr({
-	        	mode: "range",
-	            local: 'ko'
-	        });
-		} */
-				
-		
-		$("#searchCondition").on("change", function(){
-		    //selected value
-		    $(this).val();
-		    
-		    if($("option:selected", this).attr("period")) {
-		        // 데이트피커
-				flatpickr.localize(flatpickr.l10ns.ko);
-		        flatpickr($(".daterangeSelector"));
-		        $(".daterangeSelector").flatpickr({
-		        	mode: "range",
-		            local: 'ko'
-		        });
-			} else {
-				$("#attendanceLsit_search").val('');
-			}
-		    
+		$('#searchCondition').change(function() {
+		    var state = $('#searchCondition option:selected').val();
+		    if(state == 'period') {
+		    	$("#username").css('display','none');
+		    	$("#period").css('display','block');
+		    } else {
+		    	$("#period").css('display','none');
+		    	$("#username").css('display','block');
+		     }
 		});
-		
-			
 		
 	});// end of $(".period").click(function(){})-------------------
 	
@@ -348,7 +321,8 @@
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-							<input type="text" class="form-control daterangeSelector" id="" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+							<input type="text" class="form-control" id="username" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+							<input type="text" class="form-control daterangeSelector" id="period" placeholder="검색" style="display:none; width:105%; font-size: 9pt; padding:6px 6px; background-color: #fff;">
 						</div>
 					</div>
 				</div>

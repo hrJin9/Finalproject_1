@@ -317,20 +317,6 @@ $(document).ready(function(){
 	$(".list_iscurrent").css("color","black");
 	$(".boardList_iscurrent").css("color","black");
 	
-	
-	// 컨테츠 아무곳이나 클릭시
-	$("div.main_container").mouseup(function(){
-		if($(".news").css('display') == 'block') {
-            $(".news").fadeOut(100);
-        }
-		if($(".myprofile").css('display') == 'block') {
-            $(".myprofile").fadeOut(100);
-        }  // 왜 안먹냐... 
-	});	
-	
-	
-	
-	
 });//end of ready
 
 // 외부 클릭시 닫기
@@ -339,6 +325,15 @@ $(document).mouseup(function(e){
 		$("#workStatusListBox").hide();
 		$("#workStatusChange").hide();
 	}
+	
+	if( !(($(".news").has(e.target).length))){
+	      $(".news").fadeOut(100);
+    }
+    if( !(($(".myprofile").has(e.target).length))){
+	      $(".myprofile").fadeOut(100);
+	}
+	
+	
 });//end of mouseup
 
 function showNowTime() {
