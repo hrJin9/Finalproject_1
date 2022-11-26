@@ -168,6 +168,15 @@
 	    width: 80%;
 	}	
 	
+	#addressBtn {
+	    background-color: #cfc9c9;
+	    color: white;
+	    height: 40px;
+        width: 108px;
+	    border-style: none;
+	    border-radius: 7px;
+	}
+	
 	#btnRegister {
 		width: 190px;
 	    padding: 7.5px;
@@ -206,7 +215,66 @@
 			local: 'ko'
 		});
 		
-	});
+		
+		// *** 개인정보 테이블 ***
+		// 우편번호찾기 버튼 클릭시
+		$("button#addressBtn").click(function(){
+			
+			new daum.Postcode({   // 다음사이트에서 제공하는 "우편번호찾기" 코드
+	            oncomplete: function(data) {
+	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	                let addr = ''; // 주소 변수
+	                let extraAddr = ''; // 참고항목 변수
+	
+	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                    addr = data.roadAddress;
+	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                    addr = data.jibunAddress;
+	                }
+	
+	                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	                if(data.userSelectedType === 'R'){
+	                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                        extraAddr += data.bname;
+	                    }
+	                    // 건물명이 있고, 공동주택일 경우 추가한다.
+	                    if(data.buildingName !== '' && data.apartment === 'Y'){
+	                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                    }
+	                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                    if(extraAddr !== ''){
+	                        extraAddr = ' (' + extraAddr + ')';
+	                    }
+	                    // 조합된 참고항목을 해당 필드에 넣는다.
+	                    document.getElementById("extra_address").value = extraAddr;
+	                
+	                } else {
+	                    document.getElementById("extra_address").value = '';
+	                }
+	
+	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	                document.getElementById('postcode').value = data.zonecode;
+	                document.getElementById("address").value = addr;
+	                // 커서를 상세주소 필드로 이동한다.
+	                document.getElementById("detail_address").focus();  // 본인이 직접 입력해야하는 부분
+	            }
+	        }).open();
+			
+		});
+			
+		// 우편번호, 주소, 추가주소 입력란 클릭시 알림메시지 띄우기
+	    $("input#postcode, input#address, input#extra_address").bind("click", function() {
+		        alert("우편번호찾기를 클릭하셔서 주소를 입력하세요.");
+	    });
+		
+		
+	});// end of $(document).ready(function(){});---------------------------------
 	
 </script>
 
@@ -226,7 +294,7 @@
 		</div> 
 		<%-- 이름, 영문이름, 생년월일, 성별 --%>
 		<div class="topinfo" style="float: left;">
-	    	<table class="table table-borderless content" style="float: left; margin: 25px 0;">
+	    	<table class="table table-borderless content" style="float: left; margin: 25px 0 45px 0;">
 		       <colgroup>
 		          <col width="200px" />
 		          <col width="350px" />
@@ -259,16 +327,10 @@
 		</div> 
 		 
 		 
-		<nav id="list" class="header-nav" style="clear: both;">
-			<a class="list_iscurrent memberInfo_hAdd" href="<%= request.getContextPath()%>/admin_memberAdd_hr.up">인사 정보</a>
-			<a class="memberInfo_pAdd" href="<%= request.getContextPath()%>/admin_memberAdd_personal.up">개인 정보</a>
-			<div class="list_underline"></div>
-		</nav> 
-	 	<hr style="margin-top: 0px; margin-right: 20%;"/><br>
+	 	<hr id="list" style="margin-top: 0px; margin-right: 20%; clear: both; width: 98%;"/><br>
 			
 			
 		<div class="infocontainer" style="margin-left: 100px;">
-			<%-- <div id="hrInfo">인사 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
 			<div id="hrInfo">인사 정보</div><br>
 		 	<table class="table table-borderless content" style="float: left;">
 		       <colgroup>
@@ -370,7 +432,6 @@
 		          </tbody>
 		 	</table>
 		       
-			<%-- <div id="workInfo">근무 정보<span><i class="fas fa-list-ul menubar"><i class="fas fa-pen update"></i></i></span></div><br> --%>
 			<div id="workInfo">근무 정보</div><br>
 		 	<table class="table table-borderless content" style="float: left;">
 		       <colgroup>
@@ -411,6 +472,94 @@
 		        </tbody>
 		 	</table>
 		 	
+		 	
+			<div id="workInfo">개인 정보</div><br>
+		 	<table class="table table-borderless content" style="float: left;">
+		       <colgroup>
+		          <col width="200px" />
+		          <col />
+		     	</colgroup>
+		          <tbody>
+		                <tr>
+		                   <td>이메일</td>   
+		                   <td><input type="text" class="required" id="email"  name="email" size="50" value="" placeholder="이메일" /></td>   
+		                </tr>
+		                <tr>
+		                   <td>연락처</td>   
+		                   <td>
+		                   	<select id="hp1" name="hp1" style="width: 18.5%;">
+				                	<option value="010">010</option>
+					                <option value="011">011</option>
+					                <option value="016">016</option>
+					                <option value="017">017</option>
+					                <option value="018">018</option>
+					                <option value="019">019</option>
+			                </select>&nbsp;-&nbsp;
+			                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 18.5%;"/>&nbsp;-&nbsp;            <%-- 휴대폰 중간번호 4자리 --%>
+			                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 18.5%; margin: 7px 7px 18px 0;"/> <%-- 휴대폰 마지막번호 4자리 --%>
+		                   </td>   
+		                </tr>
+		                <tr>
+		                   <td style="padding-bottom: 154px;">주소</td> 
+		                   <td>
+		                    <span style="display: block; margin-bottom: 7px;"><input class="addressInput mt-2" type="text" id="postcode" name="postcode" value="" size="20" maxlength="5" style="width: 45.5%; margin: 7px 7px 0 0;" placeholder="우편번호" readonly />
+							<button type="button" id="addressBtn">우편번호찾기</button></span>
+							<%-- <span class="error" style="color: red">우편번호 형식이 아닙니다.</span><br> --%>
+							<input class="addressInput mt-2" type="text" id="address" name="address" value="" size="50" style="display: block; margin-bottom: 7px;" placeholder="주소" readonly  />
+			                <input class="addressInput mt-2" type="text" id="extra_address" name="extra_address" value="" size="50" style="display: block; margin-bottom: 7px;" placeholder="추가주소" readonly />
+			                <input class="addressInput mt-2" type="text" id="detail_address" name="detail_address" value="" size="50" style="display: block; margin-bottom: 18px;" placeholder="상세주소 입력" />
+		                   </td>  
+		                </tr>
+		                <tr>
+		                   <td>최종학력</td>  
+		                   <td><input type="text" class="required" id="major"  name="major" size="50" value="" placeholder="졸업학교(학교유형)" /></td> 
+		                </tr>
+		                <tr>
+		                   <td>전공</td>  
+		                   <td><input type="text" class="required" id="major"  name="major" size="50" value="" placeholder="전공" /></td> 
+		                </tr>
+		                <tr>
+		                   <td>병역사항</td>  
+		                   <td><input type="text" class="required" id="militaryservice"  name="militaryservice" size="50" value="" placeholder="병역사항" /></td> 
+		                </tr>
+		                <tr>
+		                   <td>급여계좌</td>   
+		                   <td>	
+		                   	<select id="bank" name="bank" class="required" style="display: inline-block; width: 14.5%; padding: 2px 8px;">
+								<option value="1">은행 선택</option>
+								<option value="2">KEB하나은행</option>
+								<option value="3">SC제일은행</option>
+								<option value="4">경남은행</option>
+								<option value="5">광주은행</option>
+								<option value="6">국민은행</option>
+								<option value="7">기업은행</option>
+								<option value="8">농협은행</option>
+								<option value="9">대구은행</option>
+								<option value="10">부산은행</option>
+								<option value="11">상호저축은행</option>
+								<option value="12">수협은행</option>
+								<option value="13">신한은행</option>
+								<option value="14">우리은행</option>
+								<option value="15">우체국</option>
+								<option value="16">전북은행</option>
+								<option value="17">카카오뱅크</option>
+								<option value="18">케이뱅크은행</option>
+								<option value="19">토스뱅크</option>
+								<option value="20">한국산업은행</option>
+								<option value="21">한국씨티은행</option>
+								<option value="22">제주은행</option>
+								<option value="23">산림조합</option>
+								<option value="24">새마을금고</option>
+								<option value="25">신협</option>
+							</select>
+							<input id=accountNumber type="text" class="required" name="accountNumber" size="20" placeholder="계좌번호" style="display: inline-block; width: 31.5%; padding: 2px 12px;"/>
+							<input id=accountHolder type="text" class="required" name="accountHolder" size="20" placeholder="예금주" style="display: inline-block; width: 13%; padding: 2px 12px;"/>
+		                   </td> 
+		                </tr>
+		          </tbody>
+		 	</table>
+		 	
+		 	
 			<div id="workInfo">계정 정보</div><br>
 		 	<table class="table table-borderless content" style="float: left;">
 		       <colgroup>
@@ -424,13 +573,27 @@
 	                   	<div>
 		                   	<div class="condition-cell">
 		                   	 <span style="margin-right: 30px;">
-				                <input type="radio" class="custom-control-radio2" id=general name="authority" style="width: 15%; height: 8%;" checked>
+				                <input type="checkbox" id="general_employee" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
 				                <label for="general" class="js-period-type radio-label-checkbox2" data-code="unlimit">일반</label>
 		                   	 </span>
-		                   	 <span>
-				                <input type="radio" class="custom-control-radio2" id="admin" name="authority" style="width: 15%; height: 8%;">
-				                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리</label>
-		                   	 </span>
+		                   	 <div>
+			                   	 <span style="margin-right: 10px;">
+					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
+					                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">인사이트 관리</label>
+			                   	 </span>
+			                   	 <span style="margin-right: 10px;">
+					                <input type="checkbox" id="admin_member" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
+					                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">구성원 관리</label>
+			                   	 </span>
+			                   	 <span style="margin-right: 10px;">
+					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
+					                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">급여 관리</label>
+			                   	 </span>
+			                   	 <span style="margin-right: 10px;">
+					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
+					                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">로그 관리</label>
+			                   	 </span>
+		                   	 </div>
 							</div>
 	                   	</div>
 	                   </td>   
@@ -456,6 +619,7 @@
 		 	</table>
 		  </div>
 		  
+		  <%-- 버튼 --%>
 	      <div class="workstatus-buttoncontainer" style="margin-right: 53%;">
 			 <button type="button" class="workstatus-save gradientbtn" style="margin-top: 15%; margin-bottom: 15%">저장하기</button>
 			 <button type="reset" class="workstatus-cancel" style="margin-top: 15%; margin-bottom: 15%">취소</button><br><br><br><br>
