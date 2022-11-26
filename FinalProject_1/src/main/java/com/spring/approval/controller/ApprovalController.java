@@ -26,5 +26,14 @@ public class ApprovalController {
 	
 	
 	
+	@RequestMapping(value = "/approval/memberList.up")
+	public ModelAndView approval_memberList(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("tiles/approval/approval_memberList");
+		return mav;
+	}
+	
+	
+	
 	
 }

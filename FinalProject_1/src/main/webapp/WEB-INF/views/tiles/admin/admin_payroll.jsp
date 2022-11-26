@@ -359,7 +359,7 @@
 	<nav id="memberInfo_mainList" class="">
 		<div id="attendance" style="color: black;" class="header-nonsub">급여정산</div>
 	</nav>
-	<hr class="HRhr" style="margin-top: 0px;"/><br>
+	<hr class="HRhr" style="margin-top: 0px; width: 113%; position:relative; right: 85px;"/><br>
 	
 	<div class="contentsmargin" style="clear: both;">
 		<div style="margin-bottom: 15px; float: left; display: flex;">
@@ -419,7 +419,7 @@
 	    	<thead>   
 	            <tr>
 	              <th width="5%"><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">오름차순</a>
 					      <a class="dropdown-item" href="#">내림차순</a>

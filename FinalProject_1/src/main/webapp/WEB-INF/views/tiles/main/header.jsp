@@ -6,6 +6,7 @@
 <style type="text/css">
 	#list a:hover{
 		color: #000000;
+		transition: all 0.2s;
 		cursor: pointer;
 	}
 		
@@ -23,19 +24,9 @@
 		padding: .75em 0;
 		color: #333;
 		text-decoration: none;
-		text-align: center;
 		color: #D2D6D9;
 	}
 	
-	.list_underline {
-	    position: absolute;
-	    bottom: -1px;
-	    width: 17%;
-	    height: 2px;
-	    background: #333;
-	    transition: all .3s ease-in-out;
-	    margin-left: 0.5%;
-	}
 	
 	#list a:nth-child(1).header-nonsub ~ .list_underline {
 		left: 0;

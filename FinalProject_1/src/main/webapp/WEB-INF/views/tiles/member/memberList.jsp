@@ -427,7 +427,6 @@
 			</div>
 			<div>
 				<span class="groupIcon">
-				
 					<input class="burger-check" type="checkbox" id="burger-check" />
 					<label class="burger-icon" for="burger-check"><span class="burger-sticks"></span></label>
 					<div class="menu">
@@ -455,7 +454,6 @@
 							</details>
 						</div>
 					</div>
-					
 	            </span>
 			</div>
 		</div>
