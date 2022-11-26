@@ -5,8 +5,6 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
     
 <style type="text/css">
-
-  
    div.sidebar{
     box-shadow: 3px 3px 9px rgb(0 0 0 / 5%);
      width: 190px;
@@ -257,26 +255,25 @@
       
       $(".profile2").click(function(){  // 내프로필 클릭시
           if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
-            $(".myprofile").show();
-            $(".news").hide();
+            $(".myprofile").fadeIn(100);
+            $(".news").fadeOut(100);
           } else {
-            $(".myprofile").hide();
+            $(".myprofile").fadeOut(100);
           }
       });
       
       $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
          if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
-              $(".news").show();
-              $(".myprofile").hide();
+              $(".news").fadeIn(100);  // 보이기
+              $(".myprofile").fadeOut(100);  // 숨기기
             } else {
-              $(".news").hide();
+              $(".news").fadeOut(100);
             }
       });
       
       
       // 비밀번호 변경창 닫기 버튼 클릭 시
       $("button.pwdChangeClose").click(function() {
-
          const iframe_pwdChange = document.getElementById("iframe_pwdChange"); // 대상 아이프레임 선택
          const iframe_window = iframe_pwdChange.contentWindow;
 
@@ -293,8 +290,49 @@
           }
       });
       
+      
+        // 서치모달 닫힐 때 초기화
+		$('#sideSearch').on('hidden.bs.modal', function () {
+			 $('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up');
+			 $("#se-searchicon").removeClass("fas"); $("#se-searchicon").removeClass("fa-chevron-left");
+			 $("#se-searchicon").addClass("icon"); $("#se-searchicon").addClass("icon-search");
+		});
+      
+        
+        
    });// end of $(document).ready(function(){})---------------
-
+	
+   
+   // 검색Modal에서 검색어를 입력할 때 get방식으로 검색어값을 보내기 ==> 이방법 아니면 ajax를 써보기
+   // ajax 쓰려면 modal body를 iframe 쓰지 말고 (sidebar_search.jsp)내용을 그냥 갖다붙여서 써도,, ㄱㅊ을듯.. 따로 파일을 빼던가.. 
+   function searchSrc(){
+	   //검색어 내용 알아오기
+	   var inputval = $("#ss-input").val();
+	   
+	   // iframe의 주소 변경
+	   $('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up?'+inputval);
+	   
+   }//end of searchSrc
+   
+   // sidebar_searchEnd.jsp 에서 아이콘을 바꾸기 위한 함수
+   function sse_changeIcon(){
+	   $("#se-searchicon").removeClass("icon"); $("#se-searchicon").removeClass("icon-search");
+	   $("#se-searchicon").addClass("fas"); $("#se-searchicon").addClass("fa-chevron-left");
+	   
+	   $("#se-searchicon").hover(function(){
+		   $("#se-icon-outer").css({"background-color":"rgba(230,230,230,0.4)","cursor":"pointer"});
+	   },function(){
+		   $("#se-icon-outer").css({"background-color":"","cursor":""});  
+	   });
+   }
+   
+   // 원래 아이콘으로 바꾸는 함수
+   function sse_originIcon(){
+		$("#se-searchicon").removeClass("fas"); $("#se-searchicon").removeClass("fa-chevron-left");
+		$("#se-searchicon").addClass("icon"); $("#se-searchicon").addClass("icon-search");
+   }
+   
+   
 </script>
 
 <input type="checkbox" id="menuicon">
@@ -314,24 +352,24 @@
 
     <div class="nav-menu">
       <ul>
-        <li class="home"><a href="#" ><span class="icon icon-search"></span><span class="menu-text">검색</span></a></li>
+        <li class="home" data-bs-toggle="modal" data-bs-target="#sideSearch" data-bs-dismiss="modal" data-bs-backdrop="static"><a href="#" ><span class="icon icon-search"></span><span class="menu-text">검색</span></a></li>
         <li class="home" id="newsIcon"><a href="#" ><span class="icon icon-bell"></span><span class="menu-text">새로운 소식</span>
           <span class="newred"></span>
           <span class="badge" style="border-radius: 6.25rem;"><span class="newCnt">1</span></span></a></li>
 
         <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
 
-       <li><a href="<%= request.getContextPath()%>/" ><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
-        <li><a href="<%= request.getContextPath()%>/memberList.up" ><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
-        <li><a href="<%= request.getContextPath()%>/calendar.up" ><span class="icon icon-clipboard"></span><span class="menu-text">캘린더</span></a></li>
-        <li><a href="<%= request.getContextPath()%>/message.up" ><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
-        <li><a href="<%= request.getContextPath()%>/attendance.up" ><span class="icon icon-alarm"></span><span class="menu-text">근무관리</span></a></li>
-        <li><a href="<%= request.getContextPath()%>/approval.up" ><span class="icon icon-file-text2"></span><span class="menu-text">결재관리</span></a></li>
-        <li><a href="<%= request.getContextPath()%>/payroll.up" ><span class="icon icon-coin-dollar"></span><span class="menu-text">급여관리</span></a></li>
-        <li><a href="<%= request.getContextPath()%>/board.up" ><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
+       <li onclick="javascript:location.href='<%= request.getContextPath()%>/'"><a><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
+        <li onclick="javascript:location.href='<%=request.getContextPath()%>/memberList.up'"><a><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
+        <li onclick="javascript:location.href='<%= request.getContextPath()%>/calendar.up'"><a><span class="icon icon-clipboard"></span><span class="menu-text">캘린더</span></a></li>
+        <li onclick="javascript:location.href='<%= request.getContextPath()%>/message.up'"><a><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
+        <li onclick="javascript:location.href='<%= request.getContextPath()%>/attendance.up'"><a><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
+        <li onclick="javascript:location.href='<%= request.getContextPath()%>/approval.up'"><a><span class="icon icon-file-text2"></span><span class="menu-text">결재</span></a></li>
+        <li onclick="javascript:location.href='<%= request.getContextPath()%>/payroll.up'"><a><span class="icon icon-coin-dollar"></span><span class="menu-text">급여</span></a></li>
+        <li onclick="javascript:location.href='<%= request.getContextPath()%>/board.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
         
         <%-- 관리자로 로그인했을경우에만 --%>
-        <li><a href="<%= request.getContextPath()%>/admin_login.up" ><span class="icon icon-file-text"></span><span class="menu-text">로그관리</span></a></li>
+        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">로그관리</span></a></li>
       </ul> 
     </div>
   </div>
@@ -347,7 +385,7 @@
         <i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
      </a>
      <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
-    </div>
+  </div>
     
     
    <div class=news style="display:none;">
@@ -372,10 +410,10 @@
     <div class="modal fade" id="userPwdChange" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <%-- 아이디찾기 a 태그의 data-target="#userPwdFind" data-dismiss="modal" 와 매핑됨. --%>
      <div class="modal-dialog">
        <div class="modal-content">
-         <!— Modal header —>
-         <button type="button" class="btn-close pwdChangeClose" " data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
+         <!-- Modal header -->
+         <button type="button" class="btn-close pwdChangeClose" data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
          
-         <!— Modal body —>
+         <!-- Modal body -->
          <div class="modal-body">
          <h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
          <div id="pwdChange">
@@ -386,3 +424,25 @@
        </div>
      </div>
    </div>
+   
+   
+   
+   <%-- **** 검색 Modal **** --%>
+	<div class="modal fade" id="sideSearch" aria-hidden="true" aria-labelledby="mw-address-label" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="display: flex;">
+					<span id="se-icon-outer" style="margin: 4px 0 0 10px; color: rgba(0,0,0,0.7); padding: 5px 10px; border-radius: 10px;"><i id="se-searchicon" class="icon icon-search"></i></span>
+					<div style="display: inline-block;">
+						<input id="ss-input" type="text" placeholder="검색어 입력"/>
+					</div>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+			  		<div id="mwa-container">
+						<iframe id="mwa" style="border: none; width: 100%; height: 250px;" src="<%= request.getContextPath()%>/side/search.up"></iframe>
+					</div>
+			  	</div>
+			</div>
+		</div>
+	</div>

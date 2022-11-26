@@ -8,6 +8,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
     
 <style type="text/css">
+	/* 페이지 전체 레이아웃 */
+	.member_container {
+		width: 88%;
+		margin: 0 auto;
+	}
 
 	@font-face {
 	    font-family: 'Pretendard-Regular';
@@ -117,7 +122,7 @@
 	}
 	
 	.update {
-		margin-left: 810px;
+		margin-left: 765px;
 		color: #a6a6a6; 
 		font-size: 10pt;
 	}
@@ -328,7 +333,7 @@
 	
 </script>
 
-<div class="container" style="margin-right: 145px;">
+<div class="member_container">
 	<form name="myInfo">
 	
 	<div class="col-md-16">
@@ -541,7 +546,7 @@
 					<input id=accountHolder type="text" class="required" name="accountHolder" size="20" placeholder="예금주  입력" style="display: inline-block; width: 24.7%;"/>
 				
 					<div class="workstatus-buttoncontainer" style="margin-bottom: 60px;">
-			  			<button type="button" class="workstatus-save">저장하기</button>
+			  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
 			  			<button type="reset" class="workstatus-cancel">취소</button>
 		  			</div>
 				

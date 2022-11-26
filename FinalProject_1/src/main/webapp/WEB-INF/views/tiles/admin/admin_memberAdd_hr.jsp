@@ -4,6 +4,29 @@
 <% String ctxPath = request.getContextPath(); %>  
 
 <style type="text/css">
+	/* 페이지 전체 레이아웃, 상단 nav바*/
+	#admin_mainList a:hover{
+		color: #000000;
+		cursor: pointer;
+	}
+	
+	#admin_mainList {
+		position: relative;
+		display: flex;
+		width: 640px;
+		font-size: 18pt;
+		font-weight: bold;
+	}
+	
+	#admin_mainList a {
+		display: block;
+		width: 24%;
+		padding: 0.7em 0 0.3em 0;
+		color: #333;
+		text-decoration: none;
+		margin-right: 4%;
+		color: black;
+	}
 
 	@font-face {
 	    font-family: 'Pretendard-Regular';
@@ -16,15 +39,6 @@
 		font-family: Pretendard-Regular;		
 	}
 	
-	/* 상단 nav바 */
-	#admin_memberadd {
-		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 18pt;
-		font-weight: bold;
-	}
-
 	/* 상단 프로필 */
 	.myInfo {
 		padding: 10px 42px;
@@ -173,11 +187,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		// nav바에서 개인정보 클릭시 개인정보 페이지로 이동
-		$(".memberInfo_pAdd").click(function(){
-			location.href= "<%= ctxPath%>/admin_memberAdd_personal.up";
-		});
-		
         flatpickr.localize(flatpickr.l10ns.ko);
         flatpickr($(".dateSelector"));
         // 생년월일 데이트피커
@@ -188,23 +197,25 @@
         });
         
         // 출근시간 데이트피커
-        $(".timeSelector").flatpickr({
-        	enableTime: true,
-            noCalendar: true,
-            dateFormat: "H:i",
-            time_24hr: true
-        });
+        flatpickr.localize(flatpickr.l10ns.ko);
+	 	flatpickr($(".timeSelector2"));
+		$(".timeSelector2").flatpickr({
+			enableTime: true,
+		    noCalendar: true,
+		    dateFormat: "K H:i",
+			local: 'ko'
+		});
 		
 	});
 	
 </script>
 
-<div class="container" style="margin-right: 145px;">
-	<nav id="admin_memberadd" class="margin-container">
-		<div id="memberadd" style="color: black;" class="header-nonsub">멤버생성</div>
-	</nav>
-	<hr class="HRhr" style="margin-top: 0px;"/><br>
-	
+<nav id="admin_mainList" class="margin-container">
+	<a id="memberadd" class="header-nonsub">멤버생성</a>
+</nav>
+<hr class="HRhr" style="margin-top: 0px;"/><br>
+
+<div style="margin-right: 145px;">
 	<form name="myInfo">
 		<div class="col-md-16" style="float: left; margin-right: 70px;">
 			<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
@@ -215,7 +226,7 @@
 		</div> 
 		<%-- 이름, 영문이름, 생년월일, 성별 --%>
 		<div class="topinfo" style="float: left;">
-	    	<table class="table table-borderless content" style="float: left; margin-top: 24px;">
+	    	<table class="table table-borderless content" style="float: left; margin: 25px 0;">
 		       <colgroup>
 		          <col width="200px" />
 		          <col width="350px" />
@@ -249,13 +260,12 @@
 		 
 		 
 		<nav id="list" class="header-nav" style="clear: both;">
-			<a class="list_iscurrent memberInfo_hAdd">인사 정보</a>
-			<a class="memberInfo_pAdd">개인 정보</a>
+			<a class="list_iscurrent memberInfo_hAdd" href="<%= request.getContextPath()%>/admin_memberAdd_hr.up">인사 정보</a>
+			<a class="memberInfo_pAdd" href="<%= request.getContextPath()%>/admin_memberAdd_personal.up">개인 정보</a>
 			<div class="list_underline"></div>
 		</nav> 
-		 
-		 
-	 	<hr style="margin-top: 0px;"/><br>
+	 	<hr style="margin-top: 0px; margin-right: 20%;"/><br>
+			
 			
 		<div class="infocontainer" style="margin-left: 100px;">
 			<%-- <div id="hrInfo">인사 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
@@ -392,7 +402,7 @@
 	                </tr>
 	                <tr>
 	                   <td>출근 시간</td>
-	                   <td><input class="timeSelector" id="goworktime"  name="goworktime" value="" placeholder="ex) 09:00" /></td>   
+	                   <td><input class="timeSelector2" id="goworktime"  name="goworktime" value="" placeholder="ex) 09:00" /></td>   
 	                </tr>
 	                <tr>
 	                   <td>일하는 시간</td>   
@@ -446,11 +456,11 @@
 		 	</table>
 		  </div>
 		  
-		  <div class="workstatus-buttoncontainer" style="margin-right: 585px;">
-  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
-  			<button type="reset" class="workstatus-cancel">취소</button><br><br><br><br>
-		  </div>
-		  
+	      <div class="workstatus-buttoncontainer" style="margin-right: 53%;">
+			 <button type="button" class="workstatus-save gradientbtn" style="margin-top: 15%; margin-bottom: 15%">저장하기</button>
+			 <button type="reset" class="workstatus-cancel" style="margin-top: 15%; margin-bottom: 15%">취소</button><br><br><br><br>
+	      </div>
+	      
 	</form>
 </div>
 

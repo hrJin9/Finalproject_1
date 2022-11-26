@@ -103,7 +103,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	border: solid 1px rgba(0, 0, 0, .1);
 	border-radius: 5px;
 	margin: 0;
-	width: 105px;
+	width: 124px !important;
 	color: rgba(0,0,0,0.7);
 	font-weight: 500;
 	padding: 0 15px;
@@ -192,7 +192,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	width: 75%;
 	border-radius: 10px;
 	float: right;
-	position: relative; right: 20px; top: 5px;
+	position: relative; right: 20px; top: 10px;
 }
 
 .workingweek-sumbar-default{
@@ -1344,6 +1344,10 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	font-weight: bold;
 }
 
+.pr-table td:nth-child(2) ~ td {
+	text-align: center;
+}
+
 .pr-table td:last-child{
 	font-size: 10pt;
 	color: rgba(0,0,0,0.5);
@@ -1586,9 +1590,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 #check-star+ label > i{
 	font-size: 15pt; color: rgba(0,0,0,.1);
 	position: relative; top: 2px;
-}
-#check-star:checked + label > i{
-	color: #F29F05;
 }
 
 .mg-read {
@@ -1890,9 +1891,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .ad-downarrow{
 	position: relative;
-	right: 21%;
+	right: 18%;
 	font-size: 9pt;
-	bottom: 1px;
+	bottom: 2px;
 }
 
 .timeSelector{
@@ -1953,4 +1954,70 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	transition: all 0.2s;
 	z-index: 9999;
 }
+
+#ss-input{
+	border: none;
+	width: 385px;
+	padding: 10px 20px;
+	height: 35px;
+	font-weight: 500;
+	color: rgba(0,0,0,0.8);
+		
+}
+
+#ss-input:focus{
+	outline: none;
+}
+
+.ss-table{
+	width: 100%;
+	font-weight: 600;
+	font-size: 10pt;
+}
+
+.ss-table td {
+	padding: 10px 15px;
+}
+
+.ss-table tr:hover, .sse-container tr:not(.not-active):hover{
+	background-color: rgba(230,230,230, 0.4);
+	transition: all 0.1s;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.ss-table td:last-child, .sse-container td:last-child > i{
+	color: rgba(0,0,0,0.3);
+	font-size: 8pt;
+	display: none;
+}
+
+
+
+.sse-container {
+	font-size: 10pt;
+	font-weight: 500;
+}
+
+.sse-container table{
+	margin-bottom: 15px;
+	width: 100%;
+}
+
+.sse-container td {
+	padding: 5px 10px;
+}
+
+.sse-container td div:last-child {
+	font-size: 9pt;
+	color: rgba(0,0,0,0.5);
+}
+
+.sse-container tr:first-child {
+	font-size: 9pt;
+	color: rgba(0,0,0,0.7);
+	font-weight: 600;
+}
+
+
 
