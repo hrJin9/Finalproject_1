@@ -334,22 +334,9 @@
                 	<a href="#" class="btn icon icon-search" style="color: #959ca7;background-color: white;font-size: 1.3rem;position: relative;left: 213px;top: -38px;"></a>
 	            </div>
 				
-				<!-- <div class="form-group mr-1 mb-3">
-					<div class="form-field">
-						<select name="searchCondition" id="searchCondition" style="font-size: 11pt;padding: 8.7px 20px; border-radius: 5px; border:1px solid #fafafa;background-color: #fafafa; ">
-							<option value="" selected>전체</option>
-							<option value="">근태</option>
-							<option value="">근무</option>
-							<option value="">비용</option>
-							<option value="">증명서</option>
-							<option value="">일반</option>
-						</select>
-					</div>
-					
-					
-					
-				</div> -->
-				
+				<div>
+					<a href="#" style="color:#4285f4;font-size: 10pt;float: right;">새로불러오기</a>
+				</div>		
 				
 				
 			</div>

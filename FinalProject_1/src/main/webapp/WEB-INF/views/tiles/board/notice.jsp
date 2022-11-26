@@ -180,7 +180,7 @@ input {
 }
 
 div.option {
-    border: 1px solid #b0b0b0d9;
+    border: 0px solid #b0b0b0d9;
     padding: 20px;
     margin-bottom: 22px;
     width: 600px;  
@@ -674,7 +674,7 @@ function goSearch(){
 							     <li class="mb-1"><input type="checkbox" name="category" id="chk3"value="이벤트공지"><label for="chk3" class="label-checkbox" data-code="unlimit">이벤트공지</label></li>
 							     <li class="mb-1"><input type="checkbox" name="category" id="chk4"value="문진표공유"><label for="chk4" class="label-checkbox" data-code="unlimit">문진표공유</label></li>
 							     <li class="mb-1"><input type="checkbox" name="category" id="chk5"value="사내공지"><label for="chk5" class="label-checkbox" data-code="unlimit">사내공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk6"value="기타공지"><label for="chk5" class="label-checkbox" data-code="unlimit">기타공지</label></li>
+							     <li class="mb-1"><input type="checkbox" name="category" id="chk6"value="기타공지"><label for="chk6" class="label-checkbox" data-code="unlimit">기타공지</label></li>
 							    </ul>
 							    <div style="padding-top:3px;text-align:right">
 							    	<!-- <button type="reset" class="workstatus-cancel">취소</button> -->
@@ -782,8 +782,9 @@ function goSearch(){
           <tbody>
           	<tr class="topnotice"><!-- 공지 상단에 고정 -->
               <td>
-              	<div class="titlefirst">
-              		📌&nbsp;<span class="title" onclick="location.href='/thumbsup/board/view.up'">[코로나 문진표] 11/15일자 결과 공유</span>
+              	<div class="titlefirst"> 
+	              	<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+	              	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[코로나 문진표] 11/15일자 결과 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -801,8 +802,8 @@ function goSearch(){
             <tr class="topnotice">
               <td>
               	<div class="titlefirst">
-              		<!-- <i class="icon icon-pushpin"style="color:#4285f4;"></i> -->
-              		📌&nbsp;<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
+              		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+              		<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
@@ -821,7 +822,8 @@ function goSearch(){
             <tr class="topnotice">
                <td>
               	<div class="titlefirst">
-              		📌&nbsp;<span class="title">[떰접식당 이용정책 변경안내]</span>
+              		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+              		<span class="title">[떰접식당 이용정책 변경안내]</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>

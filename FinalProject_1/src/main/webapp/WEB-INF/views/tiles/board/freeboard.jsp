@@ -424,6 +424,9 @@ div.datebox > span > input {
 	 position: relative;
     right: 5px;
 }
+div.toastui-editor-mode-switch {
+    display: none !important;
+}
 </style>
 
 <script type="text/javascript">
@@ -978,8 +981,6 @@ function goSearch(){
 	    	<div class="form-group" style="margin-top: 5px;">
 				<div class="control-label" style="float: left;">알림설정</div>
 	            <div class="condition-cell">
-	                <!-- <input type="radio" class="custom-control-radio2" id="mail" name="boardalarm">
-	                <label for="mail" class="js-period-type radio-label-checkbox2" data-code="unlimit">메일알림</label> -->
 	                <input type="radio" class="custom-control-radio2" id="popup" name="boardalarm">
 	                <label for="popup" class="js-period-type radio-label-checkbox2" data-code="unlimit">팝업알림</label>
 	                <input type="radio" class="custom-control-radio2" id="none" name="boardalarm">
