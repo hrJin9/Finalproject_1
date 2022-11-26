@@ -3,250 +3,9 @@
 
 <% String ctxPath = request.getContextPath(); %>  
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/resources/css/sidebar.css?after">
     
 <style type="text/css">
-   div.sidebar{
-    box-shadow: 3px 3px 9px rgb(0 0 0 / 5%);
-     width: 190px;
-     height: 100%;
-     background-color: rgb(249, 250, 250);
-     position: fixed;
-     top: 0;
-     left: -104px;
-     z-index: 1;
-     transition: all .35s;
-     padding: 26px 14px 24px 15px;
-     display: flex;
-     flex-direction: column;
-     height: 100%;
-   }
-   input#menuicon:checked + label + div{
-     left:0;
-   }
-   input#menuicon + label{
-     display: block;
-     width:30px;
-     height: 10px;
-     position: fixed;
-     bottom:30px;
-     left:31px;
-     transition: all .35s;
-     cursor: pointer;
-     z-index: 2;
-   }
-   input#menuicon:checked + label{
-     z-index: 2;
-     /* left: 200px; */
-   }
-   
-   input#menuicon{display: none;}
-   input#menuicon + label span{display: block;position: absolute;width: 50%;height: 2px;border-radius: 30px;background-color: rgb(214, 214, 214);transition: all .35s;}
-   input#menuicon + label span:nth-child(1){top: 0;}
-   input#menuicon + label span:nth-child(2){top: 50%;transform: translateY(-50%);}
-   input#menuicon + label span:nth-child(3){bottom: 0;}
-   /* input#menuicon:checked + label{z-index: 2;} */
-   /* input#menuicon:checked + label span{background-color: #fff;} */
-   input#menuicon:checked + label span:nth-child(1){top: 50%;transform: translateY(-50%) rotate(45deg);}
-   input#menuicon:checked + label span:nth-child(2){opacity: 0;}
-   input#menuicon:checked + label span:nth-child(3){bottom: 50%;transform: translateY(50%) rotate(-45deg);}
-   
-   /* 확장시 아이콘만 보이게 */
-   input#menuicon + label + div > div>ul>li>a>span.menu-text, 
-   input#menuicon:checked + label + div > div>ul>li>a>span.newred, 
-   input#menuicon + label + div > div>ul>li>a>span.badge, 
-   input#menuicon + label + div > div.profile > span.my
-   {opacity: 0;transition: all .1s;cursor: default;}
-   
-   input#menuicon:checked + label + div > div>ul>li>a>span.menu-text,
-   input#menuicon + label + div > div>ul>li>a>span.newred,
-   input#menuicon:checked + label + div > div>ul>li>a>span.badge
-   {opacity: 100;transition: all .5s;cursor: pointer;}
-   input#menuicon:checked + label + div > div.profile > span.my
-   {opacity: 100;transition: all 1.7s;}
-   
-   input#menuicon:checked + label + div > div>ul>li {
-     cursor: pointer;width: 100%;}
-   
-   input#menuicon + label + div > div>ul>li>a:nth-child(1){position:relative;right: -105px;transition: all .35s;}
-   input#menuicon + label + div > div.profile > span.pic{position:relative;right: -98px;transition: all .35s;}
-   input#menuicon:checked + label + div > div>ul>li>a:nth-child(1),
-   input#menuicon:checked + label + div > div.profile > span.pic
-   {position:relative;right: 0px;transition: all .35s;}
-   
-   input#menuicon:checked + label + div + div + div.news{
-	 position: absolute;
-     left: 180px;
-     top: 169px;
-     transition: all .35s;
-   }
-   div#mycontent{
-        transition':all 0.5s;
-   }
-   input#menuicon + label + div +div+div.news {
-      border: 1px solid #e6e6e6;
-      padding: 20px;
-      margin-bottom: 22px;
-      width: 270px;  
-      height: 120px; 
-      border-radius: 10px;
-      background-color: white;
-      display: inline-block;
-      float: left;
-      font-size: 18pt;
-      
-      position: absolute; 
-      top: 23%;
-      left: 4.5%;
-      z-index: 2;
-      
-      overflow:hidden;
-      height:auto;
-   } 
-   .nav-menu ul{
-     padding-left: 5px;
-   }
-   .nav-menu li:hover, .profile2:hover{
-     background-color: rgb(244, 244, 244);
-   }
-   
-   .nav-menu li{
-      cursor: pointer; 
-     /* position: absolute; */
-     color: inherit;
-     border-radius: 8px;
-     list-style: none;
-     padding: 10px 0 ;
-     color: #556372;
-   }
-   
-   /* a {
-     -webkit-transition: .3s all ease;
-     -o-transition: .3s all ease;
-     transition: .3s all ease; } */
-   .nav-menu a, .nav-menu a:hover {
-   text-decoration: none !important; }
-   
-   .nav-menu a:hover{
-      
-   }
-   .menu-text{
-     color: #556372;
-     font-size: 11pt;
-     position: relative;
-     bottom: 1.1px;
-   }
-   span.icon{
-     padding-left: 10px;
-     color:#556372;
-     padding-right: 10px;
-     font-size: 11.5pt;
-   }
-   .profile{
-     color: inherit;
-     border-radius: 8px;
-     position: relative;
-     cursor: pointer;
-     padding: 1px 13px;
-     text-align: initial;
-     display: flex;
-   }
-   .pic{
-     height: 38px;
-    width: 38px;
-     font-size: 9pt;
-     position: relative;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     flex-shrink: 0;
-     isolation: isolate;
-     color: #fbfbfb;
-     -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wLjUgMTAwQzAuNSA3OS40MjM5IDEuNjAzMTcgNjIuOTIzNSA0LjUzMjYyIDQ5Ljc0MjFDNy40NjA4MiAzNi41NjY0IDEyLjIwNzEgMjYuNzM3NSAxOS40NzIzIDE5LjQ3MjNDMjYuNzM3NSAxMi4yMDcxIDM2LjU2NjQgNy40NjA4MiA0OS43NDIxIDQuNTMyNjJDNjIuOTIzNSAxLjYwMzE3IDc5LjQyMzkgMC41IDEwMCAwLjVDMTIwLjU3NiAwLjUgMTM3LjA3NyAxLjYwMzE3IDE1MC4yNTggNC41MzI2MkMxNjMuNDM0IDcuNDYwODIgMTczLjI2MiAxMi4yMDcxIDE4MC41MjggMTkuNDcyM0MxODcuNzkzIDI2LjczNzUgMTkyLjUzOSAzNi41NjY0IDE5NS40NjcgNDkuNzQyMUMxOTguMzk3IDYyLjkyMzUgMTk5LjUgNzkuNDIzOSAxOTkuNSAxMDBDMTk5LjUgMTIwLjU3NiAxOTguMzk3IDEzNy4wNzcgMTk1LjQ2NyAxNTAuMjU4QzE5Mi41MzkgMTYzLjQzNCAxODcuNzkzIDE3My4yNjIgMTgwLjUyOCAxODAuNTI4QzE3My4yNjIgMTg3Ljc5MyAxNjMuNDM0IDE5Mi41MzkgMTUwLjI1OCAxOTUuNDY3QzEzNy4wNzcgMTk4LjM5NyAxMjAuNTc2IDE5OS41IDEwMCAxOTkuNUM3OS40MjM5IDE5OS41IDYyLjkyMzUgMTk4LjM5NyA0OS43NDIxIDE5NS40NjdDMzYuNTY2NCAxOTIuNTM5IDI2LjczNzUgMTg3Ljc5MyAxOS40NzIzIDE4MC41MjhDMTIuMjA3MSAxNzMuMjYyIDcuNDYwODIgMTYzLjQzNCA0LjUzMjYyIDE1MC4yNThDMS42MDMxNyAxMzcuMDc3IDAuNSAxMjAuNTc2IDAuNSAxMDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K);
-     -webkit-mask-size: contain;
-     background-color: #4285f4;
-   }
-   .my{
-     margin-left: 14px;
-     position: relative;
-     top: 2px;
-     font-size: 13px;
-   }
-   .role{
-     font-size: 5px;
-     position: relative;
-     color: #ababab;
-     top: -3px;
-   }
-   .name{
-     font-weight: bold;
-   }
-   .badge{
-    background-color: rgb(242, 75, 23);
-     padding: 0.5em 0.5em;
-     width: 15.5px;
-     height: 13.5px;
-     font-size: 1px;
-     font-weight: 600;
-     color: #fbfbfb;
-     display: inline-block;
-     position: relative;
-     bottom: 4.3px;
-     left: 24px;
-     box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
-   }
-   .newred{
-     background-color: rgb(242, 75, 23);
-     width: 5px;
-     height: 5px;
-     border-radius: 3px;
-     display: inline-block;
-     position: relative;
-     bottom: 10px;
-     right: 68px;
-   }
-   .newCnt{
-     font-size: 5pt;
-     position: relative;
-     top: 1px;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     flex-shrink: 0;
-     isolation: isolate;
-   }
-   
-   .newsIcon {
-      padding: 15px;
-      margin-bottom: 22px;
-      width: 18px;  
-      height: 18px; 
-      border-radius: 10px;
-      background-color: #a4c1df;
-      display: inline-block;
-      float: left;
-   } 
-
-   .newred2{
-      border: 1px solid white;
-      background-color: rgb(242, 75, 23);
-      width: 8px;
-      height: 8px;
-      border-radius: 20px;
-      display: inline-block;
-      position: relative;
-      bottom: 20px;
-      left: 10px;
-   }
-   
-   #mycontent{
-      float: right; width: 94.6%; margin: 0 auto;
-   }
-   
-   /* 
-   #mycontent{
-      margin-left : 3%;
-   }
-    */
 </style>
 
 <script type="text/javascript">
@@ -358,18 +117,22 @@
           <span class="badge" style="border-radius: 6.25rem;"><span class="newCnt">1</span></span></a></li>
 
         <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
-
-       <li onclick="javascript:location.href='<%= request.getContextPath()%>/'"><a><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
-        <li onclick="javascript:location.href='<%=request.getContextPath()%>/memberList.up'"><a><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
-        <li onclick="javascript:location.href='<%= request.getContextPath()%>/calendar.up'"><a><span class="icon icon-clipboard"></span><span class="menu-text">캘린더</span></a></li>
-        <li onclick="javascript:location.href='<%= request.getContextPath()%>/message.up'"><a><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
-        <li onclick="javascript:location.href='<%= request.getContextPath()%>/attendance.up'"><a><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
-        <li onclick="javascript:location.href='<%= request.getContextPath()%>/approval.up'"><a><span class="icon icon-file-text2"></span><span class="menu-text">결재</span></a></li>
-        <li onclick="javascript:location.href='<%= request.getContextPath()%>/payroll.up'"><a><span class="icon icon-coin-dollar"></span><span class="menu-text">급여</span></a></li>
-        <li onclick="javascript:location.href='<%= request.getContextPath()%>/board.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
-        
-        <%-- 관리자로 로그인했을경우에만 --%>
-        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">로그관리</span></a></li>
+		<div class="sidebar_content">
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/'"><a><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
+	        <li onclick="javascript:location.href='<%=request.getContextPath()%>/memberList.up'"><a><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/calendar.up'"><a><span class="icon icon-clipboard"></span><span class="menu-text">캘린더</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/message.up'"><a><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/attendance.up'"><a><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/approval.up'"><a><span class="icon icon-file-text2"></span><span class="menu-text">결재</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/payroll.up'"><a><span class="icon icon-coin-dollar"></span><span class="menu-text">급여</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/board.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
+	        
+	        <%-- 관리자로 로그인했을경우에만 --%>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">인사이트</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">로그관리</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">구성원관리</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-file-text"></span><span class="menu-text">급여정산</span></a></li>
+     		</div>
       </ul> 
     </div>
   </div>
