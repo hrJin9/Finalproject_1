@@ -179,7 +179,8 @@
 				border-radius: 4px;
 				color: $white;
 			}
-		}		
+		  }		
+	   }
 	}
 	
 </style>
@@ -210,10 +211,9 @@
 		const allCnt = $("input:checkbox[name='pnum']").length;  // 체크여부 상관없는 모든 체크박스개수
 		document.getElementById("memberCnt").textContent = allCnt;
 
-		
 	});// end of$(document).ready(function(){})--------------------------
 	   
-	      
+		
 	   // Function declaration
 	   // 전체선택 체크박스 클릭시
 	   function allCheckBox() {
@@ -306,16 +306,11 @@
 		<%-- 전체 구성원 --%>
 		<div style="margin-bottom: 15px; float: left;">
 		</div>
-		<table class="table custom-table">   
+		<table class="table custom-table" id="memberList">   
 	    	<thead>   
 	            <tr >
-	              <th><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th>
-	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button>  
-					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">오름차순</a>
-					      <a class="dropdown-item" href="#">내림차순</a>
-					  </div>
-				  </th>
+	              <th><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th> 
+	              <th onclick="sortTable()" class="boardth" width="11%" scope="col" id="namearray"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
 	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">인사·총무</a>

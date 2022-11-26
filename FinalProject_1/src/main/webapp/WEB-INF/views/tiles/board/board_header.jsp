@@ -277,9 +277,9 @@
 	});
 </script>
 <nav id="mainList" class="margin-container header-nav">
-	<a class="header-main list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board.up">공지사항</a>
+	<a class="header-main list_iscurrent" id="notice" href="<%= request.getContextPath()%>/board_all.up">공지사항</a>
 	<a class="header-main list_notcurrent" id="freeboard" href="<%= request.getContextPath()%>/board/freeboard.up">자유게시판</a>
-	<a class="header-main list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a><!-- 작성한 게시물, 북마크, 임시저장 -->
+	<%-- <a class="header-main list_notcurrent" id="myboard" href="<%= request.getContextPath()%>/board/myboard.up">내 게시물</a> --%><!-- 작성한 게시물, 북마크, 임시저장 -->
 </nav>
 
 <!-- 권한부여받은사람만 글쓰기버튼 뜨기 -->
@@ -291,8 +291,8 @@
 
 
 <nav id="subList" class="margin-container">
-	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/board.up" style="margin-left: 2%;">전사공지</a>
-	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/board/myteam.up" style="margin-left: 3%;">팀공지</a>
+	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/board_all.up" style="margin-left: 2%;">전사공지</a>
+	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/board_team.up" style="margin-left: 3%;">팀공지</a>
 	<div class="subList_underline"></div>
 </nav>
 
