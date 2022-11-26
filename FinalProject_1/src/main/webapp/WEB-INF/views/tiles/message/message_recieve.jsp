@@ -5,6 +5,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
 	.mg-current{ font-weight: bold; }
+	.check-star > i {
+		font-size: 15pt;
+		color: rgba(0,0,0,0.1);
+		position: relative;
+		top: 3px;
+	}
+	
+	.check-star > i:hover{
+		cursor: pointer;
+		color: #ffc107;
+		transition: 0.2s;
+	}
+	
+	
 </style>
 <script>
 	$(document).ready(function(){
@@ -46,14 +60,41 @@
 		var tooltipel = $(".tp").tooltip();
 		
 		
+		// 중요표시 별표
+		$(".check-star").click(function(){
+			const itag = $(this).find("i");
+			if ( itag.hasClass('icon-star-empty') ) {
+				itag.removeClass('icon-star-empty');
+				itag.addClass('icon-star-full');
+				itag.css("color","#ffc107");  	
+			} else {
+		  		itag.removeClass('icon-star-full');
+		  		itag.addClass('icon-star-empty');
+		  		itag.css("color",""); 
+		  	}
+		});
+		
+		
+		//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
+		$(".mgList-contents tr").click(function(e){
+			if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *")) return; //중요표시나 체크박스 클릭시 함수 종료
+			alert("페이지이동");
+		});
+		
+		
+		
+		
+		
 	}); //end of ready
 	
+	// 체크했을 때 보이는 메뉴
 	function show_checkmenu(){
 		$(".mg-noncheckmenu").hide();
 		$(".mg-checkmenu").fadeIn("fast");
 		$(".fa-check").css("visibility","visible");
 	}
 	
+	// 체크안할 때 보이는 메뉴
 	function show_noncheckmenu(){
 		$(".mg-checkmenu").hide();
 		$(".mg-noncheckmenu").fadeIn("fast");
@@ -123,10 +164,13 @@
 			<div class="mgList-contents">
 				<table>
 					<!-- 안읽은 메시지 -->
-					<tr class="mg-unread">
+					<tr class="mg-unread"> <!-- mg-unread, mg-read 클래스만 다르게 주면 됨! -->
 						<td width="3%"><input id="mg-selectchx0" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx0"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
 						<td width="3%">
-							<input id="check-star" type="checkbox" style="display:none;"/><label for="check-star"><i class="far fa-star"></i></label>
+							<input id="check-star0" type="checkbox" name="check-star" style="display: none;"/>
+							<label for="check-star0" class="check-star">
+								<i class="icon icon-star-empty"></i>
+							</label>
 						</td>
 						<td width="72%">
 							<div>
@@ -146,7 +190,10 @@
 						<tr class="mg-read">
 							<td width="3%"><input id="mg-selectchx${i}" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx${i}"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
 							<td width="3%">
-								<input id="check-star" type="checkbox" style="display:none;"/><label for="check-star"><i class="far fa-star"></i></label>
+								<input id="check-star${i}" type="checkbox" name="check-star" style="display: none;"/>
+								<label for="check-star${i}" class="check-star">
+									<i class="icon icon-star-empty"></i>
+								</label>
 							</td>
 							<td width="72%">
 								<div><span>메시지 제목</span><span><i class="fas fa-paperclip"></i></span></div>

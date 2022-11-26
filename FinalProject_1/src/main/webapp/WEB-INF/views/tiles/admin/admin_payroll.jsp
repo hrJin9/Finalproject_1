@@ -4,9 +4,72 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/index.js"></script>
+
 
 <style type="text/css">
-		
+	
+	.offcanvas-body::-webkit-scrollbar {
+	    width: 8px;  /* 스크롤바의 너비 */
+	}
+	
+	.offcanvas-body::-webkit-scrollbar-thumb {
+	    height: 30%; /* 스크롤바의 길이 */
+		background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+	    border-radius: 10px;
+	}
+	
+	.offcanvas-body::-webkit-scrollbar-track {
+		background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+	}
+	
+	.payroll-save{
+		border: none;
+		color: white;
+		font-weight: 700;
+		font-size: 10pt;
+		border-radius: 10px;
+		padding: 5px 15px;
+	}
+	
+	.contentsmargin > table > tbody > tr:hover {
+		background-color: rgba(230,230,230, 0.4);
+		cursor: pointer;
+	}
+	
+	.payroll-detail-table tr td:first-child {
+		text-align: left;
+	}
+	
+	
+	.dateSelector{
+		border: solid 1px #ced4da;
+		width: 150px;
+		border-radius: 5px;
+		height: 30px;
+		padding: 5px 10px;
+		font-size: 11pt;
+	}
+	
+	.dateSelector + span{
+		position: relative;
+		right: 25px;
+	}
+	
+	.p-input{
+		width: 170px; height: 35px;
+		border: solid 1px #ced4da;
+		border-radius: 5px;
+		font-size: 11pt;
+		padding: 5px;
+	}
+	
+	
+	td[rowspan] + td{
+		text-align: left;
+	}
+	
 	/* 상단 nav바 */
 	#memberInfo_mainList {
 		position: relative;
@@ -222,26 +285,34 @@
 	
 	}
 	
-	.payroll-save{
-		border: none;
-		color: white;
-		font-weight: 700;
-		font-size: 11pt;
-		border-radius: 10px;
-	}
-	
-	.ap-table tbody tr:hover {
-		background-color: rgba(230,230,230, 0.4);
-		cursor: pointer;
-	}
 	
 </style>
 
 <script type="text/javascript">
 	$(document).ready(function(){
 		
+		//플랫피커
+		flatpickr.localize(flatpickr.l10ns.ko);
+		flatpickr($(".dateSelector"));
+		$(".dateSelector").flatpickr({
+			//maxDate: Date.now(),
+			plugins: [
+		        new monthSelectPlugin({
+				  shorthand: true, //defaults to false
+				  defaultDate: new Date(),
+				  dateFormat: "Y. m", //defaults to "F Y"
+				  altFormat: "F Y", //defaults to "F Y"
+				  theme: "material_blue", // defaults to "light"
+				})
+		    ],
+			local: 'ko',
+			defaultDate: new Date(),
+		});
+		
+		
+		
 		// 모든 체크박스가 체크가 되었다가 그 중 하나만 이라도 체크를 해제하면 전체선택 체크박스에도 체크를 해제하도록 한다.
-		$(".chkboxpnum").click(function(){
+		$(".chkboxpnum").click(function(){	
 		      
 		   var bFlag = false;
 		   $(".chkboxpnum").each(function(){
@@ -291,8 +362,12 @@
 	<hr class="HRhr" style="margin-top: 0px;"/><br>
 	
 	<div class="contentsmargin" style="clear: both;">
-		<div style="margin-bottom: 15px; float: left;">
-			<span style="font-weight: 700;">정산할 구성원</span>
+		<div style="margin-bottom: 15px; float: left; display: flex;">
+			<span style="font-weight: 700;">귀속월</span>
+			<div style="margin-left: 10px;">
+				<input class="dateSelector"/>
+				<span><i class="fas fa-chevron-down" style="font-size: 9pt;"></i></span>
+			</div>
 		</div>
 		<%-- 검색 --%>
 		<form action="#" class="booking-form ml-3" style="float: right;">
@@ -318,7 +393,7 @@
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 14%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10%;"></a>
 					</div>
 				</div>
 				<div class=" mr-2">
@@ -343,7 +418,7 @@
 		<table class="table custom-table ap-table">   
 	    	<thead>   
 	            <tr>
-	              <th><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th>
+	              <th width="5%"><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th>
 	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">오름차순</a>
@@ -409,18 +484,6 @@
 	              </th>  
 	              <th class="boardth" width="12%"scope="col">이메일</th> 
 	              <th class="boardth" width="12%"scope="col">연락처</th> 
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">권한<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
-					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">일반</a>
-					      <a class="dropdown-item" href="#">관리</a>
-					  </div>
-	              </th>  
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">계정상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
-					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">정상</a>
-					      <a class="dropdown-item" href="#">중지</a>
-					  </div>
-	              </th>  
 	            </tr> 
 			</thead>
 			<tbody>
@@ -432,8 +495,6 @@
 	              <td>정직원</td>
 	              <td>thumbs_up@gmail.com</td>
 	              <td>010-4532-5678</td>
-	              <td>일반</td>
-	              <td>정상</td>
 	            </tr> 
 	            <tr> 
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
@@ -443,8 +504,6 @@
 	              <td>정직원</td>
 	              <td>thumbs_up@gmail.com</td>
 	              <td>010-4532-5678</td>
-	              <td>관리</td>
-	              <td>정상</td>
 	            </tr> 
 	            <tr> 
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
@@ -454,8 +513,6 @@
 	              <td>정직원</td>
 	              <td>thumbs_up@gmail.com</td>
 	              <td>010-4532-5678</td>
-	              <td>일반</td>
-	              <td>중지</td>
 	            </tr> 
 	            <tr> 
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
@@ -465,8 +522,6 @@
 	              <td>계약직</td>
 	              <td>thumbs_up@gmail.com</td>
 	              <td>010-4532-5678</td>
-	              <td>일반</td>
-	              <td>정상</td>
 	            </tr> 
 	    	</tbody>        
 		</table>
@@ -478,14 +533,14 @@
 	  <div class="offcanvas-header">
 	    <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
 	    <div class="do-oc-header">
-	    	<div class="payroll-index" style="width: 250px;">
+	    	<div class="payroll-index" style="width: 600px; height: 31px;">
 				<div>2022. 11</div>
 				<div></div>
 				<div>
 					<div>급여지급일</div>
 					<div>2022년 12월 26일</div>
 				</div>
-				<div><button id="payroll-save gradientbtn">저장</button></div>
+				<div style="float:right;"><button class="payroll-save gradientbtn">저장</button></div>
 			</div>
 	    </div>
 	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -501,41 +556,47 @@
 							<div style="margin-left: 10px;"><div style="font-size: 11pt; font-weight: 700;">김지은</div><div style="font-size: 9pt; color: rgba(0,0,0,0.7);"><span>개발자</span>·<span>IT</span></div></div>
 						</div>
 					</div>
-					<div><hr class="HRhr"/></div>
-					<div class="payroll-subject" style="top:5px;"><div style="font-weight: 500; font-size: 9pt; color: rgba(0,0,0,0.7);">실지급액</div>3,000,000원</div>
+					<div style="width: 50%; left: 25px;"><hr class="HRhr"/></div>
+					<div class="payroll-subject" style="width: 175px; right:10px; top:0;">
+						<div style="font-weight: 500; font-size: 9pt; color: rgba(0,0,0,0.7);">실지급액</div>
+						<div style="float:right;"><input type="text" id="actual-p" class="p-input"/></div>
+					</div>
 				</div>
 				<div class="payroll-payment2">
 					<div>
 						<div class="payroll-subject">급여<div class="subject-underline" style="background-color: #F29F05; width: 35px;"></div></div>
-						<div><hr class="HRhr"/></div>
-						<div><div class="payroll-sub">지급총합</div><div class="payroll-subject">5,000,000원</div></div>
+						<div style="width: 50%; position:relative; left: 20px;"><hr class="HRhr"/></div>
+						<div style="float:right; width: 175px; position: relative; right:10px; top:-10px;">
+							<div class="payroll-sub">지급총합</div>
+							<div class="payroll-subject"><input type="text" id="total-p" class="p-input"/></div>
+						</div>
 					</div>
 					<div>
-						<table class="payroll-detail-table">
-							<tr><td rowspan="3">고정급여</td><td>기본급</td><td>4,800,000</td></tr>
-							<tr><td>초과근무수량(고정)</td><td>50,000</td></tr>
-							<tr><td>식비</td><td>50,000</td></tr>
-							<tr><td rowspan="2">변동급여</td><td>연구보조비</td><td>50,000</td></tr>
-							<tr><td>선지급금</td><td>50,000</td></tr>
+						<table class="payroll-detail-table" style="width: 100%;">
+							<tr><td rowspan="3" width="10%">고정급여</td><td>기본급</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>초과근무수량(고정)</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>식비</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td rowspan="2">변동급여</td><td>연구보조비</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>선지급금</td><td><input type="text" id="" class="p-input"/></td></tr>
 						</table>
 					</div>
 				</div>
 				<div class="payroll-deduction">
 					<div>
 						<div class="payroll-subject">공제<div class="subject-underline" style="background-color: #F29F05; width: 35px;"></div></div>
-						<div><hr class="HRhr"/></div>
-						<div><div class="payroll-sub">공제총합</div><div class="payroll-subject">2,000,000원</div></div>
+						<div style="width: 50%;"><hr class="HRhr"/></div>
+						<div style="width: 175px; float:right; position: relative; right: 10px; top: -10px;"><div class="payroll-sub">공제총합</div><div class="payroll-subject"><input type="text" id="" class="p-input"/></div></div>
 					</div>
 					<div>
-						<table class="payroll-detail-table">
-							<tr><td rowspan="6">필수공제</td><td>소득세</td><td>1,000,000</td></tr>
-							<tr><td>지방소득세</td><td>50,000</td></tr>
-							<tr><td>건강보험</td><td>200,000</td></tr>
-							<tr><td>국민연금</td><td>300,000</td></tr>
-							<tr><td>장기요양보험</td><td>50,000</td></tr>
-							<tr><td>고용보험</td><td>50,000</td></tr>
-							<tr><td rowspan="2">기타공제</td><td>동호회비</td><td>50,000</td></tr>
-							<tr><td>선지급금</td><td>300,000</td></tr>
+						<table class="payroll-detail-table" style="width: 100%">
+							<tr><td rowspan="6">필수공제</td><td>소득세</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>지방소득세</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>건강보험</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>국민연금</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>장기요양보험</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>고용보험</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td rowspan="2">기타공제</td><td>동호회비</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr><td>선지급금</td><td><input type="text" id="" class="p-input"/></td></tr>
 						</table>
 					</div>
 				</div>

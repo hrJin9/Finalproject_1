@@ -1591,9 +1591,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	font-size: 15pt; color: rgba(0,0,0,.1);
 	position: relative; top: 2px;
 }
-#check-star:checked + label > i{
-	color: #F29F05;
-}
 
 .mg-read {
 	color: rgba(0,0,0,0.5);
@@ -2021,7 +2018,6 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	color: rgba(0,0,0,0.7);
 	font-weight: 600;
 }
-
 
 
 
