@@ -359,7 +359,7 @@
 	<nav id="memberInfo_mainList" class="">
 		<div id="attendance" style="color: black;" class="header-nonsub">급여정산</div>
 	</nav>
-	<hr class="HRhr" style="margin-top: 0px;"/><br>
+	<hr class="HRhr" style="margin-top: 0px; width: 113%; position:relative; right: 85px;"/><br>
 	
 	<div class="contentsmargin" style="clear: both;">
 		<div style="margin-bottom: 15px; float: left; display: flex;">
