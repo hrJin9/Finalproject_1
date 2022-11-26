@@ -8,9 +8,18 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 
 <style type="text/css">
-		
-	/* 상단 nav바 */
-	#memberInfo_mainList {
+	/* 페이지 전체 레이아웃 */
+	.admin_container {
+		width: 88%;
+		margin: 0 auto;
+	}
+	
+	#admin_mainList a:hover{
+		color: #000000;
+		cursor: pointer;
+	}
+	
+	#admin_mainList {
 		position: relative;
 		display: flex;
 		width: 640px;
@@ -18,6 +27,16 @@
 		font-weight: bold;
 	}
 	
+	#admin_mainList a {
+		display: block;
+		width: 24%;
+		padding: 0.7em 0 0.3em 0;
+		color: #333;
+		text-decoration: none;
+		margin-right: 4%;
+		color: black;
+	}
+		
 	/* 검색 */
 	#searchCondition, #cntselect {
 	    display: block;
@@ -268,18 +287,18 @@
 	   
 </script>
 
-<div class="container">
-	<nav id="memberInfo_mainList" class="margin-container">
-		<div id="attendance" style="color: black;" class="header-nonsub">멤버관리</div>
-	</nav>
-	<hr class="HRhr" style="margin-top: 0px;"/><br>
+<nav id="admin_mainList" class="margin-container">
+	<a id="admin_memberList" class="header-nonsub">멤버관리</a>
+</nav>
+<hr class="HRhr" style="margin-top: 0px;"/><br>
 
+<div class="admin_container">
 	<div style="margin-bottom: 15px; float: left;">
 		<span>전체 구성원 &nbsp; <span style="color:#4285f4;" id="memberCnt"></span>명</span>
 	</div>
 	<div class="contentsmargin" style="clear: both;">
 		<div style="display: inline-block;">
-		    <a href="#" id="memberadd" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
+		    <a href="<%= request.getContextPath()%>/admin_memberAdd_hr.up" id="memberadd" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
 		       	<span><i class="fas fa-plus"></i></span>
 		       	<span>멤버생성</span>
 	       	</a>
@@ -327,7 +346,7 @@
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 14%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10%;"></a>
 					</div>
 				</div>
 				<div class=" mr-2">
@@ -351,7 +370,7 @@
 		</div>
 		<table class="table custom-table">   
 	    	<thead>   
-	            <tr>
+	            <tr >
 	              <th><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th>
 	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 					  <div class="dropdown-menu">
@@ -479,6 +498,5 @@
 	            </tr> 
 	    	</tbody>        
 		</table>
-	
 	</div>
 </div>

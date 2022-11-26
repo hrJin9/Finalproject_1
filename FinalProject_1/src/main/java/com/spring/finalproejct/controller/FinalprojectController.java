@@ -34,5 +34,21 @@ public class FinalprojectController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/side/search.up")
+	public ModelAndView sidebar_search(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("/tiles/main/sidebar_search");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/side/searchEnd.up")
+	public ModelAndView sidebar_searchEnd(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("/tiles/main/sidebar_searchEnd");
+		return mav;
+	}
+	
+	
+	
 	
 }

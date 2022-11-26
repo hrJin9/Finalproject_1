@@ -314,7 +314,7 @@ for (var i = 0; i < completedTasksHolder.children.length; i++) {
 	bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
 }
 
-
+ 
 //todo 끝
  
 </script>   
@@ -325,14 +325,18 @@ for (var i = 0; i < completedTasksHolder.children.length; i++) {
 			<input id="new-task" type="text"><button style="margin-top: 22px;">확인</button>
 		</p>
 
-		<h3>할 일</h3> 
-		<ul id="incomplete-tasks">
-			<li><input type="checkbox"><label>지출하기</label><input type="text"><button class="edit">수정</button><button class="delete">삭제</button></li>
-			<li><input type="checkbox"><label>요청사항 처리하기</label><input type="text" value="Go Shopping"><button class="edit">수정</button><button class="delete">삭제</button></li>
-		</ul>
-
-		<h3>완료</h3>
-		<ul id="completed-tasks">
-			<li><input type="checkbox" checked><label>연차올리기</label><input type="text"><button class="edit">수정</button><button class="delete">삭제</button></li>
-		</ul>
+		<div> 
+			<h3>할 일</h3> 
+			<ul id="incomplete-tasks">
+				<li><input type="checkbox"><label>지출하기</label><input type="text"><button class="edit">수정</button><button class="delete">삭제</button></li>
+				<li><input type="checkbox"><label>요청사항 처리하기</label><input type="text" value="Go Shopping"><button class="edit">수정</button><button class="delete">삭제</button></li>
+			</ul>
+		</div>
+		
+		<div>
+			<h3>완료</h3>
+			<ul id="completed-tasks">
+				<li><input type="checkbox" checked><label>연차올리기</label><input type="text"><button class="edit">수정</button><button class="delete">삭제</button></li>
+			</ul>
+		</div>
 	</div>     

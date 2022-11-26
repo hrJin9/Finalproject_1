@@ -8,6 +8,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
     
 <style type="text/css">
+	/* 페이지 전체 레이아웃 */
+	.member_container {
+		width: 88%;
+		margin: 0 auto;
+	}
 
 	@font-face {
 	    font-family: 'Pretendard-Regular';
@@ -135,7 +140,7 @@
 	
 </script>
 
-<div class="container" style="margin-right: 145px;">
+<div class="member_container">
 	<form name="myInfo">
 	
 	<div class="col-md-16">

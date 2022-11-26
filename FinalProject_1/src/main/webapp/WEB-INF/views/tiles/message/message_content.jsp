@@ -1,14 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <style>
+	label[for='mc-star']:hover{
+		cursor: pointer;
+		color: #ffc107;
+		transition: 0.2s;
+	}
 </style>
 <script>
+	$(document).ready(function(){
+		//중요표시 별표
+		$("#mc-star").change(function(){
+			const itag = $(this).parent().find("i");
+			if ( itag.hasClass('icon-star-empty') ) {
+				itag.removeClass('icon-star-empty');
+				itag.addClass('icon-star-full');
+				itag.css("color","#ffc107");  	
+			} else {
+		  		itag.removeClass('icon-star-full');
+		  		itag.addClass('icon-star-empty');
+		  		itag.css("color",""); 
+		  	}
+		});
+		
+	});//end of ready
 </script>
 <div class="mgc-container">
 	<div class="mgc-header">
 		<div class="mgc-header-left">
 			<div class="mgc-subject">
-				<span><i class="far fa-star"></i></span>
+				<span>
+					<input type="checkbox" id="mc-star" name="mc-star" style="display: none;"/>
+					<label for="mc-star"><i class="icon icon-star-empty"></i></label>
+				</span>
 				<span id="">메시지 제목ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴ</span> <!-- 20자 이내로 제한줘야됨 -->
 				<span class="mgc-header-attach"><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
 			</div>

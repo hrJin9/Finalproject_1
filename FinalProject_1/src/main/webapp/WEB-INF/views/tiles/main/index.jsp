@@ -4,6 +4,12 @@
 <%@ include file="header.jsp"%> 
 
 <style type="text/css">
+	/* 페이지 전체 레이아웃 */
+	.main_container {
+		width: 88%;
+		margin: 0 auto;
+	}
+	
 	/* 메인 상단 */
 	#boardList a:hover{
 		color: #949DA6;
@@ -319,6 +325,15 @@ $(document).mouseup(function(e){
 		$("#workStatusListBox").hide();
 		$("#workStatusChange").hide();
 	}
+	
+	if( !(($(".news").has(e.target).length))){
+	      $(".news").fadeOut(100);
+    }
+    if( !(($(".myprofile").has(e.target).length))){
+	      $(".myprofile").fadeOut(100);
+	}
+	
+	
 });//end of mouseup
 
 function showNowTime() {
@@ -368,7 +383,7 @@ $(function(){function c(){p();var e=h();var r=0;var u=false;l.empty();while(!u){
 
 </script>
 
-<div class="container col-11">
+<div class="main_container">
 	<div class="row">
 		<div id="today" class="col-3">
 			<table width="90%" align="center">

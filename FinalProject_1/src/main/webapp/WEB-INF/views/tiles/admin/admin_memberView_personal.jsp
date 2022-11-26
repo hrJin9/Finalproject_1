@@ -4,6 +4,29 @@
 <% String ctxPath = request.getContextPath(); %>  
 
 <style type="text/css">
+	/* 페이지 전체 레이아웃, 상단 nav바*/
+	#admin_mainList a:hover{
+		color: #000000;
+		cursor: pointer;
+	}
+	
+	#admin_mainList {
+		position: relative;
+		display: flex;
+		width: 640px;
+		font-size: 18pt;
+		font-weight: bold;
+	}
+	
+	#admin_mainList a {
+		display: block;
+		width: 24%;
+		padding: 0.7em 0 0.3em 0;
+		color: #333;
+		text-decoration: none;
+		margin-right: 4%;
+		color: black;
+	}
 
 	@font-face {
 	    font-family: 'Pretendard-Regular';
@@ -14,15 +37,6 @@
 	
 	*{
 		font-family: Pretendard-Regular;		
-	}
-	
-	/* 상단 nav바 */
-	#admin_memberview {
-		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 18pt;
-		font-weight: bold;
 	}
 
 	/* 상단 프로필 */
@@ -89,7 +103,6 @@
 		width:50.5%;
 	}
 	
-	
 	/* 인사정보, 근무정보 */
 	#personalInfo, #workInfo {
 		font-weight: bold;
@@ -101,7 +114,7 @@
 	}
 	
 	.table>:not(caption)>*>* {
-	    padding: 0.47rem 0.5rem;
+	    padding: 0.8rem 0.5rem;
 	    background-color: var(--bs-table-bg);
 	    /* border-bottom-width: 1px; */
 	    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
@@ -144,11 +157,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		// nav바에서 인사정보 클릭시 인사정보 페이지로 이동
-		$(".memeberInfo_hView").click(function(){
-			location.href= "<%= ctxPath%>/admin_memberView_hr.up";
-		});
-		
         flatpickr.localize(flatpickr.l10ns.ko);
         flatpickr($(".dateSelector"));
         // 생년월일 데이트피커
@@ -169,12 +177,12 @@
 	
 </script>
 
-<div class="container" style="margin-right: 145px;">
-	<nav id="admin_memberview" class="margin-container">
-		<div id="memberview" style="color: black;" class="header-nonsub">멤버 상세보기</div>
-	</nav>
-	<hr class="HRhr" style="margin-top: 0px;"/><br>
-	
+<nav id="admin_mainList" class="margin-container">
+	<a id="memberview" class="header-nonsub">멤버 상세보기</a>
+</nav>
+<hr class="HRhr" style="margin-top: 0px;"/><br>
+
+<div style="margin-right: 145px;">
 	<form name="myInfo">
 		<div class="col-md-16" style="float: left; margin-right: 70px;">
 			<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
@@ -185,12 +193,10 @@
 		</div> 
 		<%-- 이름, 영문이름, 생년월일, 성별 --%>
 		<div class="topinfo" style="float: left;">
-	    	<table class="table table-borderless content" style="float: left; margin-top: 24px;">
+	    	<table class="table table-borderless content" style="float: left; margin: 29px 0 35px 0;">
 		       <colgroup>
 		          <col width="200px" />
 		          <col width="350px" />
-		          <col width="50px" />
-		          <col width="150px" />
 		     	</colgroup>
 		          <tbody>
 		                <tr>
@@ -203,22 +209,20 @@
 		                </tr>
 		                <tr>
 		                   <td>생년월일</td>   
-		                   <td style="float:left; margin-right:0;">1997-01-20&nbsp;(만 25세)</td>   
-		                   <td style="margin-left:0; margin-right:50;">성별</td> 
-		                   <td style="padding-left: 57px;">여자</td>   
+		                   <td style="float:left; margin-right:0;">1997-01-20&nbsp;(만 25세)<span style="padding-left: 10px;">/</span><span style="padding-left: 10px;">여자</span></td>   
 		                </tr>
 		          </tbody>
 		 	</table>
 		</div> 
 		 
+		 
 		<nav id="list" class="header-nav" style="clear: both;">
-			<a class="list_iscurrent memeberInfo_hView">인사 정보</a>
-			<a class="memeberInfo_pView">개인 정보</a>
+			<a class="list_iscurrent memeberInfo_hView" href="<%= request.getContextPath()%>/admin_memberView_hr.up">인사 정보</a>
+			<a class="memeberInfo_pView" href="<%= request.getContextPath()%>/admin_memberView_personal.up">개인 정보</a>
 			<div class="list_underline"></div>
 		</nav> 
-		 
-		 
-	 	<hr style="margin-top: 0px;"/><br>
+	 	<hr style="margin-top: 0px; margin-right: 20%;"/><br>
+			
 			
 		<div class="infocontainer" style="margin-left: 100px;">
 			<div id="personalInfo">개인 정보</div><br>
@@ -260,16 +264,15 @@
 		                </tr>
 		          </tbody>
 		 	</table>
-		       
-		  <div class="workstatus-buttoncontainer" style="margin-right: 585px;">
-  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
-  			<button type="reset" class="workstatus-cancel">취소</button><br><br><br><br>
-		  </div>
 		</div>
-		
+		       
+	   <div class="workstatus-buttoncontainer" style="margin-right: 53%;">
+		 <button type="button" class="workstatus-save gradientbtn" style="margin-top: 15%; margin-bottom: 15%">저장하기</button>
+		 <button type="reset" class="workstatus-cancel" style="margin-top: 15%; margin-bottom: 15%">취소</button><br><br><br><br>
+       </div>
+	      
 	</form>
 </div>
-
 
 
 

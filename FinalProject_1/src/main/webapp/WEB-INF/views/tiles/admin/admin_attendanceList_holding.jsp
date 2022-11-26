@@ -8,29 +8,33 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 
 <style type="text/css">
-		
-	/* 상단 nav바 */	
-	#admin_attendance a:hover{
+	.admin_container {
+		width: 88%;
+		margin: 0 auto;
+	}
+
+	/* 상단 nav바  */	
+	#admin_mainList a:hover{
 		color: #000000;
 		cursor: pointer;
 	}
 	
-	/* #dayoff_subList a:hover{
+	#dayoff_subList a:hover{
 		background-color: rgba(200,200,200, .2);
 		cursor: pointer;
-	} */
+	}
 		
-	#admin_attendance {
+	#admin_mainList {
 		position: relative;
 		display: flex;
-		width: 640px;
+		width: 77%;
 		font-size: 18pt;
 		font-weight: bold;
 	}
 	
-	#admin_attendance a {
+	#admin_mainList a {
 		display: block;
-		width: 22%;
+		width: 13%;
 		padding: 0.7em 0 0.9em 0;
 		color: #333;
 		text-decoration: none;
@@ -38,12 +42,12 @@
 		color: #D2D6D9;
 	}
 	
-	/* #dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
+	#dayoff_subList a:nth-child(1).iscurrent ~ .dayoff_subList_underline {
 		left: 0%;
 	}
 	#dayoff_subList a:nth-child(2).iscurrent ~ .dayoff_subList_underline {
-		left: 15%; /* width랑 margin-left랑 합친거 
-	} */
+		left: 15%; /* width랑 margin-left랑 합친거 */
+	}
 		
 	
 	/* 검색 */
@@ -261,15 +265,14 @@
 	   
 </script>
 
-<div class="container">
-	<nav id="admin_attendance" class="margin-container">
-		<a id="attendance" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" style="color: black;" class="header-nonsub">휴가 보유 현황</a>
-		<a id="dayoff" href="<%= request.getContextPath()%>/admin_attendanceList_usage.up" class="iscurrent header-nonsub">휴가 사용 내역</a>
-		<div class="list_underline"></div>
-	</nav>
-	<hr class="HRhr" style="margin-top: 0px;"/><br>
+<nav id="admin_mainList" class="margin-container">
+	<a id="admin_attendance_holding" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" style="color: black;" class="header-nonsub">휴가 보유 현황</a>
+	<a id="admin_attendance_usage" href="<%= request.getContextPath()%>/admin_attendanceList_usage.up" class="header-nonsub">휴가 사용 내역</a>
+	<div class="list_underline"></div>
+</nav>
+<hr class="HRhr" style="margin-top: 0px;"/><br>
 
-	
+<div class="admin_container">
 	<div class="contentsmargin">
 		<div style="display: inline-block;">
       	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
@@ -290,7 +293,7 @@
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 14%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.2%;"></a>
 					</div>
 				</div>
 				<div class=" mr-2">
@@ -405,5 +408,6 @@
 	    	</tbody>            
 		</table>
 	
-	</div>
+  	</div>
+  </div>
 </div>
