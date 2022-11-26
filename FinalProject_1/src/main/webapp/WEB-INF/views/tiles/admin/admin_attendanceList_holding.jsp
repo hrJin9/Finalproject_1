@@ -34,7 +34,7 @@
 	
 	#admin_mainList a {
 		display: block;
-		width: 14%;
+		width: 13%;
 		padding: 0.7em 0 0.9em 0;
 		color: #333;
 		text-decoration: none;
@@ -93,66 +93,6 @@
 	}
 	 
 	 
-	
-	/* Custom Checkbox */
-	.control {
-	  display: block;
-	  position: relative;
-	  margin-bottom: 25px;
-	  cursor: pointer; }
-	
-	.control input {
-	  position: absolute;
-	  z-index: -1;
-	  opacity: 0; }
-	
-	.control__indicator {
-	  position: absolute;
-	  top: 2px;
-	  left: 0;
-	  height: 15px;
-	  width: 15px;
-	  border-radius: 3px;
-	  border: 2px solid #ccc;
-	  background: transparent; }
-	
-	.control--radio .control__indicator {
-	  border-radius: 50%; }
-	
-	.control:hover input ~ .control__indicator,
-	.control input:focus ~ .control__indicator {
-	  border: 2px solid #007bff; }
-	
-	.control input:checked ~ .control__indicator {
-	  border: 2px solid #007bff;
-	  background: #007bff; }
-	
-	.control input:disabled ~ .control__indicator {
-	  background: #e6e6e6;
-	  opacity: 0.6;
-	  pointer-events: none;
-	  border: 2px solid #ccc; }
-	
-	
-	.control input:checked ~ .control__indicator:after {
-	  display: block;
-	  color: #fff; }
-	
-	.control--checkbox .control__indicator:after {
-	  top: 50%;
-	  left: 50%;
-	  -webkit-transform: translate(-50%, -52%);
-	  -ms-transform: translate(-50%, -52%);
-	  transform: translate(-50%, -52%); 
-	  }
-	
-	.control--checkbox input:disabled ~ .control__indicator:after {
-	  border-color: #7b7b7b; }
-	
-	.control--checkbox input:disabled:checked ~ .control__indicator {
-	  background-color: #007bff;
-	  opacity: .2;
-	  border: 2px solid #007bff; }
 	
 	.table thead th {
 		border-bottom: none;
