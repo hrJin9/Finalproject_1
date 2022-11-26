@@ -12,8 +12,7 @@
 		display: flex;
 		width: 11%;
 		font-size: 18pt;
-		font-weight: bold;
-		margin: 4px 0 0 70px;
+		font-weight: bold; 
 		padding: 0.7em 0 0.9em 0;
 		color: #333;
 	}
@@ -125,10 +124,9 @@
 		top: -6px;
 	}
 	.table td, .table th {
-		font-size: 11pt;
-	    border-top: 1px solid #eef2f6;
+		font-size: 11pt; 
 	}
-	.table {
+	.table { 
 	    color: #4c4e54;
 	}
 	table td{
@@ -180,11 +178,11 @@
 		color: lighten($black, 70%);
 		padding-left: 20px;
 		padding-right: 20px;
-	}
+	} 
 	hr {
 		display: block; height: 1px;
 	   border: 0; border-top: 1px solid darken($light, 5%);
-	   margin: .5em 0; padding: 0;
+/* 	   margin: .5em 0; padding: 0; */
 	}
 	
 	.dropdown-menu {
@@ -193,7 +191,7 @@
 		margin-top: -10px!important;
 		padding: 20px 0;
 		opacity: 0;
-		border-radius: 0;
+		border-radius: 0; 
 		background: $white;
 		// right: auto!important;
 		// left: auto!important;
@@ -202,7 +200,7 @@
 		&.active {
 			opacity: 1;
 			visibility: visible;
-			margin-top: 0px!important;
+			margin-top: 0px!important; 
 		}
 	
 		a {
@@ -347,7 +345,7 @@
 		  
 		  
 		
-		
+		 
 	}); //end of ready	
 
 </script>
@@ -355,19 +353,19 @@
 
 <div class="container">
 <div id="memberInfo_mainList">멤버 접근 로그</div>
-<hr class="memberInfohr" style="margin-top: 0px;"/>
- 
+<hr class="HRhr" style="margin-top: 0px;"/>  
+    
+     
   
- 
-<div class="container mt-5" style="padding-right: 5%;">
+<div class="admin-container" style="padding-right: 5%; width: 100%;">
 	<div class="row"> 
-		    
-		 
+		     
+		  
 		 
 		<form action="#" class="booking-form ml-3" style="float: right;">
 			<div class="row" style="padding-top: 11px;display: flex;float: right;">    
 			
-				<%-- 검색 --%>
+				<%-- 검색 --%> 
 				<div class=" mr-2" style="width: auto;"> 
 					<div class="form-group"> 
 						<div class="form-field"> 
@@ -385,14 +383,14 @@
 						</div> 
 					</div>
 				</div> 
-				<div class="align-items-end mt-1 mr-4" style="width: auto;"> 
+				<div class="align-items-end mt-1 mr-4" style="width: auto;">    
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 33%;top: 141px;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 29%;top: 105px;"></a>
 					</div>
 				</div> 
 			 
-			
-			<div class=" mr-2" style="width: auto;"> 
+			  
+			<div class=" mr-2" style="width: auto;margin-left: -51px;"> 
 					<div class="form-group"> 
 						<div class="form-field"> 
 							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;border: 1px solid #ced4da;border-radius: 0.25rem;">
@@ -400,15 +398,15 @@
 								<option value="">20개씩 보기</option>
 								<option value="">30개씩 보기</option> 
 							</select>
-						</div>  
-					</div>
-				</div>  
+						</div>   
+					</div> 
+				</div>     
 				 
-			<div class="payroll-download" style="width: auto;"> 
+			<div class="payroll-download gradientbtn" style="width: auto;color: white;border: none;margin-right: 59px;"> 
 				<i class="fa-solid fa-download" style="font-size: 10pt; display:inline-block;"></i>
 				<div>목록 다운로드</div>
 			</div>  
-			
+			 
 		  </div>
 		</form>
 		      
