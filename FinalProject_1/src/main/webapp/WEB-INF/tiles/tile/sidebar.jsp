@@ -154,7 +154,7 @@
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/attendance.up'"><a><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/approval.up'"><a><span class="icon icon-file-text2"></span><span class="menu-text">결재</span></a></li>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/payroll.up'"><a><span class="icon icon-coin-dollar"></span><span class="menu-text">급여</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/board.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/board_all.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
 	        
 	        <%-- 관리자로 로그인했을경우에만 --%>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_insight.up'"><a><span class="icon icon-stats-dots"></span><span class="menu-text">인사이트</span></a></li>
