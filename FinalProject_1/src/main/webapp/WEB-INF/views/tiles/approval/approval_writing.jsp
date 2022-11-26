@@ -313,19 +313,36 @@ div.option:before {
 }
 .selectedmem{
 	margin-top:0px !important;
-	margin-bottom: 10px  !important;
+	/* margin-bottom: 10px  !important; */
+	padding-bottom: 50px;
 }
 td{
 	width: 77%;
 }	
 .positionIcon{
-	float: right;
+	margin-left: 90px;
 }
 div#memcontent-iframe{
 	margin-top:0px !important;
 }
 .profile{
 	display: inline-flex !important;
+	float: left !important;
+}
+.mem-del{
+	color: rgb(141, 150, 161);
+    float: right;
+    top: 16px;
+    position: relative;
+    width: 0.3em;
+    height: 0.3em;
+}
+.step-del{
+	float: right;
+    top: -52px;
+    position: relative;
+    width: 0.3em;
+    height: 0.3em;
 }
 </style> 
 <script>
@@ -334,6 +351,8 @@ div#memcontent-iframe{
 		$("#writebtn").hide(); // 글쓰기 버튼 숨기기
 		
 		$("input.dayradio").attr("disabled", true) // 반차 라디오버튼 못누르게  
+		
+		
 		
 		/* 문서 템플릿  */
 		const timeoff_temp = '';
@@ -436,9 +455,8 @@ div#memcontent-iframe{
 	    });
 	    
 	    
-	    
 	});//end of $(document).ready(function(){}---------------
-	
+	 
 	
 	async function showmodal(){
 		$('#writemodal').modal('show');
@@ -461,32 +479,81 @@ div#memcontent-iframe{
 	
 	<%-- 옵션창 열리고 닫히고  --%>
 	function optionForm(value){
-		 if(value=="OPEN") option.style.display="block";
-		 else option.style.visibility="none";
+		 if(value=="OPEN") {
+			 option.style.display="block";
+		 }
+		 else{
+			 option.style.display="none";
+		 }
 	}
 	
 	
 	
 	/* iframe 에서 선택한 멤버 append */
 	function get_memname(memInfo){
-		console.log(memInfo);
-		let html = '<div class="selectedmem">'+memInfo+'</div>';
-		$("div#memcontent-iframe").append(html);
+		/* console.log(memInfo); */
+		optionForm('CLOSE');
+		let html = '<div class="selectedmem">'+memInfo
+				  +'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_appendmember(event)"></button>'
+				  +'</div>';
+		
+		const num = $(e.target).prev().attr("id");
+		console.log(num);
+		$("div#"+num).append(html);
+	}
+	
+	/*  append 된 멤버 삭제버튼 누를시  */
+	function del_appendmember(e){
+		
+		console.log($(e.target).html()); // 버튼누른 버튼의 부모 태그 html 삭제
+		$(e.target).parent().css("display","none");
+		
+		/* $("div.selectedmem").each(function(){
+			let html = "";
+			html += $(this).html();
+			console.log(html);
+		}) */
 	}
 	
 	
-	let i = 0; 
+	
+	
+	
+	let i = 1; 
+	let html = "";
+	/* 변수 설정해두고 단계 쁠러스 하고  단계삭제버튼을 누를때 삭제버튼을 누른 박스가 사라지고 그 박스 뒤에있는 단계는 -1 됨  */ 
+	/* 승인단계 박스 삭제버튼 누를경우 */
+	function del_stepapproval(e){
+		i -= 1;
+		// 삭제 버튼 누르면 해당 i 보다 큰 한칸씩 내려옴 
+	}
+	
+	
+	
+	
 	function approvalplus(){
-		i++;
-		let html = `<span style="font-weight: bold;padding-bottom: 49px;display: block;">${i}단계</span><button type="button" class="attendance-dateSelector" style="background-color: white;display: block;width: 100%;" onClick="optionForm('OPEN')"><span style="color: rgba(36, 42, 48, 0.48);">`+
-	  			+`<span style="font-size: 10pt;text-align: left;" >대상 검색</span></span></button><div id="option" class="option">`
-		   +`<span class="ant-typography c-iFzzFJ"><span data-lokalise="true" data-key="stakeholder.select.group_title.preset">특정 대상</span></span>`
-		   +`<div id="mwa-container">`
-				+`<iframe id="mwa" style="border: none; width: 100%; height: 500px;" src="<%= request.getContextPath()%>/message/memberList.up"></iframe>`
-			+`</div></div>`;
-			
-		$(".approvalplus").append(html);
+		
+		i += 1;
+		html = $("div.approvalplus").html();
+		
+		html += `<div id="step`+i+`" class="dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;">`
+			  	  	+`<div style="margin-top: 0;">`
+			      	  	+`<span class="" style="font-weight: bold;padding-bottom: 29px;display: block;">`+i+`단계</span>`
+						+`<button type="button" class="btn-close step-del" aria-label="close"  style="float: right;"></button>`      	  	
+			  	  	+`</div>`
+			  	  	+`<div id="memcontent-iframe`+i+`"></div>`
+			  	  	+`<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;width: 100%;" onClick="optionForm('OPEN')">`
+			  	  		+`<span style="color: rgba(36, 42, 48, 0.48);">`
+			  	  			+`<span style="font-size: 10pt;text-align: left;" >대상 검색</span>`
+			  	  		+`</span>`
+			  	  	+`</button>`
+			  	  +`</div>`;
+		$("div.approvalplus").html(html);
 	}
+	
+	
+	
+
 </script>
 
 <div class="dayoff-index-container">
@@ -827,29 +894,43 @@ div#memcontent-iframe{
 	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1.2rem;">승인・참조 대상</h4>
 	        <button type="button" class="btn-close" onclick="modalclose()"></button><!-- data-bs-dismiss="modal" -->
 	      </div>
+	     
 	      <!-- Modal body -->
-	      <div class="modal-body approvalplus" style="padding: 30px;overflow: auto;">
-	      	  <div class="dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;">
-	      	  	<span class="" style="font-weight: bold;padding-bottom: 29px;display: block;">1단계</span>
-	      	  	<div id="memcontent-iframe">
-	      	  	</div>
-	      	  	
-	      	  	<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;width: 100%;" onClick="optionForm('OPEN')">
-	      	  		<span style="color: rgba(36, 42, 48, 0.48);">
-	      	  			<span style="font-size: 10pt;text-align: left;" >대상 검색</span>
-	      	  		</span>
-	      	  	</button>
-	      	  		
-					    	  	
-	      	  </div>
+	      <div class="modal-body " style="padding: 30px;overflow: auto;">
 	      	  
-	      	  	<button type="button" class="attendance-dateSelector" style="border-color:#dbdbdb; background-color: white;display: block;width: 100%;">
-	      	  		<span class="ant-typography c-iuedIb" style="color: rgba(36, 42, 48, 0.48);" onclick="approvalplus()">
+	      	  <div class="approvalplus">
+	      	  
+		      	  <div id="step1"class="dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;">
+		      	  	<div style="margin-top: 0;">
+			      	  	<span class="" style="font-weight: bold;padding-bottom: 29px;display: block;">1단계</span>
+						<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(event)" style="float: right;"></button>      	  	
+		      	  	</div>
+		      	  	
+		      	  	<!-- iframe 선택된 멤버 보여주기  -->
+		      	  	<div id="memcontent-iframe1"></div>
+
+		      	  	<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;width: 100%;" onClick="optionForm('OPEN',1)">
+		      	  		<span style="color: rgba(36, 42, 48, 0.48);">
+		      	  			<span style="font-size: 10pt;text-align: left;" >대상 검색</span>
+		      	  		</span>
+		      	  	</button>
+		      	  </div>
+		      	  
+	      	  	</div>
+	      	  
+	      	  
+	      	  	<button type="button" class="attendance-dateSelector" style="border-color:#dbdbdb; background-color: white;display: block;width: 100%;"onclick="approvalplus()">
+	      	  		<span class="ant-typography c-iuedIb" style="color: rgba(36, 42, 48, 0.48);" >
 	      	  			<span data-lokalise="true" style="font-size: 10pt;" >+ 단계 추가하기</span>
 	      	  		</span>
 	      	  	</button>
-              <!-- <a data-toggle="modal" href="#myModal3" class="btn btn-primary">Launch modal</a> -->
+	      	  	
+	      	  	
             </div>
+	      	  	
+	      	  	
+            
+            
              <div class="modal-footer">
               <a href="#" data-dismiss="modal" class="btn">Close</a>
               <a href="#" class="btn btn-primary">Save</a>

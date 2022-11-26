@@ -23,9 +23,14 @@ public class BoardController {
 		return "board/add.tiles";
 	}
 	
-	@RequestMapping(value = "/board.up")
-	public String boardAndNotice(HttpServletRequest request) {
-		return "board/notice.tiles";
+	@RequestMapping(value = "/board_all.up")
+	public String board_all(HttpServletRequest request) {
+		return "board/notice_all.tiles";
+	}
+	
+	@RequestMapping(value = "/board_team.up")
+	public String board_team(HttpServletRequest request) {
+		return "board/notice_team.tiles";
 	}
 	
 	@RequestMapping(value = "/board/freeboard.up")
