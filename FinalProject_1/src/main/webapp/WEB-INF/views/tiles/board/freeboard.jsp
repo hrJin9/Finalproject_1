@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="freeboard_header.jsp"%> 
 <%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mdb.min.css"> --%>
+<link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
+
 <style type="text/css">
 
 
@@ -427,6 +429,184 @@ div.datebox > span > input {
 div.toastui-editor-mode-switch {
     display: none !important;
 }
+
+
+	/* 조직도 */
+	.groupIcon {
+		border: 1px solid #f7f7f7;
+		padding: 15px;
+		margin-bottom: 20px;
+		margin-right: 10px;
+		width: 18px;  
+		height: 18px; 
+		border-radius: 10px;
+		float: left;
+		
+		display: block; 
+		position: absolute; 
+		left: 119%;
+		font-size: 9pt; 
+		background-color: #f7f7f7;
+	} 	
+	
+	.menu {
+		position: absolute;
+        top: 45px;
+	    right: 0;
+	    height: 100vh;
+	    max-width: 0;
+	    z-index: 1;
+	    background-color: white;
+	    border: none;
+	}
+	
+	.burger-icon {
+	    cursor: pointer;
+	    display: inline-block;
+	    position: absolute;
+	    z-index: 2;
+	    padding: 8px 0px;
+	    top: 5px;
+	    right: 6px;
+	    user-select: none;
+	    width: auto;
+	    margin: 0;
+	}
+	
+	.burger-icon .burger-sticks {
+	  background: #333;
+	  display: block;
+	  height: 2px;
+	  position: relative;
+	  transition: background .2s ease-out;
+	  width: 18px;
+	}
+	
+	.burger-icon .burger-sticks:before,
+	.burger-icon .burger-sticks:after {
+	  background: #333;
+	  content: '';
+	  display: block;
+	  height: 100%;
+	  position: absolute;
+	  transition: all .2s ease-out;
+	  width: 100%;
+	}
+	
+	.burger-icon .burger-sticks:before {
+	  top: 5px;
+	}
+	
+	.burger-icon .burger-sticks:after {
+	  top: -5px;
+	}
+	
+	.burger-check {
+	  display: none;
+	}
+	
+	.burger-check:checked~.menu {
+	    max-width: 325px;
+	    border: 1px solid #eeeeee;
+	}
+	
+	.burger-check:checked~.burger-icon .burger-sticks {
+	  background: transparent;
+	}
+	
+	.burger-check:checked~.burger-icon .burger-sticks:before {
+	  transform: rotate(-45deg);
+	}
+	
+	.burger-check:checked~.burger-icon .burger-sticks:after {
+	  transform: rotate(45deg);
+	}
+	
+	.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:before,
+	.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:after {
+	  top: 0;
+	}
+	
+	.table>:not(:first-child){
+		border-top: solid 1px #eeeeee !important;
+	}
+	
+	.orgmenu {
+		cursor: pointer;
+		text-decoration: none;
+		list-style: none;
+		color: #556372;
+	    font-size: 10.5pt;
+    	/* line-height: 2px; */
+	}
+	
+	li {
+		line-height: 24.2px;
+	}
+	
+	li::marker {
+	    color: #cccccc;
+	    font-size: 12pt;
+	}
+	
+	.summary {
+		padding-bottom: 8px; 
+		/* font-weight: bold;  */
+		font-size: 11pt;
+		color: #4C4E54;
+	}
+	
+	.unfold {
+		padding-top: 10px;
+		font-weight: bold;
+		font-size: 10pt;
+		color: #4c4e54;
+		position: relative;
+	}
+	
+	#cntbadge{
+	    background-color: #e6e6e6;
+	    padding: 0.5em 0.5em;
+	    width: 12.5px;
+	    height: 15px;
+	    font-weight: 600;
+	    color: #fbfbfb;
+	    display: inline-block;
+	    border-radius: 0.25rem;
+	    box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+	    position: relative;
+	    top: 9.3px;
+	    left: 5px;
+	}
+	  #newCnt{
+	    font-size: 5pt;
+	    color: #4C4E54;
+	    position: relative;
+	    top: -10px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    flex-shrink: 0;
+	    isolation: isolate;
+   }
+   
+   .unfoldAlert {
+   		border: 1px solid #f7f7f7;
+	    padding: 6.3px;
+	    text-align: center;
+	    width: 106px;
+	    height: 30px;
+	    border-radius: 8px;
+	    background-color: #4d4d4d;
+	    color: #f2f2f2;
+	    font-size: 8.5pt;
+	    position: relative;
+	    top: 1.3px;
+	    left: 194px;
+   }
+
+
+
 </style>
 
 <script type="text/javascript">
@@ -585,6 +765,23 @@ $(document).ready(function(){
 	});
 	
 	
+	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
+	$("input#burger-check").change(function(){
+	    if($("#burger-check").is(":checked")){
+	        $(".big").css({'width':'86.2%'});
+	        $(".menucontent").css({'visibility':'visible'});
+	    }else{
+	        $(".big").css({'width':'100%'});
+	        $(".menucontent").css({'visibility':'hidden'});
+	    }
+	});  
+	
+	// 모든 조직 펼치기
+	$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
+		$(".summary").click();      // 모든 조직의 summary 클릭
+	});
+	
+	
 });//end of ready
 
 <%-- 카테고리 멀티 셀렉터 열리고 닫히고  --%>
@@ -632,20 +829,20 @@ function goSearch(){
 			<div class="row" style="float: right;position: relative;left: -120px;" >
 			
 				<div class="form-group mr-1">
-						<div class="form-field">
-							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
-								<option value="" selected>전체</option>
-								<option value="">작성자</option>
-								<option value="">제목</option>
-								<option value="">제목+내용</option>
-							</select>
-						</div>
+					<div class="form-field">
+						<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
+							<option value="" selected>전체</option>
+							<option value="">작성자</option>
+							<option value="">제목</option>
+							<option value="">제목+내용</option>
+						</select>
 					</div>
+				</div>
 				<div class="">
 					<div class="form-group">
 						<div class="form-field">
 							<!-- <div class="icon"><span class="fa fa-search"></span></div> --> 
-							<input type="text" class="form-control" placeholder="제목/작성자/팀으로 검색" style="width:193%; font-size: 9pt; padding:6px 12px;padding-left: 45px;">
+							<input type="text" class="form-control" placeholder="제목/작성자/팀으로 검색" style="width:162%; font-size: 9pt; padding:6px 12px;padding-left: 45px;">
 						</div>
 					</div>
 				</div>
@@ -656,10 +853,69 @@ function goSearch(){
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group" style="font-size: 10pt;margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 253%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 164%;"></a>
 					</div>
 				</div>
-			</div>
+				<div style="display: block;">
+					<span class="groupIcon">
+						<input class="burger-check" type="checkbox" id="burger-check" />
+						<label class="burger-icon" for="burger-check"><span class="burger-sticks"></span></label>
+						<div class="menu">
+							<div class="menucontent" style="width: 340px; visibility: hidden; padding: 27px 0px 10px 38px;">
+								<div style="font-size: 12pt; font-weight: bold; color: #4C4E54; padding-bottom: 27px;">
+									<span style="padding-right: 190px;">내게시물</span>
+									 <table>
+									<!-- 안읽은 메시지 -->
+									<tr class="mg-unread"> <!-- mg-unread, mg-read 클래스만 다르게 주면 됨! -->
+										<td width="3%"><input id="mg-selectchx0" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx0"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
+										<td width="3%">
+											<input id="check-star0" type="checkbox" name="check-star" style="display: none;"/>
+											<label for="check-star0" class="check-star">
+												<i class="icon icon-star-empty"></i>
+											</label>
+										</td>
+										<td width="72%">
+											<div>
+												<span>메시지 제목</span>
+												<span><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
+											</div>
+											<div><span>진혜린</span>·<span>마케팅</span></div>
+										</td>
+										<td width="22%">
+											<div>2022. 11. 13</div>
+											<div><span>10</span>MB</div>
+										</td>
+									</tr>
+									
+									<!-- 읽은 메시지 -->
+									<c:forEach var="i" begin="1" end="9">
+										<tr class="mg-read">
+											<td width="3%"><input id="mg-selectchx${i}" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx${i}"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
+											<td width="3%">
+												<input id="check-star${i}" type="checkbox" name="check-star" style="display: none;"/>
+												<label for="check-star${i}" class="check-star">
+													<i class="icon icon-star-empty"></i>
+												</label>
+											</td>
+											<td width="72%">
+												<div><span>메시지 제목</span><span><i class="fas fa-paperclip"></i></span></div>
+												<div><span>진혜린</span>·<span>마케팅</span></div>
+											</td>
+											<td width="22%">
+												<div>2022. 11. 13</div>
+												<div><span>10</span>MB</div>
+											</td>
+										</tr>
+									</c:forEach>
+								</table>
+									
+									
+								</div>
+							</div>
+						</div>
+		            </span>
+				  </div>
+				</div>
 		
 				
 		   <div id="option" class="option">

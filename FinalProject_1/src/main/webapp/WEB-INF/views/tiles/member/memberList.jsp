@@ -360,14 +360,6 @@
 			$(".summary").click();      // 모든 조직의 summary 클릭
 		});
 		
-		/* $(".unfold").hover(function(){
-	      	$(".unfoldAlert").css('display':'block');
-		});
-		$(".unfold").unhover(function(){
-	      	$(".unfoldAlert").css('display':'none');
-		}); */
-			 
-			
 	});// end of$(document).ready(function(){})--------------------------
 	   
 	      
