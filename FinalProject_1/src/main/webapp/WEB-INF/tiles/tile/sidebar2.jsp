@@ -32,10 +32,10 @@
 
 <div class="sidebar2">
 	<div id="list-example" class="list-group bookmark">
-	  <a class="list-group-item list-group-item-action" href="" style="padding-left: 10px; font-size: 15px;"><i class="fas fa-user-friends"></i></a>
-	  <a class="list-group-item list-group-item-action" href="<%= ctxPath%>/approval/writing.up" style="padding-left: 12px; font-size: 18px;"><i class="far fa-file-alt"></i></a>
+	  <a class="list-group-item list-group-item-action" href="<%= ctxPath%>/calendar_todo.up" style="padding-left: 10px; font-size: 18px;"><i class="icon icon-clipboard"></i></a>
+	  <a class="list-group-item list-group-item-action" href="<%= ctxPath%>/approval/writing.up" style="padding-left: 10px; font-size: 18px;"><i class="icon icon-file-text2"></i></a>
 	  <a class="list-group-item list-group-item-action" href="<%= ctxPath%>/message/write.up" style="padding-left: 10px; font-size: 18px;"><i class="far fa-envelope"></i></a>
-	  <a class="list-group-item list-group-item-action" href="#" style="padding-left: 10px; font-size: 18px;"><i class="far fa-comment-dots"></i></a>
+	  <a class="list-group-item list-group-item-action" href="<%= ctxPath%>/freeboard.up" style="padding-left: 10px; font-size: 18px;"><i class="icon icon-pencil2"></i></a>
  	</div>
 </div>
 
