@@ -420,6 +420,13 @@ $(document).ready(function(){
 	$("a#notice").addClass('list_iscurrent');
 	$("#date_total").prop("checked", true);
 	
+	// 헤더 css
+	$("#noticeboard-total").addClass("list_notcurrent");
+	$("#noticeboard-total").removeClass("list_iscurrent");
+	$("#noticeboard-team").addClass("list_iscurrent");
+	$("#noticeboard-team").removeClass("list_notcurrent");
+	
+	
 	/* 북마크 표시 */
 	  $('.bookmark').click(function(e) {
 		  	const $this = $(this);

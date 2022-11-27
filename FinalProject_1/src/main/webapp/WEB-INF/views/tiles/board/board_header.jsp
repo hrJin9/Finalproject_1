@@ -78,11 +78,12 @@
 	    font-size: 11pt;
 	    font-weight: bold;
 	}
-	#subList a:nth-child(1).iscurrent ~ .subList_underline {
-		left: 0%;
+	#subList a:nth-child(1).list_iscurrent ~ .subList_underline {
+		left: 2%;
 	}
-	#subList a:nth-child(2).iscurrent ~ .subList_underline {
-		left: 10.5%; /* width랑 margin-left랑 합친거 */
+	#subList a:nth-child(2).list_iscurrent ~ .subList_underline {
+		left: 16.2%; /* width랑 margin-left랑 합친거 */
+		width: 8%;
 	}
 	
 	.newbadge{

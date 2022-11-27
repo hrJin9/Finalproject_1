@@ -31,10 +31,9 @@
 		display: block;
 		width: 24%;
 		padding: 0.7em 0 0.3em 0;
-		color: #333;
 		text-decoration: none;
 		margin-right: 4%;
-		color: black;
+		color: #4d4f53;
 	}
 	
 	/* 검색 */
@@ -452,7 +451,7 @@
 	</form>
 		
 	<%-- 전체 구성원 --%>
-	<div style="margin-bottom: 15px; float: left;">
+	<div style="margin-bottom: 15px; float: left; color: #4d4f53; font-weight: 700;">
 		<span style="margin: 0 12px 0 23px;">
 			<input type="checkbox" id="memberAll" onClick="allCheckBox();" />
 		</span>
