@@ -21,94 +21,89 @@
 	
 </style>
 <script>
-	$(document).ready(function(){
-		//헤더 css
-		$("#mg-recieve").addClass("iscurrent");
-		$("#mg-recieve").css("color","black");
-		
-		// 체크박스 개수
-		var total = $("input[name='mg-selectchx']").length;
-		// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
-		$("#mg-selectchx-all").change(function(){
-			if($("#mg-selectchx-all").is(":checked")){
-				$("input[name='mg-selectchx']").prop("checked",true);
-				show_checkmenu();
-				$("#check_ctn").text(total);
-				
-			} else {
-				$("input[name='mg-selectchx']").prop("checked",false);
-				show_noncheckmenu();
-			}
-		});
-		
-		$("input[name='mg-selectchx']").change(function() {
-			var checked = $("input[name='mg-selectchx']:checked").length;
-			show_checkmenu();
+$(document).ready(function(){
+	// 체크박스 개수
+	var total = $("input[name='mg-selectchx']").length;
+	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
+	$("#mg-selectchx-all").change(function(){
+		if($("#mg-selectchx-all").is(":checked")){
+			$("input[name='mg-selectchx']").prop("checked",true);
+			parent.show_checkmenu();
+			$("#check_ctn").text(total);
 			
-			if(checked<=0)
-				show_noncheckmenu();
-			$("#check_ctn").text(checked);
-			
-			if(total != checked)
-				$("#mg-selectchx-all").prop("checked", false);
-			else
-				$("#mg-selectchx-all").prop("checked", true); 
-			
-		});
-		
-		//툴팁 사용
-		var tooltipel = $(".tp").tooltip();
-		
-		
-		// 중요표시 별표
-		$(".check-star").click(function(){
-			const itag = $(this).find("i");
-			if ( itag.hasClass('icon-star-empty') ) {
-				itag.removeClass('icon-star-empty');
-				itag.addClass('icon-star-full');
-				itag.css("color","#ffc107");  	
-			} else {
-		  		itag.removeClass('icon-star-full');
-		  		itag.addClass('icon-star-empty');
-		  		itag.css("color",""); 
-		  	}
-		});
-		
-		
-		//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
-		$(".mgList-contents tr").click(function(e){
-			if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *")) return; //중요표시나 체크박스 클릭시 함수 종료
-			alert("페이지이동");
-		});
-		
-		
-		
-		
-		
-	}); //end of ready
+		} else {
+			$("input[name='mg-selectchx']").prop("checked",false);
+			parent.show_noncheckmenu();
+		}
+	});
 	
-	// 체크했을 때 보이는 메뉴
-	function show_checkmenu(){
-		$(".mg-noncheckmenu").hide();
-		$(".mg-checkmenu").fadeIn("fast");
-		$(".fa-check").css("visibility","visible");
-	}
+	$("input[name='mg-selectchx']").change(function() {
+		var checked = $("input[name='mg-selectchx']:checked").length;
+		parent.show_checkmenu();
+		
+		if(checked<=0)
+			parent.show_noncheckmenu();
+		$("#check_ctn").text(checked);
+		
+		if(total != checked)
+			$("#mg-selectchx-all").prop("checked", false);
+		else
+			$("#mg-selectchx-all").prop("checked", true); 
+		
+	});
 	
-	// 체크안할 때 보이는 메뉴
-	function show_noncheckmenu(){
-		$(".mg-checkmenu").hide();
-		$(".mg-noncheckmenu").fadeIn("fast");
-		$(".fa-check").css("visibility","hidden");
-	}
+	//툴팁 사용
+	var tooltipel = $(".tp").tooltip();
+	
+	
+	// 중요표시 별표
+	$(".check-star").click(function(){
+		const itag = $(this).find("i");
+		if ( itag.hasClass('icon-star-empty') ) {
+			itag.removeClass('icon-star-empty');
+			itag.addClass('icon-star-full');
+			itag.css("color","#ffc107");  	
+		} else {
+	  		itag.removeClass('icon-star-full');
+	  		itag.addClass('icon-star-empty');
+	  		itag.css("color",""); 
+	  	}
+	});
+	
+	
+	//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
+	$(".mgList-contents tr").click(function(e){
+		if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *")) return; //중요표시나 체크박스 클릭시 함수 종료
+		alert("페이지이동");
+	});
+	
+});//end of ready
+
+//체크했을 때 보이는 메뉴
+function show_checkmenu(){
+	$(".mg-noncheckmenu").hide();
+	$(".mg-checkmenu").fadeIn("fast");
+	$(".fa-check").css("visibility","visible");
+}
+
+// 체크안할 때 보이는 메뉴
+function show_noncheckmenu(){
+	$(".mg-checkmenu").hide();
+	$(".mg-noncheckmenu").fadeIn("fast");
+	$(".fa-check").css("visibility","hidden");
+}
 	
 </script>
+
+
+
 
 <div class="message-container">
 	<div class="mg-left-container">
 		<div class="mgList-info">
-			<span class="mg-current">전체<span>10</span></span>
-			<span>안읽음<span>5</span></span>
-			<span>중요<span>2</span></span>
+			<span id="all" class="mg-current">전체<span>10</span></span>
+			<span id="unread">안읽음<span>5</span></span>
+			<span id="scrap">중요<span>2</span></span>
 			<div class="mg-search">
 				<form action="#" class="mg-form">
 				<%-- 검색 --%>
@@ -163,45 +158,34 @@
 			</div>
 			<div class="mgList-contents">
 				<table>
-					<!-- 안읽은 메시지 -->
-					<tr class="mg-unread"> <!-- mg-unread, mg-read 클래스만 다르게 주면 됨! -->
-						<td width="3%"><input id="mg-selectchx0" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx0"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
-						<td width="3%">
-							<input id="check-star0" type="checkbox" name="check-star" style="display: none;"/>
-							<label for="check-star0" class="check-star">
-								<i class="icon icon-star-empty"></i>
-							</label>
-						</td>
-						<td width="72%">
-							<div>
-								<span>메시지 제목</span>
-								<span><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
-							</div>
-							<div><span>진혜린</span>·<span>마케팅</span></div>
-						</td>
-						<td width="22%">
-							<div>2022. 11. 13</div>
-							<div><span>10</span>MB</div>
-						</td>
-					</tr>
-					
-					<!-- 읽은 메시지 -->
-					<c:forEach var="i" begin="1" end="9">
-						<tr class="mg-read">
-							<td width="3%"><input id="mg-selectchx${i}" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx${i}"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
+					<c:forEach var="mvo" items="${requestScope.mvoList}">
+						<c:if test="${empty mvo.ms_checktime}">
+							<tr class="mg-unread">
+						</c:if>
+						<c:if test="${not empty mvo.ms_checktime}">
+							<tr class="mg-read">
+						</c:if>
+							<td width="3%"><input id="mg-selectchx0" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx0"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
 							<td width="3%">
-								<input id="check-star${i}" type="checkbox" name="check-star" style="display: none;"/>
-								<label for="check-star${i}" class="check-star">
+								<input id="check-star0" type="checkbox" name="check-star" style="display: none;"/>
+								<label for="check-star0" class="check-star">
 									<i class="icon icon-star-empty"></i>
 								</label>
 							</td>
 							<td width="72%">
-								<div><span>메시지 제목</span><span><i class="fas fa-paperclip"></i></span></div>
-								<div><span>진혜린</span>·<span>마케팅</span></div>
+								<div>
+									<span>${mvo.subject}</span>
+									<c:if test="${not empty mvo.file_size}">
+										<span><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
+									</c:if>
+								</div>
+								<div><span>${mvo.w_name}</span>·<span>${mvo.w_deptname}</span></div>
 							</td>
 							<td width="22%">
-								<div>2022. 11. 13</div>
-								<div><span>10</span>MB</div>
+								<div>${mvo.ms_sendtime}</div>
+								<c:if test="${not empty mvo.file_size}">
+									<div><span>${mvo.file_size}</span>MB</div>
+								</c:if>
 							</td>
 						</tr>
 					</c:forEach>

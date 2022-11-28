@@ -5,11 +5,11 @@
 <style type="text/css">
 
 	.btn:hover{color: white;}
-	.currentPage{color:black;}
-	#message{color:black !important;}
+	.currentPage{color:#4d4f53;}
+	#message{color:#4d4f53 !important;}
 	
 	#mainList a:hover{
-		color: #000000;
+		color: #4d4f53;
 		cursor: pointer;
 	}
 	
@@ -29,15 +29,14 @@
 		display: block;
 		width: 11%;
 		padding: 0.7em 0 0.3em 0;
-		color: #333;
 		text-decoration: none;
 		margin-right: 4%;
-		color: #D2D6D9;
+		color: #4d4f53;
 	}
 	
 	
 	.iscurrent{
-		color: black;
+		color: #4d4f53;
 	}
 	
 	#subList{
@@ -52,7 +51,6 @@
 		display: block;
 		width: 12%;
 		padding: .9em 0;
-		color: #333;
 		text-align: center;
 		text-decoration: none;
 		color: #D2D6D9;
@@ -66,7 +64,7 @@
 		bottom: -1px;
 		width: 11%;
 		height: 2px;
-		background: #333;
+		background: #4d4f53;
 		transition: all .3s ease-in-out;
 		margin-right: 5%;
 	}

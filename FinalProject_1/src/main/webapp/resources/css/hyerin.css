@@ -1402,6 +1402,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mgList-info{
 	padding: 10px 0;
 	margin-left: 12%;
+	color: #4d4f53;
 }
 
 #mg-filter{ 
@@ -1552,7 +1553,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	overflow-y: scroll;
 }
 
-.mgList-contents > table {
+.mgList-contents table {
 	width: 95%;
 }
 
@@ -1603,6 +1604,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	width: 95%;
 	margin-left: 2.5%;
 	margin-top: 3%;
+	color: #4d4f53;
 }
 
 .mgc-header{
@@ -1680,6 +1682,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mgc-ac {
 	margin-left: 3%;
 	font-size: 10pt !important;
+	color: #4d4f53;
 }
 
 .mgc-ac button {
@@ -2018,6 +2021,5 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	color: rgba(0,0,0,0.7);
 	font-weight: 600;
 }
-
 
 
