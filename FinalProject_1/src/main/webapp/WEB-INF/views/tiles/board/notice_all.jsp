@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="board_header.jsp"%> 
-
+<link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <style type="text/css">
 
 
@@ -128,7 +129,7 @@ div.option {
     font-size: 18pt;
     box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
     position: absolute;
-    top: 15%;
+    top: 28.5%;
     left: 55.5%;
     z-index: 2;
     overflow:hidden;
@@ -364,6 +365,266 @@ div.datebox > span > input {
 	border-left: none;
 	border-right: none;
 }
+
+
+
+
+/* 조직도 */
+.groupIcon {
+	border: 1px solid #f7f7f7;
+	padding: 15px;
+	margin-bottom: 20px;
+	margin-right: 10px;
+	width: 18px;  
+	height: 18px; 
+	border-radius: 10px;
+	float: left;
+	
+	display: block; 
+	position: absolute; 
+	left: 119%;
+	font-size: 9pt; 
+	background-color: #f7f7f7;
+} 	
+
+.menu {
+	position: absolute;
+       top: 45px;
+    right: 0;
+    height: 100vh;
+    max-width: 0;
+    z-index: 1;
+    background-color: white;
+    border: none;
+}
+
+.burger-icon {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    z-index: 2;
+    padding: 8px 0px;
+    top: 5px;
+    right: 6px;
+    user-select: none;
+    width: auto;
+    margin: 0;
+}
+
+.burger-icon .burger-sticks {
+  background: #333;
+  display: block;
+  height: 2px;
+  position: relative;
+  transition: background .2s ease-out;
+  width: 18px;
+}
+
+.burger-icon .burger-sticks:before,
+.burger-icon .burger-sticks:after {
+  background: #333;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all .2s ease-out;
+  width: 100%;
+}
+
+.burger-icon .burger-sticks:before {
+  top: 5px;
+}
+
+.burger-icon .burger-sticks:after {
+  top: -5px;
+}
+
+.burger-check {
+  display: none;
+}
+
+.burger-check:checked~.menu {
+    max-width: 325px;
+    border: 1px solid #eeeeee;
+}
+
+.burger-check:checked~.burger-icon .burger-sticks {
+  background: transparent;
+}
+
+.burger-check:checked~.burger-icon .burger-sticks:before {
+  transform: rotate(-45deg);
+}
+
+.burger-check:checked~.burger-icon .burger-sticks:after {
+  transform: rotate(45deg);
+}
+
+.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:before,
+.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:after {
+  top: 0;
+}
+
+.table>:not(:first-child){
+	border-top: solid 1px #eeeeee !important;
+}
+
+.orgmenu {
+	cursor: pointer;
+	text-decoration: none;
+	list-style: none;
+	color: #556372;
+    font-size: 10.5pt;
+   	/* line-height: 2px; */
+}
+
+li {
+	line-height: 24.2px;
+}
+
+li::marker {
+    color: #cccccc;
+    font-size: 12pt;
+}
+
+.summary {
+	padding-bottom: 8px; 
+	/* font-weight: bold;  */
+	font-size: 11pt;
+	color: #4C4E54;
+}
+
+.unfold {
+	padding-top: 10px;
+	font-weight: bold;
+	font-size: 10pt;
+	color: #4c4e54;
+	position: relative;
+}
+
+#cntbadge{
+    background-color: #e6e6e6;
+    padding: 0.5em 0.5em;
+    width: 12.5px;
+    height: 15px;
+    font-weight: 600;
+    color: #fbfbfb;
+    display: inline-block;
+    border-radius: 0.25rem;
+    box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+    position: relative;
+    top: 9.3px;
+    left: 5px;
+}
+  #newCnt{
+    font-size: 5pt;
+    color: #4C4E54;
+    position: relative;
+    top: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    isolation: isolate;
+  }
+  
+  .unfoldAlert {
+  		border: 1px solid #f7f7f7;
+    padding: 6.3px;
+    text-align: center;
+    width: 106px;
+    height: 30px;
+    border-radius: 8px;
+    background-color: #4d4d4d;
+    color: #f2f2f2;
+    font-size: 8.5pt;
+    position: relative;
+    top: 1.3px;
+    left: 194px;
+  }
+
+
+.myscrap{
+	width: 487px;
+	height: 435px;
+	border-top: solid 2px #d4d5d6;
+	border-left: solid 1px #d4d5d6;
+	z-index: 1;
+	background-color: white;
+	color: #4c4e54;
+	position: relative; top: 25px; right: 476px;
+	display: none;
+}
+
+.mgList, .mgList-info {
+	margin-left: 7%;
+}
+
+.mgList-info {
+	font-size: 11pt;
+}
+
+.mg-current{
+	font-weight: bold;
+}
+
+.mgList-contents{
+	height: 330px;
+}
+
+.ms-check + label i{
+	color: rgba(0,0,0,0.2);
+	font-size: 11pt;
+}
+
+.check-star{
+	font-size: 13pt;
+	color: rgba(0,0,0,0.3);
+	position: relative; bottom: 2px;
+}
+
+.ms-check + label i:hover, .check-star:hover{
+	cursor: pointer;
+}
+
+.ms-check + label:hover{color:#37A652;}
+.check-star:hover{color:#ffc107;}
+
+.mgList-contents td:first-child ~ td{
+	padding: 7px 5px;
+}
+
+.mg-noncheckmenu{
+	font-size: 10pt;
+}
+
+.mg-left-container{
+	border: none;
+}
+
+.myscrap-top{
+	position: absolute;
+	top: 20%;
+	height: 2px;
+	border: none;
+	background-color: red;
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+}
+
+
 </style>
 
 <script type="text/javascript">
@@ -530,10 +791,110 @@ $(document).ready(function(){
 			if(this.checked)
 				this.checked = false;
         });
-	})
+	});
+	
+	
+	//툴팁 사용
+	var tooltipel = $(".tp").tooltip();
+	
+	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
+	$("input#burger-check").change(function(){
+	    if($("#burger-check").is(":checked")){
+	        $(".table").css({'width':'62.5%','margin-top':'32px'});
+	        $(".table th:nth-child(2)").attr("width","11%");
+	        $(".myscrap").fadeIn(100);
+	        
+	    } else{
+	        $(".table").css({'width':'100%','margin-top':''});
+	        $(".table th:nth-child(2)").attr("width","6%");
+	        $(".myscrap").fadeOut(100);
+	    }
+	});  
+	
+	
+	// 별 중요표시
+	$(".check-star").click(function(){
+		const itag = $(this).find("i");
+		if ( itag.hasClass('icon-star-empty') ) {
+			itag.removeClass('icon-star-empty');
+			itag.addClass('icon-star-full');
+			itag.css({"color":"#ffc107","transition":"all .2s"});  	
+		} else {
+	  		itag.removeClass('icon-star-full');
+	  		itag.addClass('icon-star-empty');
+	  		itag.css({"color":"","transition":"all .2s"});  
+	  	}
+	});
+	
+	// 체크박스 개수
+	var total = $("input[name='ms-check']").length;
+	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
+	$("#ms-checkall").change(function(){
+		const itag = $("input[name='ms-check']").next().find("i");
+		
+		if($("#ms-checkall").is(":checked")){
+			$("input[name='ms-check']").prop("checked",true);
+			ms_check(itag); ms_check($(this).next().find("i"));
+			show_checkmenu();
+			$("#check_ctn").text(total);
+			
+		} else {
+			$("input[name='ms-check']").prop("checked",false);
+			ms_uncheck(itag); ms_uncheck($(this).next().find("i"));
+			show_noncheckmenu();
+		}
+	});
+	
+	$("input[name='ms-check']").change(function(e) {
+		const itag = $(e.target).next().find("i");
+		var checked = $("input[name='ms-check']:checked").length;
+		
+		ms_check(itag);
+		show_checkmenu();
+		if(!$(e.target).is(":checked")){
+			ms_uncheck(itag);
+		}		
+		
+		if(checked<=0)
+			show_noncheckmenu();
+		$("#check_ctn").text(checked);
+		
+		if(total != checked){
+			$("#ms-checkall").prop("checked", false);
+			ms_uncheck($("#ms-checkall").next().find("i"));
+		} else {
+			$("#ms-checkall").prop("checked", true);
+			ms_check($("#ms-checkall").next().find("i"));
+		}
+	});
 	
 	
 });//end of ready
+
+//체크박스  css변경 이벤트
+function ms_check(itag){
+	itag.removeClass("icon-checkbox-unchecked");
+	itag.addClass("icon-checkbox-checked");
+	itag.css({"color":"#37A652","transition":"all .2s"});
+}
+
+function ms_uncheck(itag){
+	itag.removeClass("icon-checkbox-checked");
+	itag.addClass("icon-checkbox-unchecked");
+	itag.css({"color":"rgba(0,0,0,0.2)","transition":"all .2s"});  
+}
+
+//체크했을 때 보이는 메뉴
+function show_checkmenu(){
+	$(".mg-noncheckmenu").hide();
+	$(".mg-checkmenu").fadeIn("fast");
+}
+
+// 체크안할 때 보이는 메뉴
+function show_noncheckmenu(){
+	$(".mg-checkmenu").hide();
+	$(".mg-noncheckmenu").fadeIn("fast");
+}
 
 <%-- 카테고리 멀티 셀렉터 열리고 닫히고  --%>
 function multiSelect(value){
@@ -593,7 +954,7 @@ function goSearch(){
 					<div class="form-group">
 						<div class="form-field">
 							<!-- <div class="icon"><span class="fa fa-search"></span></div> --> 
-							<input type="text" class="form-control" placeholder="제목/작성자/팀으로 검색" style="width:193%; font-size: 9pt; padding:6px 12px;padding-left: 45px;">
+							<input type="text" class="form-control" placeholder="제목/작성자/팀으로 검색" style="width:162%; font-size: 9pt; padding:6px 12px;padding-left: 45px;">
 						</div>
 					</div>
 				</div>
@@ -604,9 +965,69 @@ function goSearch(){
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group" style="font-size: 10pt;margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 253%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 157%;"></a>
 					</div>
 				</div>
+				<div style="display: block;">
+					<div class="groupIcon">
+						<input class="burger-check" type="checkbox" id="burger-check" />
+						<label class="burger-icon" for="burger-check"><span class="burger-sticks"></span></label>
+						
+						<div class="myscrap">
+							<div class="mg-left-container">
+								<div class="mgList-info">
+									<span class="mg-current" style="width: 16%;">중요<span>1</span></span>
+									<span style="width: 28%;">내게시물<span>2</span></span>
+								</div>
+								<hr class="HRhr" style="margin: 0;"/>
+								<div class="mgList">
+									<div class="mgList-menu">
+										<input id="ms-checkall" type="checkbox" class="ms-check" style="display: none;"/>
+										<label for="ms-checkall" style="margin: auto;">
+											<i class="icon icon-checkbox-unchecked"></i>
+										</label>
+										<div class="mg-menucontainer" style="height: 30px;">
+											<div class="mg-noncheckmenu" style="margin-left: 10px;">
+												<span>9</span>	<!-- 전체수량 -->
+											</div>
+											<div class="mg-checkmenu" style="display: none; margin-left: 10px;">
+												<button class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="삭제"><i class="fas fa-trash" style="bottom: 3px; right: 1px;"></i></button> <!-- 삭제 -->
+												<span style="margin-left: 315px;"><span id="check_ctn"></span>개 선택</span>
+											</div>
+										</div>
+									</div>
+									<div class="mgList-contents">
+										<table>
+											<c:forEach var="i" begin="1" end="9">
+												<tr>
+													<td width="3%">
+														<input id="ms-check${i}" class="ms-check" type="checkbox" name="ms-check" style="display: none;"/><label for="ms-check${i}"><i class="icon icon-checkbox-unchecked"></i></label>
+													</td>
+													<td width="3%">
+														<input id="check-star${i}" type="checkbox" name="check-star" style="display: none;"/>
+														<label for="check-star${i}" class="check-star">
+															<i class="icon icon-star-empty"></i>
+														</label>
+													</td>
+													<td width="72%">
+														<div><span>글제목</span><span><i class="fas fa-paperclip"></i></span></div>
+														<div><span>진혜린</span>·<span>마케팅</span></div>
+													</td>
+													<td width="22%">
+														<div>11. 13</div>
+													</td>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+									<div class="mg-paging">
+										페이징할거..
+									</div>
+								</div>
+							</div>
+						</div>
+		            </div>
+				  </div>
 			</div>
 		
 				
@@ -726,7 +1147,7 @@ function goSearch(){
 </form>
 
 		
-        <table class="table">
+        <table class="table" style="height: 450px;">
           <thead>
             <tr>
               <th width="80%"scope="col"/>

@@ -149,7 +149,7 @@ input {
 
 /* ===  옵션창  === */
 div.option {
-    border: 1px solid #b0b0b0d9;
+    border: 0px solid #b0b0b0d9;
     padding: 20px;
     margin-bottom: 22px;
     width: 600px;  
@@ -160,7 +160,7 @@ div.option {
     font-size: 18pt;
     box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
     position: absolute;
-    top: 15%;
+    top: 25.5%;
     left: 55.5%;
     z-index: 2;
     overflow:hidden;
@@ -591,14 +591,14 @@ div.toastui-editor-mode-switch {
    }
 
 	.myscrap{
-		width: 300px;
+		width: 487px;
 		height: 435px;
 		border-top: solid 2px #d4d5d6;
 		border-left: solid 1px #d4d5d6;
-		z-index: 9999;
+		z-index: 1;
 		background-color: white;
 		color: #4c4e54;
-		position: relative; top: 25px; right: 282px;
+		position: relative; top: 25px; right: 476px;
 		display: none;
 	}
 	
@@ -818,13 +818,13 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".custom-table").css({'width':'77.1%'});
-	        $(".custom-table th:nth-child(2)").attr("width","8%");
+	        $(".table").css({'width':'62.5%','margin-top':'32px'});
+	        $(".table th:nth-child(2)").attr("width","8%");
 	        $(".myscrap").fadeIn(100);
 	        
 	    } else{
-	        $(".custom-table").css({'width':'100%'});
-	        $(".custom-table th:nth-child(2)").attr("width","6%");
+	        $(".table").css({'width':'100%','margin-top':''});
+	        $(".table th:nth-child(2)").attr("width","6%");
 	        $(".myscrap").fadeOut(100);
 	    }
 	});  
@@ -1018,7 +1018,7 @@ function goSearch(){
 											</div>
 											<div class="mg-checkmenu" style="display: none; margin-left: 10px;">
 												<button class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="삭제"><i class="fas fa-trash" style="bottom: 3px; right: 1px;"></i></button> <!-- 삭제 -->
-												<span style="margin-left: 150px;"><span id="check_ctn"></span>개 선택</span>
+												<span style="margin-left: 315px;"><span id="check_ctn"></span>개 선택</span>
 											</div>
 										</div>
 									</div>
@@ -1178,7 +1178,7 @@ function goSearch(){
 </form>
 
 		
-        <table class="table custom-table">
+        <table class="table">
           <thead>
             <tr>
               <th width="80%"scope="col"/>
