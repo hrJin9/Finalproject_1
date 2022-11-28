@@ -4,6 +4,7 @@
 <% String ctxPath = request.getContextPath(); %>    
   
 <style type="text/css">
+	/* === 헤더 css === */
 	#mainList a:hover{
 		color: #000000;
 		cursor: pointer;
@@ -78,13 +79,16 @@
 	    font-size: 11pt;
 	    font-weight: bold;
 	}
-	#subList a:nth-child(1).iscurrent ~ .subList_underline {
-		left: 0%;
+	#subList a:nth-child(1).list_iscurrent ~ .subList_underline {
+		left: 2%;
 	}
-	#subList a:nth-child(2).iscurrent ~ .subList_underline {
-		left: 10.5%; /* width랑 margin-left랑 합친거 */
+	#subList a:nth-child(2).list_iscurrent ~ .subList_underline {
+		left: 16.2%; /* width랑 margin-left랑 합친거 */
+		width: 8%;
 	}
 	
+	
+	/* 최근글 new 아이콘  */
 	.newbadge{
 	  background-color: #dc3545;
 	  width: 12px;
@@ -101,12 +105,14 @@
 	  top: 3px;
 	  margin-right: 14px;
 	}
+	
 	.titlefirst{
 		font-weight: 600;
 		font-size:11.5pt;
 		padding-top:5px;
-		/* padding-bottom: 9px; */
 	}
+	
+	
 	.categorybadge{
 	  background-color: #30353f;
 	  padding: 1px 15px;
@@ -120,14 +126,9 @@
 	  position: relative;
 	  margin-right: 5px;
 	  top: 0.5px;
-	  /* top:-2px;
-	  left:10px; */ 
 	  color:white;
-	  /* font-size:0.2rem;
-	  font-weight:bold; 
-	  text-align: center; */
 	}
-	.teamname{
+	.teamname{ /* 작성자  */
 	  color:#6d7077;
 	  font-weight: 600;
 	  position: relative;
@@ -135,11 +136,13 @@
 	  margin-right: 15px;
 	  margin-left: 6px;
 	}
-	.writedate{
+	.writedate{ 
 	  position: relative;
 	  top:2px;
 	  color:#bfbfbf;
 	}
+	
+	/* 	북마크 아이콘  */
 	.icon-star-full{
 		color:#ffc107;
 		padding:0 auto;
@@ -154,6 +157,11 @@
 		position: relative;
 		top:12px;
 	}
+	a.icon-star-empty:hover {
+		color: #ffc107;
+    }
+	
+	/* 좋아요 아이콘  */
 	a#empty-heart:hover, a#full-heart:hover {
 		color: #f53e50;
     }
@@ -163,13 +171,12 @@
 	a, a:hover {
     	text-decoration: none !important;
 	}
-	a.icon-star-empty:hover {
-		color: #ffc107;
-    }
 	.title:hover{
 		cursor: pointer; 
 		text-decoration: underline;
 	}
+	
+	
 	img.boardprofile{
 		border: 0px;
 		border-radius: 17.5px;
@@ -182,6 +189,8 @@
 	button, select {
 	    text-transform: none;
 	}
+	
+	/* 글쓰기 에디터 */ 
 	.toastui-editor-defaultUI-toolbar {
 		background-color: #ffffff;
 	}

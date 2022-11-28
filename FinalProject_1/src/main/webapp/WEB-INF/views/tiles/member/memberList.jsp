@@ -31,10 +31,9 @@
 		display: block;
 		width: 24%;
 		padding: 0.7em 0 0.3em 0;
-		color: #333;
 		text-decoration: none;
 		margin-right: 4%;
-		color: black;
+		color: #4d4f53;
 	}
 	
 	/* 검색 */
@@ -340,7 +339,7 @@
 		document.getElementById("memberCnt").textContent = allCnt;
 	      
 		// 프로필 클릭시 구성원 상세정보 보기로 이동
-		$(".profile").click(function(){
+		$(".detailview").click(function(){
 			location.href= "<%= ctxPath%>/memberInfo_hr.up";
 		});
 		
@@ -360,14 +359,6 @@
 			$(".summary").click();      // 모든 조직의 summary 클릭
 		});
 		
-		/* $(".unfold").hover(function(){
-	      	$(".unfoldAlert").css('display':'block');
-		});
-		$(".unfold").unhover(function(){
-	      	$(".unfoldAlert").css('display':'none');
-		}); */
-			 
-			
 	});// end of$(document).ready(function(){})--------------------------
 	   
 	      
@@ -460,7 +451,7 @@
 	</form>
 		
 	<%-- 전체 구성원 --%>
-	<div style="margin-bottom: 15px; float: left;">
+	<div style="margin-bottom: 15px; float: left; color: #4d4f53; font-weight: 700;">
 		<span style="margin: 0 12px 0 23px;">
 			<input type="checkbox" id="memberAll" onClick="allCheckBox();" />
 		</span>
@@ -480,7 +471,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 				      <span class="pic">
 					      <span>지은</span></span>
 					      <span class="my"><span class="name" style="font-size: 10.8pt;">김지은</span><br>
@@ -497,7 +488,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>혜린</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">진혜린</span><br>
@@ -514,7 +505,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>채영</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
@@ -531,7 +522,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>예은</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
@@ -548,7 +539,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>채영</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
@@ -565,7 +556,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>예은</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>

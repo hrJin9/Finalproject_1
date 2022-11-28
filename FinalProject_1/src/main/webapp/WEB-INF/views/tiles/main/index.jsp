@@ -53,7 +53,8 @@
 		loopshowNowTime();
 		
 		//내피드 글씨 검정색으로 바꾸기
-		$("#main").css("color","black");
+		$("#main").css("color","#4d4f53");
+		$(".boardList_iscurrent").css("color","#4d4f53");
 		
 		// 근무 fadeToggle 이벤트
 		$("#workStatusListBox").fadeOut(100);
@@ -70,8 +71,7 @@
 			});
 		});
 		
-		$(".list_iscurrent").css("color","black");
-		$(".boardList_iscurrent").css("color","black");
+		
 		
 		
 		
@@ -82,16 +82,8 @@
 		if( !(($("#workStatusListBox").has(e.target).length||$("#workStatusChange").has(e.target).length)) ){
 			$("#workStatusListBox").fadeOut(100);
 			$("#workStatusChange").fadeOut(100);
-		}
-		if( !(($(".news").has(e.target).length))){
-		      $(".news").fadeOut(100);
-	    }
-	    if( !(($(".myprofile").has(e.target).length))){
-		      $(".myprofile").fadeOut(100);
-	}//end of mouseup
-	
-	
-});//end of mouseup
+		}//end of mouseup
+	});//end of mouseup
 
 function showNowTime() {
 	var now = new Date();
@@ -143,9 +135,9 @@ function loopshowNowTime() {
 	<div class="row">
 		<div id="today" class="col-3">
 			<table width="90%" align="center">
-				<tr height="60px"><td colspan="2" style="font-size: 15pt; vertical-align: bottom; font-weight: bold;">Today</td></tr>
+				<tr height="60px"><td colspan="2" style="font-size: 15pt; vertical-align: bottom; font-weight: bold; color: #4d4f53;">Today</td></tr>
 				<tr height="40px"><td colspan="2" id="date" style="color: gray; font-size: 10pt;"></td></tr>
-				<tr height="60px"><td colspan="2" id="workingtime" style="font-size: 25pt;">
+				<tr height="60px"><td colspan="2" id="workingtime" style="font-size: 25pt; color: #4d4f53;">
 					<span style="font-weight:bold;">4</span>h
 					<span style="font-weight:bold;">32</span>m
 				</td></tr>
@@ -207,7 +199,7 @@ function loopshowNowTime() {
 		</div>
 		
 		<div id="board" class="col-8">
-			<div style="font-size: 15pt; vertical-align: bottom; margin: 20px 0 10px 20px; font-weight: bold;">Board</div>
+			<div style="font-size: 15pt; vertical-align: bottom; margin: 20px 0 10px 20px; font-weight: bold; color: #4d4f53;">Board</div>
 			<nav id="boardList">
 				<a class="boardList_iscurrent">공지사항</a>
 				<a>자유게시판</a>
@@ -235,7 +227,7 @@ function loopshowNowTime() {
 				</tr>
 			</table>
 			<hr style="position:relative; top:80px;" class="HRhr"/>
-			<div id="boardPagingArrow" align="center" style="position:relative; top:80px;">
+			<div id="boardPagingArrow" align="center" style="position:relative; top:80px; color: #4d4f53;">
 				<span class="mr-5"><i class="fa-solid fa-angle-left" style="font-size:10pt;"></i></span>
 				<span><i class="fa-solid fa-angle-right" style="font-size:10pt;"></i></span>
 			</div>
@@ -246,7 +238,7 @@ function loopshowNowTime() {
 	<div class="row">	
 		<div class="box col-3" style="display: inline-block; margin: 100px 50px 0 0;">
 			<div>
-		        <div style="position:relative; right:48px; top:-50px; font-size: 15pt; font-weight: bold;">Report</div>            
+		        <div style="position:relative; right:48px; top:-50px; font-size: 15pt; font-weight: bold; color: #4d4f53;">Report</div>            
 				  <ul class="pagination" style="position:relative; right:30px; top:-30px; color: gray;">    
 				    <li class="page-item">
 				      <a  href="#" aria-label="Previous"> 
@@ -263,7 +255,7 @@ function loopshowNowTime() {
 		        
 		       <div class="" style="position:relative; right:43px;">  
 		       	  <h6 style="font-size: small">정규근무</h6>        
-				  <h4 style="width: 100px;">42h 24m</h4>    
+				  <h4 style="width: 100px; color: #4d4f53;">42h 24m</h4>    
 				  <h6 style="font-size: small; position: relative; left: 185px; bottom: 23px;">최대 52h</h6>               
 				  <div class="progress" style="width: 235px; position: relative; bottom: 20px; ">    
 				    <div class="progress-bar" style="width:70%; background: rgb(253, 199, 67);"></div> 
@@ -272,7 +264,7 @@ function loopshowNowTime() {
 				  
 				<div class="" style="position:relative; right:43px;">  
 		       	  <h6 style="font-size: small">초과근무</h6>        
-				  <h4 style="width: 100px;">05h 10m</h4>    
+				  <h4 style="width: 100px; color: #4d4f53;">05h 10m</h4>    
 				  <div class="progress" style="width: 235px; position: relative;">       
 				    <div class="progress-bar" style="width:30%; background: rgb(253, 199, 67);"></div>  
 				  </div>   
@@ -282,13 +274,16 @@ function loopshowNowTime() {
 		         
 		       <div style="margin: 0 auto;">       
 			       <h6 style="font-size: small; position: relative; right: -135px; top: 10px;">총근무시간</h6>         
-			       <h1 style="width:200px; position: relative; right: -25px; ">47h 34m</h1>  
+			       <h1 style="width:200px; position: relative; right: -25px; color: #4d4f53;">47h 34m</h1>  
 		        </div>
 	        </div>
 	    </div>           
 	    <div class="col-8 calendar-box">
-			<div id="calendar" style="float: left; margin: 30px 0 20px 0; padding: 0 30px; width: 100%; font-size: 9pt;">
-				<div id="calendar_header" style="width:100%;"><i class="icon-chevron-left"></i>          <h1></h1><i class="icon-chevron-right"></i>         </div>
+			<div id="calendar" style="float: left; margin: 30px 0 20px 0; padding: 0 30px; width: 100%; font-size: 9pt; color: #4d4f53;">
+				<div id="calendar_header" style="width:100%;">
+					<i class="icon-chevron-left"></i>
+					<h1></h1><i class="icon-chevron-right"></i>
+				</div>
 				<div id="calendar_weekdays" style="width:100%;"></div>
 				<div id="calendar_content" style="width:100%;"></div>
 			</div>

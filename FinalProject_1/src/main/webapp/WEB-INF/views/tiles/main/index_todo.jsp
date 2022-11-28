@@ -40,7 +40,7 @@ div#alert {
 	$(document).ready(function(){
 		
 		// 요청사항 글씨 굵게 하기
-		$("#main_todo").css("color","black");
+		$("#main_todo").css("color","#4d4f53");
 		
 		$("div#alert").hide();  // 알림창 숨기고 시작한다.
 	

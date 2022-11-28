@@ -3,7 +3,8 @@
 <% String ctxPath = request.getContextPath(); %>    
     
 <style type="text/css">
-	
+
+	.btn:hover{color: white;}
 	.currentPage{color:black;}
 	#message{color:black !important;}
 	
@@ -98,12 +99,11 @@
 <nav id="subList" class="margin-container">
 	<a id="mg-recieve" href="<%= request.getContextPath()%>/message/recieve.up" class="header-sub">받은메시지</a>
 	<a id="mg-send" href="<%= request.getContextPath()%>/message/send.up" class="header-sub">보낸메시지</a>
-	<a id="mg-temp" href="<%= request.getContextPath()%>/message/temp.up" class="header-sub">임시보관함</a>
 	<div class="subList_underline"></div>
 </nav>
 
 <div class="mg-write">
-	<button type="button" class="mg-writebtn gradientbtn" onclick="location.href='<%= request.getContextPath()%>/message/write.up'">
+	<button type="button" class="mg-writebtn gradientbtn btn" onclick="location.href='<%= request.getContextPath()%>/message/write.up'">
 		<span><i class="icon icon-pencil"></i></span>
 		<span>메시지 보내기</span>
 	</button>	

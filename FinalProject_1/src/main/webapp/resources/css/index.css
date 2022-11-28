@@ -7,8 +7,9 @@
 	
 	/* 메인 상단 */
 	#boardList a:hover{
-		color: #949DA6;
+		color: #4d4f53;
 		cursor: pointer;
+		transition: 0.2s;
 	}
 	
 	#boardList {
@@ -25,7 +26,6 @@
 		display: block;
 		width: 12%;
 		padding: .75em 0;
-		color: #333;
 		text-decoration: none;
 		text-align: center;
 		color: #D2D6D9;
@@ -37,7 +37,7 @@
 		bottom: 0px;
 		width: 8%;
 		height: 2px;
-		background: #333;
+		background: #4d4f53;
 		transition: all .3s ease-in-out;
 		margin-left: 2%;
 	}
@@ -302,6 +302,7 @@
     padding-top: 3%;  
     font-size: 11pt;   
     margin-right: 348px;
+    color: #4d4f53;
  
   }   
   a { 
@@ -316,7 +317,7 @@
     top: 194px;  
     left: 1195px;
     border-radius: 22px;
-  
+    color: #4d4f53;
   }
   
   
@@ -327,11 +328,16 @@
   	position: relative; top: 45px; left: 20px;
   	margin-bottom: 100px;
   	box-shadow: 5px 5px 5px #f3f4f6;
+  	color: #4d4f53;
   }
   
   
   #fc-dom-1{
   	font-weight: bold;
   	font-size: 15pt;
+  }
+  
+  .fc-daygrid-day-number{
+  	color: #4d4f53 !important;
   }
   

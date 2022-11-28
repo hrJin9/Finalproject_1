@@ -6,6 +6,7 @@
 <% String ctxPath = request.getContextPath(); %>
 <style>
 	.toastui-editor-defaultUI-toolbar{background-color: white;}
+	.btn:hover{color: white;}
 </style>
 <script>
 	$(document).ready(function(){
@@ -46,10 +47,10 @@
 		</div>		
 		<div class="mw-top-right" style="float:right; padding: 2.65em 0; margin-right: 10px;">
 			<span>
-				<button type="button" id="mw-book" data-bs-toggle="modal" data-bs-target="#mw-book-modal" data-bs-dismiss="modal">예약</button>
+				<button type="button" id="mw-book" class="btn" data-bs-toggle="modal" data-bs-target="#mw-book-modal" data-bs-dismiss="modal">예약</button>
 			</span>
 			<span>
-				<button type="button" id="mw-send" class="gradientbtn" onclick="goSend();">
+				<button type="button" id="mw-send" class="gradientbtn btn" onclick="goSend();">
 					<span><i class="fa-regular fa-paper-plane"></i></span>
 					<span>보내기</span>
 				</button> <!-- 보낸메일함의 보낸 메일으로 이동. -->
@@ -62,7 +63,7 @@
 			<tr>
 				<td>받는 사람</td>
 				<td width="86.4%"><input id="mw-to" type="text" placeholder="받는사람 직접입력"/></td> <!-- 답장하기의 경우 자동으로 입력되게 --> <!-- 클릭시 자동으로 밑에 최근 보낸사람? 뜨게 -->
-				<td><button id="mw-address" type="button" data-bs-toggle="modal" data-bs-target="#mw-address-modal" data-bs-dismiss="modal">주소록</button></td>
+				<td><button id="mw-address" class="btn" type="button" data-bs-toggle="modal" data-bs-target="#mw-address-modal" data-bs-dismiss="modal">주소록</button></td>
 			</tr>
 			<tr>
 				<td>제목</td>

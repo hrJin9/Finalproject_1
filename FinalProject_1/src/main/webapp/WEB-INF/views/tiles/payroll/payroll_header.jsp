@@ -5,10 +5,10 @@
     
 <style type="text/css">
 	
-	.currentPage{color:black;}
+	.currentPage{color:#4d4f53t;}
 	
 	#payroll_mainList a:hover{
-		color: #000000;
+		color: #4d4f53t;
 		cursor: pointer;
 	}
 	
@@ -29,15 +29,14 @@
 		display: block;
 		width: 11%;
 		padding: 0.7em 0 0.3em 0;
-		color: black !important;
+		color: #4d4f53 !important;
 		text-decoration: none;
 		margin-right: 4%;
-		color: #D2D6D9;
 	}
 	
 	
 	.iscurrent{
-		color: black;
+		color: #4d4f53;
 	}
 	
 	#payroll_subList{
@@ -51,7 +50,7 @@
 		display: block;
 		width: 110px;
 		padding: .9em 0;
-		color: black !important;
+		color: #4d4f53 !important;
 		text-align: center;
 		text-decoration: none;
 		color: #D2D6D9;

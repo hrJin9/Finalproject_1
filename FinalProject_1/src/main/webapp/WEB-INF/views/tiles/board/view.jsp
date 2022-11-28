@@ -9,7 +9,7 @@
 		height: 12px;
 	}
 	
-	
+	/* == 글정보 == */  
 	.viewtitle{
 		font-size: 14pt;
 		/* font-weight: bolder; */
@@ -48,6 +48,8 @@
 	 	margin-right:10px; 
 	 	height: 100px;
 	}
+	
+	/* 댓글작성 버튼  */
 	button#writecmt{
 		float:right;
 		margin:10px;
@@ -60,15 +62,20 @@
 		background-color:#4d4f53;
 		color:white;
 	}
+	
+	/* 드롭다운 css */
 	a.dropdown-link{
 		color:#7f7f7f;
 		float:right;
 		position: absolute;
 		right:91px;
 	}
+	
+ 	/* 공유아이콘  */
 	a.share{
 		font-size: 11pt !important;
 	}
+	
 	div#cmtcontent{
 		width:85%;
 		margin-bottom: 10px;
@@ -87,6 +94,40 @@
 	 a.share {
 		border: 1px solid #d9d9d9;
 	}
+	a.bookmark::before{
+	    position: absolute;
+	    top: 0.2rem;
+	    right: 0.2rem;
+	}
+	a.share::before{
+	    position: absolute;
+	    top: 0.3rem;
+	    right: 0.3rem;
+	}
+	
+     #empty-heart{
+		 display: inline-block;
+	}
+	#full-heart{
+	    margin-left: 5px;
+		display: none;
+	}
+	.like{
+		margin-left: 5px;
+		font-size: 12pt;
+		color: #f53e50;
+		position: relative;
+	    right: 5px;
+	    top: 1.3px;
+	}
+	
+	
+	
+	
+	
+	
+	
+	/* 수정 삭제 버튼 */
 	.bd_toolbar{
 		border: 1px solid #d9d9d9;
 		border-radius: 7px;
@@ -105,16 +146,6 @@
 	#edit:hover{
 		color: #7f7f7f;
 	}
-	a.bookmark::before{
-	    position: absolute;
-	    top: 0.2rem;
-	    right: 0.2rem;
-	}
-	a.share::before{
-	    position: absolute;
-	    top: 0.3rem;
-	    right: 0.3rem;
-	}
 	
 	
 	.table td {
@@ -124,6 +155,10 @@
 	    border-bottom: 0px;
 	    padding-top: 14px;
 	}
+	
+	
+	
+	/* 댓글작성 에디터  */
 	.toastui-editor-defaultUI .ProseMirror {
 	    padding: 14px 23px;
 	}
@@ -132,61 +167,7 @@
 	}
 	
 	
-	
-	.post-option .set-btn {
-	    margin: -1px 0 0 20px;
-	}
-	.set-btn {
-	    padding: 4px 8px;
-	    margin: 1px 7px 0 30px;
-	    vertical-align: middle;
-	    cursor: pointer;
-	}
-	.post-option .setup-group {
-	    overflow: hidden;
-	    position: absolute;
-	    z-index: 1;
-	    top: 50px;
-	    right: 35px;
-	    background: #fff;
-	    border: 1px solid #555;
-	    -webkit-box-sizing: border-box;
-	    -moz-box-sizing: border-box;
-	    box-sizing: border-box;
-	    -webkit-border-radius: 6px;
-	    border-radius: 6px;
-	}
-	.setup-group {
-	    padding: 4px 0;
-	}
-	.setup-group>li {
-	    position: relative;
-	}
-	button {
-	    background-color: transparent;
-	}
-	button, input {
-	    border-radius: 0;
-	    border: 0;
-	}
-	button{
-	    font-family: inherit;
-	    font-size: 100%;
-	    line-height: normal;
-	    color: #333;
-	}
-	.post-option .set-btn span {
-	    width: 2px;
-	    height: 2px;
-	    background: #777;
-	}
-	.set-btn span:first-child {
-	    margin: 0;
-	}
-	.set-btn span {
-	    display: block;
-	    border-radius: 50%;
-	}
+	/* === 댓글목록 === */
 	#name{
 		position: relative;
 		right: -8px;
@@ -228,21 +209,6 @@
      	color:#ececec;
      }
      
-     #empty-heart{
-		 display: inline-block;
-	}
-	#full-heart{
-	    margin-left: 5px;
-		display: none;
-	}
-	.like{
-		margin-left: 5px;
-		font-size: 12pt;
-		color: #f53e50;
-		position: relative;
-	    right: 5px;
-	    top: 1.3px;
-	}
 </style>
 
 <script type="text/javascript">

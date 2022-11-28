@@ -33,27 +33,34 @@
 		
 		
 	});
+	
+	
+	// function declaration
+	function goApproval(){
+		location.href="<%=ctxPath%>/approval/writing.up";
+	}//end of goApproval()
+	
 </script>
 
 <div class="dayoff-index-container">
 	<div class="dayoff-write">
 		<div class="margin-container dayoff-subject">잔여 휴가</div>
 		<div class="ml-1 margin-container">
-			<div class="dayoff-box timeoff">
+			<div class="dayoff-box timeoff" onclick="javascript:location.href='<%=ctxPath%>/approval/writing.up?type=timeoff'">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="25px"/>
 				<div>
 					<div>연차</div>
-					<div>1일</div>
+					<div><span>1</span>일 / <span>20</span>일</div>
 				</div>			
 			</div>
-			<div class="dayoff-box sick">
+			<div class="dayoff-box sick" onclick="javascript:location.href='<%=ctxPath%>/approval/writing.up?type=sick'">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/pill_1f48a.png" width="25px"/>
 				<div>
 					<div>병가</div>
 					<div>연차 소진시 60일</div>
 				</div>	
 			</div>
-			<div class="dayoff-box condole">
+			<div class="dayoff-box etc" onclick="javascript:location.href='<%=ctxPath%>/approval/writing.up'">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/envelope_2709-fe0f.png" width="25px"/>
 				<div>
 					<div>기타</div>

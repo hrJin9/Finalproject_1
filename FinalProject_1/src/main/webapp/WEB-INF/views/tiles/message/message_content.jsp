@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <style>
+	.btn:hover{color: white;}
 	label[for='mc-star']:hover{
 		cursor: pointer;
 		color: #ffc107;
@@ -55,7 +56,7 @@
 			</div>
 		</div>
 		<div class="mgc-header-right">
-			<button type="button" class="mgc-writebtn button gradientbtn"> <!-- 메시지 보낸사람이 본인이라면 이 버튼이 뜨면 안됨! -->
+			<button type="button" class="mgc-writebtn button gradientbtn btn"> <!-- 메시지 보낸사람이 본인이라면 이 버튼이 뜨면 안됨! -->
 				<span><i class="fas fa-reply"></i></span>
 				<span>답장하기</span>
 			</button>

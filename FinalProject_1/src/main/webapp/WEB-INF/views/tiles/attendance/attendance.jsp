@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="attendance_header.jsp"%>
+<style>
+	.workstatus-save:hover{color: white;}
+</style>
 
 <script>
 	$(document).ready(function(){
@@ -88,6 +91,18 @@
 	 		
 	 	});
 	 	
+	 	
+	 	// 근무정보 선택 dropdown 값 선택이벤트
+	 	$(".workStatusbox li").click(function(){
+	 		const selectedimg = $(this).find("img").attr("src");
+	 		const selectedtxt = $(this).find("a").text();
+	 		$("#workwriteStatus > img").attr("src",selectedimg);
+	 		$("#workwriteStatus > span").text(selectedtxt);
+	 	});
+	 	
+	 	
+	 	
+	 	
 	}); //end of ready
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -160,7 +175,7 @@
 			<input class="dateSelector attendance-dateSelector">
 			<i class="fas fa-chevron-down ad-downarrow"></i>
 		</span>
-		<button type="button" class="today">오늘</button>
+		<button type="button" class="today btn">오늘</button>
 	</div>
 	<hr class="HRhr"/>
 	<div class="workingweek-sum margin-container">
@@ -240,77 +255,79 @@
 		  </div>
 		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 		  <div class="offcanvas-body">
-		  	<div>
-		  		<div class="todayworkStatus-container">
-			  		<span>총 근무</span>
-			  		<div class="workingtotalhourByday ml-2"><span class="ml-1">9</span>시간</div>
-			  		<div class="line"></div>
-		  		</div>
-		  		<!-- 근무 1개  -->
-		  		<div class="workwirte-container dropdown">
-					<div class="dropdown-toggle workwritebox btn" id="workwriteStatus" data-bs-toggle="dropdown" aria-expanded="false">
-						<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
-						근무
+		  	<form>
+			  	<div>
+			  		<div class="todayworkStatus-container">
+				  		<span>총 근무</span>
+				  		<div class="workingtotalhourByday ml-2"><span class="ml-1">9</span>시간</div>
+				  		<div class="line"></div>
+			  		</div>
+			  		<!-- 근무 1개  -->
+			  		<div class="workwirte-container dropdown">
+						<div class="dropdown-toggle workwritebox btn" id="workwriteStatus" data-bs-toggle="dropdown" aria-expanded="false">
+							<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
+							<span>근무</span>
+						</div>
+						<ul class="dropdown-menu workStatusbox" aria-labelledby="workwriteStatus" style="min-width: 7rem;">
+							<li>
+								<a id="statusval-working" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
+									근무
+								</a>
+							</li>
+							<li>
+								<a id="statusval-outside" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/oncoming-automobile_1f698.png" width="16px"/>
+									외근
+								</a>
+							</li>
+							<li>
+								<a id="statusval-remote" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/laptop_1f4bb.png" width="16px"/>
+									원격근무
+								</a>
+							</li>
+							<li>
+								<a id="statusval-trip" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/spiral-calendar_1f5d3-fe0f.png" width="16px"/>
+									출장
+								</a>
+							</li>
+							<hr class="HRhr"style="margin:0; height:1px; background-color: rgba(242, 242, 242); border:none;"/>
+							<li>
+								<a class="dropdown-item" href="#">
+									<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
+									<span id="statusval-allday">하루종일</span>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
+									<span id="statusval-input">시간입력</span>
+								</a>
+							</li>
+						</ul>
+						
+						<div class="workStartbox" id="workwriteStart">
+							<input type="text" class="timeSelector" placeholder="시작 시각"/>						
+						</div>
+						<div style="display:inline-block;">
+							<i class="fa-solid fa-arrow-right" style="color: #C6C6C6"></i>
+						</div>
+						
+						<div class="workEndbox" id="workwriteEnd">
+							<input type="text" class="timeSelector" placeholder="종료 시각"/>						
+						</div>
 					</div>
-					<ul class="dropdown-menu workStatusbox" aria-labelledby="workwriteStatus" style="min-width: 7rem;">
-						<li>
-							<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
-								근무
-							</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/oncoming-automobile_1f698.png" width="16px"/>
-								외근
-							</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/laptop_1f4bb.png" width="16px"/>
-								원격근무
-							</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/spiral-calendar_1f5d3-fe0f.png" width="16px"/>
-								출장
-							</a>
-						</li>
-						<hr class="HRhr"style="margin:0; height:1px; background-color: rgba(242, 242, 242); border:none;"/>
-						<li>
-							<a class="dropdown-item" href="#">
-								<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
-								하루종일
-							</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="#">
-								<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
-								시간입력
-							</a>
-						</li>
-					</ul>
 					
-					<div class="workStartbox" id="workwriteStart">
-						<input type="text" class="timeSelector" placeholder="시작 시각"/>						
-					</div>
-					<div style="display:inline-block;">
-						<i class="fa-solid fa-arrow-right" style="color: #C6C6C6"></i>
-					</div>
+					<!-- 근무 1개 끝  -->
 					
-					<div class="workEndbox" id="workwriteEnd">
-						<input type="text" class="timeSelector" placeholder="종료 시각"/>						
-					</div>
-				</div>
-				
-				<!-- 근무 1개 끝  -->
-				
-		  		<div class="workadd">
-		  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt;">추가하기</span></div>
-	  			</div>
-	  			<div class="workstatus-buttoncontainer">
-	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-		  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
-		  			<button type="reset" class="workstatus-cancel">취소</button>
-	  			</div>
-		  	</div>
+			  		<div class="workadd">
+			  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt;">추가하기</span></div>
+		  			</div>
+		  			<div class="workstatus-buttoncontainer">
+		  				<button type="button" class="workstatus-del btn"><i class="fa-solid fa-trash-can"></i></button>
+			  			<button type="button" class="workstatus-save gradientbtn btn">저장하기</button>
+			  			<button type="reset" class="workstatus-cancel btn">취소</button>
+		  			</div>
+			  	</div>
+		  	</form>
 		  </div>
 		</div>
 		<!-- 오프캔버스 끝 -->

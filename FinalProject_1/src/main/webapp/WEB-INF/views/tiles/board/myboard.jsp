@@ -2,29 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="myboard_header.jsp"%> 
 <%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mdb.min.css"> --%>
-<!-- MDB -->
-<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet"/> -->
-<!-- MDB -->
-<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script> -->
 <style type="text/css">
-
-
-p {
-	color: darken(#ccc, 10%);
-	font-weight: 300;
-}
-a {
-	transition: .3s all ease;
-	&, &:hover {
-		text-decoration: none!important;
-	}
-}
-.content {
-	padding: 7rem 0;
-}
-h2 {
-	font-size: 20px;
-}
 
 
 .custom-table {
@@ -44,7 +22,7 @@ h2 {
 	}
 }
 
-
+/* === 게시글목록 테이블 css === */
 .table thead th {
 	padding-top: 0;
     border-bottom: 2px solid #d4d5d6;
@@ -72,62 +50,14 @@ table tr:hover {
 	background-color: #f9f9f9;
 }
 
-
 .form-control{
 	font-size: 12pt;
 }
-.row>*{
-	width: auto;
-	padding: 0;
-}
 
 
 
 
-
-.viewtitle{
-	font-size: 14pt;
-	font-weight: bolder;
-}
-.writeinfo{
-	font-size: 9pt;
-}
-.cmt{
-	font-size: 9pt;
-}
-p.contents{
-	font-size: 11pt;
-}
-
-span.reply{
-	color:#999494;
-	font-size:9pt;
-	position: relative;
-	top:3px;
-}
-span.reply:hover{
-	cursor: pointer;
-}
-div.line{
-	border: 0.1px solid #ececec; 
-	margin:20px;
-	width:100%;
-	position:relative;
-	left:-20px;
-}
-textarea#content{
- 	float:right;
- 	width: 93%; 
- 	margin-right:10px; 
- 	height: 100px;
-}
-a.dropdown-link{
-	color:#999494;
-	font-size: 5pt;
-	float:right;
-	position: absolute;
-	right: 50px;
-} 
+/* === 게시글 목록 === */
 #title,#tagname {
     height: 44px;
     padding: 6px 16px 9px 16px;
@@ -141,21 +71,16 @@ a.dropdown-link{
     font-weight: 500;
     line-height: calc(1.5 * 10px);
     color: #484848;
-}
-
-#file{
-	font-size: 14px;
-}
-/* #tagname {
-	
-} */
-
-#title, #tagname {
     display: block;
     width: 100%;
     background-clip: padding-box;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
+#file{
+	font-size: 14px;
+}
+
 input {
     outline: none;
 }
@@ -183,6 +108,8 @@ input {
     width: 100% !important;
 }
 
+
+/* ===  옵션창  === */
 div.option {
     border: 1px solid #b0b0b0d9;
     padding: 20px;
@@ -229,6 +156,7 @@ div.option {
     min-width: 122px;
     height: 28px;
 }
+/* 검색기간 라디오 체크*/
 .radio-label-checkbox {
     position: relative;
     cursor: pointer;
@@ -258,28 +186,21 @@ ul{
 	list-style: none;
 	margin-bottom: 3rem;
 }
+/* 검색기간 라디오 라벨*/
 .custom-control-radio {
     position: relative;
     left: -5px;
     top: 3px;
     z-index: -1;
  }
- .radio-label-checkbox::before {
-    display: inline-block;
-    content: "";
-    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
-    background-size: 560px auto;
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
-}
+ 
  li{
  	font-size: 10pt;
  }
- /* 
- .search-period-wr .filter-input-box:first-child {
-    margin: 10px 30px 0 0;
-} */
+ 
+ 
+ 
+ /* 날짜 옵션 */
 .search-period-wr .filter-input-box {
     overflow: hidden;
     display: inline-block;
@@ -288,6 +209,7 @@ ul{
     height: 32px;
     width: auto;
 }
+
 .filter-input-box {
     position: relative;
     height: 40px;
@@ -328,6 +250,12 @@ div.datebox > span > input {
     transform: translateY(-50%);
     cursor: pointer;
 }
+
+
+
+/* === 글쓰기 === */
+
+/* 카테고리박스 */
 #categorydiv{
 	position:absolute;
 	visibility:hidden;
@@ -349,9 +277,13 @@ div.datebox > span > input {
 .offcanvas {
     box-shadow: 5px 5px 20px 3px rgb(91 91 91 / 80%) !important;
 }
+
+
+/* 익명체크 */
 #ntRplAnonDiv{
 	display:none;
 }
+/* 댓글아이콘 */
 #iconbubble{
 	color:#4c4e54;
 	padding:0 auto;
@@ -360,22 +292,22 @@ div.datebox > span > input {
 	left:15px;
 	top:3px;"
 }
+/* 댓글깻수 */
 #bubblecnt{
 	position: relative; 
 	left:8px;
 	top:2px;
 }
+/* 파일첨부 아이콘 */
 #iconattachment{
 	color:#4c4e54;
 	font-size: 10pt;
 	position: relative; 
 	left:2px;
 }
-.radio-label-checkbox {
-    position: relative;
-    cursor: pointer;
-    left: -23px;
-}
+
+
+/* 공개범위, 알림설정 라디오 */
 .custom-control-radio2 {
     position: relative;
     left: 21px;
@@ -394,6 +326,9 @@ div.datebox > span > input {
 .mr-1{
 	margin-right: 10px;
 }
+
+
+/* 옵션창 초기화버튼 */
 #optionreset{
 	margin-left: 90px; 
 	border: none; 
@@ -405,6 +340,8 @@ div.datebox > span > input {
 	padding: 5px 8px;
 	float: right;
 }
+
+/* 작성자 검색 */
 #writer{
 	box-shadow: none;
 	font-size:9pt; 
@@ -414,6 +351,7 @@ div.datebox > span > input {
 	border-left: none;
 	border-right: none;
 }
+
 </style>
 
 <script type="text/javascript">

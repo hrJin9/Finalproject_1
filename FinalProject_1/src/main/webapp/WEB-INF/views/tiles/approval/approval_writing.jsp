@@ -238,7 +238,7 @@
     font-size: 11px;
 }
 .attendance-dateSelector {
-	width: 141px ;
+	width: 100% !important;
 	height: 38px !important;
 }
 
@@ -314,7 +314,7 @@ div.option:before {
 .selectedmem{
 	margin-top:0px !important;
 	/* margin-bottom: 10px  !important; */
-	padding-bottom: 50px;
+	padding-bottom: 60px;
 }
 td{
 	width: 77%;
@@ -339,7 +339,7 @@ div#memcontent-iframe{
 }
 .step-del{
 	float: right;
-    top: -52px;
+    top:-18px;
     position: relative;
     width: 0.3em;
     height: 0.3em;
@@ -477,10 +477,12 @@ div#memcontent-iframe{
 	}
 	
 	
+	let num = 0;
 	<%-- 옵션창 열리고 닫히고  --%>
-	function optionForm(value){
+	function optionForm(value, optionnum){
 		 if(value=="OPEN") {
 			 option.style.display="block";
+			 num = optionnum;
 		 }
 		 else{
 			 option.style.display="none";
@@ -497,16 +499,15 @@ div#memcontent-iframe{
 				  +'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_appendmember(event)"></button>'
 				  +'</div>';
 		
-		const num = $(e.target).prev().attr("id");
+		/* const num = $(e.target).prev().attr("id"); */
 		console.log(num);
-		$("div#"+num).append(html);
+		$("div#memcontent-iframe"+num).append(html);
 	}
 	
 	/*  append 된 멤버 삭제버튼 누를시  */
 	function del_appendmember(e){
-		
-		console.log($(e.target).html()); // 버튼누른 버튼의 부모 태그 html 삭제
-		$(e.target).parent().css("display","none");
+		/* console.log($(e.target).html()); */ // 버튼누른 버튼의 부모 태그 html 삭제
+		$(e.target).parent().remove();
 		
 		/* $("div.selectedmem").each(function(){
 			let html = "";
@@ -519,36 +520,70 @@ div#memcontent-iframe{
 	
 	
 	
+	
+	
+	
 	let i = 1; 
 	let html = "";
-	/* 변수 설정해두고 단계 쁠러스 하고  단계삭제버튼을 누를때 삭제버튼을 누른 박스가 사라지고 그 박스 뒤에있는 단계는 -1 됨  */ 
-	/* 승인단계 박스 삭제버튼 누를경우 */
-	function del_stepapproval(e){
-		i -= 1;
-		// 삭제 버튼 누르면 해당 i 보다 큰 한칸씩 내려옴 
-	}
-	
-	
-	
-	
+	/* 승인단계 박스 단계추가 */
 	function approvalplus(){
-		
-		i += 1;
+		++i;
 		html = $("div.approvalplus").html();
 		
-		html += `<div id="step`+i+`" class="dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;">`
+		html += `<div id="stepdiv`+i+`" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;display: block;">`
 			  	  	+`<div style="margin-top: 0;">`
-			      	  	+`<span class="" style="font-weight: bold;padding-bottom: 29px;display: block;">`+i+`단계</span>`
-						+`<button type="button" class="btn-close step-del" aria-label="close"  style="float: right;"></button>`      	  	
+			      	  	+`<span id="stepspan`+i+`" class="spanbox" style="font-weight: bold;display: block;">`+i+`단계</span>`
+						+`<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(`+i+`,event)"  style="float: right;"></button>`      	  	
 			  	  	+`</div>`
 			  	  	+`<div id="memcontent-iframe`+i+`"></div>`
-			  	  	+`<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;width: 100%;" onClick="optionForm('OPEN')">`
+			  	  	+`<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',`+i+`)">`
 			  	  		+`<span style="color: rgba(36, 42, 48, 0.48);">`
 			  	  			+`<span style="font-size: 10pt;text-align: left;" >대상 검색</span>`
 			  	  		+`</span>`
 			  	  	+`</button>`
 			  	  +`</div>`;
 		$("div.approvalplus").html(html);
+	}
+	
+	/* 승인단계 박스 삭제버튼 누를경우 */
+	function del_stepapproval(boxnum,e){
+		/* console.log("$(e.target) => "+$(e.target).html()); */
+		const thisdivbody = $(e.target).parent().parent();
+		console.log("thisdivbody => "+thisdivbody);
+		thisdivbody.remove();		
+		// 삭제 버튼 누르면 해당 승인단계박스의 단계보다 큰 애들은 한칸씩 내려옴
+		let j =1;
+		$("div[name='approvalstep']").each(function(){ // boxnum 2     1 3 4 5
+			if(j == boxnum+1){ ++j;} 
+			else {
+			}
+			
+			if( j>boxnum ){
+				const $this = $(this).parent();
+				/* console.log("$this => "+$this.html()); */
+				const divid = $this.find("#stepdiv"+j);
+				const divid2 = $this.find("#memcontent-iframe"+j);
+				/* console.log("divid => "+divid); */
+				const spanid = $this.find("#stepspan"+j);
+				/* console.log("spanid => "+spanid.html()); */
+				
+				spanid.text((j-1)+"단계");
+				
+				divid.attr('id',"stepdiv"+(j-1)); // id 단계 변경  
+				console.log("divid의 id => "+divid.attr('id'))
+				
+				divid2.attr('id',"memcontent-iframe"+(j-1)); // id 단계 변경  
+				console.log("divid2의 id => "+divid2.attr('id'))
+				
+				spanid.attr('id',"stepspan"+(j-1)); // id 단계 변경 
+				console.log("spanid의 id => "+spanid.attr('id'))
+				
+			}
+			/* $("div#stepdiv"+boxnum).remove(); */
+			++j;
+		});// end of $("div[name='approvalstep']").each(function(){}-------------
+		
+		--i;
 	}
 	
 	
@@ -900,16 +935,16 @@ div#memcontent-iframe{
 	      	  
 	      	  <div class="approvalplus">
 	      	  
-		      	  <div id="step1"class="dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;">
+		      	  <div id="stepdiv1" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;display: block;">
 		      	  	<div style="margin-top: 0;">
-			      	  	<span class="" style="font-weight: bold;padding-bottom: 29px;display: block;">1단계</span>
-						<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(event)" style="float: right;"></button>      	  	
+			      	  	<span  id="stepspan1" class="spanbox" style="font-weight: bold;display: block;">1단계</span>
+						<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(1,event)" style="float: right;"></button>      	  	
 		      	  	</div>
 		      	  	
 		      	  	<!-- iframe 선택된 멤버 보여주기  -->
 		      	  	<div id="memcontent-iframe1"></div>
 
-		      	  	<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;width: 100%;" onClick="optionForm('OPEN',1)">
+		      	  	<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',1)">
 		      	  		<span style="color: rgba(36, 42, 48, 0.48);">
 		      	  			<span style="font-size: 10pt;text-align: left;" >대상 검색</span>
 		      	  		</span>
