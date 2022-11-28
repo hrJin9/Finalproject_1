@@ -95,7 +95,51 @@
     right: 8%;
  }
  
+  
+   
+   
+ .fa-solid, .fa-regular{
+ 	opacity: 50%;   
  
+ }
+ .search-period-wr .filter-input-box {
+    /* overflow: hidden; */
+    display: inline-block;
+    /* margin: 10px 0 0 0; */
+    /* padding: 7px 44px 0 10px; */
+    height: 30px;
+    width: auto;
+} 
+.filter-input-box {
+    position: relative;
+    height: 40px;
+    /* margin-top: 10px; */
+    /* padding: 10px 15px 10px 6px; */
+    background: #fff;
+    /* border: 1px solid #ddd; */
+    width: 100%;
+    font-size: 11px;
+}
+ 
+/* calendar-dateSelector */
+.calendar-dateSelector {
+    height: 36px;  
+    width: 85%; 
+    display: inline-block;
+    border: solid 1px rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    margin: 0;
+    width: 206px !important;
+    color: rgba(0,0,0,0.7);
+    font-weight: 500;
+    padding: 0 15px;
+} 
+ 
+.form-select, .form-control{
+	border: 1px solid #ced4da9e;
+	font-size: 14px;
+}
+    
  
  
    /* 나의 캘린더 */	 
@@ -117,7 +161,7 @@
    
    /* 나의 캘린더 끝 */	
    
-   
+    
    .btn-wt{
    	    border: none;
 	    background-color: #fffe;
@@ -190,9 +234,16 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				
 			});
-			  
+			   
 		 
-		 
+			// 플랫피커
+		 	flatpickr.localize(flatpickr.l10ns.ko);
+		 	flatpickr($(".dateSelector"));
+			$(".dateSelector").flatpickr({
+				dateFormat: "Y-m-d",
+				defaultDate: new Date(),
+				local: 'ko'
+			});
 			 
 			
 			
@@ -274,26 +325,37 @@ document.addEventListener('DOMContentLoaded', function() {
 			        <option>팀일정</option>
 			        <option>내일정</option> 
 			        <option>부서일정</option> 
-			        <option>전사일정</option>  
-			      </select>
+			        <option>전사일정</option>    
+			      </select> 
 			    </div>     
+			         
+			          
+			    <div class="search-period-wr" > 
+			    
+		                <div class="js-search-pickr-layer" data-code="unlimit" style="position: relative;left: 36px;">   
+		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
+			                	<div class="datebox margin-container">
+									<span><span class="icon icon-calendar" style="position: relative;top: 29px;z-index: 1;"></span><input class="dateSelector calendar-dateSelector" style="padding: 0 4px 2px 34px;"/></span>
+								</div> 
+							</div>   
+		                    <span class="dash-swung" style="position: relative;bottom: 0px;right: 15px;top: -3px;">~</span>
+		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" >
+			                	<div class="datebox margin-container">
+									<span><span class="icon icon-calendar" style="position: relative;top: 29px;z-index: 1;"></span><input class="dateSelector calendar-dateSelector" style="padding: 0 4px 2px 34px;"/></span>
+								</div> 
+							</div> 
+							
+							<div style="font-size: larger;margin: -19px 40px 0 25px; float: right;">     
+					        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
+					        <label class="form-check-label" for="flexCheckChecked">   
+					       	   종일 
+					        </label> 
+				         </div>  
+							  
+		                </div>  
+		         
+		            </div>  
 			     
-			    <div class="form-group"   style="display: flex; margin-top: 5%;">     
-				    <i class="fa-regular fa-clock fa-2x" style=""></i>     
-			<!-- 	    <form  name="dateFrm" style="float: left;">   -->
-						<input type="date" id="date1" name="date1" class="form-select" style="margin: 0 20px;">
-						~
-						<input type="date" id="date2" name="date2"  class="form-select"  style="margin-left: 20px;">  
-						<input type="hidden" name="userid" value=""/>
-			<!-- 		</form> -->  
-					  
-			    </div>  
-			     <div style="font-size: small;margin: 2% 0 0 8%;">     
-			        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
-			        <label class="form-check-label" for="flexCheckChecked">   
-			       	   종일 
-			        </label> 
-		         </div>  
 			      
 			      
 			      
@@ -322,22 +384,13 @@ document.addEventListener('DOMContentLoaded', function() {
 			        <option>매년</option>   
 			      </select>
 			    </div>     
-			       
+			         
 			     
 			    <div class="form-group"   style="display: flex; margin-top: 3%;">    
 			   		 <i class="fa-solid fa-location-dot fa-2x"></i>
 			  		 <textarea class="form-control" rows="5" id="comment" style="margin-left: 20px; resize: none;" placeholder="설명을 입력하세요"></textarea>          
 			    </div> 
 			    
-			     
-			    <div class="form-group"  style="display: flex; margin-top: 3%;">  
-			      <i class="fa-solid fa-lock fa-2x"></i> 
-			      <select class="form-select" id="exampleSelect1" style="margin-left: 20px;">   
-			        <option>일정 공개</option>    
-			        <option>일정 유무 공개</option> 
-			      </select> 
-			    </div>   
-			        
 			     
 			  </fieldset>
 			  
