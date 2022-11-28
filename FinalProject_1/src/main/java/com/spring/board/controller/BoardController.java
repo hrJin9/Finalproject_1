@@ -39,10 +39,10 @@ public class BoardController {
 	}
 	
 	
-	@RequestMapping(value = "/board/myboard.up")
-	public String myboard(HttpServletRequest request) {
-		return "board/myboard.tiles";
-	}
+	/*
+	 * @RequestMapping(value = "/board/myboard.up") public String
+	 * myboard(HttpServletRequest request) { return "board/myboard.tiles"; }
+	 */
 	
 	
 	

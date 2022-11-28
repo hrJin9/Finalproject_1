@@ -26,11 +26,11 @@
 	
 	.payroll-save{
 		border: none;
-		color: white;
-		font-weight: 700;
-		font-size: 10pt;
-		border-radius: 10px;
-		padding: 5px 15px;
+	    color: white;
+	    font-weight: 700;
+	    font-size: 11pt;
+	    border-radius: 10px;
+	    padding: 7.5px 19px;
 	}
 	
 	.contentsmargin > table > tbody > tr:hover {
@@ -535,7 +535,7 @@
 					<div>급여지급일</div>
 					<div>2022년 12월 26일</div>
 				</div>
-				<div style="float:right;"><button class="payroll-save gradientbtn">저장</button></div>
+				<div style="float:right;"><button class="payroll-save gradientbtn">저장하기</button></div>
 			</div>
 	    </div>
 	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -568,11 +568,24 @@
 					</div>
 					<div>
 						<table class="payroll-detail-table" style="width: 100%;">
-							<tr><td rowspan="3" width="10%">고정급여</td><td>기본급</td><td><input type="text" id="" class="p-input"/></td></tr>
-							<tr><td>초과근무수량(고정)</td><td><input type="text" id="" class="p-input"/></td></tr>
-							<tr><td>식비</td><td><input type="text" id="" class="p-input"/></td></tr>
-							<tr><td rowspan="2">변동급여</td><td>연구보조비</td><td><input type="text" id="" class="p-input"/></td></tr>
-							<tr><td>선지급금</td><td><input type="text" id="" class="p-input"/></td></tr>
+							<tr>
+								<td rowspan="2" width="10%">고정급여</td>
+								<td>기본급</td>
+								<td><input type="text" id="" class="p-input"/></td>
+							</tr>
+							<tr>
+								<td>식비</td>
+								<td><input type="text" id="" class="p-input"/></td>
+							</tr>
+							<tr>
+								<td rowspan="2">변동급여</td>
+								<td>기타수당</td>
+								<td><input type="text" id="" class="p-input"/></td>
+							</tr>
+							<tr>
+								<td>상여금</td>
+								<td><input type="text" id="" class="p-input"/></td>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -590,8 +603,6 @@
 							<tr><td>국민연금</td><td><input type="text" id="" class="p-input"/></td></tr>
 							<tr><td>장기요양보험</td><td><input type="text" id="" class="p-input"/></td></tr>
 							<tr><td>고용보험</td><td><input type="text" id="" class="p-input"/></td></tr>
-							<tr><td rowspan="2">기타공제</td><td>동호회비</td><td><input type="text" id="" class="p-input"/></td></tr>
-							<tr><td>선지급금</td><td><input type="text" id="" class="p-input"/></td></tr>
 						</table>
 					</div>
 				</div>

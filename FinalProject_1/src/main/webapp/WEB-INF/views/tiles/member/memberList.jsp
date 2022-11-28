@@ -339,7 +339,7 @@
 		document.getElementById("memberCnt").textContent = allCnt;
 	      
 		// 프로필 클릭시 구성원 상세정보 보기로 이동
-		$(".profile").click(function(){
+		$(".detailview").click(function(){
 			location.href= "<%= ctxPath%>/memberInfo_hr.up";
 		});
 		
@@ -471,7 +471,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 				      <span class="pic">
 					      <span>지은</span></span>
 					      <span class="my"><span class="name" style="font-size: 10.8pt;">김지은</span><br>
@@ -488,7 +488,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>혜린</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">진혜린</span><br>
@@ -505,7 +505,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>채영</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
@@ -522,7 +522,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>예은</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
@@ -539,7 +539,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>채영</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
@@ -556,7 +556,7 @@
 	           <tr>
 	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
 	              <td>
-	                <div class="profile" href="#" style="padding: 1px ;">
+	                <div class="profile detailview" href="#" style="padding: 1px ;">
 			      <span class="pic">
 				      <span>예은</span></span>
 				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
