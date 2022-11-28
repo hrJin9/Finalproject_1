@@ -204,7 +204,7 @@
 		                </tr>
 		                <tr>
 		                   <td>소속</td>   
-		                   <td>IT팀</td>   
+		                   <td>IT부서&nbsp;&nbsp;&nbsp;개발1팀</td>   
 		                </tr>
 		                <tr>
 		                   <td>직위</td>   

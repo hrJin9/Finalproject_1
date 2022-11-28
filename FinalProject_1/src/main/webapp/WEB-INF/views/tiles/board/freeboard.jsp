@@ -1,25 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="freeboard_header.jsp"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mdb.min.css"> --%>
+	
+<%@ include file="freeboard_header.jsp"%> 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 
 <style type="text/css">
-.table-responsive::-webkit-scrollbar {
-    width: 8px;  /* 스크롤바의 너비 */
-}
-
-.table-responsive::-webkit-scrollbar-thumb {
-    height: 30%; /* 스크롤바의 길이 */
-	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
-    border-radius: 10px;
-}
-
-.table-responsive::-webkit-scrollbar-track {
-	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
-}
-
 p {
 	color: darken(#ccc, 10%);
 	font-weight: 300;
@@ -157,9 +142,6 @@ a.dropdown-link{
 #file{
 	font-size: 14px;
 }
-/* #tagname {
-	
-} */
 
 #title, #tagname {
     display: block;
@@ -287,10 +269,7 @@ ul{
  li{
  	font-size: 10pt;
  }
- /* 
- .search-period-wr .filter-input-box:first-child {
-    margin: 10px 30px 0 0;
-} */
+ 
 .search-period-wr .filter-input-box {
     overflow: hidden;
     display: inline-block;
@@ -455,7 +434,7 @@ div.toastui-editor-mode-switch {
 		border-radius: 10px;
 		float: left;
 		
-		display: inline-block; 
+		display: block; 
 		position: absolute; 
 		left: 119%;
 		font-size: 9pt; 
@@ -618,72 +597,8 @@ div.toastui-editor-mode-switch {
 	    left: 194px;
    }
 
-	.myscrap{
-		width: 300px;
-		height: 435px;
-		border-top: solid 2px #d4d5d6;
-		border-left: solid 1px #d4d5d6;
-		z-index: 9999;
-		background-color: white;
-		color: #4c4e54;
-		position: relative; top: 25px; right: 282px;
-		display: none;
-	}
-	
-	.mgList, .mgList-info {
-		margin-left: 7%;
-	}
-	
-	.mgList-info {
-		font-size: 11pt;
-	}
-	
-	.mg-current{
-		font-weight: bold;
-	}
-	
-	.mgList-contents{
-		height: 330px;
-	}
-	
-	.ms-check + label i{
-		color: rgba(0,0,0,0.2);
-		font-size: 11pt;
-	}
-	
-	.check-star{
-		font-size: 13pt;
-		color: rgba(0,0,0,0.3);
-		position: relative; bottom: 2px;
-	}
-	
-	.ms-check + label i:hover, .check-star:hover{
-		cursor: pointer;
-	}
-	
-	.ms-check + label:hover{color:#37A652;}
-	.check-star:hover{color:#ffc107;}
-	
-	.mgList-contents td:first-child ~ td{
-		padding: 7px 5px;
-	}
-	
-	.mg-noncheckmenu{
-		font-size: 10pt;
-	}
-	
-	.mg-left-container{
-		border: none;
-	}
-	
-	.myscrap-top{
-		position: absolute;
-		top: 20%;
-		height: 2px;
-		border: none;
-		background-color: red;
-	}
-	
+
+
 </style>
 
 <script type="text/javascript">
@@ -693,8 +608,6 @@ $(document).ready(function(){
 	$("div#ntRplAnon").hide();
 	$("a#notice").addClass('list_iscurrent');
 	$("#date_total").prop("checked", true);
-	//툴팁 사용
-	var tooltipel = $(".tp").tooltip();
 	
 	/* 북마크 표시 */
 	$('.bookmark').click(function(e) {
@@ -730,6 +643,7 @@ $(document).ready(function(){
 	 	
 
  	<%-- 텍스트 에디터 시작 --%>
+	 
 	 const { Editor } = toastui; 
 	 const { colorSyntax } = Editor.plugin;
 	 
@@ -846,17 +760,13 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".custom-table").css({'width':'77.1%'});
-	        $(".custom-table th:nth-child(2)").attr("width","8%");
-	        $(".myscrap").fadeIn(100);
-	        
-	    } else{
-	        $(".custom-table").css({'width':'100%'});
-	        $(".custom-table th:nth-child(2)").attr("width","6%");
-	        $(".myscrap").fadeOut(100);
+	        $(".big").css({'width':'86.2%'});
+	        $(".menucontent").css({'visibility':'visible'});
+	    }else{
+	        $(".big").css({'width':'100%'});
+	        $(".menucontent").css({'visibility':'hidden'});
 	    }
 	});  
-	
 	
 	// 모든 조직 펼치기
 	$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
@@ -864,79 +774,7 @@ $(document).ready(function(){
 	});
 	
 	
-	// 별 중요표시
-	$(".check-star").click(function(){
-		const itag = $(this).find("i");
-		if ( itag.hasClass('icon-star-empty') ) {
-			itag.removeClass('icon-star-empty');
-			itag.addClass('icon-star-full');
-			itag.css({"color":"#ffc107","transition":"all .2s"});  	
-		} else {
-	  		itag.removeClass('icon-star-full');
-	  		itag.addClass('icon-star-empty');
-	  		itag.css({"color":"","transition":"all .2s"});  
-	  	}
-	});
-	
-	// 체크박스 개수
-	var total = $("input[name='ms-check']").length;
-	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
-	$("#ms-checkall").change(function(){
-		const itag = $("input[name='ms-check']").next().find("i");
-		
-		if($("#ms-checkall").is(":checked")){
-			$("input[name='ms-check']").prop("checked",true);
-			ms_check(itag); ms_check($(this).next().find("i"));
-			show_checkmenu();
-			$("#check_ctn").text(total);
-			
-		} else {
-			$("input[name='ms-check']").prop("checked",false);
-			ms_uncheck(itag); ms_uncheck($(this).next().find("i"));
-			show_noncheckmenu();
-		}
-	});
-	
-	$("input[name='ms-check']").change(function(e) {
-		const itag = $(e.target).next().find("i");
-		var checked = $("input[name='ms-check']:checked").length;
-		
-		ms_check(itag);
-		show_checkmenu();
-		if(!$(e.target).is(":checked")){
-			ms_uncheck(itag);
-		}		
-		
-		if(checked<=0)
-			show_noncheckmenu();
-		$("#check_ctn").text(checked);
-		
-		if(total != checked){
-			$("#ms-checkall").prop("checked", false);
-			ms_uncheck($("#ms-checkall").next().find("i"));
-		} else {
-			$("#ms-checkall").prop("checked", true);
-			ms_check($("#ms-checkall").next().find("i"));
-		}
-	});
-	
-	
-	
 });//end of ready
-
-// 체크박스  css변경 이벤트
-function ms_check(itag){
-	itag.removeClass("icon-checkbox-unchecked");
-	itag.addClass("icon-checkbox-checked");
-	itag.css({"color":"#37A652","transition":"all .2s"});
-}
-
-function ms_uncheck(itag){
-	itag.removeClass("icon-checkbox-checked");
-	itag.addClass("icon-checkbox-unchecked");
-	itag.css({"color":"rgba(0,0,0,0.2)","transition":"all .2s"});  
-}
-
 
 <%-- 카테고리 멀티 셀렉터 열리고 닫히고  --%>
 function multiSelect(value){
@@ -969,19 +807,7 @@ function changetagname(obj){
 		$("div#divPlusTag2").html(html2);
 	}
 };
-
-//체크했을 때 보이는 메뉴
-function show_checkmenu(){
-	$(".mg-noncheckmenu").hide();
-	$(".mg-checkmenu").fadeIn("fast");
-}
-
-// 체크안할 때 보이는 메뉴
-function show_noncheckmenu(){
-	$(".mg-checkmenu").hide();
-	$(".mg-noncheckmenu").fadeIn("fast");
-}
-
+ 
 function goSearch(){
 	
 }
@@ -989,8 +815,8 @@ function goSearch(){
 </script>
 <div class="container mt-5">
 	<div class="row">
-      <div class="table-responsive" style="width: 100%; height: 500px;">
-      	
+      <div class="table-responsive" style="width: 100%;">
+      	 
           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
 			<div class="row" style="float: right;position: relative;left: -120px;" >
 			
@@ -1023,69 +849,63 @@ function goSearch(){
 					</div>
 				</div>
 				<div style="display: block;">
-					<div class="groupIcon">
+					<span class="groupIcon">
 						<input class="burger-check" type="checkbox" id="burger-check" />
 						<label class="burger-icon" for="burger-check"><span class="burger-sticks"></span></label>
-						
-						<div class="myscrap">
-							<div class="mg-left-container">
-								<div class="mgList-info">
-									<span class="mg-current" style="width: 16%;">중요<span>1</span></span>
-									<span style="width: 28%;">내게시물<span>2</span></span>
-								</div>
-								<hr class="HRhr" style="margin: 0;"/>
-								<div class="mgList">
-									<div class="mgList-menu">
-										<input id="ms-checkall" type="checkbox" class="ms-check" style="display: none;"/>
-										<label for="ms-checkall" style="margin: auto;">
-											<i class="icon icon-checkbox-unchecked"></i>
-										</label>
-										<div class="mg-menucontainer" style="height: 30px;">
-											<div class="mg-noncheckmenu" style="margin-left: 10px;">
-												<span>9</span>	<!-- 전체수량 -->
+						<div class="menu">
+							<div class="menucontent" style="width: 340px; visibility: hidden; padding: 27px 0px 10px 38px;">
+								<div style="font-size: 12pt; font-weight: bold; color: #4C4E54; padding-bottom: 27px;">
+									<span style="padding-right: 190px;">내게시물</span>
+									 <table>
+									<!-- 안읽은 메시지 -->
+									<tr class="mg-unread"> <!-- mg-unread, mg-read 클래스만 다르게 주면 됨! -->
+										<td width="3%"><input id="mg-selectchx0" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx0"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
+										<td width="3%">
+											<input id="check-star0" type="checkbox" name="check-star" style="display: none;"/>
+											<label for="check-star0" class="check-star">
+												<i class="icon icon-star-empty"></i>
+											</label>
+										</td>
+										<td width="72%">
+											<div>
+												<span>메시지 제목</span>
+												<span><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
 											</div>
-											<div class="mg-checkmenu" style="display: none; margin-left: 10px;">
-												<button class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="삭제"><i class="fas fa-trash" style="bottom: 3px; right: 1px;"></i></button> <!-- 삭제 -->
-												<span style="margin-left: 150px;"><span id="check_ctn"></span>개 선택</span>
-											</div>
-										</div>
-									</div>
-									<div class="mgList-contents">
-										<table>
-											<c:forEach var="i" begin="1" end="9">
-												<tr>
-													<td width="3%">
-														<input id="ms-check${i}" class="ms-check" type="checkbox" name="ms-check" style="display: none;"/><label for="ms-check${i}"><i class="icon icon-checkbox-unchecked"></i></label>
-													</td>
-													<td width="3%">
-														<input id="check-star${i}" type="checkbox" name="check-star" style="display: none;"/>
-														<label for="check-star${i}" class="check-star">
-															<i class="icon icon-star-empty"></i>
-														</label>
-													</td>
-													<td width="72%">
-														<div><span>글제목</span><span><i class="fas fa-paperclip"></i></span></div>
-														<div><span>진혜린</span>·<span>마케팅</span></div>
-													</td>
-													<td width="22%">
-														<div>11. 13</div>
-													</td>
-												</tr>
-											</c:forEach>
-										</table>
-									</div>
-									<div class="mg-paging">
-										페이징할거..
-									</div>
+											<div><span>진혜린</span>·<span>마케팅</span></div>
+										</td>
+										<td width="22%">
+											<div>2022. 11. 13</div>
+											<div><span>10</span>MB</div>
+										</td>
+									</tr>
+									
+									<!-- 읽은 메시지 -->
+									<c:forEach var="i" begin="1" end="9">
+										<tr class="mg-read">
+											<td width="3%"><input id="mg-selectchx${i}" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx${i}"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
+											<td width="3%">
+												<input id="check-star${i}" type="checkbox" name="check-star" style="display: none;"/>
+												<label for="check-star${i}" class="check-star">
+													<i class="icon icon-star-empty"></i>
+												</label>
+											</td>
+											<td width="72%">
+												<div><span>메시지 제목</span><span><i class="fas fa-paperclip"></i></span></div>
+												<div><span>진혜린</span>·<span>마케팅</span></div>
+											</td>
+											<td width="22%">
+												<div>2022. 11. 13</div>
+												<div><span>10</span>MB</div>
+											</td>
+										</tr>
+									</c:forEach>
+								</table>
+									
+									
 								</div>
 							</div>
-						
-						
 						</div>
-						
-						
-						
-		            </div>
+		            </span>
 				  </div>
 				</div>
 		

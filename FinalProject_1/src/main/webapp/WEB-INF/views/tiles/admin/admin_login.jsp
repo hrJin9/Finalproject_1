@@ -267,9 +267,9 @@
 		<table class="table custom-table">   
 	    	<thead>   
 	            <tr>
-	              <th class="boardth" width="15%"scope="col"><button type="button" style="border: none; background-color: #ffff;">시간<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>     
-	              <th class="boardth" width="12%" scope="col"><button type="button" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>  
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+	              <th class="boardth" width="15%"scope="col"><button type="button" style="border: none; background-color: #ffff;">접근시간<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>     
+	              <th class="boardth" width="9%" scope="col"><button type="button" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>  
+	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">인사·총무</a>
 					      <a class="dropdown-item" href="#">회계·재무</a>
@@ -289,12 +289,7 @@
 					      <a class="dropdown-item" href="#">서비스</a> 
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
-	              	<div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">로그인 성공</a>
-					      <a class="dropdown-item" href="#">로그인 실패</a>
-					  </div>
-				  </th>
+	              <th class="boardth" width="15%"scope="col">페이지 URL</th> 
 	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">유형<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
 	              	<div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">USER</a>
@@ -306,53 +301,45 @@
 			</thead>
 			<tbody>
 	            <tr> 
-	              <td>2020-12-25(금) 00:17</td>
+	              <td>2020-12-25(금) 14:07:23</td>
 	              <td>김상후</td> 
 	              <td>영업</td> 
-	              <td style="background-color: light green;">로그인 성공</td> 
-	              <td>USER</td>
-	              <td>210.178.232.1</td>
-	            </tr> 
-	             <tr> 
-	              <td>2020-12-25(금) 00:17</td>
-	              <td>김상후</td>
-	              <td>영업</td>
-	              <td>로그인 성공</td>
+	              <td style="text-align: left; padding-left: 3%;">/admin_login.up</td> 
 	              <td>USER</td>
 	              <td>210.178.232.1</td>
 	            </tr> 
 	            <tr> 
-	              <td>2020-12-25(금) 00:17</td>
-	              <td>김상후</td>
-	              <td>영업</td>
-	              <td>로그인 성공</td>
+	              <td>2020-12-25(금) 14:07:23</td>
+	              <td>김상후</td> 
+	              <td>영업</td> 
+	              <td style="text-align: left; padding-left: 3%;">/admin_attendanceList_usage.up</td> 
 	              <td>USER</td>
 	              <td>210.178.232.1</td>
 	            </tr> 
 	            <tr> 
-	              <td>2020-12-25(금) 00:17</td>
-	              <td>김상후</td>
-	              <td>영업</td>
-	              <td>로그인 성공</td>
+	              <td>2020-12-25(금) 14:07:23</td>
+	              <td>김상후</td> 
+	              <td>영업</td> 
+	              <td style="text-align: left; padding-left: 3%;">/admin_attendanceList_holding.up</td> 
 	              <td>USER</td>
 	              <td>210.178.232.1</td>
 	            </tr> 
 	            <tr> 
-	              <td>2020-12-25(금) 00:17</td>
-	              <td>진혜린</td>
-	              <td>IT</td>
-	              <td>로그인 성공</td>
-	              <td>ADMIN</td>
+	              <td>2020-12-25(금) 14:07:23</td>
+	              <td>김상후</td> 
+	              <td>영업</td> 
+	              <td style="text-align: left; padding-left: 3%;">/admin_memberList.up</td> 
+	              <td>USER</td>
 	              <td>210.178.232.1</td>
 	            </tr> 
 	            <tr> 
-	              <td>2020-12-25(금) 00:17</td>
-	              <td>김상후</td>
-	              <td>영업본부</td>
-	              <td>로그인 성공</td>
+	              <td>2020-12-25(금) 14:07:23</td>
+	              <td>김상후</td> 
+	              <td>영업</td> 
+	              <td style="text-align: left; padding-left: 3%;">/admin_login.up</td> 
 	              <td>USER</td>
 	              <td>210.178.232.1</td>
-            	</tr> 
+	            </tr> 
 	    	</tbody>        
 		</table>
      	
