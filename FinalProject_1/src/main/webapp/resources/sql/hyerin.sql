@@ -252,17 +252,37 @@ exec pcd_tbl_team_insert('IT',100);
 select * from tbl_employee
 
 -- 한 사람의 메시지목록을 보여주는 select
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
+from
+(
+    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
+    from
+    (
+        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+        where receiver = '100006' and status = 1 and ms_checktime is null
+    )
+    left join v_employee E
+    on E.employee_no = writer
+    order by ms_sendtime desc
+)
+left join v_employee
+on employee_no = receiver
+
+-- 한 사람의 스크랩한 메시지
 select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
 from
 (
     select writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
     from
     (
-        select writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
         from tbl_message M
         join tbl_message_send MS
         on M.mno = MS.fk_mno
-        where receiver = '106' and status = 1 and ms_checktime = null
+        where receiver = '10006' and status = 1 and ms_checktime is null
     )
     left join v_employee E
     on E.employee_no = writer
@@ -273,23 +293,155 @@ on employee_no = receiver
 
 
 
+
+
 --------------------------------------------------------------------------------
 -- 사원 관련 테이블 조인한 뷰
 
 create or replace view v_employee
 as
-select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, sidebarsize
+select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
 from
     (
-    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, sidebarsize
+    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
     from tbl_employee E
     left join tbl_departments D
     on fk_department_no = department_no
     )A
 left join tbl_team
-on fk_team_no = team_no
-;
+on fk_team_no = team_no;
 
 
-select to_char(sysdate, 'yy. mm. dd')
-from dual;
+
+
+
+
+--------------------------------------------------------------------------------
+-- tbl_employee 시퀀스 만들기
+create sequence seq_tbl_employee
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+-- tbl_employee에 데이터 넣기
+create or replace procedure pcd_tbl_employee_insert
+(p_deptno  IN  number
+,p_teamno  in number
+,p_name_kr in varchar2
+,p_name_en in varchar2
+,p_pwd in varchar2
+,p_salary in number
+,p_jointype in varchar2
+,p_mobile in varchar2
+,p_email in varchar2
+,p_major in varchar2
+,p_role in varchar2 -- 직무
+,p_position in varchar2 --직위
+)
+is
+begin
+for i in 1..5 loop
+insert into tbl_employee
+values(p_deptno||lpad(seq_tbl_employee.nextval,4,0), p_deptno, p_teamno, p_name_kr||i, p_name_en||i, p_pwd, p_jointype, null, sysdate-300,  p_salary, null, p_mobile||i, '21105'
+,null, null, null, p_email||i||'@naver.com', 2, null, null, '대졸', p_major, null, null, null, 1, p_role, p_position, 1, 1);
+end loop;
+end pcd_tbl_employee_insert;
+
+rollback;
+
+exec pcd_tbl_employee_insert(10, 1, '진혜린','Hyerin Jin', 'qwer1234$', 3000, '신입', '010-8828-471','hyerin1','경영학과','경영관리','사원');
+exec pcd_tbl_employee_insert(10, 2, '강채영','Chaeyoung Kang', 'qwer1234$', 3000, '신입', '010-9936-111','chaeyoung1','경영학과','경영기획','사원');
+exec pcd_tbl_employee_insert(10, 3, '이예은','Yeeun Lee', 'qwer1234$', 3000, '신입', '010-3329-891','yeeun1','경영학과','경영지원','사원');
+exec pcd_tbl_employee_insert(10, 4, '김지은','Jieun Kim', 'qwer1234$', 3000, '신입', '010-2559-621','jieun1','경영학과','경영평가','사원');
+exec pcd_tbl_employee_insert(10, 5, '서영학','Younghak Seo', 'qwer1234$', 3000, '신입', '010-8828-473','younghak1','경영학과','경영관리','사원');
+
+exec pcd_tbl_employee_insert(20, 6, '진혜린','Hyerin Jin', 'qwer1234$', 3100, '신입', '010-8828-472','hyerin2','경영학과','브랜드기획','사원');
+exec pcd_tbl_employee_insert(20, 7, '강채영','Chaeyoung Kang', 'qwer1234$', 3100, '신입', '010-9936-112','chaeyoung2','경영학과','콘텐츠기획','사원');
+exec pcd_tbl_employee_insert(20, 8, '이예은','Yeeun Lee', 'qwer1234$', 3100, '신입', '010-3329-892','yeeun2','산업디자인','서비스기획','사원');
+exec pcd_tbl_employee_insert(20, 9, '김지은','Jieun Kim', 'qwer1234$', 3100, '신입', '010-2559-622','jieun2','산업디자인','마케팅전략','사원');
+exec pcd_tbl_employee_insert(20, 10, '서영학','Younghak Seo', 'qwer1234$', 3100, '신입', '010-8828-472','younghak2','경영학과','마케팅퍼포먼스','사원');
+
+exec pcd_tbl_employee_insert(30, 11, '진혜린','Hyerin Jin', 'qwer1234$', 3200, '신입', '010-8828-473','hyerin3','경영학과','구매기획','사원');
+exec pcd_tbl_employee_insert(30, 12, '강채영','Chaeyoung Kang', 'qwer1234$', 3200, '신입', '010-9936-113','chaeyoung3','경영학과','구매관리','사원');
+exec pcd_tbl_employee_insert(30, 13, '이예은','Yeeun Lee', 'qwer1234$', 3200, '신입', '010-3329-893','yeeun3','산업디자인','전략구매','사원');
+exec pcd_tbl_employee_insert(30, 14, '김지은','Jieun Kim', 'qwer1234$', 3200, '신입', '010-2559-623','jieun3','산업디자인','구매지원','사원');
+exec pcd_tbl_employee_insert(30, 15, '서영학','Younghak Seo', 'qwer1234$', 3200, '신입', '010-8828-471','younghak3','경영학과','구매거래','사원');
+
+exec pcd_tbl_employee_insert(40, 16, '진혜린','Hyerin Jin', 'qwer1234$', 2900, '신입', '010-8828-474','hyerin4','경영학과','인사관리','사원');
+exec pcd_tbl_employee_insert(40, 17, '강채영','Chaeyoung Kang', 'qwer1234$', 2900, '신입', '010-9936-114','chaeyoung4','경영학과','채용','사원');
+exec pcd_tbl_employee_insert(40, 18, '이예은','Yeeun Lee', 'qwer1234$', 2900, '신입', '010-3329-894','yeeun4','경영학과','배치','사원');
+exec pcd_tbl_employee_insert(40, 19, '김지은','Jieun Kim', 'qwer1234$', 2900, '신입', '010-2559-624','jieun4','경영학과','급여','사원');
+exec pcd_tbl_employee_insert(40, 20, '서영학','Younghak Seo', 'qwer1234$', 2900, '신입', '010-8828-474','younghak4','경영학과','노무','사원');
+
+
+exec pcd_tbl_employee_insert(50, 21, '진혜린','Hyerin Jin', 'qwer1234$', 3000, '신입', '010-8828-475','hyerin5','물류학과','재고관리','사원');
+exec pcd_tbl_employee_insert(50, 22, '강채영','Chaeyoung Kang', 'qwer1234$', 3000, '신입', '010-9936-115','chaeyoung5','경영학과','창고관리','사원');
+exec pcd_tbl_employee_insert(50, 23, '이예은','Yeeun Lee', 'qwer1234$', 3000, '신입', '010-3329-895','yeeun5','경영학과','배송관리','사원');
+exec pcd_tbl_employee_insert(50, 24, '김지은','Jieun Kim', 'qwer1234$', 3000, '신입', '010-2559-625','jieun5','경영학과','물류관리','사원');
+exec pcd_tbl_employee_insert(50, 25, '서영학','Younghak Seo', 'qwer1234$', 3000, '신입', '010-8828-475','younghak5','경영학과','물류기획','사원');
+
+exec pcd_tbl_employee_insert(60, 26, '진혜린','Hyerin Jin', 'qwer1234$', 3100, '신입', '010-8828-476','hyerin6','경영학과','일반영업','사원');
+exec pcd_tbl_employee_insert(60, 27, '강채영','Chaeyoung Kang', 'qwer1234$', 3100, '신입', '010-9936-116','chaeyoung6','경영학과','매장관리','사원');
+exec pcd_tbl_employee_insert(60, 28, '이예은','Yeeun Lee', 'qwer1234$', 3100, '신입', '010-3329-896','yeeun6','경영학과','해외영업','사원');
+exec pcd_tbl_employee_insert(60, 29, '김지은','Jieun Kim', 'qwer1234$', 3100, '신입', '010-2559-626','jieun6','경영학과','영업기획','사원');
+exec pcd_tbl_employee_insert(60, 30, '서영학','Younghak Seo', 'qwer1234$', 3100, '신입', '010-8828-476','younghak6','경영학과','기술영업','사원');
+
+exec pcd_tbl_employee_insert(70, 31, '진혜린','Hyerin Jin', 'qwer1234$', 3100, '신입', '010-8828-477','hyerin7','경영학과','재무기획','사원');
+exec pcd_tbl_employee_insert(70, 32, '강채영','Chaeyoung Kang', 'qwer1234$', 3100, '신입', '010-9936-117','chaeyoung7','회계학과','자금운용','사원');
+exec pcd_tbl_employee_insert(70, 33, '이예은','Yeeun Lee', 'qwer1234$', 3100, '신입', '010-3329-897','yeeun7','세무회계학과','세무','사원');
+exec pcd_tbl_employee_insert(70, 34, '김지은','Jieun Kim', 'qwer1234$', 3100, '신입', '010-2559-627','jieun7','경영학과','IR','사원');
+exec pcd_tbl_employee_insert(70, 35, '서영학','Younghak Seo', 'qwer1234$', 3100, '신입', '010-8828-477','younghak7','세무회계학과','자금운용','사원');
+
+
+exec pcd_tbl_employee_insert(80, 36, '진혜린','Hyerin Jin', 'qwer1234$', 3200, '신입', '010-8828-478','hyerin8','경영학과','웹서비스','사원');
+exec pcd_tbl_employee_insert(80, 37, '강채영','Chaeyoung Kang', 'qwer1234$', 3200, '신입', '010-9936-118','chaeyoung8','컴퓨터공학과','앱서비스','사원');
+exec pcd_tbl_employee_insert(80, 38, '이예은','Yeeun Lee', 'qwer1234$', 3200, '신입', '010-3329-898','yeeun8','컴퓨터공학과','시스템소프트웨어','사원');
+exec pcd_tbl_employee_insert(80, 39, '김지은','Jieun Kim', 'qwer1234$', 3200, '신입', '010-2559-628','jieun8','경영학과','응용소프트웨어','사원');
+exec pcd_tbl_employee_insert(80, 40, '서영학','Younghak Seo', 'qwer1234$', 3200, '신입', '010-8828-478','younghak8','컴퓨터공학과','IT기획','사원');
+
+exec pcd_tbl_employee_insert(90, 41, '진혜린','Hyerin Jin', 'qwer1234$', 3300, '신입', '010-8828-479','hyerin9','기계공학과','생산기획','사원');
+exec pcd_tbl_employee_insert(90, 42, '강채영','Chaeyoung Kang', 'qwer1234$', 3300, '신입', '010-9936-119','chaeyoung9','전자공학과','설비기획','사원');
+exec pcd_tbl_employee_insert(90, 43, '이예은','Yeeun Lee', 'qwer1234$', 3300, '신입', '010-3329-899','yeeun9','기계공학과','공정관리','사원');
+exec pcd_tbl_employee_insert(90, 44, '김지은','Jieun Kim', 'qwer1234$', 3300, '신입', '010-2559-629','jieun9','전자공학과','설비관리','사원');
+exec pcd_tbl_employee_insert(90, 45, '서영학','Younghak Seo', 'qwer1234$', 3300, '신입', '010-8828-479','younghak9','기계공학과','생산관리','사원');
+
+commit;
+
+
+--------------------------------------------------------------------------------
+
+-- tbl_message에 클릭한 메시지 내용 한개 읽어오기
+select mno, mgroup, reno, writer, name_kr, department_name, subject, content, m_systemfilename, m_originfilename, file_size
+from tbl_message M
+join v_employee E
+on writer = employee_no
+where mno = 'm-16' and M.status = 1
+
+
+-- tbl_message에 수신자 불러오기
+select receiver, name_kr, department_name, ms_sendtime, ms_checktime
+from
+(
+    select * from tbl_message_send
+    where fk_mno = 'm-16'
+)
+join v_employee
+on receiver = employee_no
+
+
+select employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, role, position, authority
+from tbl_employee
+where status = 1 and employee_no = 
+
+
+update tbl_employee set passwd = '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382'
+
+select * from tbl_employee
+
+commit;
+
+select * from v_employee

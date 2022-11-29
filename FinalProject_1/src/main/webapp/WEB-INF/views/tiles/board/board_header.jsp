@@ -87,25 +87,6 @@
 		width: 8%;
 	}
 	
-	
-	/* 최근글 new 아이콘  */
-	.newbadge{
-	  background-color: #dc3545;
-	  width: 12px;
-	  height: 12px;
-	  display:inline-block;
-	  border-radius: 4px;
-	  position: relative;
-	  left:10px; 
-	  color:white;
-	  font-size:0.2rem;
-	  font-weight:bold; 
-	  text-align: center;
-	  position: relative;
-	  top: 3px;
-	  margin-right: 14px;
-	}
-	
 	.titlefirst{
 		font-weight: 600;
 		font-size:11.5pt;

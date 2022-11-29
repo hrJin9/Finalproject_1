@@ -38,7 +38,7 @@
     padding-left: 22px;
 }
 .table td:nth-child(1) {
-    padding-top: 2%;
+    padding-top: 27px;
     border-right: 1.5px solid #eef2f6;
 }
 .table {
@@ -117,6 +117,26 @@ input {
 .toastui-editor-defaultUI {
     width: 100% !important;
 }
+
+/* 최근글 new 아이콘  */
+.newbadge{
+  background-color: #dc3545;
+  width: 12px;
+  height: 12px;
+  display:inline-block;
+  border-radius: 4px;
+  position: relative;
+  left:10px; 
+  color:white;
+  font-size:0.2rem;
+  font-weight:bold; 
+  text-align: center;
+  position: relative;
+     top: -2px;
+     left: 0%;
+  margin-right: 14px;
+}
+
 
 
 /* ===  옵션창  === */
@@ -671,6 +691,10 @@ li::marker {
 	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
 }
 
+.nb-info{
+	width: 53%;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -846,11 +870,12 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".table").css({'width':'62.5%','margin-top':'32px'});
+	        $(".table").css({'width':'62%','margin-top':'32px'});
 	        // $(".table th:nth-child(2)").attr("width","8%");
 	        $(".myscrap").css({'position':'relative', 'top':'31.5px', 'right':''});
 	        $(".table th:nth-child(1)").css({'width':'6%'});
-	        $(".table th:nth-child(3)").css({'width':'8.5%'});
+	        $(".table th:nth-child(3)").attr("width","14%");
+	        $(".nb-info").css("width", "96%");
 	        $(".myscrap").fadeIn(100);
 	        
 	    } else{
@@ -858,7 +883,8 @@ $(document).ready(function(){
 	        // $(".table th:nth-child(2)").attr("width","6%");
 	        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
 	        $(".table th:nth-child(1)").css({'width':''});
-	        $(".table th:nth-child(3)").css({'width':''});
+	        $(".table th:nth-child(3)").attr("width","6%");
+	        $(".nb-info").css("width", "53%");
 	        $(".myscrap").fadeOut(100);
 	    }
 	});  
@@ -1209,13 +1235,20 @@ function goSearch(){
 	              	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[코로나 문진표] 11/15일자 결과 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">관리자</span>
-            		<span class="writedate">2022.11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
-              	</div>	
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">일반</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="username">관리자</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>			
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
@@ -1229,13 +1262,20 @@ function goSearch(){
               		<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">관리자</span>
-            		<span class="writedate">2022.11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
-              	</div>	
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">일반</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="username">관리자</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>					
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
@@ -1249,14 +1289,22 @@ function goSearch(){
               		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
               		<span class="title">[떰접식당 이용정책 변경안내]</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
+              		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">관리자</span>
-            		<span class="writedate">2022.11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
-              	</div>	
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">인사</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="username">관리자</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>					
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
@@ -1268,14 +1316,22 @@ function goSearch(){
               	<div class="titlefirst">
               		<span class="title">[그룹웨어] 알림기능 업데이트 안내</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
+              		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">관리자</span>
-            		<span class="writedate">2022.11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
-              	</div>	
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="username">관리자</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>		
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
@@ -1288,13 +1344,20 @@ function goSearch(){
               		<span class="title">[온라인 세미나] 11/25(금) 세미나 공지</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">관리자</span>
-            		<span class="writedate">2022.11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
-              	</div>	
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="username">관리자</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>			
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
@@ -1415,8 +1478,8 @@ function goSearch(){
 			
     			<div class="workstatus-buttoncontainer">
 	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-		  			<button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button>
-		  			<button type="button" class="workstatus-save mr-1">저장하기</button>
+		  			<!-- <button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button> -->
+		  			<button type="button" class="workstatus-save mr-1 gradientbtn">저장하기</button>
 		  			<button type="reset" class="workstatus-cancel mr-1">취소</button>
 	  			</div>
     	
