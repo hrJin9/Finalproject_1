@@ -60,17 +60,37 @@
         
         //넓게보기 클릭 이벤트
         $("#side-expand-a").click(function(){
+        	
+        	let sidebar_yn;
         	if($("#side-expandcx").is(":checked")){
         		$("#side-expandcx").prop("checked",false);
         		$("#menuicon").prop("checked",false);
         		$("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
         		$("#side-expand").css({"background-color":"","transition":"all 0.5s"});
+        		sidebar_yn = "0";
+        		
         	} else {
         		$("#side-expandcx").prop("checked",true);
         		$("#menuicon").prop("checked",true);
         		$("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
         		$("#side-expand").css({"background-color":"#4285f4","transition":"all 0.5s"});
+        		sidebar_yn = "1";
         	}
+        	
+        	//입력값을 session에 저장하기
+    		$.ajax({
+    			url: "<%=ctxPath%>/sbcheck.up",
+    			type:"post",
+    			data:{"sidebar_yn":sidebar_yn},
+    			dataType:"json",
+    			success:function(json){
+    			},
+    			error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+    			
+    		});//end of ajax
+    		
         });
         
         

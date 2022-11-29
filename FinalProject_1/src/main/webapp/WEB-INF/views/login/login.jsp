@@ -175,10 +175,10 @@
 			localStorage.removeItem("saveUser");
 		}
 		
-		<%-- const frm = document.login_frm;
-		frm.action = "<%=ctxPath%>/";
+		const frm = document.login_frm;
+		frm.action = "<%=ctxPath%>/loginEnd.up";
 	    frm.method = "post";
-	    frm.submit(); --%>
+	    frm.submit(); 
 	}
 	
 </script>

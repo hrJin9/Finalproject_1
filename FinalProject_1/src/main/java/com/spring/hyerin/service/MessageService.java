@@ -31,5 +31,12 @@ public class MessageService implements InterMessageService {
 		return mvoList;
 	}
 	
+	//로그인 유저가 클릭한 메시지내용 1개 불러오기
+	@Override
+	public Map<String, String> getmvo(String mno) {
+		Map<String, String> mvo = dao.getmvo(mno);
+		return mvo;
+	}
+	
 	
 }

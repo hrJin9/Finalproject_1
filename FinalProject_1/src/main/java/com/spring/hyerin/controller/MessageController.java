@@ -34,14 +34,19 @@ public class MessageController {
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put("tab", tab);
+		paraMap.put("mno",mno);
 		// 로그인된 유저의 employee_no 알아오기
 		String receiver = "100006";
 		paraMap.put("receiver", receiver);
 		// 로그인유저의 메시지리스트 불러오기
 		List<Map<String,String>> mvoList = service.getmvoList(paraMap);
 		
-		mav.addObject("mno",mno);
-		mav.addObject("tab",tab);
+		//로그인 유저가 클릭한 메시지내용 1개 불러오기
+		Map<String,String> mvo = service.getmvo(mno);
+		
+		
+		mav.addObject("paraMap",paraMap);
+		mav.addObject("mvo",mvo);
 		mav.addObject("mvoList",mvoList);
 		mav.setViewName("message/message_recieve.tiles");
 		return mav;

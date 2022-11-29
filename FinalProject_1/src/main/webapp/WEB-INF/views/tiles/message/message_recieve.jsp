@@ -26,14 +26,14 @@ $(document).ready(function(){
 	$("#mg-recieve").css("color","#4d4f53");
 	
 	//mno값을 읽어와서 페이지 넘기기
-	let mno = "${requestScope.mno}";
+	let mno = "${requestScope.paraMap.mno}";
 	if(mno == ""){
 		mno = $(".mgList-contents tr:first-child").attr("id");
 		location.href="<%=ctxPath%>/message.up?mno="+mno;
 	}
 		
 	// 중요, 안읽음 클릭시 굵기주기 
-	const tab = "${requestScope.tab}";
+	const tab = "${requestScope.paraMap.tab}";
 	if(tab == "all")
 		$("span#all").css("font-weight","bold");
 	else if (tab == "unread")

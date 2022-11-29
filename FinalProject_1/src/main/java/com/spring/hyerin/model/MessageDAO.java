@@ -26,6 +26,13 @@ public class MessageDAO implements InterMessageDAO {
 		return mvoList;
 	}
 	
+	//로그인 유저가 클릭한 메시지내용 1개 불러오기
+	@Override
+	public Map<String, String> getmvo(String mno) {
+		Map<String, String> mvo = sqlsession.selectOne("message.getmvo",mno);
+		return mvo;
+	}
+	
 	
 	
 	

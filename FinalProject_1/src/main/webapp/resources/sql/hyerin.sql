@@ -252,10 +252,10 @@ exec pcd_tbl_team_insert('IT',100);
 select * from tbl_employee
 
 -- 한 사람의 메시지목록을 보여주는 select
-select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
 from
 (
-    select writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
+    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
     from
     (
         select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
@@ -291,7 +291,6 @@ from
 left join v_employee
 on employee_no = receiver
 
-select * from tbl_scrap
 
 
 
@@ -310,8 +309,7 @@ from
     on fk_department_no = department_no
     )A
 left join tbl_team
-on fk_team_no = team_no
-;
+on fk_team_no = team_no;
 
 
 
@@ -415,3 +413,30 @@ commit;
 
 
 --------------------------------------------------------------------------------
+
+-- tbl_message에 클릭한 메시지 내용 한개 읽어오기
+select mno, mgroup, reno, writer, name_kr, department_name, subject, content, m_systemfilename, m_originfilename, file_size
+from tbl_message M
+join v_employee E
+on writer = employee_no
+where mno = 'm-16' and M.status = 1
+
+
+-- tbl_message에 수신자 불러오기
+select receiver, name_kr, department_name, ms_sendtime, ms_checktime
+from
+(
+    select * from tbl_message_send
+    where fk_mno = 'm-16'
+)
+join v_employee
+on receiver = employee_no
+
+
+select employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
+from tbl_employee
+
+
+
+
+
