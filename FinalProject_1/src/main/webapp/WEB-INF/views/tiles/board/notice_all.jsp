@@ -1478,8 +1478,8 @@ function goSearch(){
 			
     			<div class="workstatus-buttoncontainer">
 	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-		  			<button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button>
-		  			<button type="button" class="workstatus-save mr-1">저장하기</button>
+		  			<!-- <button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button> -->
+		  			<button type="button" class="workstatus-save mr-1 gradientbtn">저장하기</button>
 		  			<button type="reset" class="workstatus-cancel mr-1">취소</button>
 	  			</div>
     	
