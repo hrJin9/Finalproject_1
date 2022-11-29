@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,13 +90,19 @@ public class LoginController {
 	//세션에 사이드바 정보 저장하기
 	@ResponseBody
 	@RequestMapping(value = "/sbcheck.up", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
-	public void sidebarCheck(HttpServletRequest request) {
+	public String sidebarCheck(HttpServletRequest request) {
 		
 		String sidebar_yn = request.getParameter("sidebar_yn");
 		HttpSession session = request.getSession();
 		session.setAttribute("sidebar_yn", sidebar_yn);
-		
 		System.out.println(session.getAttribute("sidebar_yn"));
+		
+		String sbynstatus = (String)session.getAttribute("sidebar_yn");
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("sbynstatus", sbynstatus);
+		
+		return jsonobj.toString();
 	}
 	
 	
