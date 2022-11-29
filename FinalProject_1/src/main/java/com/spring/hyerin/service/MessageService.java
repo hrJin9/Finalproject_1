@@ -20,8 +20,8 @@ public class MessageService implements InterMessageService {
 	private FileManager fileManager;
 
 	@Override
-	public List<Map<String,String>> getmvoList(String receiver) {
-		List<Map<String,String>> mvoList = dao.getmvoList(receiver);
+	public List<Map<String,String>> getmvoList(Map<String, String> paraMap) {
+		List<Map<String,String>> mvoList = dao.getmvoList(paraMap);
 		return mvoList;
 	}
 

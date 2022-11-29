@@ -15,8 +15,8 @@ public class MessageDAO implements InterMessageDAO {
 	private SqlSessionTemplate sqlsession;
 	
 	@Override
-	public List<Map<String,String>> getmvoList(String receiver) {
-		List<Map<String,String>> mvoList = sqlsession.selectList("message.getmvoList", receiver);
+	public List<Map<String,String>> getmvoList(Map<String, String> paraMap) {
+		List<Map<String,String>> mvoList = sqlsession.selectList("message.getmvoList", paraMap);
 		return mvoList;
 	}
 

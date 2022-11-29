@@ -10,6 +10,7 @@
 </style>
 <script>
 	$(document).ready(function(){
+		
 		//중요표시 별표
 		$("#mc-star").change(function(){
 			const itag = $(this).parent().find("i");

@@ -5,6 +5,7 @@
 	
 	<!-- 한 사용자의 메시지목록 불러오기 -->
 	<resultMap type="HashMap" id="getmvoList_Map">
+		<result property="mno" column="mno" javaType="String"/>
 		<result property="writer" column="writer" javaType="String"/>
 		<result property="w_name" column="w_name" javaType="String"/>
 		<result property="w_deptname" column="w_deptname" javaType="String"/>
@@ -21,18 +22,26 @@
 		<result property="ms_sendtime" column="ms_sendtime" javaType="String"/>
 		<result property="ms_checktime" column="ms_checktime" javaType="String"/>
 	</resultMap>
-	<select id="getmvoList" parameterType="String" resultMap="getmvoList_Map">
-		select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
+	<select id="getmvoList" parameterType="HashMap" resultMap="getmvoList_Map">
+		select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
 		from
 		(
-		    select writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
+		    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
 		    from
 		    (
-		        select writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+		        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
-		        where receiver = #{receiver} and status = 1
+		        <if test="tab == 'all'">
+			        where receiver = #{receiver} and status = 1
+		        </if>
+		        <if test="tab == 'unread'">
+			        where receiver = #{receiver} and status = 1 and ms_checktime is null
+		        </if>
+		        <if test="tab == 'scrap'">
+			        where receiver = #{receiver} and status = 1
+		        </if>
 		    )
 		    left join v_employee E
 		    on E.employee_no = writer
@@ -42,7 +51,7 @@
 		on employee_no = receiver
 	</select>
 	
-	
+	<!-- 
 	<select id="unread_mvoList" parameterType="String" resultMap="getmvoList_Map">
 		select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
 		from
@@ -63,7 +72,7 @@
 		left join v_employee
 		on employee_no = receiver
 	</select>
-
+ -->
 
 
 </mapper>
