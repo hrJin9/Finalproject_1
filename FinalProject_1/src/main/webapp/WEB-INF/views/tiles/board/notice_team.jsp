@@ -119,6 +119,25 @@ input {
     width: 100% !important;
 }
 
+/* 최근글 new 아이콘  */
+.newbadge{
+  background-color: #dc3545;
+  width: 12px;
+  height: 12px;
+  display:inline-block;
+  border-radius: 4px;
+  position: relative;
+  left:10px; 
+  color:white;
+  font-size:0.2rem;
+  font-weight:bold; 
+  text-align: center;
+  position: relative;
+     top: -2px;
+     left: 0%;
+  margin-right: 14px;
+}
+
 
 /* ===  옵션창  === */
 div.option {
@@ -1215,14 +1234,22 @@ function goSearch(){
 	              	<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
 	              	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[팀 회식] 11/28일 팀 회식 일정 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">진혜린&nbsp;대리</span>
-            		<span class="writedate">2022.11.16</span>
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
-              	</div>	
+              	</div>  
+              	<div style="width: 50%;">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">일반</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;본부장</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>		
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
@@ -1236,12 +1263,19 @@ function goSearch(){
               		<span class="title">[내부 미팅] 11/5일 신규 프로젝트 관련 미팅 일정 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">진혜린&nbsp;대리</span>
-            		<span class="writedate">2022.11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
+              	<div style="width: 50%;">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">일반</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;본부장</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
               	</div>	
               </td>
               <td>
@@ -1257,13 +1291,20 @@ function goSearch(){
               		<span class="title">[떰접 ver.2] 떰접 버전 업데이트 안내</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">진혜린&nbsp;대리</span>
-            		<span class="writedate">2022.11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
-              	</div>	
+              	<div style="width: 50%;">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">일반</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;주임</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
@@ -1275,14 +1316,22 @@ function goSearch(){
               	<div class="titlefirst">
               		<span class="title">[인사] 김지은 과장 승진 공지</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">일반</span>
-              		<span class="username">진혜린&nbsp;대리</span>
-            		<span class="writedate">2022.11.16</span>
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
-              	</div>	
+              	</div>  
+              	<div style="width: 50%;">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">인사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;부대표</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
@@ -1294,13 +1343,20 @@ function goSearch(){
               	<div class="titlefirst">
               		<span class="title">[경조사] 김상후 사원 결혼소식</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">경조사</span>
-              		<span class="username">진혜린&nbsp;대리</span>
-            		<span class="writedate">2022.11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ><span id="bubblecnt">11</span></span>
+              	</div> 
+              	<div style="width: 50%;">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
               	</div>	
               </td>
               <td>
