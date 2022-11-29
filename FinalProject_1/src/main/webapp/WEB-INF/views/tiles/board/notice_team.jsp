@@ -39,7 +39,7 @@
     padding-left: 22px;
 }
 .table td:nth-child(1) {
-    padding-top: 2%;
+    padding-top: 27px;
     border-right: 1.5px solid #eef2f6;
 }
 .table {
@@ -692,6 +692,10 @@ li::marker {
 	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
 }
 
+.nb-info{
+	width: 53%;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -878,6 +882,7 @@ $(document).ready(function(){
 	        $(".myscrap").css({'position':'relative', 'top':'31.5px', 'right':''});
 	        $(".table th:nth-child(1)").css({'width':'6%'});
 	        $(".table th:nth-child(3)").css({'width':'8.5%'});
+	        $(".nb-info").css("width", "95%");
 	        $(".myscrap").fadeIn(100);
 	        
 	    } else{
@@ -886,6 +891,7 @@ $(document).ready(function(){
 	        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
 	        $(".table th:nth-child(1)").css({'width':''});
 	        $(".table th:nth-child(3)").css({'width':''});
+	        $(".nb-info").css("width", "53%");
 	        $(".myscrap").fadeOut(100);
 	    }
 	});  
@@ -1236,7 +1242,7 @@ function goSearch(){
               		<span class="icon icon-attachment" id="iconattachment"></span> 
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">일반</span>
               		</div>
@@ -1263,7 +1269,7 @@ function goSearch(){
               		<span class="title">[내부 미팅] 11/5일 신규 프로젝트 관련 미팅 일정 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">일반</span>
               		</div>
@@ -1291,7 +1297,7 @@ function goSearch(){
               		<span class="title">[떰접 ver.2] 떰접 버전 업데이트 안내</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">일반</span>
               		</div>
@@ -1318,7 +1324,7 @@ function goSearch(){
               		<span class="icon icon-attachment" id="iconattachment"></span> 
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">인사</span>
               		</div>
@@ -1344,7 +1350,137 @@ function goSearch(){
               		<span class="title">[경조사] 김상후 사원 결혼소식</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div> 
-              	<div style="width: 50%;">
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">경조사</span>
               		</div>

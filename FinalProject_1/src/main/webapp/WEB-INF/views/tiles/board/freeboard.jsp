@@ -763,7 +763,7 @@ function goSearch(){  // 검색시 함수
 </script>
 <div class="container mt-5">
 	<div class="row">
-      <div class="table-responsive" style="width: 100%; height: 500px; overflow-y: hidden;">
+      <div class="table-responsive" style="width: 100%; height: 500px;">
       	
           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
 			<div class="row" style="float: right;position: relative;left: -132px;" >
@@ -944,6 +944,121 @@ function goSearch(){  // 검색시 함수
               	<div class="fb-info" style="width: 55%;">
               		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
               			<span class="username">이예은&nbsp;과장</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>		
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">남은 3주 화이팅해봅시다:)! 오늘도 다들 수고 많았어요.</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div>  
+              	<div class="fb-info" style="width: 55%;">
+              		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
+              			<span class="username">이예은&nbsp;대리</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>		
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">남은 3주 화이팅해봅시다:)! 오늘도 다들 수고 많았어요.</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div>  
+              	<div class="fb-info" style="width: 55%;">
+              		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
+              			<span class="username">이예은&nbsp;대리</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>		
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">남은 3주 화이팅해봅시다:)! 오늘도 다들 수고 많았어요.</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div>  
+              	<div class="fb-info" style="width: 55%;">
+              		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
+              			<span class="username">이예은&nbsp;대리</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>		
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">남은 3주 화이팅해봅시다:)! 오늘도 다들 수고 많았어요.</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div>  
+              	<div class="fb-info" style="width: 55%;">
+              		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
+              			<span class="username">이예은&nbsp;대리</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>		
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">남은 3주 화이팅해봅시다:)! 오늘도 다들 수고 많았어요.</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div>  
+              	<div class="fb-info" style="width: 55%;">
+              		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
+              			<span class="username">이예은&nbsp;대리</span>
               		</div>
               		<div style="display: inline-block; width: 10%;">
               			<span class="writedate">2022.11.16</span>

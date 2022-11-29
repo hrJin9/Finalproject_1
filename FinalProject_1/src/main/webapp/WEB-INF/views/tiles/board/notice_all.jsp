@@ -38,7 +38,7 @@
     padding-left: 22px;
 }
 .table td:nth-child(1) {
-    padding-top: 2%;
+    padding-top: 27px;
     border-right: 1.5px solid #eef2f6;
 }
 .table {
@@ -691,6 +691,10 @@ li::marker {
 	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
 }
 
+.nb-info{
+	width: 53%;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -871,6 +875,7 @@ $(document).ready(function(){
 	        $(".myscrap").css({'position':'relative', 'top':'31.5px', 'right':''});
 	        $(".table th:nth-child(1)").css({'width':'6%'});
 	        $(".table th:nth-child(3)").css({'width':'8.5%'});
+	        $(".nb-info").css("width", "95%");
 	        $(".myscrap").fadeIn(100);
 	        
 	    } else{
@@ -879,6 +884,7 @@ $(document).ready(function(){
 	        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
 	        $(".table th:nth-child(1)").css({'width':''});
 	        $(".table th:nth-child(3)").css({'width':''});
+	        $(".nb-info").css("width", "53%");
 	        $(".myscrap").fadeOut(100);
 	    }
 	});  
@@ -1229,7 +1235,7 @@ function goSearch(){
 	              	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[코로나 문진표] 11/15일자 결과 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">일반</span>
               		</div>
@@ -1256,7 +1262,7 @@ function goSearch(){
               		<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">일반</span>
               		</div>
@@ -1285,7 +1291,7 @@ function goSearch(){
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">인사</span>
               		</div>
@@ -1312,7 +1318,7 @@ function goSearch(){
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">경조사</span>
               		</div>
@@ -1338,7 +1344,7 @@ function goSearch(){
               		<span class="title">[온라인 세미나] 11/25(금) 세미나 공지</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="nb-info">
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">경조사</span>
               		</div>
