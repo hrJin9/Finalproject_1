@@ -71,7 +71,7 @@ h2 {
     padding-left: 22px;
 }
 .table td:nth-child(1) {
-    padding-top: 2%;
+    padding-top: 27px;
     border-right: 1.5px solid #eef2f6;
 }
 .table {
@@ -702,18 +702,20 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".table").css({'width':'62.5%'});
+	        $(".table").css({'width':'62%'});
 	        $(".myscrap").css({'position':'relative', 'top':'33.5px', 'right':''});
-	        $(".table th:nth-child(1)").css({'width':'6%'});
+	        $(".table th:nth-child(1)").css({'padding-right':'47px'});
 	        //$(".table td:nth-child(2) div:nth-child(2)").css({'width':'50%'});
-	        $(".table th:nth-child(3)").css({'width':'8.5%'});
+	        $(".table th:nth-child(3)").attr("width","12%");
+	        $(".fb-info").css("width","100%");
 	        $(".myscrap").fadeIn(100);
 	        
 	    } else{
 	        $(".table").css({'width':'100%'});
 	        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
-	        $(".table th:nth-child(1)").css({'width':''});
-	        $(".table th:nth-child(3)").css({'width':''});
+	        $(".table th:nth-child(1)").css({'padding-right':'0.5rem'});
+	        $(".table th:nth-child(3)").attr("width","6%");
+	        $(".fb-info").css("width","55%");
 	        $(".myscrap").fadeOut(100);
 	    }
 	});
@@ -869,7 +871,7 @@ function goSearch(){  // 검색시 함수
               		<span class="title">맛집 추천합니다!</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="fb-info" style="width: 55%;">
               		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
               			<span class="username">이예은&nbsp;본부장</span>
               		</div>
@@ -892,7 +894,7 @@ function goSearch(){  // 검색시 함수
               		<span class="title">3층 여자화장실 청결 관리 신경써주세요.</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="fb-info" style="width: 55%;">
               		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
               			<span class="username">이예은&nbsp;본부장</span>
               		</div>
@@ -915,7 +917,7 @@ function goSearch(){  // 검색시 함수
               		<span class="title">이번주 사내식당 메뉴 공유합니다.</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="fb-info" style="width: 55%;">
               		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
               			<span class="username">이예은&nbsp;본부장</span>
               		</div>
@@ -939,7 +941,7 @@ function goSearch(){  // 검색시 함수
               		<span class="icon icon-attachment" id="iconattachment"></span> 
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="fb-info" style="width: 55%;">
               		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
               			<span class="username">이예은&nbsp;과장</span>
               		</div>
@@ -962,7 +964,7 @@ function goSearch(){  // 검색시 함수
               		<span class="title">남은 3주 화이팅해봅시다:)! 오늘도 다들 수고 많았어요.</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div style="width: 50%;">
+              	<div class="fb-info" style="width: 55%;">
               		<div style="display: inline-block; width: 16.5%; margin-left: -1%;">
               			<span class="username">이예은&nbsp;대리</span>
               		</div>
