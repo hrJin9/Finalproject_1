@@ -271,7 +271,7 @@
 		list-style: none;
 	}
 </style>
-<script>
+<script type="text/javascript">
 	$(document).ready(function(){
 		
 		$("a.mainlist").click(function(){
@@ -295,7 +295,6 @@
  <div style="display: inline-block;position: relative;float: right;right: 90px;top: -49px;">
   	<a href="#" id="writebtn"class="btn gradientbtn"><i class="icon icon-quill" style="margin-right: 5px;"></i>글쓰기</a>
 </div>
-
 
 
 

@@ -70,6 +70,10 @@ h2 {
     border-bottom: 1px solid #eef2f6;
     padding-left: 22px;
 }
+.table td:nth-child(1) {
+    padding-top: 2%;
+    border-right: 1.5px solid #eef2f6;
+}
 .table {
     color: #4c4e54;
 }
@@ -79,19 +83,27 @@ table tr{
 table tr:hover {
 	background-color: #f4f8f9;
 }
-.topnotice{
-	background-color: #f9f9f9;
+
+.username {
+    color: #6d7077;
+    font-weight: 600;
+    position: relative;
+    top: 2px;
+    left: -0.5%;
+    margin-right: 15px;
+    margin-left: 6px;
 }
 
-
-.form-control{
-	font-size: 12pt;
+.icon-star-empty{
+	color:#bfbfbf;
+	padding:0 auto;
+	font-size: 15pt;
+	position: relative;
+	top:12px;
 }
-.row>*{
-	width: auto;
-	padding: 0;
+a.icon-star-empty:hover {
+	color: #ffc107;
 }
-
 
 
 /* === 게시글 목록 === */
@@ -165,9 +177,6 @@ div.option {
     z-index: 2;
     overflow:hidden;
  } 
-.detail-search-conditions {
-  margin: 10px 20px 0 30px;
-}
 .condition-cell.title {
     width: 100px;
     height: 43px;
@@ -194,119 +203,9 @@ div.option {
     min-width: 122px;
     height: 28px;
 }
-/* 검색기간 라디오 체크*/
-.radio-label-checkbox {
-    position: relative;
-    cursor: pointer;
-    left: -23px;
-}
-.label-checkbox {
-    position: relative;
-    cursor: pointer;
-    left: 4px;
-    font-size: 11.5px;
-    top:-1px
-}
-.target-select-group .radio-label-checkbox::before {
-    margin-right: 12px;
-}
-.radio-label-checkbox::before {
-    display: inline-block;
-    content: "";
-    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
-    background-size: 560px auto;
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
-}
-ul{
-	padding-left: 0;
-	list-style: none;
-	margin-bottom: 3rem;
-}
-/* 검색기간 라디오 라벨*/
-.custom-control-radio {
-    position: relative;
-    left: -5px;
-    top: 3px;
-    z-index: -1;
- }
- .radio-label-checkbox::before {
-    display: inline-block;
-    content: "";
-    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
-    background-size: 560px auto;
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
-}
- li{
- 	font-size: 10pt;
- }
- 
- /* 날짜 옵션 */
-.search-period-wr .filter-input-box {
-    overflow: hidden;
-    display: inline-block;
-    margin: 10px 0 0 0;
-    /* padding: 7px 44px 0 10px; */
-    height: 32px;
-    width: auto;
-}
-.filter-input-box {
-    position: relative;
-    height: 40px;
-    margin-top: 10px;
-    padding: 10px 15px 10px 15px;
-    background: #fff;
-    /* border: 1px solid #ddd; */
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-border-radius: 4px;
-    /* border-radius: 4px; */
-    width: 100%;
-    font-size: 13px;
-}
-div.datebox > span > input {
-    bottom: 3px !important;
-    top: -10px !important;
-}    
-.attendance-dateSelector {
-    height: 30px;
-    display: inline-block;
-    border: solid 1px rgba(0, 0, 0, .1);
-    margin: 0;
-    width: 120px !important;
-    padding: 7px 20px 7px 20px;
-	border-radius: 7px;
-}
-
-.search-period-wr .filter-date-label {
-    right: 10px;
-}
-.filter-date-label {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-    cursor: pointer;
-}
 
 
 /* === 글쓰기 === */
-#categorydiv{
-	position:absolute;
-	visibility:hidden;
-	font-size:12px;
-	background-color: white;
-	width:25%;
-	z-index: 2;
-	border: 1px solid gainsboro;
-    padding: 12px;
-    border-radius: 5px;
-}
 #option {
 	visibility:hidden;
 }
@@ -330,7 +229,7 @@ div.datebox > span > input {
 	left:15px;
 	top:3px;"
 }
-/* 댓글깻수 */
+/* 댓글갯수 */
 #bubblecnt{
 	position: relative; 
 	left:8px;
@@ -415,278 +314,316 @@ div.toastui-editor-mode-switch {
     display: none !important;
 }
 
+/* 검색 */
+#searchCondition, #cntselect {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
 
-	/* 조직도 */
-	.groupIcon {
-		border: 1px solid #f7f7f7;
-		padding: 15px;
-		margin-bottom: 20px;
-		margin-right: 10px;
-		width: 18px;  
-		height: 18px; 
-		border-radius: 10px;
-		float: left;
-		
-		display: block; 
-		position: absolute; 
-		left: 119%;
-		font-size: 9pt; 
-		background-color: #f7f7f7;
-	} 	
-	
-	.menu {
-		position: absolute;
-        top: 45px;
-	    right: 0;
-	    height: 100vh;
-	    max-width: 0;
-	    z-index: 1;
-	    background-color: white;
-	    border: none;
-	}
-	
-	.burger-icon {
-	    cursor: pointer;
-	    display: inline-block;
-	    position: absolute;
-	    z-index: 2;
-	    padding: 8px 0px;
-	    top: 5px;
-	    right: 6px;
-	    user-select: none;
-	    width: auto;
-	    margin: 0;
-	}
-	
-	.burger-icon .burger-sticks {
-	  background: #333;
-	  display: block;
-	  height: 2px;
-	  position: relative;
-	  transition: background .2s ease-out;
-	  width: 18px;
-	}
-	
-	.burger-icon .burger-sticks:before,
-	.burger-icon .burger-sticks:after {
-	  background: #333;
-	  content: '';
-	  display: block;
-	  height: 100%;
-	  position: absolute;
-	  transition: all .2s ease-out;
-	  width: 100%;
-	}
-	
-	.burger-icon .burger-sticks:before {
-	  top: 5px;
-	}
-	
-	.burger-icon .burger-sticks:after {
-	  top: -5px;
-	}
-	
-	.burger-check {
-	  display: none;
-	}
-	
-	.burger-check:checked~.menu {
-	    max-width: 325px;
-	    border: 1px solid #eeeeee;
-	}
-	
-	.burger-check:checked~.burger-icon .burger-sticks {
-	  background: transparent;
-	}
-	
-	.burger-check:checked~.burger-icon .burger-sticks:before {
-	  transform: rotate(-45deg);
-	}
-	
-	.burger-check:checked~.burger-icon .burger-sticks:after {
-	  transform: rotate(45deg);
-	}
-	
-	.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:before,
-	.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:after {
-	  top: 0;
-	}
-	
-	.table>:not(:first-child){
-		border-top: solid 1px #eeeeee !important;
-	}
-	
-	.orgmenu {
-		cursor: pointer;
-		text-decoration: none;
-		list-style: none;
-		color: #556372;
-	    font-size: 10.5pt;
-    	/* line-height: 2px; */
-	}
-	
-	li {
-		line-height: 24.2px;
-	}
-	
-	li::marker {
-	    color: #cccccc;
-	    font-size: 12pt;
-	}
-	
-	.summary {
-		padding-bottom: 8px; 
-		/* font-weight: bold;  */
-		font-size: 11pt;
-		color: #4C4E54;
-	}
-	
-	.unfold {
-		padding-top: 10px;
-		font-weight: bold;
-		font-size: 10pt;
-		color: #4c4e54;
-		position: relative;
-	}
-	
-	#cntbadge{
-	    background-color: #e6e6e6;
-	    padding: 0.5em 0.5em;
-	    width: 12.5px;
-	    height: 15px;
-	    font-weight: 600;
-	    color: #fbfbfb;
-	    display: inline-block;
-	    border-radius: 0.25rem;
-	    box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
-	    position: relative;
-	    top: 9.3px;
-	    left: 5px;
-	}
-	  #newCnt{
-	    font-size: 5pt;
-	    color: #4C4E54;
-	    position: relative;
-	    top: -10px;
-	    display: flex;
-	    align-items: center;
-	    justify-content: center;
-	    flex-shrink: 0;
-	    isolation: isolate;
-   }
-   
-   .unfoldAlert {
-   		border: 1px solid #f7f7f7;
-	    padding: 6.3px;
-	    text-align: center;
-	    width: 106px;
-	    height: 30px;
-	    border-radius: 8px;
-	    background-color: #4d4d4d;
-	    color: #f2f2f2;
-	    font-size: 8.5pt;
-	    position: relative;
-	    top: 1.3px;
-	    left: 194px;
-   }
+.form-control{
+	font-size: 12pt;
+}
+.row >*{
+	width: auto;
+	padding: 0;
+}
 
-	.myscrap{
-		width: 487px;
-		height: 435px;
-		border-top: solid 2px #d4d5d6;
-		border-left: solid 1px #d4d5d6;
-		z-index: 1;
-		background-color: white;
-		color: #4c4e54;
-		position: relative; top: 25px; right: 476px;
-		display: none;
-	}
+
+/* 내게시물 */
+.groupIcon {
+	border: 1px solid #f7f7f7;
+	padding: 15px;
+	margin-bottom: 20px;
+	margin-right: 10px;
+	width: 18px;  
+	height: 18px; 
+	border-radius: 10px;
+	float: left;
 	
-	.mgList, .mgList-info {
-		margin-left: 7%;
-	}
+	display: block; 
+	position: absolute; 
+    left: 130%;
+	font-size: 9pt; 
+	background-color: #f7f7f7;
+} 	
 	
-	.mgList-info {
-		font-size: 11pt;
-	}
+.menu {
+	position: absolute;
+       top: 45px;
+    right: 0;
+    height: 100vh;
+    max-width: 0;
+    z-index: 1;
+    background-color: white;
+    border: none;
+}
+
+.burger-icon {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    z-index: 2;
+    padding: 8px 0px;
+    top: 5px;
+    right: 6px;
+    user-select: none;
+    width: auto;
+    margin: 0;
+}
+
+.burger-icon .burger-sticks {
+  background: #333;
+  display: block;
+  height: 2px;
+  position: relative;
+  transition: background .2s ease-out;
+  width: 18px;
+}
+
+.burger-icon .burger-sticks:before,
+.burger-icon .burger-sticks:after {
+  background: #333;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all .2s ease-out;
+  width: 100%;
+}
+
+.burger-icon .burger-sticks:before {
+  top: 5px;
+}
+
+.burger-icon .burger-sticks:after {
+  top: -5px;
+}
+
+.burger-check {
+  display: none;
+}
+
+.burger-check:checked~.menu {
+    max-width: 325px;
+    border: 1px solid #eeeeee;
+}
+
+.burger-check:checked~.burger-icon .burger-sticks {
+  background: transparent;
+}
+
+.burger-check:checked~.burger-icon .burger-sticks:before {
+  transform: rotate(-45deg);
+}
+
+.burger-check:checked~.burger-icon .burger-sticks:after {
+  transform: rotate(45deg);
+}
+
+.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:before,
+.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:after {
+  top: 0;
+}
+
+.table>:not(:first-child){
+	border-top: solid 1px #eeeeee !important;
+}
+
+.orgmenu {
+	cursor: pointer;
+	text-decoration: none;
+	list-style: none;
+	color: #556372;
+    font-size: 10.5pt;
+   	/* line-height: 2px; */
+}
+
+li {
+	line-height: 24.2px;
+}
+
+li::marker {
+    color: #cccccc;
+    font-size: 12pt;
+}
+
+.summary {
+	padding-bottom: 8px; 
+	/* font-weight: bold;  */
+	font-size: 11pt;
+	color: #4C4E54;
+}
+
+.unfold {
+	padding-top: 10px;
+	font-weight: bold;
+	font-size: 10pt;
+	color: #4c4e54;
+	position: relative;
+}
+
+#cntbadge{
+    background-color: #e6e6e6;
+    padding: 0.5em 0.5em;
+    width: 12.5px;
+    height: 15px;
+    font-weight: 600;
+    color: #fbfbfb;
+    display: inline-block;
+    border-radius: 0.25rem;
+    box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+    position: relative;
+    top: 9.3px;
+    left: 5px;
+}
+  #newCnt{
+    font-size: 5pt;
+    color: #4C4E54;
+    position: relative;
+    top: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    isolation: isolate;
+  }
+  
+  .unfoldAlert {
+  		border: 1px solid #f7f7f7;
+    padding: 6.3px;
+    text-align: center;
+    width: 106px;
+    height: 30px;
+    border-radius: 8px;
+    background-color: #4d4d4d;
+    color: #f2f2f2;
+    font-size: 8.5pt;
+    position: relative;
+    top: 1.3px;
+    left: 194px;
+  }
+
+.myscrap{
+	width: 487px;
+	height: 439px;
+	border-top: solid 2px #d4d5d6;
+	border-left: solid 1px #d4d5d6;
+	z-index: 1;
+	background-color: white;
+	color: #4c4e54;
+	position: relative; top: 33px; right: 476px;
+	display: none;
+}
 	
-	.mg-current{
-		font-weight: bold;
-	}
+/* 내게시물 nav바 */
+.mgList-info a:hover{
+	color: #000000;
+	cursor: pointer;
+}
+
+.mgList-info {
+	margin-left: 4%;
+}
+
+.mgList {
+	margin-left: 7%;
+}
+
+.mgList-info {
+	font-size: 11pt;
+}
+
+.mgList-info > a {
+	display: inline-block;
+	width: 13%;
+	text-align: center;
+	padding: 5px;
+	text-decoration: none;
+}
+
+.mgList-info > a > span {
+    margin-left: 1px;
+    color: #37A652;
+    font-weight: bold;
+}
+
+
+/* .mg-current{
+	font-weight: bold;
+} */
 	
-	.mgList-contents{
-		height: 330px;
-	}
-	
-	.ms-check + label i{
-		color: rgba(0,0,0,0.2);
-		font-size: 11pt;
-	}
-	
-	.check-star{
-		font-size: 13pt;
-		color: rgba(0,0,0,0.3);
-		position: relative; bottom: 2px;
-	}
-	
-	.ms-check + label i:hover, .check-star:hover{
-		cursor: pointer;
-	}
-	
-	.ms-check + label:hover{color:#37A652;}
-	.check-star:hover{color:#ffc107;}
-	
-	.mgList-contents td:first-child ~ td{
-		padding: 7px 5px;
-	}
-	
-	.mg-noncheckmenu{
-		font-size: 10pt;
-	}
-	
-	.mg-left-container{
-		border: none;
-	}
-	
-	.myscrap-top{
-		position: absolute;
-		top: 20%;
-		height: 2px;
-		border: none;
-		background-color: red;
-	}
+.mgList-contents{
+	height: 330px;
+}
+
+.ms-check + label i{
+	color: rgba(0,0,0,0.2);
+	font-size: 11pt;
+}
+
+.check-star{
+	font-size: 13pt;
+	color: rgba(0,0,0,0.3);
+	position: relative; bottom: 2px;
+}
+
+.ms-check + label i:hover, .check-star:hover{
+	cursor: pointer;
+}
+
+.ms-check + label:hover{color:#37A652;}
+.check-star:hover{color:#ffc107;}
+
+.mgList-contents td:first-child ~ td{
+	padding: 7px 5px;
+}
+
+.mg-noncheckmenu{
+	font-size: 10pt;
+}
+
+.mg-left-container{
+	border: none;
+}
+
+.myscrap-top{
+	position: absolute;
+	top: 20%;
+	height: 2px;
+	border: none;
+	background-color: red;
+}
 	
 </style>
 
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$(".search-period-wr").hide();
 	$("div#ntRplAnon").hide();
-	$("a#notice").addClass('list_iscurrent');
-	$("#date_total").prop("checked", true);
+	/* $("a#notice").addClass('list_iscurrent'); */
 	//툴팁 사용
 	var tooltipel = $(".tp").tooltip();
 	
 	/* 북마크 표시 */
 	$('.bookmark').click(function(e) {
-	  	const $this = $(this);
-
-	  	if ( $this.hasClass('icon-star-empty') ) {
-	  		$this.removeClass('icon-star-empty');
-	  		$this.addClass('icon-star-full');
-	  	} else {
-	  		$this.removeClass('icon-star-full');
-	  		$this.addClass('icon-star-empty');
-	  	}
-	});
-	  $('.empty-heart').click(function() {
-  		$(this).css('display',"none");
-  		$(this).next().css('display',"inline-block");
-	});
-	  $('.full-heart').click(function() {
-  		$(this).css('display',"none");
-  		$(this).prev().css('display',"inline-block");
+	 	const $this = $(this);
+	
+	 	if ( $this.hasClass('icon-star-empty') ) {
+	 		$this.removeClass('icon-star-empty');
+	 		$this.addClass('icon-star-full');
+	 	} else {
+	 		$this.removeClass('icon-star-full');
+	 		$this.addClass('icon-star-empty');
+	 	}
+	 	/* e.preventDefault(); */
 	});
 	  
 	
@@ -722,10 +659,7 @@ $(document).ready(function(){
 		      },
 		    } 
 	    });
-    
-     
 	<%-- 텍스트 에디터 끝 --%>
-	
 	
 	
 	// 글쓰기 버튼
@@ -742,93 +676,29 @@ $(document).ready(function(){
         if($("#ntAlwReply").is(":checked")) ntRplAnonDiv.style.display="block";
         else ntRplAnonDiv.style.display="none";
     });
-	
-	
-	
     
-    <%-- 옵션창 날짜 직접입력 --%>
-    $("input[name='period-type']").change(function(){
-        if($("#date_select").is(":checked")){
-		    $(".search-period-wr").show();
-        }else{
-        	$(".search-period-wr").hide();
-        }
-    });
-	
-  
-    
-    <%-- 카테고리 복수 선택 인풋태그에 보이도록하기 --%>
-    $("input[name='category']").change(function(e){
-    	const $target = $(e.target).val()
-   		let inputval = $("input#ctgy").val()
-
-   		if($(this).is(":checked")){// 체크했다면 
-	    	if($("input#ctgy").val() != ""){ // 체크된게 있다면 
-	    		inputval += ","+ $target;
-	    		$("input#ctgy").val(inputval);
-	    	}
-	    	else{ // 체크된게 없다면
-		    	$("input#ctgy").val($target);
-	    	}
-        }else{// 체크해지했다면
-        	if($target == inputval){//하나밖에 없다면  
-        		$("input#ctgy").val("");
-        	}
-        	else{// 여러개 있다면 
-	        	let arrval = [];
-	        	arrval = inputval.split(",");
-	        	for(let i=0; i<arrval.length; i++){
-	        		if(arrval[i]==$target){
-	        			arrval.splice(i,1);
-	        			break;
-	        		}
-	        	}
-	        	inputval = arrval.toString();
-	        	$("input#ctgy").val(inputval);
-        		
-        	}
-        }
-    });
-	
-    
- // 플랫피커
- 	flatpickr.localize(flatpickr.l10ns.ko);
- 	flatpickr($(".dateSelector"));
-	$(".dateSelector").flatpickr({
-		dateFormat: "Y-m-d",
-		defaultDate: new Date(),
-		local: 'ko'
-	});
-	
-	
-	
-	// 초기화 버튼 누르면 옵션 값들 비우기 
-	$("button#optionreset").click(function(){
-		$("#ctgy").val("");
-		$("#writer").val("");
-		$("#date_total").prop("checked", true);
-		
-		$("input[name='category']").each(function() {
-			if(this.checked)
-				this.checked = false;
-        });
-	});
 	
 	
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".table").css({'width':'62.5%','margin-top':'32px'});
-	        $(".table th:nth-child(2)").attr("width","8%");
+	        $(".table").css({'width':'62.5%'});
+	        $(".myscrap").css({'position':'relative', 'top':'33.5px', 'right':''});
+	        $(".table th:nth-child(1)").css({'width':'6%'});
+	        $(".table th:nth-child(3)").css({'width':'8.5%'});
 	        $(".myscrap").fadeIn(100);
+	        //$(".myscrap").css({'position':'relative', 'top':'33px', 'right':''});
 	        
 	    } else{
-	        $(".table").css({'width':'100%','margin-top':''});
-	        $(".table th:nth-child(2)").attr("width","6%");
+	        $(".table").css({'width':'100%'});
+	        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
+	        $(".table th:nth-child(1)").css({'width':''});
+	        $(".table th:nth-child(3)").css({'width':''});
 	        $(".myscrap").fadeOut(100);
+	        //$(".myscrap").css({'position':'relative', 'top':'', 'right':''});
 	    }
-	});  
-	
+	});
+
 	
 	// 모든 조직 펼치기
 	$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
@@ -836,7 +706,7 @@ $(document).ready(function(){
 	});
 	
 	
-	// 별 중요표시
+	// 별 북마크표시
 	$(".check-star").click(function(){
 		const itag = $(this).find("i");
 		if ( itag.hasClass('icon-star-empty') ) {
@@ -850,111 +720,22 @@ $(document).ready(function(){
 	  	}
 	});
 	
-	// 체크박스 개수
-	var total = $("input[name='ms-check']").length;
-	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
-	$("#ms-checkall").change(function(){
-		const itag = $("input[name='ms-check']").next().find("i");
-		
-		if($("#ms-checkall").is(":checked")){
-			$("input[name='ms-check']").prop("checked",true);
-			ms_check(itag); ms_check($(this).next().find("i"));
-			show_checkmenu();
-			$("#check_ctn").text(total);
-			
-		} else {
-			$("input[name='ms-check']").prop("checked",false);
-			ms_uncheck(itag); ms_uncheck($(this).next().find("i"));
-			show_noncheckmenu();
+	
+	<%-- 내게시물 nav바 --%>
+	$("a.mainlist").click(function(){
+		if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
+			$(this).removeClass('list_notcurrent');
+			$(this).addClass('list_iscurrent');
+			$(this).siblings().removeClass('list_iscurrent');
 		}
 	});
-	
-	$("input[name='ms-check']").change(function(e) {
-		const itag = $(e.target).next().find("i");
-		var checked = $("input[name='ms-check']:checked").length;
-		
-		ms_check(itag);
-		show_checkmenu();
-		if(!$(e.target).is(":checked")){
-			ms_uncheck(itag);
-		}		
-		
-		if(checked<=0)
-			show_noncheckmenu();
-		$("#check_ctn").text(checked);
-		
-		if(total != checked){
-			$("#ms-checkall").prop("checked", false);
-			ms_uncheck($("#ms-checkall").next().find("i"));
-		} else {
-			$("#ms-checkall").prop("checked", true);
-			ms_check($("#ms-checkall").next().find("i"));
-		}
-	});
-	
 	
 	
 });//end of ready
 
-// 체크박스  css변경 이벤트
-function ms_check(itag){
-	itag.removeClass("icon-checkbox-unchecked");
-	itag.addClass("icon-checkbox-checked");
-	itag.css({"color":"#37A652","transition":"all .2s"});
-}
-
-function ms_uncheck(itag){
-	itag.removeClass("icon-checkbox-checked");
-	itag.addClass("icon-checkbox-unchecked");
-	itag.css({"color":"rgba(0,0,0,0.2)","transition":"all .2s"});  
-}
 
 
-<%-- 카테고리 멀티 셀렉터 열리고 닫히고  --%>
-function multiSelect(value){
-	 if(value=="OPEN") categorydiv.style.visibility="visible";
-	 else categorydiv.style.visibility="hidden";
-}
-
-<%-- 옵션창 열리고 닫히고  --%>
-function optionForm(value){
-	 if(value=="OPEN") option.style.visibility="visible";
-	 else option.style.visibility="hidden";
-}
-
-
-//태그 직접입력을 선택했을경우 
-function changetagname(obj){
-	$("span.error").hide();
-	let html1 = "";
-	let html2 = "";
-	if(obj.value !="plus"){
-		$("div.existhide").hide();
-		$("div#divPlusTag1").html("");
-		$("div#divPlusTag2").html("");
-	}
-	else{
-		$("div.existhide").show();
-		html1 += '<label for="tagname" class="control-label">태그명</label>';
-		html2 += '<input type="text" class="form-control" name="tagname" id="tagname" placeholder="태그명을 입력해주세요" >';
-		$("div#divPlusTag1").html(html1);
-		$("div#divPlusTag2").html(html2);
-	}
-};
-
-//체크했을 때 보이는 메뉴
-function show_checkmenu(){
-	$(".mg-noncheckmenu").hide();
-	$(".mg-checkmenu").fadeIn("fast");
-}
-
-// 체크안할 때 보이는 메뉴
-function show_noncheckmenu(){
-	$(".mg-checkmenu").hide();
-	$(".mg-noncheckmenu").fadeIn("fast");
-}
-
-function goSearch(){
+function goSearch(){  // 검색시 함수
 	
 }
 
@@ -964,36 +745,34 @@ function goSearch(){
       <div class="table-responsive" style="width: 100%; height: 500px;">
       	
           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
-			<div class="row" style="float: right;position: relative;left: -120px;" >
+			<div class="row" style="float: right;position: relative;left: -132px;" >
 			
-				<div class="form-group mr-1">
-					<div class="form-field">
-						<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
-							<option value="" selected>전체</option>
-							<option value="">작성자</option>
-							<option value="">제목</option>
-							<option value="">제목+내용</option>
-						</select>
-					</div>
-				</div>
-				<div class="">
+				<%-- 검색 --%>
+				<div class=" mr-2">
 					<div class="form-group">
 						<div class="form-field">
-							<!-- <div class="icon"><span class="fa fa-search"></span></div> --> 
-							<input type="text" class="form-control" placeholder="제목/작성자/팀으로 검색" style="width:162%; font-size: 9pt; padding:6px 12px;padding-left: 45px;">
+							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px;">
+								<option value="">전체</option>
+								<option value="">작성자</option>
+								<option value="">제목</option>
+								<option value="">제목+내용</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="form-group">
+						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
+							<input type="text" class="form-control" placeholder="검색" style="width:150%; font-size: 9pt; padding:6px 6px;">
 						</div>
 					</div>
 				</div>
 				<div class="align-items-end mt-1 mr-4">
-					<div class="form-group" style="font-size: 8pt;margin-bottom:0;">
-						<a id="searchoption"href="#" class="btn" style="color:#0a58caa1; padding: 0.2rem 0.4rem;border-radius:0px; background-color: white;font-size: 0.7rem;position: relative;left: -540%;border-right: 1px solid #ced4da;" onClick="optionForm('OPEN')">옵션</a>
+					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: -25%;"></a>
 					</div>
 				</div>
-				<div class="align-items-end mt-1 mr-4">
-					<div class="form-group" style="font-size: 10pt;margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 164%;"></a>
-					</div>
-				</div>
+				
 				<div style="display: block;">
 					<div class="groupIcon">
 						<input class="burger-check" type="checkbox" id="burger-check" />
@@ -1001,10 +780,10 @@ function goSearch(){
 						
 						<div class="myscrap">
 							<div class="mg-left-container">
-								<div class="mgList-info">
-									<span class="mg-current" style="width: 16%;">중요<span>1</span></span>
-									<span style="width: 28%;">내게시물<span>2</span></span>
-								</div>
+								<nav class="mgList-info">
+									<a class="list_iscurrent" style="width: 21%;">내게시물<span>2</span></a>
+									<a class="list_notcurrent" style="width: 14%;">북마크<span>1</span></a>
+								</nav>
 								<hr class="HRhr" style="margin: 0;"/>
 								<div class="mgList">
 									<div class="mgList-menu">
@@ -1031,16 +810,13 @@ function goSearch(){
 													</td>
 													<td width="3%">
 														<input id="check-star${i}" type="checkbox" name="check-star" style="display: none;"/>
-														<label for="check-star${i}" class="check-star">
-															<i class="icon icon-star-empty"></i>
-														</label>
 													</td>
 													<td width="72%">
 														<div><span>글제목</span><span><i class="fas fa-paperclip"></i></span></div>
-														<div><span>진혜린</span>·<span>마케팅</span></div>
+														<div><span>이예은</span>&nbsp;<span>대리</span></div>
 													</td>
 													<td width="22%">
-														<div>11. 13</div>
+														<div>2022.11.13</div>
 													</td>
 												</tr>
 											</c:forEach>
@@ -1051,233 +827,113 @@ function goSearch(){
 									</div>
 								</div>
 							</div>
-						
-						
 						</div>
-						
-						
-						
-		            </div>
+		             </div>
 				  </div>
 				</div>
-		
-				
-		   <div id="option" class="option">
-		      <div style="font-size: 11pt; color: #595959; font-weight: bold; padding-bottom: 20px;">검색 옵션
-		      	 <!-- <label class="filter-date-label"><i class="icon icon-redo"></i></label> -->
-		         <button type="button" id="optionreset">초기화</button>
-		      </div>
-		      <div class="detail-search-conditions">
-			    <ul class="conditions-group">
-			        <li class="js-project-name-search-filter" style="display: block;">
-						<div class="condition-cell title">카테고리</div>
-			            <div class="condition-cell">
-			                <input id="ctgy"class="form-control" onClick="multiSelect('OPEN')" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;width:260%;background-color: white;"  placeholder="카테고리를 선택하세요"readonly>
-							 <div id="categorydiv" >
-							  <ul>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk1"value="전체공지"><label for="chk1" class="label-checkbox" data-code="unlimit">전체공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk2"value="일반공지"><label for="chk2" class="label-checkbox" data-code="unlimit">일반공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk3"value="이벤트공지"><label for="chk3" class="label-checkbox" data-code="unlimit">이벤트공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk4"value="문진표공유"><label for="chk4" class="label-checkbox" data-code="unlimit">문진표공유</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk5"value="사내공지"><label for="chk5" class="label-checkbox" data-code="unlimit">사내공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk6"value="기타공지"><label for="chk5" class="label-checkbox" data-code="unlimit">기타공지</label></li>
-							    </ul>
-							    <div style="padding-top:3px;text-align:right">
-							    	<!-- <button type="reset" class="workstatus-cancel">취소</button> -->
-							    	<input type="button" class="workstatus-cancel"value="SAVE" onClick="multiSelect('CLOSE')" style="width:50%; border:none;color:#0a58caa1;">
-							    </div>
-				   			</div>
-			   			</div>
-			        </li>
-			        <!-- <li class="js-project-name-search-filter" style="display: block;">
-			            <div class="condition-cell title">프로젝트</div>
-			            <div class="condition-cell">
-			                <input class="form-control" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;"type="text" placeholder="프로젝트명을 입력하세요">
-			            </div>
-			        </li> -->
-			        <li class="js-register-name-search-filter" style="display: block;">
-			            <div class="condition-cell title">작성자</div>
-			            <div class="condition-cell">
-			            	<input id="writer"class="form-control" type="text" placeholder="작성자명 입력 (여러명 입력시, 콤마로 구분)">
-			            </div>
-			        </li>
-			        <li class="js-period-type-search-filter" data-code="unlimit" style="display: block;">
-			            <div class="condition-cell title" style="top: 14px;position: relative;float: left;">검색기간</div>
-			            <div class="condition-cell">
-			              <ul class="target-select-group">
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_total" name="period-type">
-				                <label for="date_total" class="js-period-type radio-label-checkbox" data-code="unlimit">전체</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_today" name="period-type">
-				                <label for="date_today" class="js-period-type radio-label-checkbox" data-code="today">오늘</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_week" name="period-type">
-				                <label for="date_week" class="js-period-type radio-label-checkbox" data-code="week">7일</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_month" name="period-type">
-				                <label for="date_month" class="js-period-type radio-label-checkbox" data-code="month">1개월</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_3month" name="period-type">
-				                <label for="date_3month" class="js-period-type radio-label-checkbox" data-code="thirdMonth">3개월</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_6month" name="period-type">
-				                <label for="date_6month" class="js-period-type radio-label-checkbox" data-code="sixthMonth">6개월</label>
-				            </li>
-				        
-				            <li>
-				                <input type="radio" class="custom-control-radio" id="date_year" name="period-type">
-				                <label for="date_year" class="js-period-type radio-label-checkbox" data-code="year">1년</label>
-				            </li>
-				        
-				            <li>
-				            	<input type="radio" class="custom-control-radio" id="date_select" name="period-type" data-code="select" >
-				                <label for="date_select" class="js-period-type radio-label-checkbox" data-code="select">기간선택</label>
-					            <div class="search-period-wr" >
-					                <div class="js-search-pickr-layer" data-code="unlimit">
- 					                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
-						                	<div class="datebox margin-container">
-												<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;"/></span>
-											</div>
-										</div>
-					                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
- 					                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
-						                	<div class="datebox margin-container">
-												<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;"/></span>
-											</div>
-										</div>
-					                </div>
-					            </div>
-				        
-				            </li>
-			        	</ul>
-            		</div>
-       			 </li>
-    		</ul>
-		    <div class="condition-button-area">
-		        <!-- <div class="condition-left">
-		            <button type="button" class="js-filter-reset condition-reset">초기화</button>
-		        </div> -->
-		        <div class="condition-right">
-		            <button type="reset" class="workstatus-cancel" onClick="optionForm('CLOSE'), multiSelect('CLOSE')">취소</button>
-		            <button type="button" class="workstatus-save mr-1"  onClick="goSearch()">검색</button>
-		        </div>
-		    </div>
-		</div>
-   </div>
-</form>
+			</form>
 
 		
-        <table class="table">
+        <table class="table" style="height: 378px; margin-top: 40px;">
           <thead>
             <tr>
-              <th width="80%"scope="col"/>
-              <th width="6%"scope="col"/>
+              <th width="4%" scope="col"/>
+              <th width="84%" scope="col"/>
+              <th width="6%" scope="col"/>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td>1</td>
               <td>
               	<div class="titlefirst">
               		<span class="title">맛집 추천합니다!</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="username">이예은 대리</span>
-            		<span class="writedate">11.16</span>
+              		<span class="username">이예은&nbsp;대리</span>
+            		<span class="writedate">2022.11.16</span>
             		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
               <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
             <tr>
+              <td>2</td>
               <td>
               	<div class="titlefirst">
               		<span class="title">3층 여자화장실 청결 관리 신경써주세요.</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="username">이예은 대리</span>
-            		<span class="writedate">11.16</span>
+              		<span class="username">이예은&nbsp;대리</span>
+            		<span class="writedate">2022.11.16</span>
             		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
               <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
-            
             <tr>
+               <td>3</td>
                <td>
               	<div class="titlefirst">
               		<span class="title">이번주 사내식당 메뉴 공유합니다.</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="username">이예은 대리</span>
-            		<span class="writedate">11.16</span>
+              		<span class="username">이예은&nbsp;대리</span>
+            		<span class="writedate">2022.11.16</span>
             		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
               <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
             <tr>
+               <td>4</td>
                <td>
               	<div class="titlefirst">
               		<span class="title">회사 근처 헬스장 추천 부탁드려요.</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="username">이예은 대리</span>
-            		<span class="writedate">11.16</span>
+              		<span class="username">이예은&nbsp;대리</span>
+            		<span class="writedate">2022.11.16</span>
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
               <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
             <tr >
+               <td>5</td>
                <td>
               	<div class="titlefirst">
               		<span class="title">남은 3주 화이팅해봅시다:)! 오늘도 다들 수고 많았어요.</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="username">이예은 대리</span>
-            		<span class="writedate">11.16</span>
+              		<span class="username">이예은&nbsp;대리</span>
+            		<span class="writedate">2022.11.16</span>
               		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
               	</div>	
               </td>
               <td>
-              	<a href="#" class="empty-heart">♡</a>︎<a href="#" class="full-heart">♥</a>︎
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
-
-            
           </tbody>
         </table>
-     
-     
-     
      
      
 	</div>
