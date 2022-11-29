@@ -870,12 +870,12 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".table").css({'width':'62.5%','margin-top':'32px'});
+	        $(".table").css({'width':'62%','margin-top':'32px'});
 	        // $(".table th:nth-child(2)").attr("width","8%");
 	        $(".myscrap").css({'position':'relative', 'top':'31.5px', 'right':''});
 	        $(".table th:nth-child(1)").css({'width':'6%'});
-	        $(".table th:nth-child(3)").css({'width':'8.5%'});
-	        $(".nb-info").css("width", "95%");
+	        $(".table th:nth-child(3)").attr("width","14%");
+	        $(".nb-info").css("width", "96%");
 	        $(".myscrap").fadeIn(100);
 	        
 	    } else{
@@ -883,7 +883,7 @@ $(document).ready(function(){
 	        // $(".table th:nth-child(2)").attr("width","6%");
 	        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
 	        $(".table th:nth-child(1)").css({'width':''});
-	        $(".table th:nth-child(3)").css({'width':''});
+	        $(".table th:nth-child(3)").attr("width","6%");
 	        $(".nb-info").css("width", "53%");
 	        $(".myscrap").fadeOut(100);
 	    }
