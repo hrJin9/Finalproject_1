@@ -149,13 +149,13 @@
 	.icon-star-full{
 		color:#ffc107;
 		padding:0 auto;
-		font-size: 15pt;
+		font-size: 11pt;
 		position: relative;
 	}
 	.icon-star-empty{
 		color:#bfbfbf;
 		padding:0 auto;
-		font-size: 15pt;
+		font-size: 11pt;
 		position: relative;
 	}
 	a.icon-star-empty:hover, a.icon-star-full:hover {
@@ -252,12 +252,13 @@
 	    vertical-align: top;
 	}
 	#writebtn{
-		font-size: 11pt;
-		padding: 10px 25px;
-		border-color: white;
+		font-size: 10pt;
+    	padding: 7px 25px;
 		font-weight: 600;
 		color: white;
-		border-radius: 10px;	
+    	border-radius: 8px;
+		border-width: 0.1px;
+		border-color: rgb(176 176 176);
 	}
 </style>
 <script>
@@ -284,7 +285,7 @@
 <nav id="subList" class="margin-container">
 	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up" style="margin-left: 2%;">발신함</a>
 	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/tome.up" style="margin-left: 3%;">수신함</a>
-	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a>
+	<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
 	<div class="subList_underline"></div>
 </nav>
 

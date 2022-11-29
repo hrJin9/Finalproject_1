@@ -247,6 +247,7 @@
 		padding: 3.5px 8px;
 		font-size: 10pt;
 	}
+	
 </style>
 
 <script type="text/javascript">
@@ -268,19 +269,19 @@
 			  	/* e.preventDefault(); */
 		});
 		
-
-		$('.js-check-all').on('click', function() {
-
+		
+		/* 체크 모두선택, 모두해제 */ 
+	  $('.js-check-all').on('click', function() {
 		  	if ( $(this).prop('checked') ) {
-			  	$('th input[type="checkbox"]').each(function() {
+			  	$('td input[type="checkbox"]').each(function() {
 			  		$(this).prop('checked', true);
 			  	})
 		  	} else {
-		  		$('th input[type="checkbox"]').each(function() {
+		  		$('td input[type="checkbox"]').each(function() {
 			  		$(this).prop('checked', false);
 			  	})
 		  	}
-		  });
+	  });
 		
 		
 		
@@ -335,7 +336,8 @@
 	            </div>
 				
 				<div>
-					<a href="#" style="color:#4285f4;font-size: 10pt;float: right;">새로불러오기</a>
+					<a href="#" class="icon icon-spinner11" style="font-size: 10pt;float: right;top: 3px;position: relative;color: #bababa;"></a>
+					<a href="#" style="color:#4285f4;font-size: 10pt;float: right;margin-right: 15px;">북마크보기</a>
 				</div>		
 				
 				
@@ -355,7 +357,13 @@
         <table class="table custom-table">   
           <thead>   
             <tr>
-              <th class="boardth" width="3%"scope="col"></th>
+              <th class="boardth" width="3%"scope="col">
+              
+              	<label class="control control--checkbox">
+                  <input type="checkbox" class="js-check-all"/>
+                  <div class="control__indicator icon icon-checkmark" style="color:white;font-size: 8pt;top: 6px;"></div>
+                 </label>
+              </th>
               <th class="boardth" width="6%"scope="col">북마크</th>
               <th class="boardth" width="8%"scope="col"><button type="button" data-bs-toggle="dropdown"style="color: #4c4e54;font-weight: bold;border: none; background-color: #ffff;">종류<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
               	<div class="dropdown-menu">
@@ -388,8 +396,8 @@
             <tr> 
               <td> 
               	<label class="control control--checkbox">
-                  <input type="checkbox" class="js-check-all"/>
-                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                  <input type="checkbox"/>
+                  <div class="control__indicator icon icon-checkmark" style="color:white;font-size: 8pt;"></div>
                 </label>
               </td>
               <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
@@ -397,7 +405,7 @@
               <td>2022-11-23-1282450</td>
               <td>지출결의서-법인카드</td>
               <td>
-              	<button type="button" class="btn btn-sm button" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em;">승인</button>
+              	<button type="button" class="btn btn-sm button" style="font-weight: bold !important;border-radius: 2em !important;background-color: #07B4191F; color: #034C0B; ">승인</button>
               </td>
               <td>O</td>
               <td>1개</td>
@@ -406,8 +414,8 @@
              <tr>
               <td> 
               	<label class="control control--checkbox">
-                  <input type="checkbox" class="js-check-all"/>
-                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                  <input type="checkbox"/>
+                  <div class="control__indicator icon icon-checkmark" style="color:white;font-size: 8pt;"></div>
                 </label>
               </td> 
               <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
@@ -415,7 +423,7 @@
               <td>2022-11-23-1282450</td>
               <td>지출결의서-법인카드</td>
               <td>
-              	<button type="button" class="btn btn-sm button" style="background-color: #F24B171F; color: #661400; border-radius: 2em;">반려</button>
+              	<button type="button" class="btn btn-sm button" style="font-weight: bold !important;border-radius: 2em !important;background-color: #F24B171F; color: #661400; ">반려</button>
 			  </td>
               <td>O</td>
               <td>1개</td>
@@ -424,8 +432,8 @@
              <tr>
               <td> 
               	<label class="control control--checkbox">
-                  <input type="checkbox" class="js-check-all"/>
-                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                  <input type="checkbox"/>
+                  <div class="control__indicator icon icon-checkmark" style="color:white;font-size: 8pt;"></div>
                 </label>
               </td> 
               <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
@@ -433,7 +441,7 @@
               <td>2022-11-23-1282450</td>
               <td>지출결의서-법인카드</td>
               <td>
-              	<button type="button" class="btn btn-sm button" style="background-color: #17a6f21f;color: #06689c; border-radius: 2em;">진행중</button>
+              	<button type="button" class="btn btn-sm button" style="font-weight: bold;border-radius: 2em;background-color: #17a6f21f;color: #06689c; ">진행중</button>
 			  </td>
               <td>O</td>
               <td>1개</td>

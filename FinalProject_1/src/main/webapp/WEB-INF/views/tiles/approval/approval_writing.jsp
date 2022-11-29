@@ -32,10 +32,10 @@
 	}
 
 	
-	.approval-box > div:hover{
+	/* .approval-box > div:hover{
 	    background-color: rgba(200,200,200, .2);
 	    cursor: pointer;
-	}
+	} */
 	.custom-control{
 	    height: 27px;
 	}
@@ -258,7 +258,7 @@
 	position: relative;
     z-index: 2;
     top: 30px;
-    right: -9px;
+    right: -38px;
     color:#5d646a !important;
     font-size: 10pt;
 }
@@ -282,7 +282,7 @@
 }
 #myModal2 {
   overflow: auto;
-}
+} 
 div.option {
     border: 0px solid #b0b0b0d9;
     padding: 20px;
@@ -482,7 +482,7 @@ div#memcontent-iframe{
 	function optionForm(value, optionnum){
 		 if(value=="OPEN") {
 			 option.style.display="block";
-			 num = optionnum;
+			 num = optionnum; //옵션창 열린 박스 넘버 저장 
 		 }
 		 else{
 			 option.style.display="none";
@@ -499,91 +499,76 @@ div#memcontent-iframe{
 				  +'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_appendmember(event)"></button>'
 				  +'</div>';
 		
-		/* const num = $(e.target).prev().attr("id"); */
 		console.log(num);
 		$("div#memcontent-iframe"+num).append(html);
 	}
 	
 	/*  append 된 멤버 삭제버튼 누를시  */
 	function del_appendmember(e){
-		/* console.log($(e.target).html()); */ // 버튼누른 버튼의 부모 태그 html 삭제
 		$(e.target).parent().remove();
-		
-		/* $("div.selectedmem").each(function(){
-			let html = "";
-			html += $(this).html();
-			console.log(html);
-		}) */
 	}
 	
 	
 	
 	
-	
-	
-	
-	
-	let i = 1; 
-	let html = "";
+	let aprCnt = 1; // 박스 단계 넘버 
 	/* 승인단계 박스 단계추가 */
 	function approvalplus(){
-		++i;
-		html = $("div.approvalplus").html();
+		++aprCnt;
+		let html = $("div.approvalplus").html();
 		
-		html += `<div id="stepdiv`+i+`" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;display: block;">`
+		html += `<div id="stepdiv`+aprCnt+`" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">`
 			  	  	+`<div style="margin-top: 0;">`
-			      	  	+`<span id="stepspan`+i+`" class="spanbox" style="font-weight: bold;display: block;">`+i+`단계</span>`
-						+`<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(`+i+`,event)"  style="float: right;"></button>`      	  	
+			      	  	+`<span id="stepspan`+aprCnt+`" class="spanbox" style="font-weight: bold;display: block;">`+aprCnt+`단계</span>`
+						+`<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(event)"  style="float: right;"></button>`      	  	
 			  	  	+`</div>`
-			  	  	+`<div id="memcontent-iframe`+i+`"></div>`
-			  	  	+`<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',`+i+`)">`
+			  	  	+`<div id="memcontent-iframe`+aprCnt+`"></div>`
+			  	  	+`<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',`+aprCnt+`)">`
 			  	  		+`<span style="color: rgba(36, 42, 48, 0.48);">`
 			  	  			+`<span style="font-size: 10pt;text-align: left;" >대상 검색</span>`
 			  	  		+`</span>`
 			  	  	+`</button>`
 			  	  +`</div>`;
 		$("div.approvalplus").html(html);
-	}
+	} 
 	
 	/* 승인단계 박스 삭제버튼 누를경우 */
-	function del_stepapproval(boxnum,e){
-		/* console.log("$(e.target) => "+$(e.target).html()); */
+	function del_stepapproval(e){
 		const thisdivbody = $(e.target).parent().parent();
-		console.log("thisdivbody => "+thisdivbody);
-		thisdivbody.remove();		
+		const delidnum = thisdivbody.attr("id").substr(-1);
+		console.log("delidnum =>"+delidnum)
+		thisdivbody.remove();
+		
 		// 삭제 버튼 누르면 해당 승인단계박스의 단계보다 큰 애들은 한칸씩 내려옴
 		let j =1;
-		$("div[name='approvalstep']").each(function(){ // boxnum 2     1 3 4 5
-			if(j == boxnum+1){ ++j;} 
-			else {
-			}
-			
-			if( j>boxnum ){
+		$("div[name='approvalstep']").each(function(){ 
+			if(j >= delidnum ){
+				++j; // 삭제된 박스넘버와 같아지므로 +1 해줌 
+				
 				const $this = $(this).parent();
-				/* console.log("$this => "+$this.html()); */
+				//console.log("$this => "+$this.html());
+				
 				const divid = $this.find("#stepdiv"+j);
 				const divid2 = $this.find("#memcontent-iframe"+j);
-				/* console.log("divid => "+divid); */
 				const spanid = $this.find("#stepspan"+j);
-				/* console.log("spanid => "+spanid.html()); */
 				
-				spanid.text((j-1)+"단계");
+				--j; // 단계낮추기 
+				spanid.text(j+"단계");
 				
-				divid.attr('id',"stepdiv"+(j-1)); // id 단계 변경  
-				console.log("divid의 id => "+divid.attr('id'))
+				divid.attr('id',"stepdiv"+j); // id 단계 변경  
+				//console.log("divid의 id => "+divid.attr('id'))
+				divid2.attr('id',"memcontent-iframe"+j); // id 단계 변경  
+				//console.log("divid2의 id => "+divid2.attr('id'))
+				spanid.attr('id',"stepspan"+j); // id 단계 변경 
+				//console.log("spanid의 id => "+spanid.attr('id'))
 				
-				divid2.attr('id',"memcontent-iframe"+(j-1)); // id 단계 변경  
-				console.log("divid2의 id => "+divid2.attr('id'))
-				
-				spanid.attr('id',"stepspan"+(j-1)); // id 단계 변경 
-				console.log("spanid의 id => "+spanid.attr('id'))
-				
+				++j;	
 			}
-			/* $("div#stepdiv"+boxnum).remove(); */
-			++j;
+			else ++j;
 		});// end of $("div[name='approvalstep']").each(function(){}-------------
 		
-		--i;
+		--aprCnt;
+		//console.log("추가될 aprCnt =>"+aprCnt);
 	}
 	
 	
@@ -723,13 +708,13 @@ div#memcontent-iframe{
 		                <div class="js-search-pickr-layer" data-code="unlimit" style="position: relative;top: -22px;">
 		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
 			                	<div class="datebox margin-container">
-									<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 39px;"/></span>
+									<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
 								</div>
 							</div>
-		                    <span class="dash-swung" style="position: relative;bottom: 0px;right: 17px;">~</span>
+		                    <span class="dash-swung" style="position: relative;right: 1px;">~</span>
 		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" >
 			                	<div class="datebox margin-container">
-									<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 39px;"/></span>
+									<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
 								</div>
 							</div>
 		                </div>
@@ -759,26 +744,31 @@ div#memcontent-iframe{
 					<div class="custom-control custom-checkbox" style="min-height: auto;padding-bottom: 5px;display: inline-block;">
    						
    						<input type="checkbox" class="checkbox-disable custom-control-input" id="startdate" name="startdate">
-   						<label class="custom-control-label form-inputlabel" for="startdate" style="display: inline-block;font-size: 13px;color:#418dd0">시작일</label>
-   						
-   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
-			                <input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">
-			                <label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
-			                <input type="radio" class="custom-control-radio2 dayradio" id="startnoon" name="startdaynight">
-			                <label for="startnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
-						</div>
+						
+						<span>   						
+	   						<label class="custom-control-label form-inputlabel" for="startdate" style="display: inline-block;font-size: 13px;color:#418dd0">시작일</label>
+	   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
+				                <input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">
+				                <label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
+				                <input type="radio" class="custom-control-radio2 dayradio" id="startnoon" name="startdaynight">
+				                <label for="startnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
+							</div>
+						</span>
    					</div>
    					
 					<div class="custom-control custom-checkbox" style="min-height: auto;right: -18px; padding-bottom: 5px;display: inline-block;">
    						<input type="checkbox" class="checkbox-disable custom-control-input" id="enddate" name="enddate">
    						<label class="custom-control-label form-inputlabel" for="enddate"style="display: inline-block;font-size: 13px;color:#418dd0">종료일</label>
    						
-   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
-			                <input type="radio" class="custom-control-radio2 dayradio" id="endmorning" name="enddaynight">
-			                <label for="endmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
-			                <input type="radio" class="custom-control-radio2 dayradio" id="endnoon" name="enddaynight">
-			                <label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
-						</div>
+   						<span>
+	   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
+				                <input type="radio" class="custom-control-radio2 dayradio" id="endmorning" name="enddaynight">
+				                <label for="endmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
+				                <input type="radio" class="custom-control-radio2 dayradio" id="endnoon" name="enddaynight">
+				                <label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
+							</div>
+						</span>
+						
    					</div>
 				</div>
 				
@@ -845,8 +835,8 @@ div#memcontent-iframe{
 		    	
 		    	<div width="100%" class="sc-jIRcFI dwAYaw mt-5">
 		    		<span class="control-label"style="margin-bottom: 0;">결재라인</span>
-		    		<div class="apv-wrapper">
-		    			<table class="table table-fixed my-3 cursor-pointer" onclick="showmodal2()">
+		    		<div class="apv-wrapper  cursor-pointer">
+		    			<table class="table table-fixed my-3" onclick="showmodal2()">
 		    				<caption class="sr-only"></caption>
 		    				<thead>
 		    					<tr>
@@ -881,13 +871,13 @@ div#memcontent-iframe{
 		    			</tbody>
 		    		</table>
 		    	</div>
-		    	<div class="nt-wrapper">
+		    	<!-- <div class="nt-wrapper">
 		    		<div>통보</div>
 		    		<div class="sc-cabOPr hDNriY">
 		    			<div>통보자가 없습니다.</div>
 		    		</div>
-		    	</div>
-		    	<div class="cr-wrapper">
+		    	</div> -->
+		    	<div class="nt-wrapper">
 		    		<div>참조</div>
 		    		<div class="sc-cabOPr hDNriY">
 		    		<div>참조자가 없습니다.</div>
@@ -905,7 +895,7 @@ div#memcontent-iframe{
 	
 	      <div class="modal-footer">
 			
-			<button type="button" class="workstatus-save gradientbtn mr-1">저장하기</button>
+			<button type="button" class="workstatus-save bluebtn mr-1">저장하기</button>
 		  	<button type="reset" class="workstatus-cancel mr-1"onclick="modalclose()">취소</button>
 	
 	      </div>
@@ -927,7 +917,7 @@ div#memcontent-iframe{
 	      <!-- Modal Header -->
 	      <div class="modal-header">
 	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1.2rem;">승인・참조 대상</h4>
-	        <button type="button" class="btn-close" onclick="modalclose()"></button><!-- data-bs-dismiss="modal" -->
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button><!-- data-bs-dismiss="modal" -->
 	      </div>
 	     
 	      <!-- Modal body -->
@@ -935,10 +925,10 @@ div#memcontent-iframe{
 	      	  
 	      	  <div class="approvalplus">
 	      	  
-		      	  <div id="stepdiv1" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);width: 100%;height: auto;display: block;">
+		      	  <div id="stepdiv1" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">
 		      	  	<div style="margin-top: 0;">
 			      	  	<span  id="stepspan1" class="spanbox" style="font-weight: bold;display: block;">1단계</span>
-						<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(1,event)" style="float: right;"></button>      	  	
+						<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(event)" style="float: right;"></button>      	  	
 		      	  	</div>
 		      	  	
 		      	  	<!-- iframe 선택된 멤버 보여주기  -->
@@ -954,21 +944,17 @@ div#memcontent-iframe{
 	      	  	</div>
 	      	  
 	      	  
-	      	  	<button type="button" class="attendance-dateSelector" style="border-color:#dbdbdb; background-color: white;display: block;width: 100%;"onclick="approvalplus()">
+	      	  	<button type="button" class="attendance-dateSelector" style="border-color:#dbdbdb; background-color: white;display: block;width: 100%;"onclick="approvalplus(1)">
 	      	  		<span class="ant-typography c-iuedIb" style="color: rgba(36, 42, 48, 0.48);" >
 	      	  			<span data-lokalise="true" style="font-size: 10pt;" >+ 단계 추가하기</span>
 	      	  		</span>
 	      	  	</button>
 	      	  	
-	      	  	
             </div>
-	      	  	
-	      	  	
-            
-            
+
              <div class="modal-footer">
-              <a href="#" data-dismiss="modal" class="btn">Close</a>
-              <a href="#" class="btn btn-primary">Save</a>
+              <a href="#" data-bs-dismiss="modal" class="btn">취소</a> 
+              <a href="#" class="btn btn-primary bluebtn">저장하기</a>
             </div> 
           </div>
         </div>
