@@ -29,7 +29,6 @@ public class EmployeeVO {
 	private String role;
 	private String position;
 	private String authority;
-	private String sidebarsize;
 	
 	
 	public EmployeeVO() {}
@@ -39,7 +38,7 @@ public class EmployeeVO {
 			String postcode, String address, String detail_address, String extra_address, String email, String gender,
 			String profile_systemfilename, String profile_originfilename, String academic_ability, String major,
 			String militaryservice, String bank, String accountnumber, String status, String role, String position,
-			String authority, String sidebarsize) {
+			String authority) {
 		super();
 		this.employee_no = employee_no;
 		this.fk_department_no = fk_department_no;
@@ -69,7 +68,6 @@ public class EmployeeVO {
 		this.role = role;
 		this.position = position;
 		this.authority = authority;
-		this.sidebarsize = sidebarsize;
 	}
 
 	public String getEmployee_no() {
@@ -296,15 +294,6 @@ public class EmployeeVO {
 		this.authority = authority;
 	}
 
-	public String getSidebarsize() {
-		return sidebarsize;
-	}
-
-	public void setSidebarsize(String sidebarsize) {
-		this.sidebarsize = sidebarsize;
-	}
-	
-	
 	
 	
 }
