@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% String ctxPath = request.getContextPath(); %>  
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/css/sidebar.css?after">
@@ -152,9 +153,15 @@
   <div class="sidebar">
 
     <div class="profile profile2" href="#" style="margin-top: 29px; margin-bottom:30px;">
-      <span class="pic"><span>지은</span></span>
-      <span class="my"><span class="name">김지은</span><br>
-      <span class="role">개발자</span>
+      <span class="pic">
+      	<c:if test="${empty sessionScope.loginuser.profile_systemfilename }">
+      		<span>${fn:substring(sessionScope.loginuser.name_kr,1,3)}</span>
+      	</c:if>
+      	<c:if test="${not empty sessionScope.loginuser.profile_systemfilename}">
+      	</c:if>
+      </span>
+      <span class="my"><span class="name">${sessionScope.loginuser.name_kr}</span><br>
+      <span class="role">${sessionScope.loginuser.role}</span>
       </span>
     </div>
 
@@ -190,8 +197,8 @@
      <a class="list-group-item list-group-item-action" href="<%= request.getContextPath()%>/myInfo_hr.up" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
-        <span style="font-size: 8.5pt; color: #737373;">sawonwldms@gmail.com</span><br>
-        <span style="font-size: 8.5pt; color: #737373; padding-bottom: 3px; ">개발자</span><br>
+        <span style="font-size: 8.5pt; color: #737373;">${sessionScope.loginuser.email}</span><br>
+        <span style="font-size: 8.5pt; color: #737373; padding-bottom: 3px; ">${sessionScope.loginuser.role}</span><br>
        </a>
      <a id="side-expand-a" class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;">
         <i class="icon icon-enlarge" style="color: #666666; padding-right: 8px; font-size: 10pt; position:relative; top:1px;"></i>넓게보기
@@ -200,7 +207,7 @@
      <a class="list-group-item list-group-item-action" style="font-size: 9pt; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#userPwdChange" data-bs-dismiss="modal" data-bs-backdrop="static">
         <i class="fas fa-key" style="color: #666666; padding-right: 8px; font-size: 10pt;"></i>비밀번호 변경
      </a>
-     <a class="list-group-item list-group-item-action" href="#" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
+     <a class="list-group-item list-group-item-action" href="<%= ctxPath%>/logout.up" style="font-size: 9pt; color: #F24B17; cursor: pointer;"><i class="fas fa-sign-out-alt" style="transform: scaleX(-1); transition: .3s; padding-left: 8px; font-size: 10pt;"></i>로그아웃</a>
   </div>
     
     

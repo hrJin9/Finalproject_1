@@ -132,15 +132,31 @@
 <script type="text/javascript">
 	
 	$(document).ready(function(){
-	
+		
+		//계정정보 저장했을때
+		if(localStorage.getItem("saveid") != null){
+			$("input#loginUserid").val(localStorage.getItem("saveid"));
+			$("input#saveid").prop("checked",true);
+		}
+		
+		// 패스워드 엔터시
+		$("#loginPwd").keyup(function(e){
+			if(e.keyCode==13){
+				goLogin();
+			}
+		});
+		
 		// 비밀번호 찾기창 닫기 버튼 클릭 시
 		$("button.pwdFindClose").click(function() {
-	
 			const iframe_pwdFind = document.getElementById("iframe_pwdFind"); // 대상 아이프레임 선택
 			const iframe_window = iframe_pwdFind.contentWindow;
 	
 			iframe_window.func_form_reset_empty();
 		});
+		
+		
+		
+		
 		
 	});// end of $(document).ready(function(){})---------------
 	
@@ -166,13 +182,12 @@
 		}
 		
 		// 계정 저장을 체크했을 경우
-		if ($("#saveUser").prop("checked")) {
-			localStorage.setItem("saveUser", loginUserid);
-			localStorage.setItem("saveUser", loginPwd);
+		if ($("#saveid").prop("checked")) {
+			localStorage.setItem("saveid", loginUserid);
 		}
 		// 계정 저장 체크 해제했을 경우
 		else{
-			localStorage.removeItem("saveUser");
+			localStorage.removeItem("saveid");
 		}
 		
 		const frm = document.login_frm;
@@ -193,15 +208,15 @@
 			<img src="<%= ctxPath%>/resources/images/로고.png" class="logo" width=73% height="230px;" style="margin: 0 0 13px 44px;" alt="...">
 
 			<div id="input_login" class="d-flex flex-column">
-				<input type="text" name="userid" id="loginUserid" placeholder="아이디" required> 
+				<input type="text" name="userid" id="loginUserid" placeholder="사원번호" required> 
 				<input type="password" name="passwd" id="loginPwd" placeholder="비밀번호" required>
 			</div>
 
 			<div id="id_save_find" class="w-98 d-flex justify-content-between">
 
 				<div id="idPwdSave">
-					<input type="checkbox" style="border: 1px solid #c1c1c1; margin: 0 4px 0 2px;" id="saveUser" title="계정 저장 선택" />
-					<label for="saveId">계정 저장</label>
+					<input id="saveid" type="checkbox" style="border: 1px solid #c1c1c1; margin: 0 4px 0 2px;" title="계정 저장 선택" />
+					<label for="saveid">계정 저장</label>
 				</div>
 
 				<div id="pwdFind">
@@ -218,7 +233,7 @@
 			</div>
 
 			<div class="d-flex flex-column">
-				<button type="button" id="btn_submit">로그인</button>
+				<button type="button" id="btn_submit" onclick="goLogin()">로그인</button>
 				<a href="#"><button type="button" id="btn_register">회원가입</button></a>
 			</div>
 		</div>

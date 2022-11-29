@@ -59,7 +59,7 @@ public class HyerinAOP {
 		HttpServletResponse response = (HttpServletResponse) joinpoint.getArgs()[1]; // 주업무메소드의 두번째 파라미터를 가져옴
 
 		HttpSession session = request.getSession();
-		if("1".equals(session.getAttribute("sidebar_yn"))) { //사이드바 작게보기인 경우
+		if("0".equals(session.getAttribute("sidebar_yn"))) { //사이드바 작게보기인 경우
 			
 			
 			
