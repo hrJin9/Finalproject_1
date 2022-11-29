@@ -7,51 +7,62 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/css/sidebar.css?after">
     
 <style type="text/css">
+
 </style>
 
 <script type="text/javascript">
 
-   $(document).ready(function(){
-      
-      $(".profile2").click(function(){  // 내프로필 클릭시
-          if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
-            $(".myprofile").fadeIn(100);
-            $(".news").fadeOut(100);
-          } else {
-            $(".myprofile").fadeOut(100);
-          }
-      });
-      
-      $("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-         if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
-              $(".news").fadeIn(100);  // 보이기
-              $(".myprofile").fadeOut(100);  // 숨기기
-            } else {
-              $(".news").fadeOut(100);
-            }
-      });
-      
-      
-      // 비밀번호 변경창 닫기 버튼 클릭 시
-      $("button.pwdChangeClose").click(function() {
-         const iframe_pwdChange = document.getElementById("iframe_pwdChange"); // 대상 아이프레임 선택
-         const iframe_window = iframe_pwdChange.contentWindow;
+	$(document).ready(function(){
+		
+		//사이드바 클릭시
+		if(localStorage.getItem("sidebar_yn") != null){
+			$("#side-expandcx").prop("checked",true);
+			$(".sidebar").addClass("transitionreset");
+			$("#menuicon").prop("checked",true);
+			$("div#mycontent").css({'width':'88%','margin':'0 auto'});
+			$("#side-expand").css({"background-color":"#4285f4"});
+		}
+	   
+		
+		$(".profile2").click(function(){  // 내프로필 클릭시
+			if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
+			  $(".myprofile").fadeIn(100);
+			  $(".news").fadeOut(100);
+			} else {
+			  $(".myprofile").fadeOut(100);
+			}
+		});
+		
+		$("li#newsIcon").click(function(){ // 새로운 소식 클릭시
+			if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
+			  $(".news").fadeIn(100);  // 보이기
+			  $(".myprofile").fadeOut(100);  // 숨기기
+			} else {
+			  $(".news").fadeOut(100);
+			}
+		});
 
-         iframe_window.func_form_reset_empty();
-      });
+      
+		// 비밀번호 변경창 닫기 버튼 클릭 시
+		$("button.pwdChangeClose").click(function() {
+		   const iframe_pwdChange = document.getElementById("iframe_pwdChange"); // 대상 아이프레임 선택
+		   const iframe_window = iframe_pwdChange.contentWindow;
+		
+		   iframe_window.func_form_reset_empty();
+		});
       
       
-      <%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
-      $("input#menuicon").change(function(){
-          if($("#menuicon").is(":checked")){
-              $("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
-          }else{
-              $("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
-          }
-      });
+		<%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
+		$("input#menuicon").change(function(){
+		    if($("#menuicon").is(":checked")){
+		        $("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
+		    }else{
+		        $("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
+		    }
+		});
       
       
-        // 서치모달 닫힐 때 초기화
+		// 서치모달 닫힐 때 초기화
 		$('#sideSearch').on('hidden.bs.modal', function () {
 			 $('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up');
 			 $("#se-searchicon").removeClass("fas"); $("#se-searchicon").removeClass("fa-chevron-left");
@@ -59,25 +70,26 @@
 		});
       
         
-        //넓게보기 클릭 이벤트
-        $("#side-expand-a").click(function(){
+		//넓게보기 클릭 이벤트
+		$("#side-expand-a").click(function(){
+		
+			if($("#side-expandcx").is(":checked")){
+				$("#side-expandcx").prop("checked",false);
+				$("#menuicon").prop("checked",false);
+				$("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
+				$("#side-expand").css({"background-color":"","transition":"all 0.5s"});
+				localStorage.removeItem("sidebar_yn");
+			} else {
+				$("#side-expandcx").prop("checked",true);
+				$("#menuicon").prop("checked",true);
+				$("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
+				$("#side-expand").css({"background-color":"#4285f4","transition":"all 0.5s"});
+				localStorage.setItem("sidebar_yn","1");
+			}
         	
-        	let sidebar_yn;
-        	if($("#side-expandcx").is(":checked")){
-        		$("#side-expandcx").prop("checked",false);
-        		$("#menuicon").prop("checked",false);
-        		$("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
-        		$("#side-expand").css({"background-color":"","transition":"all 0.5s"});
-        		sidebar_yn = "0";
-        		
-        	} else {
-        		$("#side-expandcx").prop("checked",true);
-        		$("#menuicon").prop("checked",true);
-        		$("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
-        		$("#side-expand").css({"background-color":"#4285f4","transition":"all 0.5s"});
-        		sidebar_yn = "1";
-        	}
         	
+        	
+        	<%-- 
         	//입력값을 session에 저장하기
     		$.ajax({
     			url: "<%=ctxPath%>/sbcheck.up",
@@ -91,56 +103,51 @@
 				}
     			
     		});//end of ajax
-    		
-        });
+    		 --%>
+		});
         
         
         
-   });// end of $(document).ready(function(){})---------------
+	});// end of $(document).ready(function(){})---------------
 	
-   $(document).mouseup(function(e){
-	   if( !(($(".news").has(e.target).length))){
-	      $(".news").fadeOut(100);
-	 	}
+	$(document).mouseup(function(e){
+		if( !(($(".news").has(e.target).length))){
+		    $(".news").fadeOut(100);
+		}
 		if( !(($(".myprofile").has(e.target).length))){
 		     $(".myprofile").fadeOut(100);
 		}
 	});
    
    
-   // 검색Modal에서 검색어를 입력할 때 get방식으로 검색어값을 보내기 ==> 이방법 아니면 ajax를 써보기
-   // ajax 쓰려면 modal body를 iframe 쓰지 말고 (sidebar_search.jsp)내용을 그냥 갖다붙여서 써도,, ㄱㅊ을듯.. 따로 파일을 빼던가.. 
-   function searchSrc(){
-	   //검색어 내용 알아오기
-	   var inputval = $("#ss-input").val();
-	   
-	   // iframe의 주소 변경
-	   $('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up?'+inputval);
-	   
-   }//end of searchSrc
-   
-   // sidebar_searchEnd.jsp 에서 아이콘을 바꾸기 위한 함수
-   function sse_changeIcon(){
-	   $("#se-searchicon").removeClass("icon"); $("#se-searchicon").removeClass("icon-search");
-	   $("#se-searchicon").addClass("fas"); $("#se-searchicon").addClass("fa-chevron-left");
-	   
-	   $("#se-searchicon").hover(function(){
-		   $("#se-icon-outer").css({"background-color":"rgba(230,230,230,0.4)","cursor":"pointer"});
-	   },function(){
-		   $("#se-icon-outer").css({"background-color":"","cursor":""});  
-	   });
-   }
+	// 검색Modal에서 검색어를 입력할 때 get방식으로 검색어값을 보내기 ==> 이방법 아니면 ajax를 써보기
+	// ajax 쓰려면 modal body를 iframe 쓰지 말고 (sidebar_search.jsp)내용을 그냥 갖다붙여서 써도,, ㄱㅊ을듯.. 따로 파일을 빼던가.. 
+	function searchSrc(){
+		//검색어 내용 알아오기
+		var inputval = $("#ss-input").val();
+		
+		// iframe의 주소 변경
+		$('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up?'+inputval);
+	 
+	}//end of searchSrc
+
+	// sidebar_searchEnd.jsp 에서 아이콘을 바꾸기 위한 함수
+	function sse_changeIcon(){
+		$("#se-searchicon").removeClass("icon"); $("#se-searchicon").removeClass("icon-search");
+		$("#se-searchicon").addClass("fas"); $("#se-searchicon").addClass("fa-chevron-left");
+		
+		$("#se-searchicon").hover(function(){
+		 $("#se-icon-outer").css({"background-color":"rgba(230,230,230,0.4)","cursor":"pointer"});
+		},function(){
+		 $("#se-icon-outer").css({"background-color":"","cursor":""});  
+		});
+	}
    
    // 원래 아이콘으로 바꾸는 함수
    function sse_originIcon(){
 		$("#se-searchicon").removeClass("fas"); $("#se-searchicon").removeClass("fa-chevron-left");
 		$("#se-searchicon").addClass("icon"); $("#se-searchicon").addClass("icon-search");
    }
-   
-   
-   
-   
-   
    
 </script>
 
