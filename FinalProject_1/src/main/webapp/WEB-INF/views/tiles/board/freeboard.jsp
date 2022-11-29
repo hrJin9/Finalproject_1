@@ -850,11 +850,17 @@ function goSearch(){  // 검색시 함수
               		<span class="title">맛집 추천합니다!</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div>
-              		<span class="username">이예은&nbsp;대리</span>
-            		<span class="writedate">2022.11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              	<div style="width: 50%;">
+              		<div style="display: inline-block; width: 15%;">
+              			<span class="username">이예은&nbsp;대리</span>
+              		</div >
+              		<div style="display: inline-block; width: 20%;">
+              			<span class="writedate">2022.11.16</span>
+              			<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              		</div>
               	</div>	
               </td>
               <td>
@@ -905,10 +911,18 @@ function goSearch(){  // 검색시 함수
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
               	<div>
-              		<span class="username">이예은&nbsp;대리</span>
-            		<span class="writedate">2022.11.16</span>
-            		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              		<div style="width: 50%;">
+	              		<div style="display: inline-block; width: 15%;">
+	              			<span class="username">이예은&nbsp;대리</span>
+	              		</div>
+	              		<div style="display: inline-block; width: 20%;">
+	              			<span class="writedate">2022.11.16</span>
+	              			<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
+	              		</div>
+	              		<div style="display: inline-block; width: 30%;"> 
+	              			<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+	              		</div>
+	              	</div>	
               	</div>	
               </td>
               <td>
