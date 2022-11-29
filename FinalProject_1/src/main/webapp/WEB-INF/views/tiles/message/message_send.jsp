@@ -10,7 +10,7 @@
 	$(document).ready(function(){
 		//헤더 css
 		$("#mg-send").addClass("iscurrent");
-		$("#mg-send").css("color","black");
+		$("#mg-send").css("color","#4d4f53");
 		
 		// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
 		$("#mg-selectchx-all").change(function(){

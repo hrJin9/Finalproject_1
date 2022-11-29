@@ -95,7 +95,7 @@
 	  display:inline-block;
 	  border-radius: 4px;
 	  position: relative;
-	  left:10px; 
+	  left:5px; 
 	  color:white;
 	  font-size:0.2rem;
 	  font-weight:bold; 

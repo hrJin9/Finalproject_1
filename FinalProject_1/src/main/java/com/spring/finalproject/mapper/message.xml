@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="message">
+	
+	
+	<!-- 한 사용자의 메시지목록 불러오기 -->
+	<resultMap type="HashMap" id="getmvoList_Map">
+		<result property="writer" column="writer" javaType="String"/>
+		<result property="w_name" column="w_name" javaType="String"/>
+		<result property="w_deptname" column="w_deptname" javaType="String"/>
+		<result property="receiver" column="receiver" javaType="String"/>
+		<result property="r_name" column="r_name" javaType="String"/>
+		<result property="r_deptname" column="r_deptname" javaType="String"/>
+		<result property="mgroup" column="mgroup" javaType="String"/>
+		<result property="reno" column="reno" javaType="String"/>
+		<result property="subject" column="subject" javaType="String"/>
+		<result property="content" column="content" javaType="String"/>
+		<result property="m_systemfilename" column="m_systemfilename" javaType="String"/>
+		<result property="m_originfilename" column="m_originfilename" javaType="String"/>
+		<result property="file_size" column="file_size" javaType="String"/>
+		<result property="ms_sendtime" column="ms_sendtime" javaType="String"/>
+		<result property="ms_checktime" column="ms_checktime" javaType="String"/>
+	</resultMap>
+	<select id="getmvoList" parameterType="String" resultMap="getmvoList_Map">
+		select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
+		from
+		(
+		    select writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
+		    from
+		    (
+		        select writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+		        from tbl_message M
+		        join tbl_message_send MS
+		        on M.mno = MS.fk_mno
+		        where receiver = #{receiver} and status = 1
+		    )
+		    left join v_employee E
+		    on E.employee_no = writer
+		    order by ms_sendtime desc
+		)
+		left join v_employee
+		on employee_no = receiver
+	</select>
+	
+	
+	<select id="unread_mvoList" parameterType="String" resultMap="getmvoList_Map">
+		select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
+		from
+		(
+		    select writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
+		    from
+		    (
+		        select writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+		        from tbl_message M
+		        join tbl_message_send MS
+		        on M.mno = MS.fk_mno
+		        where receiver = #{receiver} and status = 1 and ms_checktime is null
+		    )
+		    left join v_employee E
+		    on E.employee_no = writer
+		    order by ms_sendtime desc
+		)
+		left join v_employee
+		on employee_no = receiver
+	</select>
+
+
+
+</mapper>

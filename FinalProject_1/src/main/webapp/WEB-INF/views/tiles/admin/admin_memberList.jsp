@@ -268,10 +268,11 @@
 				<div class=" mr-2">
 					<div class="form-group">
 						<div class="form-field">
-							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;">
-								<option value="">이름</option>
-								<option value="">이메일</option>
-								<option value="">연락처</option>
+							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px;">
+								<option value="">전체</option>
+								<option value="">작성자</option>
+								<option value="">제목</option>
+								<option value="">제목+내용</option>
 							</select>
 						</div>
 					</div>

@@ -12,6 +12,7 @@
 	.member_container {
 		width: 88%;
 		margin: 0 auto;
+		overflow: hidden;
 	}
 	
 	#admin_mainList a:hover{
