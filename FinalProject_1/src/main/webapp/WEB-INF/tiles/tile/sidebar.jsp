@@ -7,19 +7,21 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/css/sidebar.css?after">
     
 <style type="text/css">
-
+	.sidebar{
+		border-right: solid 1px rgba(235,235,235);
+	}
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
 		
-		//사이드바 클릭시
+		//사이드바 체크여부검사
 		if(localStorage.getItem("sidebar_yn") != null){
 			$("#side-expandcx").prop("checked",true);
-			$(".sidebar").addClass("transitionreset");
 			$("#menuicon").prop("checked",true);
 			$("div#mycontent").css({'width':'88%','margin':'0 auto'});
+			$(".sidebar *").css({"transition":"all 0s !important"});
 			$("#side-expand").css({"background-color":"#4285f4"});
 		}
 	   
@@ -200,7 +202,7 @@
     </div>
   </div>
   
-  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border: 0.2px solid #ffffff; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 1;">
+  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 1; box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.1);">
      <a class="list-group-item list-group-item-action" href="<%= request.getContextPath()%>/myInfo_hr.up" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
@@ -218,7 +220,7 @@
   </div>
     
     
-   <div class=news style="display:none;">
+   <div class="news" style="display:none; box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.1);">
       <div style="font-size: 11.5pt; color: #595959; font-weight: bold; padding-bottom: 30px;">새로운 소식
          <button style="margin-left: 90px; border: none; font-size: 8pt; font-weight:bold; border-radius: 3px; background-color:#3B86C812; color: #2E5E87; padding: 5px 8px;">모두읽음</button>
       </div>

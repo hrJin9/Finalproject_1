@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.finalproject.common.FileManager;
+import com.spring.finalproject.common.MyUtil;
+import com.spring.hyerin.model.EmployeeVO;
 import com.spring.hyerin.model.MessageVO;
 import com.spring.hyerin.service.InterMessageService;
 
@@ -25,7 +29,7 @@ public class MessageController {
 	private FileManager fileManager;
 
 	@RequestMapping(value = "/message.up")
-	public ModelAndView messageHome(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView rl_messageHome(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		String tab = request.getParameter("tab");
 		if(tab == null) tab = "all";
@@ -36,14 +40,24 @@ public class MessageController {
 		paraMap.put("tab", tab);
 		paraMap.put("mno",mno);
 		// 로그인된 유저의 employee_no 알아오기
-		String receiver = "100006";
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String receiver = loginuser.getEmployee_no();
 		paraMap.put("receiver", receiver);
+		
+		//현재 페이지 저장
+		String cururl = getCurrentURL(request);
+		if(cururl.contains("&tab")) {
+			int firsttab = cururl.indexOf("&tab"); 
+			cururl = cururl.replaceAll(cururl.substring(firsttab), "");
+		}
+		paraMap.put("cururl",cururl);
+		
 		// 로그인유저의 메시지리스트 불러오기
 		List<Map<String,String>> mvoList = service.getmvoList(paraMap);
 		
 		//로그인 유저가 클릭한 메시지내용 1개 불러오기
 		Map<String,String> mvo = service.getmvo(mno);
-		
 		
 		mav.addObject("paraMap",paraMap);
 		mav.addObject("mvo",mvo);
@@ -102,5 +116,11 @@ public class MessageController {
 		return mav;
 	}
 	
-	
+	//////////////////////////////////////////////////////////////////////////////////////
+	public String getCurrentURL(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String url = MyUtil.getCurrentURL(request);
+		session.setAttribute("goBackURL", url);
+		return url;
+	}
 }
