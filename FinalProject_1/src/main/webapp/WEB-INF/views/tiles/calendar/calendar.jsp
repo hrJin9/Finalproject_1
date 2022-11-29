@@ -95,6 +95,19 @@
     right: 8%;
  }
  
+ #selboxDirect{ 
+   border: 1.5px solid #cccccc;
+    border-radius: 3.5px;
+    width: auto%;
+/*     padding: 10px 17px; */
+/*     margin: 7px 0 18px 0; */
+    opacity: 0.85; 
+    font-size: 10pt;
+    line-height: 20px;
+    margin-left: 10px;
+ }
+ 
+ 
   
    
    
@@ -245,28 +258,43 @@ document.addEventListener('DOMContentLoaded', function() {
 				local: 'ko'
 			});
 			 
+			  
+			// 직접입력 
+			$("#selboxDirect").hide();  // 소속 직접작성란 숨기고 시작한다.
 			
+			// 소속 입력
+			$("#team").change(function() {
+				//직접입력을 누를 때 나타남
+				if($("#team").val() == "direct") {
+					/* $("select#team").hide(); */
+					$("#selboxDirect").show();
+					$("select#team").css('margin-bottom','0px');    
+				}  else {
+					$("#selboxDirect").hide();
+					$("select#team").css('margin-bottom','18px');
+				}
 			
+			}); 
 	 
 	}); //end of ready
-
-	   
+ 
+	    
 	 
    
       
 </script>  
    
-     
+      
 <div id='calendar' style="margin-bottom: 5%;"></div>   
 
 <div class="workadd" style="margin-top: 0pt;border-radius: 23px;background-color: #f7f7f7;width: 15.5%;height: 60px;">
 	<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt; margin-top: 20%;">일정 생성</span></div>
 </div>
- 
-   
-<div> 
+    
+      
+<div>  
 	<div class="calendar-side">      
-  			                    
+  			                       
   			<div style="margin-top: 10px;">         
 	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
 					<a href="#" class="btn fa-solid fa-circle-plus fa-lg"  style="color: #5E9FF2; margin-top: 6px; position: absolute; top: 22px; left: 188px;"></a>
@@ -274,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  			<button type="button" class="btn" data-toggle="collapse" data-target="#demo" style="width: 88%; text-align: inherit; margin-left: 18px;">나의 캘린더    
 	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 28px;"></i> </button>  
 	  			 
-	  			<div id="demo" class="collapse show">       
+	  			<div id="demo" class="collapse">       
 	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   
 		  			<p> 
 		  			<input type="checkbox" />     
@@ -317,16 +345,19 @@ document.addEventListener('DOMContentLoaded', function() {
 			      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="제목을 입력하세요(필수)" style="border: none;">
 			    </div>
 			      
-			    <hr style="margin-bottom: 7%;">   
+			    <hr style="margin-bottom: 7%;">     
 			       
 			    <div class="form-group"  style="display: flex;"> 
 			      <i class="fa-solid fa-calendar-days fa-2x"></i>  
-			      <select class="form-select" id="exampleSelect1" style="margin-left: 20px;">   
+			      <select id="team"  name="team" class="form-select" style="margin-left: 20px;">  
 			        <option>팀일정</option>
 			        <option>내일정</option> 
-			        <option>부서일정</option> 
-			        <option>전사일정</option>    
+			        <option>부서일정</option>    
+			        <option>전사일정</option>  
+			        <option>공유받은 일정</option> 
+			        <option value="direct">직접 입력</option>   
 			      </select> 
+			      <input input type="text" id="selboxDirect" name="selboxDirect" /> 
 			    </div>     
 			         
 			          
