@@ -326,12 +326,12 @@ div.datebox > span > input {
 	left:15px;
 	top:3px;"
 } */
-/* 댓글깻수 */
-#bubblecnt{
+/* 댓글갯수 */
+/* #bubblecnt{
 	position: relative; 
 	left:8px;
 	top:2px;
-}
+} */
 /* 파일첨부 아이콘 */
 #iconattachment{
 	color:#4c4e54;
