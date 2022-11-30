@@ -215,7 +215,7 @@
 			<div id="id_save_find" class="w-98 d-flex justify-content-between">
 
 				<div id="idPwdSave">
-					<input id="saveid" type="checkbox" style="border: 1px solid #c1c1c1; margin: 0 4px 0 2px;" title="계정 저장 선택" />
+					<input id="saveid" type="checkbox" style="position: relative; top:2px; border: 1px solid #c1c1c1; margin: 0 4px 0 2px;" title="계정 저장 선택" />
 					<label for="saveid">계정 저장</label>
 				</div>
 

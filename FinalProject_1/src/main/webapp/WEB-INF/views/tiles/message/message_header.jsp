@@ -95,7 +95,7 @@
 </nav>
 
 <nav id="subList" class="margin-container">
-	<a id="mg-recieve" href="<%= request.getContextPath()%>/message/recieve.up" class="header-sub">받은메시지</a>
+	<a id="mg-recieve" href="<%= request.getContextPath()%>/message.up" class="header-sub">받은메시지</a>
 	<a id="mg-send" href="<%= request.getContextPath()%>/message/send.up" class="header-sub">보낸메시지</a>
 	<div class="subList_underline"></div>
 </nav>
