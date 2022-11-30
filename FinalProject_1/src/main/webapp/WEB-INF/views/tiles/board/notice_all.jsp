@@ -318,14 +318,14 @@ div.datebox > span > input {
 	display:none;
 }
 /* 댓글아이콘 */
-#iconbubble{
+/* #iconbubble{
 	color:#4c4e54;
 	padding:0 auto;
 	font-size: 10pt;
 	position: relative; 
 	left:15px;
 	top:3px;"
-}
+} */
 /* 댓글깻수 */
 #bubblecnt{
 	position: relative; 
