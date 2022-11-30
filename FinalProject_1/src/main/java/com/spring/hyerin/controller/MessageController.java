@@ -8,9 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.finalproject.common.FileManager;
@@ -52,33 +56,106 @@ public class MessageController {
 			cururl = cururl.replaceAll(cururl.substring(firsttab), "");
 		}
 		paraMap.put("cururl",cururl);
-		
-		// 로그인유저의 메시지리스트 불러오기
-		List<Map<String,String>> mvoList = service.getmvoList(paraMap);
-		
+		/*
+		 * // 로그인유저의 메시지리스트 불러오기 List<Map<String,String>> mvoList =
+		 * service.getmvoList(paraMap);
+		 */
 		//로그인 유저가 클릭한 메시지내용 1개 불러오기
 		Map<String,String> mvo = service.getmvo(mno);
 		
 		mav.addObject("paraMap",paraMap);
 		mav.addObject("mvo",mvo);
-		mav.addObject("mvoList",mvoList);
+		/*
+		 * mav.addObject("mvoList",mvoList);
+		 */
 		mav.setViewName("message/message_recieve.tiles");
 		return mav;
 	}
 	
 	
-	@RequestMapping(value = "/message/content.up")
-	public ModelAndView messageUnread(HttpServletRequest request, ModelAndView mav) {
+	@ResponseBody
+	@RequestMapping(value = "/mglist.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String mglist(HttpServletRequest request, ModelAndView mav) {
 		
-		String mno = request.getParameter("mno");
-		if(mno == null) mno = "";
+		// 탭정보 가져오기
+		String tab = request.getParameter("tab"); // "all", "unread", "scrap"
+		
+		// 로그인된 유저 정보(receiver) 가져오기
+		HttpSession session = request.getSession();
+		EmployeeVO emp = (EmployeeVO) session.getAttribute("loginuser");
+		String empno = emp.getEmployee_no();
+		String curpage = request.getParameter("curpage");
+		int sizePerPage = 10;
+		if (curpage == null) curpage = "1";
+		int startRno = ((Integer.parseInt(curpage) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		// 맵에 정보값 넣어주기
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("tab", tab);
+		paraMap.put("empno", empno);
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+		
+		// 로그인유저의 메시지리스트 불러오기
+		List<Map<String,String>> mvoList = service.getmvoList(paraMap);
+		
+		JSONArray jsonarr = new JSONArray();
+		if(mvoList != null) {
+			for(Map<String,String> map : mvoList) {
+				JSONObject jsonobj = new JSONObject();
+				jsonobj.put("mno", map.get("mno"));
+				jsonobj.put("writer", map.get("writer"));
+				jsonobj.put("w_name", map.get("w_name"));
+				jsonobj.put("w_deptname", map.get("w_deptname"));
+				jsonobj.put("receiver", map.get(""));
+				jsonobj.put("r_name", map.get("r_name"));
+				jsonobj.put("r_deptname", map.get("r_deptname"));
+				jsonobj.put("mgroup", map.get("mgroup"));
+				jsonobj.put("reno", map.get("reno"));
+				jsonobj.put("subject", map.get("subject"));
+				jsonobj.put("content", map.get("content"));
+				jsonobj.put("m_systemfilename", map.get("m_systemfilename"));
+				jsonobj.put("m_originfilename", map.get("m_originfilename"));
+				jsonobj.put("file_size", map.get("file_size"));
+				jsonobj.put("ms_sendtime", map.get("ms_sendtime"));
+				jsonobj.put("ms_checktime", map.get("ms_checktime"));
+				
+				jsonarr.put(jsonobj);
+			}//end of for
+		}//end of if
+		
+		return jsonarr.toString();
+	}//end of mglist
+	
+	@ResponseBody
+	@RequestMapping(value = "/mgtotal.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String mgtotal(HttpServletRequest request, ModelAndView mav) {
+		
+		// 로그인된 유저 정보(receiver) 가져오기
+		HttpSession session = request.getSession();
+		EmployeeVO emp = (EmployeeVO) session.getAttribute("loginuser");
+		String empno = emp.getEmployee_no();
+		String tab = request.getParameter("tab");
+		String sizePerPage = request.getParameter("sizePerPage");
 		
 		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("tab",tab);
+		paraMap.put("sizePerPage",sizePerPage);
+		paraMap.put("empno",empno);
 		
-		mav.addObject("mno",mno);
-		mav.setViewName("tiles/message/message_content");
-		return mav;
-	}
+		// 메시지리스트의 총페이지수 알아오기
+		int mgtotal = service.getmgtotal(paraMap);
+		System.out.println(mgtotal);
+		
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("mgtotal", mgtotal);
+		
+		return jsonObj.toString();
+	}//end of mgtotal
+	
 	
 	
 	@RequestMapping(value = "/message/send.up")

@@ -249,10 +249,96 @@ exec pcd_tbl_team_insert('IT',100);
 
 
 -- 메시지 select
-
 select * from tbl_employee
 
+
 -- 한 사람의 메시지목록을 보여주는 select
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status
+from
+(
+    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
+    from
+    (
+        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+    order by ms_sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+where receiver = '100006' and TMM.status = 1 and ms_checktime is null
+
+
+
+-- 스크랩한거 보여주는거
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status
+from
+(
+    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
+    from
+    (
+        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+    order by ms_sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+join tbl_scrap S
+on S.tno = mno
+where receiver = '100006' and TMM.status = 1
+
+
+
+-- 메시지 목록 뷰로 만들기
+create or replace view v_mglist
+as
+select row_number() over(order by ms_sendtime desc) as rno, mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status
+from
+(
+    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
+    from
+    (
+        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+    order by ms_sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+where receiver = '100006' and status = 1
+
+select 
+
+
+select (count(*)/10)
+from v_mglist
+where receiver = '100006' and status = 1
+
+
+select *
+from v_mglist
+where receiver = '100006' and status = 1
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
 select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
 from
 (
@@ -263,7 +349,10 @@ from
         from tbl_message M
         join tbl_message_send MS
         on M.mno = MS.fk_mno
-        where receiver = '100006' and status = 1 and ms_checktime is null
+        join tbl_scrap S
+        on S.tno = mno
+        where receiver = 100006 and status = 1
+        
     )
     left join v_employee E
     on E.employee_no = writer
@@ -272,28 +361,9 @@ from
 left join v_employee
 on employee_no = receiver
 
--- 한 사람의 스크랩한 메시지
-select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
-from
-(
-    select writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
-    from
-    (
-        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
-        from tbl_message M
-        join tbl_message_send MS
-        on M.mno = MS.fk_mno
-        where receiver = '10006' and status = 1 and ms_checktime is null
-    )
-    left join v_employee E
-    on E.employee_no = writer
-    order by ms_sendtime desc
-)
-left join v_employee
-on employee_no = receiver
-
-
-
+select ceil(count(*)/10)
+from v_mglist
+where receiver = 100006 and status = 1
 
 
 --------------------------------------------------------------------------------
@@ -444,14 +514,6 @@ where status = 1 and employee_no =
 
 
 
-commit;
-
-select * from v_employee
-
-
-alter table tbl_employee add dayoff_cnt number default 0;
-
-select * from tbl_employee
 
 -------------------------------------------------------------------------------
 -- tbl_dayoff 테이블 생성
@@ -487,5 +549,8 @@ create table tbl_attendance_catgo
 
 ,constraint PK_tbl_dayoff_adcatgono primary key(adcatgono)
 );
+
+
+
 
 

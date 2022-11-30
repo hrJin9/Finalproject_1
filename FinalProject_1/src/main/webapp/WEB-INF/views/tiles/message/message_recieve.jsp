@@ -22,26 +22,23 @@
 	
 </style>
 <script>
+
 $(document).ready(function(){
 	
 	$("#mg-recieve").css("color","#4d4f53");
 	let cururl = "${requestScope.paraMap.cururl}";
+	$("span#all").css("font-weight","bold");
+	var tab = "all";
+	getMglist(tab);
 	
 	//mno값을 읽어와서 페이지 넘기기
+	<%-- 
 	let mno = "${requestScope.paraMap.mno}";
 	if(mno == ""){
 		mno = $(".mgList-contents tr:first-child").attr("id");
 		location.href="<%=ctxPath%>/message.up?mno="+mno;
 	}
-		
-	// 중요, 안읽음 클릭시 굵기주기 
-	const tab = "${requestScope.paraMap.tab}";
-	if(tab == "all")
-		$("span#all").css("font-weight","bold");
-	else if (tab == "unread")
-		$("span#unread").css("font-weight","bold");
-	else
-		$("span#scrap").css("font-weight","bold");
+	--%>
 	
 	
 	
@@ -72,8 +69,8 @@ $(document).ready(function(){
 			$("#mg-selectchx-all").prop("checked", false);
 		else
 			$("#mg-selectchx-all").prop("checked", true); 
-		
 	});
+	
 	
 	//툴팁 사용
 	var tooltipel = $(".tp").tooltip();
@@ -105,17 +102,26 @@ $(document).ready(function(){
 	
 	$("span#all").click(function(e){
 		$("span#all").css("font-weight","bold");
-		location.href="<%= ctxPath%>/message.up";
+		var tab = "all";
+		getMglist(tab);
 	});
 	$("span#unread").click(function(e){
 		$("span#unread").css("font-weight","bold");
-		location.href="<%= ctxPath%>"+cururl+"&tab=unread";
+		var tab = "unread";
+		getMglist(tab);
 	});
 	
 	$("span#scrap").click(function(){
 		$("span#unread").css("font-weight","bold");
-		location.href="<%= ctxPath%>"+cururl+"&tab=scrap";
+		var tab = "scrap";
+		getMglist(tab);
 	});
+	
+	
+	
+	
+	
+	
 	
 });//end of ready
 
@@ -132,7 +138,131 @@ function show_noncheckmenu(){
 	$(".mg-noncheckmenu").fadeIn("fast");
 	$(".fa-check").css("visibility","hidden");
 }
+
+//메시지 목록을 가져오는 ajax 
+function getMglist(tab, curpage){
+	$.ajax({
+		url: "<%= ctxPath%>/mglist.up",
+		type: "post",
+		data: {"tab":tab,
+				"curpage":curpage},
+		dataType:"json",
+		success:function(json){
+			let html = '';
+			
+			console.log(tab);
+			
+			if(json.length > 0 ){ // 가져올 메시지목록이 있는 경우
+				$.each(json, function(index, item){
+					if(item.ms_checktime == null)
+						html += '<tr id="'+item.mno+'" class="mg-unread">'
+					else
+						html += '<tr id="'+item.mno+'" class="mg-read">'
+					
+					html += '<td width="3%"><input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx'+index+'"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>' + 
+							'<td width="3%">'+
+								'<input id="check-star'+index+'" type="checkbox" name="check-star" style="display: none;"/>'+
+								'<label for="check-star'+index+'" class="check-star">'+
+									'<i class="icon icon-star-empty"></i>'+
+								'</label>'+
+							'</td>'+
+							'<td width="72%">'+
+								'<div>'+
+									'<span id="mg-subject">'+item.subject+'</span>';
+					if(item.file_size != null) // 첨부파일이 있을 경우
+						html += '<span><i class="fas fa-paperclip"></i></span>';
+					
+					html += '</div>'+
+							'<div><span>${mvo.w_name}</span>·<span>${mvo.w_deptname}</span></div>'+
+							'</td>'+
+							'<td width="22%">'+
+								'<div>${mvo.ms_sendtime}</div>';
+					if(item.file_zie != null) //첨부파일이 있을 경우
+						html += '<div><span>${mvo.file_size}</span>MB</div>';
+					
+					html += '</td>'+
+							'</tr>';
+				});//end of $.each
+				
+			} else { //가져올 메시지목록이 없는 경우
+				html += '<tr>'+
+						'<td width="100%">조회된 메시지가 없습니다.</td>'+
+						'</tr>';
+			}
+			
+			$(".mgList-contents > table").html(html);
+			
+			//페이지바 함수 호출
+			pgbar(tab, curpage);
+			
+				
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+		
+	}); //end of ajax
+}//end of getMglist
+
+function pgbar(tab, curpage){
+	$.ajax({
+		url: "<%= ctxPath%>/mgtotal.up",
+		data: {"tab":tab,
+				"sizePerPage":10},
+		dataTyp:"json",
+		success:function(json){
+			
+			if(json.mgtotal > 0){ // 메시지목록이 있는 경우
+				const mgtotal = json.mgtotal;
+				const blockSize = 2;
+				let loop = 1;
+				
+				if(typeof curpage == "string"){
+					curpage = Number(curpage);
+				}
+				
+				let pageNo = Math.floor((curpage - 1)/blockSize) * blockSize + 1;
+				
+				let pageBarHTML = "<ul style='list-style:none;'>"
+				
+				// [맨처음][이전] 만들기
+				if(pageNo != 1) {
+					pageBarHTML += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='javascript:goViewComment(\"1\")'>[맨처음]</a></li>";
+					pageBarHTML += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='javascript:goViewComment(\""+(pageNo-1)+"\")'>[이전]</a></li>";
+				}
+				
+				while( !(loop > blockSize || pageNo > mgtotal) ) {
+					if(pageNo == curpage) {
+						pageBarHTML += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color:red; padding: 2px 4px;'>"+pageNo+"</li>";
+					}
+					else {
+						pageBarHTML += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='javascript:goViewComment(\""+pageNo+"\")'>"+pageNo+"</a></li>";
+					}
+					
+					loop++;
+					pageNo++;
+				}//end of while
+				
+				// [다음][마지막] 만들기
+				if(pageNo <= mgtotal) {
+					pageBarHTML += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='javascript:goViewComment(\""+pageNo+"\")'>[다음]</a></li>";
+					pageBarHTML += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='javascript:goViewComment(\""+mgtotal+"\")'>[마지막]</a></li>";
+				}
+				
+				pageBarHTML += "</ul>";
+				
+				$(".mg-paging").html(pageBarHTML);
+			}//end of if
+			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
 	
+}
+
+
 </script>
 
 
@@ -198,44 +328,6 @@ function show_noncheckmenu(){
 			</div>
 			<div class="mgList-contents">
 				<table>
-					<c:if test="${not empty requestScope.mvoList}">
-						<c:forEach var="mvo" items="${requestScope.mvoList}" varStatus="status">
-							<c:if test="${empty mvo.ms_checktime}">
-								<tr id="${mvo.mno}" class="mg-unread">
-							</c:if>
-							<c:if test="${not empty mvo.ms_checktime}">
-								<tr id="${mvo.mno}" class="mg-read">
-							</c:if>
-								<td width="3%"><input id="mg-selectchx${status.index}" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx${status.index}"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
-								<td width="3%">
-									<input id="check-star${status.index}" type="checkbox" name="check-star" style="display: none;"/>
-									<label for="check-star${status.index}" class="check-star">
-										<i class="icon icon-star-empty"></i>
-									</label>
-								</td>
-								<td width="72%">
-									<div>
-										<span id="mg-subject">${mvo.subject}</span>
-										<c:if test="${not empty mvo.file_size}">
-											<span><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
-										</c:if>
-									</div>
-									<div><span>${mvo.w_name}</span>·<span>${mvo.w_deptname}</span></div>
-								</td>
-								<td width="22%">
-									<div>${mvo.ms_sendtime}</div>
-									<c:if test="${not empty mvo.file_size}">
-										<div><span>${mvo.file_size}</span>MB</div>
-									</c:if>
-								</td>
-							</tr>
-						</c:forEach>
-					</c:if>
-					<c:if test="${empty requestScope.mvoList}">
-						<tr>
-							<td width="100%">조회된 메시지가 없습니다.</td>
-						</tr>
-					</c:if>
 				</table>
 			</div>
 			<div class="mg-paging">

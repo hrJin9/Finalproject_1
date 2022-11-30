@@ -23,33 +23,56 @@
 		<result property="ms_checktime" column="ms_checktime" javaType="String"/>
 	</resultMap>
 	<select id="getmvoList" parameterType="HashMap" resultMap="getmvoList_Map">
-		select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
+		select row_number() over(order by ms_sendtime desc) as rno, mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status
 		from
 		(
-		    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
+		    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
 		    from
 		    (
 		        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
-		        <if test="tab == 'all'">
-			        where receiver = #{receiver} and status = 1
-		        </if>
-		        <if test="tab == 'unread'">
-			        where receiver = #{receiver} and status = 1 and ms_checktime is null
-		        </if>
-		        <if test="tab == 'scrap'">
-			        where receiver = #{receiver} and status = 1
-		        </if>
-		    )
+		    ) TM
 		    left join v_employee E
 		    on E.employee_no = writer
 		    order by ms_sendtime desc
-		)
+		) TMM
 		left join v_employee
 		on employee_no = receiver
+		<if test="tab == 'all'">
+	        where receiver = #{empno} and status = 1
+        </if>
+        <if test="tab == 'unread'">
+	        where receiver = #{empno} and status = 1 and ms_checktime is null
+        </if>
+        <if test="tab == 'scrap'">
+			join tbl_scrap S
+			on S.tno = mno
+			where receiver = #{empno} and status = 1
+        </if>
+        and rno between #{startRno} and #{endRno}
 	</select>
+	
+	<!-- 메시지리스트의 총페이지수 알아오기 -->
+	<select id="getmgtotal" parameterType="HashMap" resultType="int">
+		select ceil(count(*)/#{sizePerPage})
+		from v_mglist
+		<if test="tab == 'all'">
+			where receiver = #{empno} and status = 1
+		</if>
+		<if test="tab == 'unread'">
+			where receiver = #{empno} and status = 1 and ms_checktime is null
+		</if>
+		<if test="tab == 'scrap'">
+			join tbl_scrap S
+			on S.tno = mno
+			where receiver = #{empno} and status = 1
+		</if>
+	</select>
+	
+	
+	
 	
 	<!-- 로그인 유저가 클릭한 메시지내용 1개 불러오기 -->
 	<resultMap type="HashMap" id="getmvo_Map">
@@ -72,28 +95,6 @@
 		where mno = #{mno} and M.status = 1
 	</select>
 	
-	<!-- 
-	<select id="unread_mvoList" parameterType="String" resultMap="getmvoList_Map">
-		select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
-		from
-		(
-		    select writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
-		    from
-		    (
-		        select writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
-		        from tbl_message M
-		        join tbl_message_send MS
-		        on M.mno = MS.fk_mno
-		        where receiver = #{receiver} and status = 1 and ms_checktime is null
-		    )
-		    left join v_employee E
-		    on E.employee_no = writer
-		    order by ms_sendtime desc
-		)
-		left join v_employee
-		on employee_no = receiver
-	</select>
- -->
 
 
 </mapper>

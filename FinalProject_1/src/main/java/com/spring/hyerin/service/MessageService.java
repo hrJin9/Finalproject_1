@@ -38,5 +38,12 @@ public class MessageService implements InterMessageService {
 		return mvo;
 	}
 	
+	// 메시지리스트의 총페이지수 알아오기
+	@Override
+	public int getmgtotal(Map<String, String> paraMap) {
+		int mgtotal = dao.getmgtotal(paraMap);
+		return mgtotal;
+	}
+	
 	
 }
