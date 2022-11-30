@@ -67,6 +67,7 @@
     .form-control{
 		font-size: 12pt;
 		background-color: #fff;
+		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 	}
 	/* .form-control, .bootstrap-select .btn {
 	    height: 44px;
@@ -344,6 +345,9 @@ div#memcontent-iframe{
     width: 0.3em;
     height: 0.3em;
 }
+div#dayoff-temp{
+	display:hidden;
+}
 </style> 
 <script>
 	
@@ -388,9 +392,16 @@ div#memcontent-iframe{
 		
 		/* 양식에 맞는 모달창 뜨게하기  */
 		$("div.dayoff-box").click(function(e){
+			const temname = $(this).children('div').text();
+			//console.log(temname);
+			$("input#template-name").val(temname);
+			
 			const $target = $(e.target)
 			const id = $target.attr("id");
 
+			id!="timeoff"? $("div#dayoff-temp").hide():$("div#dayoff-temp").show(); // 연차양식 뜨게하기  
+			id!="work"? $("div#work-temp").hide():$("div#work-temp").show();  // 업무양식 뜨게하기 
+			
 			let data = ""
 			switch (id) {
 			case "timeoff":
@@ -415,8 +426,9 @@ div#memcontent-iframe{
 				data = ""; 
 				break;
 			}
-			editor.setMarkdown(data); 
-			/* console.log(data); */
+			
+			editor.setMarkdown(data);
+			
 			showmodal();
 		})
 		
@@ -455,6 +467,8 @@ div#memcontent-iframe{
 	    });
 	    
 	    
+		
+		
 	});//end of $(document).ready(function(){}---------------
 	 
 	
@@ -488,7 +502,7 @@ div#memcontent-iframe{
 			 option.style.display="none";
 		 }
 	}
-	
+	 
 	
 	
 	/* iframe 에서 선택한 멤버 append */
@@ -582,54 +596,33 @@ div#memcontent-iframe{
 		<div class="ml-1 margin-container approval-box" >
 			<div class="dayoff-box timeoff mb-2" style="width: 32.4%;" id="timeoff">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="25px"/>
-				<div>
-					<div>연차</div>
-					<!-- <div>1일</div> -->
-				</div>			
+				<div>연차</div>
 			</div>
 			<div class="dayoff-box sick" style="width: 32.4%;" id="reason">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/pill_1f48a.png" width="25px"/>
-				<div>
-					<div>사유서</div>
-					<!-- <div>연차 소진시 60일</div> -->
-				</div>	
+				<div>사유서</div>
 			</div>
 			<div class="dayoff-box condole" style="width: 32.4%;" id="work">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/clipboard_1f4cb.png" width="25px"/>
-				<div>
-					<div>업무기안서</div>
-					<!-- <div>신청시 5일 지급</div> -->
-				</div>
+				<div>업무기안서</div>
 			</div>
 			<br>
 			<div class="dayoff-box condole  mb-2" style="width: 32.4%;" id="expenditure">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/325/money-with-wings_1f4b8.png" width="25px"/>
-				<div>
-					<div>지출결의서</div>
-					<!-- <div>신청시 5일 지급</div> -->
-				</div>
+				<div>지출결의서</div>
 			</div>
 			<div class="dayoff-box condole" style="width: 32.4%;" id="buy">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/325/credit-card_1f4b3.png" width="25px"/>
-				<div>
-					<div>구매요청서</div>
-					<!-- <div>신청시 5일 지급</div> -->
-				</div>
+				<div>구매요청서</div>
 			</div>
 			<div class="dayoff-box condole" style="width: 32.4%;" id="condolence">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/325/confetti-ball_1f38a.png" width="25px"/>
-				<div>
-					<div>경조금신청서</div>
-					<!-- <div>신청시 5일 지급</div> -->
-				</div>
+				<div>경조금신청서</div>
 			</div>
 		
 			<div class="dayoff-box condole" style="width: 32.4%;" id="other">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/envelope_2709-fe0f.png" width="25px"/>
-				<div>
-					<div>기타</div>
-					<!-- <div>신청시 5일 지급</div> -->
-				</div>
+				<div>기타</div>
 			</div>
 		
 		</div>
@@ -665,7 +658,7 @@ div#memcontent-iframe{
 					<div style="display:inline-block;margin-right: 20px;">
 						<span class="control-label">템플릿</span> 
 						<div class="position-relative">
-							<input style="padding-right: 14px;"type="text"  class="write-topput"  name="tempname" value="지출결의서" readonly>
+							<input id="template-name"style="padding-right: 14px;"type="text"  class="write-topput"  name="tempname"  readonly>
 						</div>
 					</div>
 					<div class="form-field " style="display:inline-block;margin-right: 20px;float:right;">
@@ -690,108 +683,127 @@ div#memcontent-iframe{
 				<!-- 템플릿따라 다른 내용넣기    -->
 
 				<div id="bytemp"></div>
-				<div class="form-field mb-3" style="display:inline-block;margin-right: 20px;">
-					<span class="form-inputlabel">휴가종류</span>
-					<select name="selectTag" id="selectTag" class="mb-1"style="padding: 10px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 1px solid #ced4da;font-size: 10pt;" >
-							<option value="" selected>연차</option>
-							<option value="">조퇴</option>
-							<option value="">지각</option>
-							<option value="">경조</option>
-							<option value="">공가</option>
-							<option value="">질병휴가</option>
-					</select>
-				</div>
-				<br>
-				<div class="form-group mb-3"style="display:inline-block;">
-					<span class="form-inputlabel" style="z-index: 2;">기간 및 일시</span>
-					<div class="search-period-wr" >
-		                <div class="js-search-pickr-layer" data-code="unlimit" style="position: relative;top: -22px;">
-		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
-			                	<div class="datebox margin-container">
-									<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
+				
+				<div id="dayoff-temp">
+					<div class="form-field mb-3" style="display:inline-block;margin-right: 20px;">
+						<span class="form-inputlabel">휴가종류</span>
+						<select name="selectTag" id="selectTag" class="mb-1"style="padding: 10px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 1px solid #ced4da;font-size: 10pt;" >
+								<option value="" selected>연차</option>
+							<!-- <option value="">조퇴</option>
+								<option value="">지각</option> -->
+								<option value="">경조</option>
+								<option value="">공가</option>
+								<option value="">병가</option>
+						</select>
+					</div>
+					<br>
+					<div class="form-group mb-3"style="display:inline-block;">
+						<span class="form-inputlabel" style="z-index: 2;">기간 및 일시</span>
+						<div class="search-period-wr" >
+			                <div class="js-search-pickr-layer" data-code="unlimit" style="position: relative;top: -22px;">
+			                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
+				                	<div class="datebox margin-container">
+										<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
+									</div>
 								</div>
-							</div>
-		                    <span class="dash-swung" style="position: relative;right: 1px;">~</span>
-		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" >
-			                	<div class="datebox margin-container">
-									<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
+			                    <span class="dash-swung" style="position: relative;right: 1px;">~</span>
+			                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" >
+				                	<div class="datebox margin-container">
+										<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
+									</div>
 								</div>
-							</div>
-		                </div>
-		            </div>
-				</div>
-			
-			
-				
-				
-				
-				<div class="form-group"style="display:inline-block;position: absolute;">
-					<span class="form-inputlabel">사용연차</span> 
-					<div class="position-relative" style="display:inline-block;top:-1.4px">
-						<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="" class="form-control" value="2" readonly>
+			                </div>
+			            </div>
 					</div>
-				</div>
-				<div class="form-group"style="display:inline-block;position: relative;right: -61px;top: -20.9px;">
-					<span class="form-inputlabel">잔여연차</span> 
-					<div class="position-relative" style="display:inline-block;top:-1.4px">
-						<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="" class="form-control" value="2" readonly>
-					</div>
-				</div>
-				
-				<br>
-				<div class="form-group mb-3"style="display:inline-block;position: relative;">
-					<span class="form-inputlabel">반차여부</span>
-					<div class="custom-control custom-checkbox" style="min-height: auto;padding-bottom: 5px;display: inline-block;">
-   						
-   						<input type="checkbox" class="checkbox-disable custom-control-input" id="startdate" name="startdate">
-						
-						<span>   						
-	   						<label class="custom-control-label form-inputlabel" for="startdate" style="display: inline-block;font-size: 13px;color:#418dd0">시작일</label>
-	   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
-				                <input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">
-				                <label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
-				                <input type="radio" class="custom-control-radio2 dayradio" id="startnoon" name="startdaynight">
-				                <label for="startnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
-							</div>
-						</span>
-   					</div>
-   					
-					<div class="custom-control custom-checkbox" style="min-height: auto;right: -18px; padding-bottom: 5px;display: inline-block;">
-   						<input type="checkbox" class="checkbox-disable custom-control-input" id="enddate" name="enddate">
-   						<label class="custom-control-label form-inputlabel" for="enddate"style="display: inline-block;font-size: 13px;color:#418dd0">종료일</label>
-   						
-   						<span>
-	   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
-				                <input type="radio" class="custom-control-radio2 dayradio" id="endmorning" name="enddaynight">
-				                <label for="endmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
-				                <input type="radio" class="custom-control-radio2 dayradio" id="endnoon" name="enddaynight">
-				                <label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
-							</div>
-						</span>
-						
-   					</div>
-				</div>
-				
-				<!-- 
-				<div class="form-field " style="">
-					<span class="form-inputlabel mr-3">연차일수</span>
-					<div class="position-relative"style="display:inline-block;margin-right: 10px;width: 10%;">
-						<span class="control-label">잔여연차 : </span> 
-						<input style="background-color: #e9ecef;padding-right: 14px;display: inline-block;"type="text" id="" class="form-control"  name="" value="2" readonly>
-					</div>
-					<div class="position-relative"style="display:inline-block;width: 10%;">
-						<span class="control-label">신청연차 : </span> 
-						<input style="background-color: #e9ecef;padding-right: 14px;display: inline-block;"type="text" id="" class="form-control"  name="" value="2" readonly>
-					</div>
-				</div> -->
-
 					
-				<!-- <div class="form-group" style="margin-top: 10px;margin: 24px 0;">
-					<span class="form-inputlabel">제목</span> 
-					<div class="position-relative">
-						<input type="text" id="title" class="form-control" title="" placeholder="제목을 입력해주세요" name="title" value="">
+					<div class="form-group"style="display:inline-block;position: absolute;">
+						<span class="form-inputlabel">사용연차</span> 
+						<div class="position-relative" style="display:inline-block;top:-1.4px">
+							<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="" class="form-control" value="2" readonly>
+						</div>
 					</div>
-				</div> -->
+					<div class="form-group"style="display:inline-block;position: relative;right: -61px;top: -20.9px;">
+						<span class="form-inputlabel">잔여연차</span> 
+						<div class="position-relative" style="display:inline-block;top:-1.4px">
+							<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="" class="form-control" value="2" readonly>
+						</div>
+					</div>
+					
+					<br>
+					<div class="form-group mb-3"style="display:inline-block;position: relative;">
+						<span class="form-inputlabel">반차여부</span>
+						<div class="custom-control custom-checkbox" style="min-height: auto;padding-bottom: 5px;display: inline-block;">
+	   						
+	   						<input type="checkbox" class="checkbox-disable custom-control-input" id="startdate" name="startdate">
+							
+							<span>   						
+		   						<label class="custom-control-label form-inputlabel" for="startdate" style="display: inline-block;font-size: 13px;color:#418dd0">시작일</label>
+		   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
+					                <input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">
+					                <label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
+					                <input type="radio" class="custom-control-radio2 dayradio" id="startnoon" name="startdaynight">
+					                <label for="startnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
+								</div>
+							</span>
+	   					</div>
+	   					
+						<div class="custom-control custom-checkbox" style="min-height: auto;right: -18px; padding-bottom: 5px;display: inline-block;">
+	   						<input type="checkbox" class="checkbox-disable custom-control-input" id="enddate" name="enddate">
+	   						<label class="custom-control-label form-inputlabel" for="enddate"style="display: inline-block;font-size: 13px;color:#418dd0">종료일</label>
+	   						
+	   						<span>
+		   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
+					                <input type="radio" class="custom-control-radio2 dayradio" id="endmorning" name="enddaynight">
+					                <label for="endmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
+					                <input type="radio" class="custom-control-radio2 dayradio" id="endnoon" name="enddaynight">
+					                <label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
+								</div>
+							</span>
+							
+	   					</div>
+					</div>
+				</div>
+
+				
+				<div id="work-temp">
+					<div style="display: flex;">
+						<div class="form-group mb-3"style="display:inline-block;margin-right: 10px;">	
+							<span class="form-inputlabel" style="z-index: 2;">시행일자</span>
+							<div class="search-period-wr" >
+				                <div class="js-search-pickr-layer" data-code="unlimit" style="position: relative;top: -22px;">
+				                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
+					                	<div class="datebox margin-container">
+											<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
+										</div>
+									</div>
+				                </div>
+				            </div>
+						</div>
+						
+						<div class="form-field mb-3" style="display:inline-block;margin-right: 20px;">
+							<span class="form-inputlabel">협조부서</span><!-- style="padding: 10px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 1px solid #ced4da;font-size: 10pt;" -->
+							<select name="selectTag" id="selectTag" class="mb-1 attendance-dateSelector" >
+									<option value="" selected>IT</option>
+								<!-- <option value="">조퇴</option>
+									<option value="">지각</option> -->
+									<option value="">경조</option>
+									<option value="">공가</option>
+									<option value="">병가</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<span class="form-inputlabel">제목</span> 
+						<div class="position-relative">
+							<input type="text" id="title" class="form-control" title="" placeholder="제목을 입력해주세요" name="title" value="">
+						</div>
+					</div>
+				</div>
+				
+				
+				
+					
 				
 				
 				<div class="form-group mt-3" >
@@ -835,6 +847,8 @@ div#memcontent-iframe{
 		    	
 		    	<div width="100%" class="sc-jIRcFI dwAYaw mt-5">
 		    		<span class="control-label"style="margin-bottom: 0;">결재라인</span>
+		    		<button type="button" class="btn" style="border-radius: 6px;font-size: 11px;height: 38px;min-width: 38px;padding: 0 14px;"><i class="icon icon-checkmark" style="margin-right: 10px;"></i><span>저장한 승인라인 가져오기</span></button>
+		    		
 		    		<div class="apv-wrapper  cursor-pointer">
 		    			<table class="table table-fixed my-3" onclick="showmodal2()">
 		    				<caption class="sr-only"></caption>
@@ -894,7 +908,7 @@ div#memcontent-iframe{
 	      <!-- Modal footer -->
 	
 	      <div class="modal-footer">
-			
+			 
 			<button type="button" class="workstatus-save bluebtn mr-1">저장하기</button>
 		  	<button type="reset" class="workstatus-cancel mr-1"onclick="modalclose()">취소</button>
 	
@@ -949,12 +963,49 @@ div#memcontent-iframe{
 	      	  			<span data-lokalise="true" style="font-size: 10pt;" >+ 단계 추가하기</span>
 	      	  		</span>
 	      	  	</button>
+	      	  	<button type="button" class="mt-1 attendance-dateSelector" style="border-color:white; background-color: white;display: block;width: 100%;">
+	      	  		<span class="ant-typography c-iuedIb" style="color: rgb(82 82 82);" >
+	      	  			<span data-lokalise="true" style="font-size: 10pt;" ><!-- <i class="icon icon-upload" style="margin-right: 10px;"></i> -->결재선 불러오기</span>
+	      	  		</span>
+	      	  	</button>
 	      	  	
             </div>
 
              <div class="modal-footer">
-              <a href="#" data-bs-dismiss="modal" class="btn">취소</a> 
-              <a href="#" class="btn btn-primary bluebtn">저장하기</a>
+              <a href="#" style="float: left;color:white;"class="btn bluebtn">개인결재선저장하기</a> 
+              <!-- <a href="#" data-bs-dismiss="modal" class="btn">취소</a>  -->
+              <a href="#" class="btn" style="color:rgb(0 101 204)">확인</a>
+            </div> 
+          </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    <div class="modal fade" id="myModal3"  tabindex="-1"aria-labelledby="staticBackdropLabel" aria-hidden="true"style="background: rgba(0, 0, 0, 0.5);display: none; z-index: 1060;">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 45% !important;align-items: normal !important;">
+	    <div class="modal-content" style="border:none">
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1.2rem;">개인결재선으로 저장</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button><!-- data-bs-dismiss="modal" -->
+	      </div>
+	     
+	      <!-- Modal body -->
+	      <div class="modal-body " style="padding: 30px;overflow: auto;">
+			
+			<div class="form-group">
+				<span class="form-inputlabel">결재선 이름</span> 
+				<div class="position-relative">
+					<input type="text" id="title" class="form-control" title="" placeholder="제목을 입력해주세요" name="title" value="">
+				</div>
+			</div>
+
+		 </div>
+             <div class="modal-footer">
+              <a href="#" data-bs-dismiss="modal" class="btn">취소</a>
+              <a href="#" class="btn" style="color:rgb(0 101 204)">확인</a>
             </div> 
           </div>
         </div>
