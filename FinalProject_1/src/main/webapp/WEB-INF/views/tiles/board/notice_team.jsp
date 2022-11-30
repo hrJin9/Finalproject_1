@@ -3,9 +3,9 @@
 <%@ include file="board_header.jsp"%> 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+
 <style type="text/css">
 
-.custom-table {
 	min-width: 900px;
 	thead {
 		tr, th {
@@ -22,6 +22,7 @@
 	}
 }
 
+
 /* === 게시글목록 테이블 css === */
 .table thead th {
 	padding-top: 0;
@@ -37,6 +38,10 @@
     border-bottom: 1px solid #eef2f6;
     padding-left: 22px;
 }
+.table td:nth-child(1) {
+    padding-top: 27px;
+    border-right: 1.5px solid #eef2f6;
+}
 .table {
     color: #4c4e54;
 }
@@ -50,13 +55,13 @@ table tr:hover {
 	background-color: #f9f9f9;
 }
 
-
-.form-control{
-	font-size: 12pt;
-}
-.row>*{
-	width: auto;
-	padding: 0;
+.username {
+    color: #6d7077;
+    font-weight: 600;
+    position: relative;
+    top: 2px;
+    margin-right: 15px;
+    margin-left: 6px;
 }
 
 
@@ -112,6 +117,25 @@ input {
 
 .toastui-editor-defaultUI {
     width: 100% !important;
+}
+
+/* 최근글 new 아이콘  */
+.newbadge{
+  background-color: #dc3545;
+  width: 12px;
+  height: 12px;
+  display:inline-block;
+  border-radius: 4px;
+  position: relative;
+  left:10px; 
+  color:white;
+  font-size:0.2rem;
+  font-weight:bold; 
+  text-align: center;
+  position: relative;
+     top: -2px;
+     left: 0%;
+  margin-right: 14px;
 }
 
 
@@ -365,8 +389,30 @@ div.datebox > span > input {
 	border-right: none;
 }
 
+/* 검색 */
+#searchCondition, #cntselect {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
 
-/* 조직도 */
+.form-control{
+	font-size: 12pt;
+}
+.row >*{
+	width: auto;
+	padding: 0;
+}
+
+
+/* 내게시물 */
 .groupIcon {
 	border: 1px solid #f7f7f7;
 	padding: 15px;
@@ -379,7 +425,7 @@ div.datebox > span > input {
 	
 	display: block; 
 	position: absolute; 
-	left: 119%;
+	left: 121.5%;
 	font-size: 9pt; 
 	background-color: #f7f7f7;
 } 	
@@ -553,7 +599,17 @@ li::marker {
 	display: none;
 }
 
-.mgList, .mgList-info {
+/* 내게시물 nav바 */
+.mgList-info a:hover{
+	color: #000000;
+	cursor: pointer;
+}
+
+.mgList-info {
+	margin-left: 4%;
+}
+
+.mgList {
 	margin-left: 7%;
 }
 
@@ -561,9 +617,24 @@ li::marker {
 	font-size: 11pt;
 }
 
-.mg-current{
-	font-weight: bold;
+.mgList-info > a {
+	display: inline-block;
+	width: 13%;
+	text-align: center;
+	padding: 5px;
+	text-decoration: none;
 }
+
+.mgList-info > a > span {
+    margin-left: 1px;
+    color: #37A652;
+    font-weight: bold;
+}
+
+
+/* .mg-current{
+	font-weight: bold;
+} */
 
 .mgList-contents{
 	height: 330px;
@@ -621,6 +692,9 @@ li::marker {
 	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
 }
 
+.nb-info{
+	width: 53%;
+}
 
 </style>
 
@@ -803,19 +877,27 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".table").css({'width':'62.5%','margin-top':'32px'});
-	        $(".table th:nth-child(2)").attr("width","11%");
+	        $(".table").css({'width':'62%','margin-top':'32px'});
+	        // $(".table th:nth-child(2)").attr("width","8%");
+	        $(".myscrap").css({'position':'relative', 'top':'31.5px', 'right':''});
+	        $(".table th:nth-child(1)").css({'width':'6%'});
+	        $(".table th:nth-child(3)").attr("width","14%");
+	        $(".nb-info").css("width", "96%");
 	        $(".myscrap").fadeIn(100);
 	        
 	    } else{
 	        $(".table").css({'width':'100%','margin-top':''});
-	        $(".table th:nth-child(2)").attr("width","6%");
+	        // $(".table th:nth-child(2)").attr("width","6%");
+	        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
+	        $(".table th:nth-child(1)").css({'width':''});
+	        $(".table th:nth-child(3)").attr("width","6%");
+	        $(".nb-info").css("width", "53%");
 	        $(".myscrap").fadeOut(100);
 	    }
 	});  
 	
 	
-	// 별 중요표시
+	// 별 북마크표시
 	$(".check-star").click(function(){
 		const itag = $(this).find("i");
 		if ( itag.hasClass('icon-star-empty') ) {
@@ -938,39 +1020,42 @@ function goSearch(){
 </script>
 <div class="container mt-5">
 	<div class="row">
-      <div class="table-responsive" style="width: 100%;">
+      <div class="table-responsive" style="width: 100%; overflow-y: hidden;">
       	 
-          <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
-			<div class="row" style="float: right;position: relative;left: -120px;" >
+           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
+			<div class="row" style="float: right;position: relative;left: -121px;" >
 			
-				<div class="form-group mr-1">
-					<div class="form-field">
-						<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
-							<option value="" selected>전체</option>
-							<option value="">작성자</option>
-							<option value="">제목</option>
-							<option value="">제목+내용</option>
-						</select>
+				<%-- 검색 --%>
+				<div class=" mr-2">
+					<div class="form-group"">
+						<div class="form-field">
+							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; position: relative; left: 15%;">
+								<option value="">전체</option>
+								<option value="">작성자</option>
+								<option value="">제목</option>
+								<option value="">제목+내용</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<div class="">
 					<div class="form-group">
 						<div class="form-field">
-							<!-- <div class="icon"><span class="fa fa-search"></span></div> --> 
-							<input type="text" class="form-control" placeholder="제목/작성자/팀으로 검색" style="width:162%; font-size: 9pt; padding:6px 12px;padding-left: 45px;">
+							<input type="text" class="form-control" placeholder="검색" style="width:135%; font-size: 9pt; padding:6px 12px;padding-left: 45px; position: relative; left: 8%">
 						</div>
 					</div>
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group" style="font-size: 8pt;margin-bottom:0;">
-						<a id="searchoption"href="#" class="btn" style="color:#0a58caa1; padding: 0.2rem 0.4rem;border-radius:0px; background-color: white;font-size: 0.7rem;position: relative;left: -540%;border-right: 1px solid #ced4da;" onClick="optionForm('OPEN')">옵션</a>
+						<a id="searchoption"href="#" class="btn" style="color:#0a58caa1; padding: 0.2rem 0.4rem;border-radius:0px; background-color: white;font-size: 0.7rem;position: relative;left: -588%;border-right: 1px solid #ced4da;" onClick="optionForm('OPEN')">옵션</a>
 					</div>
 				</div>
 				<div class="align-items-end mt-1 mr-4">
-					<div class="form-group" style="font-size: 10pt;margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white;font-size: 0.8rem;position: relative;left: 157%;"></a>
+					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
+						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: -17%"></a>
 					</div>
 				</div>
+				
 				<div style="display: block;">
 					<div class="groupIcon">
 						<input class="burger-check" type="checkbox" id="burger-check" />
@@ -978,10 +1063,10 @@ function goSearch(){
 						
 						<div class="myscrap">
 							<div class="mg-left-container">
-								<div class="mgList-info">
-									<span class="mg-current" style="width: 16%;">중요<span>1</span></span>
-									<span style="width: 28%;">내게시물<span>2</span></span>
-								</div>
+								<nav class="mgList-info">
+									<a class="list_iscurrent" style="width: 21%;">내게시물<span>2</span></a>
+									<a class="list_notcurrent" style="width: 14%;">북마크<span>1</span></a>
+								</nav>
 								<hr class="HRhr" style="margin: 0;"/>
 								<div class="mgList">
 									<div class="mgList-menu">
@@ -1008,16 +1093,13 @@ function goSearch(){
 													</td>
 													<td width="3%">
 														<input id="check-star${i}" type="checkbox" name="check-star" style="display: none;"/>
-														<label for="check-star${i}" class="check-star">
-															<i class="icon icon-star-empty"></i>
-														</label>
 													</td>
 													<td width="72%">
 														<div><span>글제목</span><span><i class="fas fa-paperclip"></i></span></div>
-														<div><span>진혜린</span>·<span>마케팅</span></div>
+														<div><span>진혜린</span>&nbsp;<span>대리</span></div>
 													</td>
 													<td width="22%">
-														<div>11. 13</div>
+														<div>2022.11.13</div>
 													</td>
 												</tr>
 											</c:forEach>
@@ -1029,7 +1111,7 @@ function goSearch(){
 								</div>
 							</div>
 						</div>
-		            </div>
+		             </div>
 				  </div>
 			</div>
 		
@@ -1047,26 +1129,18 @@ function goSearch(){
 			                <input id="ctgy"class="form-control" onClick="multiSelect('OPEN')" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;width:260%;background-color: white;"  placeholder="카테고리를 선택하세요"readonly>
 							 <div id="categorydiv" >
 							  <ul>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk1"value="전체공지"><label for="chk1" class="label-checkbox" data-code="unlimit">전체공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk2"value="일반공지"><label for="chk2" class="label-checkbox" data-code="unlimit">일반공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk3"value="이벤트공지"><label for="chk3" class="label-checkbox" data-code="unlimit">이벤트공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk4"value="문진표공유"><label for="chk4" class="label-checkbox" data-code="unlimit">문진표공유</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk5"value="사내공지"><label for="chk5" class="label-checkbox" data-code="unlimit">사내공지</label></li>
-							     <li class="mb-1"><input type="checkbox" name="category" id="chk6"value="기타공지"><label for="chk6" class="label-checkbox" data-code="unlimit">기타공지</label></li>
-							    </ul>
-							    <div style="padding-top:3px;text-align:right">
+							     <li class="mb-1"><input type="checkbox" name="category" id="chk1"value="인사"><label for="chk1" class="label-checkbox" data-code="unlimit">인사</label></li>
+							     <li class="mb-1"><input type="checkbox" name="category" id="chk2"value="경조사"><label for="chk2" class="label-checkbox" data-code="unlimit">경조사</label></li>
+							     <li class="mb-1"><input type="checkbox" name="category" id="chk3"value="행사"><label for="chk3" class="label-checkbox" data-code="unlimit">행사</label></li>
+							     <li class="mb-1"><input type="checkbox" name="category" id="chk5"value="일반"><label for="chk5" class="label-checkbox" data-code="unlimit">일반</label></li>
+						      </ul>
+						      <div style="padding-top:3px;text-align:right">
 							    	<!-- <button type="reset" class="workstatus-cancel">취소</button> -->
 							    	<input type="button" class="workstatus-cancel"value="SAVE" onClick="multiSelect('CLOSE')" style="width:50%; border:none;color:#0a58caa1;">
-							    </div>
+							  </div>
 				   			</div>
-			   			</div>
+						</div>
 			        </li>
-			        <!-- <li class="js-project-name-search-filter" style="display: block;">
-			            <div class="condition-cell title">프로젝트</div>
-			            <div class="condition-cell">
-			                <input class="form-control" style="box-shadow: none;font-size:9pt; border-radius: 0px;border-top: none;border-radius: none;border-left: none;border-right: none;"type="text" placeholder="프로젝트명을 입력하세요">
-			            </div>
-			        </li> -->
 			        <li class="js-register-name-search-filter" style="display: block;">
 			            <div class="condition-cell title">작성자</div>
 			            <div class="condition-cell">
@@ -1149,47 +1223,65 @@ function goSearch(){
    </div>
 </form>
 
-		
-        <table class="table" style="height: 450px;">
+
+        <table class="table" style="height: 400px;">
           <thead>
             <tr>
-              <th width="80%"scope="col"/>
+              <th width="4%" scope="col"/>
+              <th width="83%"scope="col"/>
               <th width="6%"scope="col"/>
             </tr>
           </thead>
           <tbody>
           	<tr class="topnotice"><!-- 공지 상단에 고정 -->
+          	  <td>1</td>
               <td>
               	<div class="titlefirst"> 
 	              	<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
 	              	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[팀 회식] 11/28일 팀 회식 일정 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">일반공지</span>
-              		<span class="username">진혜린 과장</span>
-            		<span class="writedate">11.16</span>
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
+              	</div>  
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">일반</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;본부장</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>		
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
             <tr class="topnotice">
+              <td>2</td>
               <td>
               	<div class="titlefirst">
               		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
               		<span class="title">[내부 미팅] 11/5일 신규 프로젝트 관련 미팅 일정 공유</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반공지</span>
-              		<span class="username">진혜린 과장</span>
-            		<span class="writedate">11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">일반</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;본부장</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
               	</div>	
               </td>
               <td>
@@ -1198,36 +1290,79 @@ function goSearch(){
             </tr>
             
             <tr class="topnotice">
+               <td>3</td>
                <td>
               	<div class="titlefirst">
               		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
               		<span class="title">[떰접 ver.2] 떰접 버전 업데이트 안내</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
               	</div>  
-              	<div>
-              		<span class="categorybadge">일반공지</span>
-              		<span class="username">진혜린 과장</span>
-            		<span class="writedate">11.16</span>
-            		<!-- <span class="newbadge"><span style="position: relative;top:-2px;">n</span></span> -->
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
-              	</div>	
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">일반</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;주임</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
             <tr>
+               <td>4</td>
                <td>
               	<div class="titlefirst">
               		<span class="title">[인사] 김지은 과장 승진 공지</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">일반공지</span>
-              		<span class="username">진혜린 과장</span>
-            		<span class="writedate">11.16</span>
             		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              	</div>  
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">인사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;부대표</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
               	</div>	
               </td>
               <td>
@@ -1235,29 +1370,139 @@ function goSearch(){
               </td>
             </tr>
             <tr >
+               <td>5</td>
                <td>
               	<div class="titlefirst">
               		<span class="title">[경조사] 김상후 사원 결혼소식</span>
               		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div>
-              		<span class="categorybadge">일반공지</span>
-              		<span class="username">진혜린 과장</span>
-            		<span class="writedate">11.16</span>
-              		<span class="icon icon-bubble2" id="iconbubble" ></span> <span id="bubblecnt">11</span>
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
               	</div>	
               </td>
               <td>
               	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
-
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
+            <tr >
+               <td>5</td>
+               <td>
+              	<div class="titlefirst">
+              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
+              		<span class="icon icon-attachment" id="iconattachment"></span> 
+              	</div> 
+              	<div class="nb-info">
+              		<div style="display: inline-block; width: 11%;">
+              			<span class="categorybadge">경조사</span>
+              		</div>
+              		<div style="display: inline-block; width: 16.5%;">
+              			<span class="username">진혜린&nbsp;사원</span>
+              		</div>
+              		<div style="display: inline-block; width: 10%;">
+              			<span class="writedate">2022.11.16</span>
+              		</div>
+              		<div style="display: inline-block; width: 30%;"> 
+              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
+              		</div>
+              	</div>	
+              </td>
+              <td>
+              	<a href="#" class="bookmark icon icon-star-empty"></a>
+              </td>
+            </tr>
             
           </tbody>
         </table>
-     
-     		<h2 class="mt-3"style="text-align: center;">페이징처리</h2>
-     
+   		<h2 class="mt-3"style="text-align: center;">페이징처리</h2>	
      
      
 	</div>
@@ -1351,7 +1596,7 @@ function goSearch(){
 	                <input type="radio" class="custom-control-radio2" id="dept" name="showrange">
 	                <label for="dept" class="js-period-type radio-label-checkbox2" data-code="unlimit">부서공개</label>
 	                <input type="radio" class="custom-control-radio2" id="manager" name="showrange">
-	                <label for="manager" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리자공개</label>
+	                <label for="manager" class="js-period-type radio-label-checkbox2" data-code="unlimit">진혜린 과장공개</label>
 				</div>
 			</div> -->
 	    	<div class="form-group" style="margin-top: 5px;">
@@ -1369,8 +1614,8 @@ function goSearch(){
 			
     			<div class="workstatus-buttoncontainer">
 	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-		  			<button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button>
-		  			<button type="button" class="workstatus-save mr-1">저장하기</button>
+		  			<!-- <button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button> -->
+		  			<button type="button" class="workstatus-save mr-1 gradientbtn">저장하기</button>
 		  			<button type="reset" class="workstatus-cancel mr-1">취소</button>
 	  			</div>
     	

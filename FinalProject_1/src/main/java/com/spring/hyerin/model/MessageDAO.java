@@ -15,8 +15,8 @@ public class MessageDAO implements InterMessageDAO {
 	private SqlSessionTemplate sqlsession;
 	
 	@Override
-	public List<Map<String,String>> getmvoList(String receiver) {
-		List<Map<String,String>> mvoList = sqlsession.selectList("message.getmvoList", receiver);
+	public List<Map<String,String>> getmvoList(Map<String, String> paraMap) {
+		List<Map<String,String>> mvoList = sqlsession.selectList("message.getmvoList", paraMap);
 		return mvoList;
 	}
 
@@ -24,6 +24,13 @@ public class MessageDAO implements InterMessageDAO {
 	public List<Map<String, String>> unread_mvoList(String receiver) {
 		List<Map<String,String>> mvoList = sqlsession.selectList("message.unread_mvoList", receiver);
 		return mvoList;
+	}
+	
+	//로그인 유저가 클릭한 메시지내용 1개 불러오기
+	@Override
+	public Map<String, String> getmvo(String mno) {
+		Map<String, String> mvo = sqlsession.selectOne("message.getmvo",mno);
+		return mvo;
 	}
 	
 	

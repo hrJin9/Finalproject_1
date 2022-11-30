@@ -22,27 +22,48 @@
 </style>
 <script>
 $(document).ready(function(){
+	
+	$("#mg-recieve").css("color","#4d4f53");
+	
+	//mno값을 읽어와서 페이지 넘기기
+	let mno = "${requestScope.paraMap.mno}";
+	if(mno == ""){
+		mno = $(".mgList-contents tr:first-child").attr("id");
+		location.href="<%=ctxPath%>/message.up?mno="+mno;
+	}
+		
+	// 중요, 안읽음 클릭시 굵기주기 
+	const tab = "${requestScope.paraMap.tab}";
+	if(tab == "all")
+		$("span#all").css("font-weight","bold");
+	else if (tab == "unread")
+		$("span#unread").css("font-weight","bold");
+	else
+		$("span#scrap").css("font-weight","bold");
+	
+	
+	
 	// 체크박스 개수
 	var total = $("input[name='mg-selectchx']").length;
 	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
 	$("#mg-selectchx-all").change(function(){
 		if($("#mg-selectchx-all").is(":checked")){
 			$("input[name='mg-selectchx']").prop("checked",true);
-			parent.show_checkmenu();
+			show_checkmenu();
 			$("#check_ctn").text(total);
 			
 		} else {
 			$("input[name='mg-selectchx']").prop("checked",false);
-			parent.show_noncheckmenu();
+			show_noncheckmenu();
 		}
 	});
 	
 	$("input[name='mg-selectchx']").change(function() {
 		var checked = $("input[name='mg-selectchx']:checked").length;
-		parent.show_checkmenu();
+		show_checkmenu();
 		
 		if(checked<=0)
-			parent.show_noncheckmenu();
+			show_noncheckmenu();
 		$("#check_ctn").text(checked);
 		
 		if(total != checked)
@@ -74,7 +95,24 @@ $(document).ready(function(){
 	//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
 	$(".mgList-contents tr").click(function(e){
 		if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *")) return; //중요표시나 체크박스 클릭시 함수 종료
-		alert("페이지이동");
+		const mno = $(this).attr("id");
+		location.href="<%=ctxPath%>/message.up?mno="+mno;
+	});
+	
+	
+	
+	$("span#all").click(function(e){
+		$("span#all").css("font-weight","bold");
+		location.href="<%= ctxPath%>/message.up";
+	});
+	$("span#unread").click(function(e){
+		$("span#unread").css("font-weight","bold");
+		location.href="<%= ctxPath%>/message.up?tab=unread";
+	});
+	
+	$("span#scrap").click(function(){
+		$("span#unread").css("font-weight","bold");
+		location.href="<%= ctxPath%>/message.up?tab=scrap";
 	});
 	
 });//end of ready
@@ -101,7 +139,7 @@ function show_noncheckmenu(){
 <div class="message-container">
 	<div class="mg-left-container">
 		<div class="mgList-info">
-			<span id="all" class="mg-current">전체<span>10</span></span>
+			<span id="all" >전체<span>10</span></span>
 			<span id="unread">안읽음<span>5</span></span>
 			<span id="scrap">중요<span>2</span></span>
 			<div class="mg-search">
@@ -158,37 +196,44 @@ function show_noncheckmenu(){
 			</div>
 			<div class="mgList-contents">
 				<table>
-					<c:forEach var="mvo" items="${requestScope.mvoList}">
-						<c:if test="${empty mvo.ms_checktime}">
-							<tr class="mg-unread">
-						</c:if>
-						<c:if test="${not empty mvo.ms_checktime}">
-							<tr class="mg-read">
-						</c:if>
-							<td width="3%"><input id="mg-selectchx0" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx0"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
-							<td width="3%">
-								<input id="check-star0" type="checkbox" name="check-star" style="display: none;"/>
-								<label for="check-star0" class="check-star">
-									<i class="icon icon-star-empty"></i>
-								</label>
-							</td>
-							<td width="72%">
-								<div>
-									<span>${mvo.subject}</span>
+					<c:if test="${not empty requestScope.mvoList}">
+						<c:forEach var="mvo" items="${requestScope.mvoList}" varStatus="status">
+							<c:if test="${empty mvo.ms_checktime}">
+								<tr id="${mvo.mno}" class="mg-unread">
+							</c:if>
+							<c:if test="${not empty mvo.ms_checktime}">
+								<tr id="${mvo.mno}" class="mg-read">
+							</c:if>
+								<td width="3%"><input id="mg-selectchx${status.index}" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx${status.index}"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>
+								<td width="3%">
+									<input id="check-star${status.index}" type="checkbox" name="check-star" style="display: none;"/>
+									<label for="check-star${status.index}" class="check-star">
+										<i class="icon icon-star-empty"></i>
+									</label>
+								</td>
+								<td width="72%">
+									<div>
+										<span id="mg-subject">${mvo.subject}</span>
+										<c:if test="${not empty mvo.file_size}">
+											<span><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
+										</c:if>
+									</div>
+									<div><span>${mvo.w_name}</span>·<span>${mvo.w_deptname}</span></div>
+								</td>
+								<td width="22%">
+									<div>${mvo.ms_sendtime}</div>
 									<c:if test="${not empty mvo.file_size}">
-										<span><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
+										<div><span>${mvo.file_size}</span>MB</div>
 									</c:if>
-								</div>
-								<div><span>${mvo.w_name}</span>·<span>${mvo.w_deptname}</span></div>
-							</td>
-							<td width="22%">
-								<div>${mvo.ms_sendtime}</div>
-								<c:if test="${not empty mvo.file_size}">
-									<div><span>${mvo.file_size}</span>MB</div>
-								</c:if>
-							</td>
+								</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty requestScope.mvoList}">
+						<tr>
+							<td width="100%">조회된 메시지가 없습니다.</td>
 						</tr>
-					</c:forEach>
+					</c:if>
 				</table>
 			</div>
 			<div class="mg-paging">
@@ -198,7 +243,103 @@ function show_noncheckmenu(){
 	</div>
 	
 	<div class="mg-right-container">
-		<%@ include file="message_content.jsp"%>
+		<div class="mgc-container">
+			<div class="mgc-header">
+				<div class="mgc-header-left">
+					<div class="mgc-subject">
+						<span>
+							<input type="checkbox" id="mc-star" name="mc-star" style="display: none;"/>
+							<label for="mc-star"><i class="icon icon-star-empty"></i></label>
+						</span>
+						<span id="mc-subject">메시지 제목ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴ</span> <!-- 20자 이내로 제한줘야됨 -->
+						<span class="mgc-header-attach"><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
+					</div>
+					<div class="mgc-from mgc-people">
+						<div>보낸 사람</div>
+						<div>
+							<span class="pic" style="height: 25px; width: 25px; margin-right: 5px;">
+								<span style="font-size: 7pt;">지은</span>
+							</span>
+						</div>
+						<div><span>김지은</span>·<span>마케팅</span></div>
+					</div>
+					<div class="mgc-to mgc-people">
+						<div>받는 사람</div>
+						<div><span>김지은</span>·<span>마케팅</span></div>
+						<div>, <span>김지은</span>·<span>마케팅</span></div>
+						<div>, <span>김지은</span>·<span>마케팅</span></div>
+						<div>, <span>김지은</span>·<span>마케팅</span></div>
+						<div> 외 7명</div>
+					</div>
+				</div>
+				<div class="mgc-header-right">
+					<button type="button" class="mgc-writebtn button gradientbtn btn"> <!-- 메시지 보낸사람이 본인이라면 이 버튼이 뜨면 안됨! -->
+						<span><i class="fas fa-reply"></i></span>
+						<span>답장하기</span>
+					</button>
+					<div id="mgc-date">2022. 11. 13(화) 오후 1:45</div>
+				</div>
+			</div>
+			<hr class="HRhr" style="margin:0px;"/>
+			<div class="mgc-body">
+				<div class="mgc-content">어쩌구저쩌구.....메시지 내용</div>
+				<!-- 첨부파일, 관련메시지 아코디언 시작 -->
+				<div class="accordion mgc-ac" id="accordionPanelsStayOpenExample">
+				  <div class="accordion-item">
+				    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+				      <button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+							<div><i class="fas fa-paperclip"></i></div>
+							<div>첨부파일 <span>1</span></div> <!-- 없으면 0이라고 뜸 -->
+				      </button>
+				    </h2>
+				    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+				      <div class="accordion-body mgc-attach mgc-ac-content">
+				      	<div>
+					      	<span><i class="fas fa-download"></i></span>
+					      	<span>첨부파일명</span>
+					      	<span>(10MB)</span>
+				      	</div>
+				      	<div>
+					      	<span><i class="fas fa-download"></i></span>
+					      	<span>첨부파일명</span>
+					      	<span>(10MB)</span>
+				      	</div>
+				      </div>
+				    </div>
+				  </div>
+				  <div class="accordion-item">
+				    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+				      <button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+						<div><i class="fas fa-envelope-open-text"></i></div>
+						<div>주고받은 메시지 <span>1</span></div> <!-- 없으면 0이라고 뜸 -->
+				      </button>
+				    </h2>
+				    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+				      <div class="accordion-body mgc-ac-content mgc-ac-ref">
+				      		<div class="mg-read mg-now"> <!-- 현재 보고있는 파일인 경우 mg-now 추가  -->
+				      			<span><i class="fas fa-envelope-open"></i></span>
+				      			<span>메시지 제목</span>
+				      			<span>2022. 11. 13(화) 오후  1:00</span>
+				      		</div>
+				      		<!-- 읽은 메시지 -->
+				      		<div class="mg-read">
+				      			<span><i class="fas fa-envelope-open"></i></span>
+				      			<span>메시지 제목</span>
+				      			<span>2022. 11. 13(화) 오후  1:00</span>
+				      		</div>
+				      		<!-- 안읽은 메시지 -->
+				      		<div class="mg-unread">
+				      			<span><i class="fas fa-envelope"></i></span>
+				      			<span>메시지 제목</span>
+				      			<span>2022. 11. 13(화) 오후  1:00</span>
+				      		</div>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<!-- 첨부파일, 관련메시지 아코디언 끝 -->
+			</div>
+		</div>
 	</div>
 
 </div>
