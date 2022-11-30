@@ -20,19 +20,6 @@ public class MessageDAO implements InterMessageDAO {
 		return mvoList;
 	}
 
-	@Override
-	public List<Map<String, String>> unread_mvoList(String receiver) {
-		List<Map<String,String>> mvoList = sqlsession.selectList("message.unread_mvoList", receiver);
-		return mvoList;
-	}
-	
-	//로그인 유저가 클릭한 메시지내용 1개 불러오기
-	@Override
-	public Map<String, String> getmvo(String mno) {
-		Map<String, String> mvo = sqlsession.selectOne("message.getmvo",mno);
-		return mvo;
-	}
-	
 	// 메시지리스트의 총페이지수 알아오기
 	@Override
 	public int getmgtotal(Map<String, String> paraMap) {
@@ -40,7 +27,26 @@ public class MessageDAO implements InterMessageDAO {
 		return mgtotal;
 	}
 	
+	//로그인 유저가 클릭한 메시지내용 1개 불러오기
+	@Override
+	public MessageVO getmvo(String mno) {
+		MessageVO mvo = sqlsession.selectOne("message.getmvo",mno);
+		return mvo;
+	}
 	
+	// 메시지 수신자 정보 알아오기
+	@Override
+	public List<MessageSendVO> getmsvoList(String mno) {
+		List<MessageSendVO> msvoList = sqlsession.selectList("message.getmsvoList",mno);
+		return msvoList;
+	}
+	
+	// 메시지 보낸시간 알아오기
+	@Override
+	public String getmstime(String mno) {
+		String ms_sendtime = sqlsession.selectOne("message.getmstime",mno);
+		return ms_sendtime;
+	}
 	
 	
 }

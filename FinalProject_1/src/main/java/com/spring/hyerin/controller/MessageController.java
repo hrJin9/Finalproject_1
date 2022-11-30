@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.finalproject.common.FileManager;
 import com.spring.finalproject.common.MyUtil;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.hyerin.model.MessageSendVO;
 import com.spring.hyerin.model.MessageVO;
 import com.spring.hyerin.service.InterMessageService;
 
@@ -35,39 +36,20 @@ public class MessageController {
 	@RequestMapping(value = "/message.up")
 	public ModelAndView rl_messageHome(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		String tab = request.getParameter("tab");
-		if(tab == null) tab = "all";
 		String mno = request.getParameter("mno");
 		if(mno == null) mno = "";
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
-		paraMap.put("tab", tab);
 		paraMap.put("mno",mno);
-		// 로그인된 유저의 employee_no 알아오기
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
-		String receiver = loginuser.getEmployee_no();
-		paraMap.put("receiver", receiver);
-		
 		//현재 페이지 저장
-		String cururl = getCurrentURL(request);
-		if(cururl.contains("&tab")) {
-			int firsttab = cururl.indexOf("&tab"); 
-			cururl = cururl.replaceAll(cururl.substring(firsttab), "");
-		}
-		paraMap.put("cururl",cururl);
 		/*
-		 * // 로그인유저의 메시지리스트 불러오기 List<Map<String,String>> mvoList =
-		 * service.getmvoList(paraMap);
+		 * String cururl = getCurrentURL(request); if(cururl.contains("&tab")) { int
+		 * firsttab = cururl.indexOf("&tab"); cururl =
+		 * cururl.replaceAll(cururl.substring(firsttab), ""); }
+		 * paraMap.put("cururl",cururl);
 		 */
-		//로그인 유저가 클릭한 메시지내용 1개 불러오기
-		Map<String,String> mvo = service.getmvo(mno);
 		
 		mav.addObject("paraMap",paraMap);
-		mav.addObject("mvo",mvo);
-		/*
-		 * mav.addObject("mvoList",mvoList);
-		 */
 		mav.setViewName("message/message_recieve.tiles");
 		return mav;
 	}
@@ -84,8 +66,9 @@ public class MessageController {
 		HttpSession session = request.getSession();
 		EmployeeVO emp = (EmployeeVO) session.getAttribute("loginuser");
 		String empno = emp.getEmployee_no();
+		
 		String curpage = request.getParameter("curpage");
-		int sizePerPage = 10;
+		int sizePerPage = 2;
 		if (curpage == null) curpage = "1";
 		int startRno = ((Integer.parseInt(curpage) - 1) * sizePerPage) + 1;
 		int endRno = startRno + sizePerPage - 1;
@@ -147,15 +130,77 @@ public class MessageController {
 		
 		// 메시지리스트의 총페이지수 알아오기
 		int mgtotal = service.getmgtotal(paraMap);
-		System.out.println(mgtotal);
 		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("mgtotal", mgtotal);
 		
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("mgtotal", mgtotal);
-		
-		return jsonObj.toString();
+		return jsonobj.toString();
 	}//end of mgtotal
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "/selectOnemg.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String selectOnemg(HttpServletRequest request, ModelAndView mav) {
+		
+		String mno = request.getParameter("mno");
+		
+		// 메시지 내용등 정보 알아오기
+		MessageVO mvo = service.getmvo(mno);
+		
+		// 메시지 내용정보 저장하기
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("mno", mvo.getMno());
+		jsonobj.put("reno", mvo.getReno());
+		jsonobj.put("writer", mvo.getWriter());
+		jsonobj.put("w_name", mvo.getW_name());
+		jsonobj.put("w_dept", mvo.getW_dept());
+		jsonobj.put("subject", mvo.getSubject());
+		jsonobj.put("content", mvo.getContent());
+		jsonobj.put("m_systemfilename", mvo.getM_systemfilename());
+		jsonobj.put("m_originfilename", mvo.getM_originfilename());
+		jsonobj.put("file_size", mvo.getFile_size());
+		jsonobj.put("profile_orginfilename", mvo.getProfile_orginfilename());
+		
+		return jsonobj.toString();
+	}//end of selectOnemg
+	
+	@ResponseBody
+	@RequestMapping(value = "/selectOnemgReceivers.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String selectOnemgReceivers(HttpServletRequest request, ModelAndView mav) {
+		String mno = request.getParameter("mno");
+		
+		// 메시지 수신자 정보 알아오기
+		List<MessageSendVO> msvoList = service.getmsvoList(mno);
+		
+		JSONArray jsonarr = new JSONArray();
+		// 메시지수신자정보 저장하기
+		for(MessageSendVO msvo : msvoList) {
+			JSONObject jsonobj_ms = new JSONObject();
+			jsonobj_ms.put("fk_mno", msvo.getFk_mno());
+			jsonobj_ms.put("receiver", msvo.getReceiver());
+			jsonobj_ms.put("r_name", msvo.getR_name());
+			jsonobj_ms.put("r_dept", msvo.getR_dept());
+			jsonobj_ms.put("profile_orginfilename", msvo.getProfile_orginfilename());
+			
+			jsonarr.put(jsonobj_ms);
+		}//end of for
+		
+		return jsonarr.toString();
+	}//end of selectOnemgReceivers
+	
+	@ResponseBody
+	@RequestMapping(value = "/getmstime.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String getmstime(HttpServletRequest request, ModelAndView mav) {
+		String mno = request.getParameter("mno");
+		
+		// 메시지 보낸시간 알아오기
+		String ms_sendtime = service.getmstime(mno);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("ms_sendtime", ms_sendtime);
+		
+		return jsonobj.toString();
+	}//end of selectOnemgReceivers
 	
 	
 	@RequestMapping(value = "/message/send.up")

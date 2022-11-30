@@ -1647,6 +1647,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mgc-subject > span:first-child{
 	color: rgba(0,0,0,0.1);
+	position: relative; top: 2px;
 }
 
 .mgc-subject > span:nth-child(2){
@@ -1656,7 +1657,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mgc-subject > span:last-child {
 	font-size: 15pt;
-	margin-left: 5px;
+	margin-left: 20px;
 }
 
 .mgc-people {
@@ -2028,4 +2029,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	font-weight: 600;
 }
 
+
+.page-link{
+	color: #4d4f53 !important;
+	
+}
 

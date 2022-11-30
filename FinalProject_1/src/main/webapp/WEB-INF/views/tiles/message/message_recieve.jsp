@@ -26,26 +26,54 @@
 $(document).ready(function(){
 	
 	$("#mg-recieve").css("color","#4d4f53");
-	let cururl = "${requestScope.paraMap.cururl}";
 	$("span#all").css("font-weight","bold");
+	// 첫로딩시 전체 보여주기
 	var tab = "all";
-	getMglist(tab);
-	
-	//mno값을 읽어와서 페이지 넘기기
-	<%-- 
-	let mno = "${requestScope.paraMap.mno}";
-	if(mno == ""){
-		mno = $(".mgList-contents tr:first-child").attr("id");
-		location.href="<%=ctxPath%>/message.up?mno="+mno;
-	}
-	--%>
+	getMglist(tab,1);
 	
 	
+	// 전체, 안읽음, 중요 목록 읽어오기
+	$("span#all").click(function(e){
+		$("span#all").css("font-weight","bold");
+		checkall_reset();
+		var tab = "all";
+		getMglist(tab,1);
+	});
 	
-	// 체크박스 개수
-	var total = $("input[name='mg-selectchx']").length;
+	$("span#unread").click(function(e){
+		$("span#unread").css("font-weight","bold");
+		checkall_reset();
+		var tab = "unread";
+		getMglist(tab,1);
+	});
+	
+	$("span#scrap").click(function(){
+		$("span#unread").css("font-weight","bold");
+		checkall_reset();
+		var tab = "scrap";
+		getMglist(tab,1);
+	});
+	
+	//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
+	$(document).on("click",".mgList-contents tr",function(e){
+		$(this).parent().find("tr").css("background-color","white");
+		if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *")) return; //중요표시나 체크박스 클릭시 함수 종료
+		const mno = $(this).attr("id");
+		
+		// 클릭한 tr 색깔 변경하기
+		$("tr#"+mno).css("background-color","rgba(230,230,230,0.6)");
+		
+		// 클릭한 메시지 정보를 알아오는 ajax
+		selectonemg(mno);
+	});
+	
+
+	
+
+	
 	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
-	$("#mg-selectchx-all").change(function(){
+	$(document).on('change','#mg-selectchx-all',function(){
+		var total = $("input[name='mg-selectchx']").length;
 		if($("#mg-selectchx-all").is(":checked")){
 			$("input[name='mg-selectchx']").prop("checked",true);
 			show_checkmenu();
@@ -57,7 +85,9 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("input[name='mg-selectchx']").change(function() {
+	$(document).on("change","input[name='mg-selectchx']",function() {
+		// 체크박스 개수
+		var total = $("input[name='mg-selectchx']").length;
 		var checked = $("input[name='mg-selectchx']:checked").length;
 		show_checkmenu();
 		
@@ -77,7 +107,7 @@ $(document).ready(function(){
 	
 	
 	// 중요표시 별표
-	$(".check-star").click(function(){
+	$(document).on("click",".check-star",function(){
 		const itag = $(this).find("i");
 		if ( itag.hasClass('icon-star-empty') ) {
 			itag.removeClass('icon-star-empty');
@@ -89,34 +119,6 @@ $(document).ready(function(){
 	  		itag.css("color",""); 
 	  	}
 	});
-	
-	
-	//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
-	$(".mgList-contents tr").click(function(e){
-		if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *")) return; //중요표시나 체크박스 클릭시 함수 종료
-		const mno = $(this).attr("id");
-		location.href="<%=ctxPath%>/message.up?mno="+mno;
-	});
-	
-	
-	
-	$("span#all").click(function(e){
-		$("span#all").css("font-weight","bold");
-		var tab = "all";
-		getMglist(tab);
-	});
-	$("span#unread").click(function(e){
-		$("span#unread").css("font-weight","bold");
-		var tab = "unread";
-		getMglist(tab);
-	});
-	
-	$("span#scrap").click(function(){
-		$("span#unread").css("font-weight","bold");
-		var tab = "scrap";
-		getMglist(tab);
-	});
-	
 	
 	
 	
@@ -139,6 +141,14 @@ function show_noncheckmenu(){
 	$(".fa-check").css("visibility","hidden");
 }
 
+//전체체크 상태 리셋하는 함수
+function checkall_reset(){
+	$("#mg-selectchx-all").prop("checked", false);
+	$("input[name='mg-selectchx']").prop("checked",false);
+	show_noncheckmenu();
+}//end of checkall_change
+
+
 //메시지 목록을 가져오는 ajax 
 function getMglist(tab, curpage){
 	$.ajax({
@@ -149,8 +159,6 @@ function getMglist(tab, curpage){
 		dataType:"json",
 		success:function(json){
 			let html = '';
-			
-			console.log(tab);
 			
 			if(json.length > 0 ){ // 가져올 메시지목록이 있는 경우
 				$.each(json, function(index, item){
@@ -173,12 +181,12 @@ function getMglist(tab, curpage){
 						html += '<span><i class="fas fa-paperclip"></i></span>';
 					
 					html += '</div>'+
-							'<div><span>${mvo.w_name}</span>·<span>${mvo.w_deptname}</span></div>'+
+							'<div><span>'+item.w_name+'</span>·<span>'+item.w_deptname+'</span></div>'+
 							'</td>'+
 							'<td width="22%">'+
-								'<div>${mvo.ms_sendtime}</div>';
+								'<div>'+item.ms_sendtime+'</div>';
 					if(item.file_zie != null) //첨부파일이 있을 경우
-						html += '<div><span>${mvo.file_size}</span>MB</div>';
+						html += '<div><span>'+item.file_size+'</span>MB</div>';
 					
 					html += '</td>'+
 							'</tr>';
@@ -191,67 +199,66 @@ function getMglist(tab, curpage){
 			}
 			
 			$(".mgList-contents > table").html(html);
-			
 			//페이지바 함수 호출
 			pgbar(tab, curpage);
 			
-				
+			// 첫로딩시 첫번째 메시지 보여주기
+			var firstmno = $(".mgList-contents table tr:first-child").attr("id");
+			selectonemg(firstmno);	
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		}
 		
 	}); //end of ajax
+	
+	
 }//end of getMglist
 
 function pgbar(tab, curpage){
 	$.ajax({
 		url: "<%= ctxPath%>/mgtotal.up",
 		data: {"tab":tab,
-				"sizePerPage":10},
-		dataTyp:"json",
+				"sizePerPage":2},
+		type: "post",
+		dataType:"json",
 		success:function(json){
-			
 			if(json.mgtotal > 0){ // 메시지목록이 있는 경우
 				const mgtotal = json.mgtotal;
 				const blockSize = 2;
 				let loop = 1;
-				
 				if(typeof curpage == "string"){
 					curpage = Number(curpage);
 				}
-				
 				let pageNo = Math.floor((curpage - 1)/blockSize) * blockSize + 1;
-				
-				let pageBarHTML = "<ul style='list-style:none;'>"
+				let pageBarHTML = '<nav><ul class="pagination mg-pagebar">';
 				
 				// [맨처음][이전] 만들기
 				if(pageNo != 1) {
-					pageBarHTML += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='javascript:goViewComment(\"1\")'>[맨처음]</a></li>";
-					pageBarHTML += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='javascript:goViewComment(\""+(pageNo-1)+"\")'>[이전]</a></li>";
+					pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='처음' href='javascript:getMglist(\""+tab+"\", 1)'><span aria-hidden='true'>&laquo;</span></a></li>";
+					pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='이전' href='javascript:getMglist(\""+tab+"\", "+(pageNo-1)+")'><span aria-hidden='true'>&lt;</span></a></li>";
 				}
-				
 				while( !(loop > blockSize || pageNo > mgtotal) ) {
 					if(pageNo == curpage) {
-						pageBarHTML += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color:red; padding: 2px 4px;'>"+pageNo+"</li>";
+						pageBarHTML += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #37A652; color: white;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
 					}
 					else {
-						pageBarHTML += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='javascript:goViewComment(\""+pageNo+"\")'>"+pageNo+"</a></li>";
+						pageBarHTML += "<li class='page-item'><a class='page-link' href='javascript:getMglist(\""+tab+"\", "+pageNo+")'>"+pageNo+"</a></li>";
 					}
 					
 					loop++;
 					pageNo++;
 				}//end of while
-				
 				// [다음][마지막] 만들기
 				if(pageNo <= mgtotal) {
-					pageBarHTML += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='javascript:goViewComment(\""+pageNo+"\")'>[다음]</a></li>";
-					pageBarHTML += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='javascript:goViewComment(\""+mgtotal+"\")'>[마지막]</a></li>";
+					pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='다음' href='javascript:getMglist(\""+tab+"\", "+pageNo+")'><span aria-hidden='true'>&gt;</span></a></li>";
+					pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='마지막' href='javascript:getMglist(\""+tab+"\", "+mgtotal+")'><span aria-hidden='true'>&raquo;</span></a></li>";
 				}
 				
-				pageBarHTML += "</ul>";
+				pageBarHTML += "</ul></nav>";
 				
 				$(".mg-paging").html(pageBarHTML);
+				
 			}//end of if
 			
 		},
@@ -259,8 +266,164 @@ function pgbar(tab, curpage){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		}
 	});
+}//end of pgbar
+
+// 메시지 하나 읽어오는 ajax 함수
+function selectonemg(mno){
 	
-}
+	$.ajax({
+		url: "<%= ctxPath%>/selectOnemg.up",
+		data: {"mno":mno},
+		type: "post",
+		async: false,
+		dataType:"json",
+		success:function(json){
+			
+			let html = '';
+			html += '<div class="mgc-container">'+
+					'<div class="mgc-header">'+
+					'<div class="mgc-header-left">'+
+					'<div class="mgc-subject">'+
+					'<span>'+
+						'<input type="checkbox" id="mc-star" name="mc-star" style="display: none;"/>'+
+						'<label for="mc-star"><i class="icon icon-star-empty"></i></label>'+
+					'</span>'+
+					'<span id="mc-subject">'+json.subject+'</span>';
+			if(json.filesize != null) html += '<span class="mgc-header-attach"><i class="fas fa-paperclip"></i></span>';
+			html += '</div>'+
+								'<div class="mgc-from mgc-people">'+
+									'<div>보낸 사람</div>'+
+									'<div>';
+			if(json.profile_orginfilename == null ){
+				html += '<span class="pic" style="height: 25px; width: 25px; margin-right: 5px;">'+
+							'<span style="font-size: 7pt;">'+json.w_name.substr(1,2)+'</span>'+
+						'</span>';
+			}
+			else{ // 프로필 사진이 따로 등록되어있는 경우
+				
+			}
+										
+			html += '</div>'+
+					'<div><span>'+json.w_name+'</span>·<span>'+json.w_dept+'</span></div>'+
+					'</div>'+
+					'<div class="mgc-to mgc-people">'+
+						'<div>받는 사람</div>'+
+						'<div id="mgc-toList"></div>'+
+					'</div>'+
+							'</div>'+
+							'<div class="mgc-header-right">'+
+								'<button type="button" class="mgc-writebtn button gradientbtn btn">'+
+									'<span><i class="fas fa-reply"></i></span>'+
+									'<span>답장하기</span>'+
+								'</button>'+
+								'<div id="mgc-date">2022. 11. 13(화) 오후 1:45</div>'+
+							'</div>'+
+						'</div>'+
+						'<hr class="HRhr" style="margin:0px;"/>'+
+						'<div class="mgc-body">'+
+							'<div class="mgc-content">'+json.content+'</div>'+
+							'<div class="accordion mgc-ac" id="accordionPanelsStayOpenExample">'+
+							  '<div class="accordion-item">'+
+							    '<h2 class="accordion-header" id="panelsStayOpen-headingOne">'+
+							      '<button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">'+
+										'<div><i class="fas fa-paperclip"></i></div>'+
+										'<div>첨부파일 <span>1</span></div>'+
+							      '</button>'+
+							    '</h2>'+
+							    '<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">'+
+							      '<div class="accordion-body mgc-attach mgc-ac-content">'+
+							      	'<div>'+
+								      	'<span><i class="fas fa-download"></i></span>'+
+								      	'<span>첨부파일명</span>'+
+								      	'<span>(10MB)</span>'+
+							      	'</div>'+
+							      	'<div>'+
+								      	'<span><i class="fas fa-download"></i></span>'+
+								      	'<span>첨부파일명</span>'+
+								      	'<span>(10MB)</span>'+
+							      	'</div>'+
+							      '</div>'+
+							    '</div>'+
+							  '</div>'+
+							  '<div class="accordion-item">'+
+							    '<h2 class="accordion-header" id="panelsStayOpen-headingTwo">'+
+							      '<button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">'+
+									'<div><i class="fas fa-envelope-open-text"></i></div>'+
+									'<div>주고받은 메시지 <span>1</span></div>'+
+							      '</button>'+
+							    '</h2>'+
+							    '<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">'+
+							      '<div class="accordion-body mgc-ac-content mgc-ac-ref">'+
+							      		'<div class="mg-read mg-now">'+
+							      			'<span><i class="fas fa-envelope-open"></i></span>'+
+							      			'<span>메시지 제목</span>'+
+							      			'<span>2022. 11. 13(화) 오후  1:00</span>'+
+							      		'</div>'+
+							      		'<div class="mg-read">'+
+							      			'<span><i class="fas fa-envelope-open"></i></span>'+
+							      			'<span>메시지 제목</span>'+
+							      			'<span>2022. 11. 13(화) 오후  1:00</span>'+
+							      		'</div>'+
+							      		'<div class="mg-unread">'+
+							      			'<span><i class="fas fa-envelope"></i></span>'+
+							      			'<span>메시지 제목</span>'+
+							      			'<span>2022. 11. 13(화) 오후  1:00</span>'+
+							      		'</div>'+
+							      '</div>'+
+							    '</div>'+
+							  '</div>'+
+							'</div>'+
+						'</div>'+
+					'</div>';
+			
+			$(".mg-right-container").html(html);
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+		
+	});//end of ajax
+	
+	// 수신자 정보를 알아오는 ajax
+	$.ajax({
+		url: "<%= ctxPath%>/selectOnemgReceivers.up",
+		data: {"mno":mno},
+		type: "post",
+		async: false,
+		dataType:"json",
+		success:function(json2){
+			let rhtml = '';
+			$.each(json2, function(index, item){
+				rhtml += '<div style="display: inline-block; margin-right: 10px;"><span>'+item.r_name+'</span>·<span>'+item.r_dept+'</span></div>';
+			}); //end of each
+			$("#mgc-toList").html(rhtml);
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});//end of ajax
+			
+	// 송신시간을 알아오는 ajax
+	$.ajax({
+		url: "<%= ctxPath%>/getmstime.up",
+		data: {"mno":mno},
+		type: "post",
+		async: false,
+		dataType:"json",
+		success:function(json3){
+			let dtext = json3.ms_sendtime;
+			$("#mgc-date").text(dtext);
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});//end of ajax
+			
+	
+	
+}//end of selectonemg
+
+
 
 
 </script>
@@ -271,7 +434,7 @@ function pgbar(tab, curpage){
 <div class="message-container">
 	<div class="mg-left-container">
 		<div class="mgList-info">
-			<span id="all" >전체<span>10</span></span>
+			<span id="all" >전체</span>
 			<span id="unread">안읽음<span>5</span></span>
 			<span id="scrap">중요<span>2</span></span>
 			<div class="mg-search">
@@ -331,12 +494,12 @@ function pgbar(tab, curpage){
 				</table>
 			</div>
 			<div class="mg-paging">
-				페이징할거..
 			</div>
 		</div>
 	</div>
 	
 	<div class="mg-right-container">
+	<%-- 
 		<div class="mgc-container">
 			<div class="mgc-header">
 				<div class="mgc-header-left">
@@ -345,7 +508,7 @@ function pgbar(tab, curpage){
 							<input type="checkbox" id="mc-star" name="mc-star" style="display: none;"/>
 							<label for="mc-star"><i class="icon icon-star-empty"></i></label>
 						</span>
-						<span id="mc-subject">${requestScope.mvo.subject}</span> <!-- 20자 이내로 제한줘야됨 -->
+						<span id="mc-subject"></span> <!-- 20자 이내로 제한줘야됨 -->
 						<span class="mgc-header-attach"><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
 					</div>
 					<div class="mgc-from mgc-people">
@@ -435,6 +598,7 @@ function pgbar(tab, curpage){
 				<!-- 첨부파일, 관련메시지 아코디언 끝 -->
 			</div>
 		</div>
+		 --%>
 	</div>
 
 </div>

@@ -6,6 +6,9 @@ public class MessageSendVO {
 	private String receiver;
 	private String ms_sendtime;
 	private String ms_checktime;
+	private String r_name;
+	private String r_dept;
+	private String profile_orginfilename;
 	
 	public MessageSendVO(){}
 
@@ -56,6 +59,30 @@ public class MessageSendVO {
 
 	public void setMs_checktime(String ms_checktime) {
 		this.ms_checktime = ms_checktime;
+	}
+
+	public String getR_name() {
+		return r_name;
+	}
+
+	public void setR_name(String r_name) {
+		this.r_name = r_name;
+	}
+
+	public String getR_dept() {
+		return r_dept;
+	}
+
+	public void setR_dept(String r_dept) {
+		this.r_dept = r_dept;
+	}
+
+	public String getProfile_orginfilename() {
+		return profile_orginfilename;
+	}
+
+	public void setProfile_orginfilename(String profile_orginfilename) {
+		this.profile_orginfilename = profile_orginfilename;
 	}
 	
 	

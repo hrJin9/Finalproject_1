@@ -23,16 +23,27 @@
 		<result property="ms_checktime" column="ms_checktime" javaType="String"/>
 	</resultMap>
 	<select id="getmvoList" parameterType="HashMap" resultMap="getmvoList_Map">
-		select row_number() over(order by ms_sendtime desc) as rno, mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status
+		select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status
 		from
 		(
-		    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
+		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
 		    from
 		    (
-		        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+		        select row_number() over(order by ms_sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
+		        <if test="tab == 'all'">
+		        	where receiver = #{empno} and status = 1
+		        </if>
+		         <if test="tab == 'unread'">
+			        where receiver = #{empno} and status = 1 and ms_checktime is null
+		        </if>
+		        <if test="tab == 'scrap'">
+					join tbl_scrap S
+					on S.tno = mno
+					where receiver = #{empno} and status = 1
+		        </if>
 		    ) TM
 		    left join v_employee E
 		    on E.employee_no = writer
@@ -40,61 +51,66 @@
 		) TMM
 		left join v_employee
 		on employee_no = receiver
-		<if test="tab == 'all'">
-	        where receiver = #{empno} and status = 1
-        </if>
-        <if test="tab == 'unread'">
-	        where receiver = #{empno} and status = 1 and ms_checktime is null
-        </if>
-        <if test="tab == 'scrap'">
-			join tbl_scrap S
-			on S.tno = mno
-			where receiver = #{empno} and status = 1
-        </if>
-        and rno between #{startRno} and #{endRno}
+		where rno between #{startRno} and #{endRno}
 	</select>
 	
 	<!-- 메시지리스트의 총페이지수 알아오기 -->
 	<select id="getmgtotal" parameterType="HashMap" resultType="int">
 		select ceil(count(*)/#{sizePerPage})
-		from v_mglist
-		<if test="tab == 'all'">
-			where receiver = #{empno} and status = 1
-		</if>
-		<if test="tab == 'unread'">
-			where receiver = #{empno} and status = 1 and ms_checktime is null
-		</if>
-		<if test="tab == 'scrap'">
-			join tbl_scrap S
-			on S.tno = mno
-			where receiver = #{empno} and status = 1
-		</if>
+		from
+		(
+		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
+		    from
+		    (
+		        select row_number() over(order by ms_sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+		        from tbl_message M
+		        join tbl_message_send MS
+		        on M.mno = MS.fk_mno
+		        <if test="tab == 'all'">
+		        	where receiver = #{empno} and status = 1
+		        </if>
+		         <if test="tab == 'unread'">
+			        where receiver = #{empno} and status = 1 and ms_checktime is null
+		        </if>
+		        <if test="tab == 'scrap'">
+					join tbl_scrap S
+					on S.tno = mno
+					where receiver = #{empno} and status = 1
+		        </if>
+		    ) TM
+		    left join v_employee E
+		    on E.employee_no = writer
+		    order by ms_sendtime desc
+		) TMM
+		left join v_employee
+		on employee_no = receiver
 	</select>
 	
 	
 	
 	
 	<!-- 로그인 유저가 클릭한 메시지내용 1개 불러오기 -->
-	<resultMap type="HashMap" id="getmvo_Map">
-		<result property="mno" column="mno" javaType="String"/>
-		<result property="mgroup" column="mgroup" javaType="String"/>
-		<result property="reno" column="reno" javaType="String"/>
-		<result property="writer" column="writer" javaType="String"/>
-		<result property="name_kr" column="name_kr" javaType="String"/>
-		<result property="subject" column="subject" javaType="String"/>
-		<result property="content" column="content" javaType="String"/>
-		<result property="m_systemfilename" column="m_systemfilename" javaType="String"/>
-		<result property="m_originfilename" column="m_originfilename" javaType="String"/>
-		<result property="file_size" column="file_size" javaType="String"/>
-	</resultMap>
-	<select id="getmvo" parameterType="String" resultMap="getmvo_Map">
-		select mno, mgroup, reno, writer, name_kr, department_name, subject, content, m_systemfilename, m_originfilename, file_size
-		from tbl_message M
-		join v_employee E
-		on writer = employee_no
-		where mno = #{mno} and M.status = 1
+	
+	<!-- 메시지 내용 -->
+	<select id="getmvo" parameterType="String" resultType="com.spring.hyerin.model.MessageVO">
+		select mno, reno, writer, name_kr as w_name, department_name as w_dept, subject, content, m_systemfilename, m_originfilename, file_size, profile_orginfilename
+		from tbl_message join v_employee on employee_no = writer
+		where mno = #{mno}
 	</select>
 	
+	<!-- 수신자정보 -->
+	<select id="getmsvoList" parameterType="String" resultType="com.spring.hyerin.model.MessageSendVO">
+		select fk_mno, receiver, name_kr as r_name, department_name as r_dept, profile_orginfilename, to_char(ms_sendtime, 'yyyy. mm. dd AM hh:mi') as ms_sendtime
+		from tbl_message_send join v_employee on receiver = employee_no
+		where fk_mno = #{mno}
+	</select>
+	
+	
+	<select id="getmstime" parameterType="String" resultType="String">
+		select distinct to_char(ms_sendtime, 'yyyy. mm. dd AM hh:mi') as ms_sendtime
+		from tbl_message_send
+		where fk_mno = #{mno}
+	</select>
 
 
 </mapper>
