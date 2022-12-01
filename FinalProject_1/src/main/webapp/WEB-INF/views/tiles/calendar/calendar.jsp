@@ -21,10 +21,13 @@
   
   #calendar { 
     max-width: 1024px; 
-    margin: 0 auto;   
+/*     margin: 0 auto;    */
     padding-top: 3%;  
     font-size: 11pt;   
-    margin-right: 348px;
+/*     margin-right: 348px; */
+	margin-left: 5%;
+    float: left;
+    width: 70%;
  
   }   
   a { 
@@ -35,21 +38,18 @@
   	width: 238px;    
     height: 429px;
     background-color: #f3f3f3b3; 
-    position: absolute;  
-    top: 194px;  
-    left: 1195px;
+/*     position: absolute;   */
+    top: 194px;   
+    left: 1195px; 
     border-radius: 22px;
   } 
-       
+         
   .calendar-side{
   	width: 238px;     
-    height: auto;
     background-color: #f3f3f3b3; 
-    position: absolute;   
-    top: 261px;  
-    left: 1195px; 
+    margin-top: 3%; 
     border-radius: 22px;  
-    padding: 7px 0 18px 0;
+    padding: 7px 0 18px 0; 
   }    
     
 /*    button:hover {  
@@ -91,24 +91,25 @@
   
  } 
  .button-ab{
- 	position: absolute;
-    right: 8%;
+ 	float: right; 
+    margin-right: 5%;
  }
  
- #selboxDirect{ 
+ #selboxDirect{  
    border: 1.5px solid #cccccc;
     border-radius: 3.5px;
-    width: auto%;
+    width: auto; 
 /*     padding: 10px 17px; */
 /*     margin: 7px 0 18px 0; */
     opacity: 0.85; 
     font-size: 10pt;
     line-height: 20px;
     margin-left: 10px;
+    margin-top: 13px; 
  }
  
  
-  
+   
    
    
  .fa-solid, .fa-regular{
@@ -189,43 +190,208 @@
 
 <script type="text/javascript">
 
-
-
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function(){  
+	  
 	
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, { 
-      headerToolbar: {
-        left: 'prev,next today', 
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-      },
-     
-      locale: 'ko', 
-      navLinks: true, // can click day/week names to navigate views
-      businessHours: true, // display business hours
-      editable: true,
-      selectable: true,
-      select: function(arg) {
-          var title = prompt('일정 추가','입력해주세요..');
-          if (title) { 
-              calendar.addEvent({ 
-                  title: title,
-                  start: arg.start,
-                  end: arg.end,
-                  allDay: arg.allDay
-              })
-          }
-          calendar.unselect()
-      },
-      eventClick: function(arg) { 
-          if (confirm('일정을 삭제하시겠습니까?')) {
-              arg.event.remove()
-          }
-      }
+	 
+	//offcanvas
+		$(".workadd").click(function(e){ 
+			$('.offcanvas').offcanvas('show');
+			
+			
+		});
+		   
+	 
+		// 플랫피커
+	 	flatpickr.localize(flatpickr.l10ns.ko);
+	 	flatpickr($(".dateSelector"));
+		$(".dateSelector").flatpickr({
+			dateFormat: "Y-m-d",
+			defaultDate: new Date(),
+			local: 'ko'
+		});
+		 
+		  
+		// 직접입력 
+		$("#selboxDirect").hide();  // 소속 직접작성란 숨기고 시작한다.
+		
+		// 소속 입력
+		$("#team").change(function() {
+			//직접입력을 누를 때 나타남
+			if($("#team").val() == "direct") {
+				/* $("select#team").hide(); */
+				$("#selboxDirect").show();
+				$("select#team").css('margin-bottom','0px');    
+			}  else {
+				$("#selboxDirect").hide();
+				$("select#team").css('margin-bottom','18px');
+			}
+		
+		}); 
+		
+		
+		// === 내 캘린더에 내캘린더 소분류 보여주기 ===
+		showmyCal();
+ 	
+		
+		
+		
+		
+}); //end of ready
+ 
+      
+<%--    
+document.addEventListener('DOMContentLoaded', function () {
+    $(function () {
+        var request = $.ajax({
+            url: '<%= ctxPath%>/calendar.up', 
+            method: "GET", 
+            dataType: "json"
+        });
 
-	
+        request.done(function (data) {
+            console.log(data); // log 로 데이터 찍어주기.
+
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialDate: '2022-02-07',
+                initialView: 'timeGridWeek',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                locale: 'ko', 
+                navLinks: true, // can click day/week names to navigate views
+                businessHours: true, // display business hours
+                editable: true,
+                selectable: true,
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function (arg) {
+                    // is the "remove after drop" checkbox checked?
+                    if (document.getElementById('drop-remove').checked) {
+                        // if so, remove the element from the "Draggable Events" list
+                        arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                    }
+                },
+                /**
+                 * data 로 값이 넘어온다. log 값 전달.
+                 */
+                events: data
+            }); 
+
+            calendar.render();
+        });
+
+        request.fail(function( jqXHR, textStatus ) {
+            alert( "Request failed: " + textStatus );
+        });
     });
+ --%>
+
+
+ document.addEventListener('DOMContentLoaded', function() {
+ 	
+     var calendarEl = document.getElementById('calendar');
+     var calendar = new FullCalendar.Calendar(calendarEl, { 
+      
+       initialView: 'dayGridMonth',
+       locale: 'ko',
+       selectable: true,
+ 	   editable: false,
+ 	   navLinks: true, // can click day/week names to navigate views
+ 	   businessHours: true, // display business hours
+ 	   headerToolbar: {
+ 	         left: 'prev,next today', 
+ 	         center: 'title',
+ 	         right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+ 	       },
+ 	    dayMaxEventRows: true, // for all non-TimeGrid views
+ 	    views: {
+ 	      timeGrid: {
+ 	        dayMaxEventRows: 3 // adjust to 6 only for timeGridWeek/timeGridDay
+ 	      }
+ 	    },
+         
+ /*       select: function(arg) {
+           var title = prompt('일정 추가','입력해주세요..');
+           if (title) { 
+               calendar.addEvent({ 
+                   title: title,
+                   start: arg.start,
+                   end: arg.end,
+                   allDay: arg.allDay
+               })
+           }
+           calendar.unselect()
+       },
+       eventClick: function(arg) { 
+           if (confirm('일정을 삭제하시겠습니까?')) {
+               arg.event.remove()  
+           } 
+       }
+  */
+ //===================== DB 와 연동하는 법 시작 ===================== // 
+ 	events:function(info, successCallback, failureCallback) {
+    
+  	 $.ajax({ 
+           url: '<%= ctxPath%>/calendar.up',
+           data:{"fk_employee_no":$('input#fk_employee_no').val()},
+           dataType: "json",
+           success:function(json) {
+          	 /*
+          	    json 의 값 예
+          	    [{"enddate":"2021-11-26 18:00:00.0","fk_lgcatgono":"2","color":"#009900","scheduleno":"1","fk_smcatgono":"4","subject":"파이널 프로젝트 코딩","startdate":"2021-11-08 09:00:00.0","fk_userid":"seoyh"},{"enddate":"2021-11-29 13:50:00.0","fk_lgcatgono":"1","color":"#990008","scheduleno":"2","fk_smcatgono":"7","subject":"팀원들 점심식사","joinuser":"leess,eomjh","startdate":"2021-11-29 12:50:00.0","fk_userid":"seoyh"},{"enddate":"2021-12-02 20:00:00.0","fk_lgcatgono":"1","color":"#300bea","scheduleno":"3","fk_smcatgono":"11","subject":"팀원들 뒤풀이 여행","joinuser":"leess,eomjh","startdate":"2021-12-01 09:00:00.0","fk_userid":"seoyh"}]
+          	 */
+          	 var events = [];
+               if(json.length > 0){
+                   
+                       $.each(json, function(index, item) {
+                              var startdate = moment(item.startdate).format('YYYY-MM-DD HH:mm:ss');
+                              var enddate = moment(item.enddate).format('YYYY-MM-DD HH:mm:ss');
+                              var subject = item.subject;
+                         
+                             // 나의 캘린더로 등록된 일정을 풀캘린더 달력에 보여주기  
+                             // 일정등록시 나의 캘린더에서 선택한 소분류에 등록된 일정을 풀캘린더 달력 날짜에 나타내어지게 한다.
+                             if( $("input:checkbox[name=com_smcatgono]:checked").length <= $("input:checkbox[name=com_smcatgono]").length ){
+                                 
+                                 for(var i=0; i<$("input:checkbox[name=com_smcatgono]:checked").length; i++){
+                              	  
+                              		   if($("input:checkbox[name=com_smcatgono]:checked").eq(i).val() == item.fk_smcatgono){
+ 			                               //  alert("캘린더 소분류 번호 : " + $("input:checkbox[name=com_smcatgono]:checked").eq(i).val());
+                              			   events.push({
+ 			                                	            id: item.calno, 
+ 			                                                title: item.subject,
+ 			                                                start: startdate, 
+ 			                                                end: enddate,
+ 			                                        	    url: "<%= ctxPath%>/calendar/calendar.up?calno="+item.calno,
+ 			                                                cid: item.fk_smcatgono  // 사내캘린더 내의 서브캘린더 체크박스의 value값과 일치하도록 만들어야 한다. 그래야만 서브캘린더의 체크박스와 cid 값이 연결되어 체크시 풀캘린더에서 일정이 보여지고 체크해제시 풀캘린더에서 일정이 숨겨져 안보이게 된다. 
+ 			                                   }); // end of events.push({})---------
+ 		                                   }
+                              	   
+                                 }// end of for-------------------------------------
+                               
+                             }// end of if-------------------------------------------
+                              
+                          
+                       }); // end of $.each(json, function(index, item) {})-----------------------
+                   }                             
+                   
+                // console.log(events);                       
+                   successCallback(events);                               
+            },
+ 			  error: function(request, status, error){
+ 		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+ 		      }	
+                                      
+    }); // end of $.ajax()--------------------------------
+  
+  }, // end of events:function(info, successCallback, failureCallback) {}---------
+  // ===================== DB 와 연동하는 법 끝 ===================== //
+       
+       
+     });
 
     calendar.render();
     
@@ -237,96 +403,117 @@ document.addEventListener('DOMContentLoaded', function() {
   
 	 
   
-	$(document).ready(function(){  
-		  
-		
-		 
-		//offcanvas
-			$(".workadd").click(function(e){ 
-				$('.offcanvas').offcanvas('show');
-				
-				
-			});
-			   
-		 
-			// 플랫피커
-		 	flatpickr.localize(flatpickr.l10ns.ko);
-		 	flatpickr($(".dateSelector"));
-			$(".dateSelector").flatpickr({
-				dateFormat: "Y-m-d",
-				defaultDate: new Date(),
-				local: 'ko'
-			});
-			 
-			  
-			// 직접입력 
-			$("#selboxDirect").hide();  // 소속 직접작성란 숨기고 시작한다.
-			
-			// 소속 입력
-			$("#team").change(function() {
-				//직접입력을 누를 때 나타남
-				if($("#team").val() == "direct") {
-					/* $("select#team").hide(); */
-					$("#selboxDirect").show();
-					$("select#team").css('margin-bottom','0px');    
-				}  else {
-					$("#selboxDirect").hide();
-					$("select#team").css('margin-bottom','18px');
-				}
-			
-			}); 
-	 
-	}); //end of ready
- 
-	    
+	
+	     
 	 
    
       
 </script>  
-   
       
+       
 <div id='calendar' style="margin-bottom: 5%;"></div>   
 
-<div class="workadd" style="margin-top: 0pt;border-radius: 23px;background-color: #f7f7f7;width: 15.5%;height: 60px;">
+<div class="workadd" style="margin-top: 7%;border-radius: 23px;background-color: #f7f7f7;height: 60px;float: right;margin-right: 5%;">
 	<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt; margin-top: 20%;">일정 생성</span></div>
 </div>
     
-      
-<div>  
-	<div class="calendar-side">      
+        
+<div style="float: right;margin-right: 5%;">  
+	<div class="calendar-side">         
+  			                        
+  			<div style="">           
+	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
+				</div>
+	  			<button type="button" class="btn collapsed" data-toggle="collapse" data-target="#demo" style="width: 88%; text-align: inherit; margin-left: 18px;">내일정     
+	  			<i class="fa-solid fa-user" style=""></i> </button>   
+	  			  
+	  			<div id="demo" class="accordion-collapse collapse show">       
+	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   
+		  			<p>   
+		  			<div style="margin-bottom: 2%;">   
+		  				<input type="checkbox" />      
+				   		<label><span></span>개인 프로젝트</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+		  			</div>  
+		  			
+		  	   </div>	 
+		  	 </div>    
+  			</div>       
+	</div>  
+	<div class="calendar-side" style="top: 390px;">          
   			                       
   			<div style="margin-top: 10px;">         
 	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
-					<a href="#" class="btn fa-solid fa-circle-plus fa-lg"  style="color: #5E9FF2; margin-top: 6px; position: absolute; top: 22px; left: 188px;"></a>
 				</div>
-	  			<button type="button" class="btn" data-toggle="collapse" data-target="#demo" style="width: 88%; text-align: inherit; margin-left: 18px;">나의 캘린더    
+	  			<button type="button" class="btn collapsed" data-toggle="collapse" data-target="#demo2" style="width: 88%; text-align: inherit; margin-left: 18px;">팀일정     
 	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 28px;"></i> </button>  
 	  			 
-	  			<div id="demo" class="collapse">       
+	  			<div id="demo2" class="accordion-collapse collapse">       
 	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   
-		  			<p> 
-		  			<input type="checkbox" />     
-				    <label><span></span>내일정</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
-				    
-				    <p>   
-				    <input type="checkbox" />    
-				    <label><span></span>팀일정</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
-				      
-				    <p> 
-				    <input type="checkbox" />     
-				    <label><span></span>부서일정</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
-				      
-				    <p> 
-				    <input type="checkbox" />    
-				    <label><span></span>전사일정</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
-				    	 
+		  			<p>   
+		  			<div style="margin-bottom: 2%;">   
+		  				<input type="checkbox" />      
+				   		<label><span></span>개인 프로젝트</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+		  			</div>  
 		  	   </div>	 
 		  	 </div>   
-  			</div>     
+  			</div>      
 	</div>
-</div> 
+	<div class="calendar-side" style="top: 519px;">          
+  			                       
+  			<div style="margin-top: 10px;">         
+	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
+				</div>
+	  			<button type="button" class="btn collapsed" data-toggle="collapse" data-target="#demo3" style="width: 88%; text-align: inherit; margin-left: 18px;">부서일정    
+	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 28px;"></i> </button>  
+	  			 
+	  			<div id="demo3" class="accordion-collapse collapse">       
+	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   
+		  	   </div>	 
+		  	 </div>   
+  			</div>      
+	</div>
+	<div class="calendar-side" >            
+  			                       
+  			<div style="">         
+	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
+				</div>
+	  			<button type="button" class="btn collapsed" data-toggle="collapse" data-target="#demo4" style="width: 88%; text-align: inherit; margin-left: 18px;">전사일정     
+	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 28px;"></i> </button>  
+	  			 
+	  			<div id="demo4" class="accordion-collapse collapse">       
+	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   
+		  			<p>   
+		  			<div style="margin-bottom: 2%;">   
+		  				<input type="checkbox" />      
+				   		<label><span></span>개인 프로젝트</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+		  			</div>  
+		  	   </div>	 
+		  	 </div>    
+  			</div>      
+	</div> 
+	<div class="calendar-side" style="top: 781px;">            
+  			                       
+  			<div style="margin-top: 10px;">         
+	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
+				</div>
+	  			<button type="button" class="btn collapsed" data-toggle="collapse" data-target="#demo5" style="width: 88%; text-align: inherit; margin-left: 18px;">공유받은 일정      
+	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 28px;"></i> </button>  
+	  			 
+	  			<div id="demo5" class="accordion-collapse collapse">       
+	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   
+		  			<p>   
+		  			<div style="margin-bottom: 2%;">   
+		  				<input type="checkbox" />      
+				   		<label><span></span>개인 프로젝트</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+		  			</div>  
+		  	   </div>	 
+		  	 </div>   
+  			</div>      
+	</div>
+</div>  
 
-
+ 
+ 
 
 
 <!-- 오프캔버스 시작 -->
@@ -347,18 +534,26 @@ document.addEventListener('DOMContentLoaded', function() {
 			      
 			    <hr style="margin-bottom: 7%;">     
 			       
-			    <div class="form-group"  style="display: flex;"> 
+			    <div class="form-group"  style="display: flex;">  
 			      <i class="fa-solid fa-calendar-days fa-2x"></i>  
-			      <select id="team"  name="team" class="form-select" style="margin-left: 20px;">  
+			      <select class="form-select" style="margin-left: 20px;">  
 			        <option>팀일정</option>
 			        <option>내일정</option> 
-			        <option>부서일정</option>    
-			        <option>전사일정</option>  
+			        <option>부서일정</option>     
+			        <option>전사일정</option>   
 			        <option>공유받은 일정</option> 
-			        <option value="direct">직접 입력</option>   
+<!-- 			        <option value="direct">직접 입력</option>    -->
 			      </select> 
-			      <input input type="text" id="selboxDirect" name="selboxDirect" /> 
+<!-- 			      <input input type="text" id="selboxDirect" name="selboxDirect" />  -->
 			    </div>     
+			          
+			     <div class="form-group"  style="display: flex;">  
+			      <select id="team"  name="team" class="form-select" style="margin-left: 40px;margin-top: 13px;">  
+			        <option>개인 프로젝트</option>
+			        <option value="direct">직접 입력</option>    
+			      </select>  
+			      <input input type="text" id="selboxDirect" name="selboxDirect" /> 
+			    </div> 
 			         
 			          
 			    <div class="search-period-wr" > 

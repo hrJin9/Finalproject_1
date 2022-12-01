@@ -89,6 +89,22 @@ commit;
 
 
 
+
+select count(*)
+from tbl_calendar_small_category
+where fk_lgcatgono = 1 and smcatgoname = #{com_smcatgoname}
+
+
+
+
+
+
+
+
+
+
+
+
 --- 회의실 ---- 
 create table tbl_conference
 (roomno            number       not null      -- 회의실 번호
