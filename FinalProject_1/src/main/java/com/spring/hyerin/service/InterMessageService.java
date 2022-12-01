@@ -23,4 +23,11 @@ public interface InterMessageService {
 	// 메시지 보낸시간 알아오기
 	String getmstime(String mno);
 	
+	// 부서 정보 구해오기
+	List<Map<String, String>> getdept();
+	
+	//부서, 팀의 구성원수 구해오기
+	List<Map<String, String>> getdt();
+	
+	
 }

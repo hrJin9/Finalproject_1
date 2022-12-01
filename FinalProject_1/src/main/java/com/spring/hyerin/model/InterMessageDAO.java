@@ -18,5 +18,12 @@ public interface InterMessageDAO {
 	
 	// 메시지 보낸시간 알아오기
 	String getmstime(String mno);
+	
+	// 부서 정보 구해오기
+	List<Map<String, String>> getdept();
+	
+	//부서, 팀 이름 알아오기
+	List<Map<String, String>> getdt();
+
 
 }

@@ -49,4 +49,19 @@ public class MessageDAO implements InterMessageDAO {
 	}
 	
 	
+	// 부서 정보 구해오기
+	@Override
+	public List<Map<String, String>> getdept() {
+		List<Map<String, String>> deptList = sqlsession.selectList("message.getdept");
+		return deptList;
+	}
+	
+	//부서, 팀 이름 알아오기
+	@Override
+	public List<Map<String, String>> getdt() {
+		List<Map<String, String>> dtList = sqlsession.selectList("message.getdt");
+		return dtList;
+	}
+	
+	
 }

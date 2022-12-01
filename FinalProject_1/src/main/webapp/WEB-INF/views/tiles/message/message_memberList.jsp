@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <% String ctxPath = request.getContextPath(); %>    
 <!DOCTYPE html>
 <html>
@@ -50,105 +51,118 @@
 </style>
 
 <script type="text/javascript">
-	//체크박스 개수
-	var total = $("input[name='memberChx']").length;
-	
-	$(document).ready(function(){
-		
-		// 전체개수 값
-		const allCnt = $("input:checkbox[name='memberChx']").length;  // 체크여부 상관없는 모든 체크박스개수
-		document.getElementById("memberCnt").textContent = allCnt;
-		
-		
-		// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
-		$("#memberAll").change(function(){
-			if($("#memberAll").is(":checked")){
-				var total = $("input[name='memberChx']").length;
-				$("input[name='memberChx']").prop("checked",true);
-				show_checkmenu();
-				$("#check_ctn").text(total);
-			} else {
-				$("input[name='memberChx']").prop("checked",false);
-				show_noncheckmenu();
-			}
-		});
-		
-		$("input[name='memberChx']").change(function() {
-			//체크박스 선택
-			check_one(); 
-		});
-		
-		// 프로필 클릭시 구성원 선택
-		$(".mem-tr").click(function(e){
-			//체크박스 선택시 함수 종료
-			if( $(e.target).is('input:checkbox') ) return;
-			var memcheck = $(this).find("td:first-child > input");
-			if(memcheck.prop("checked"))
-				memcheck.prop("checked",false);
-			else
-				memcheck.prop("checked",true);
-			//체크박스 선택
-			check_one();
-		});
-		
-		// 취소 버튼 누를시 선택 모두 해제하기
-		$("#ml-cancel").click(function(){
-			$("input[name='memberChx']").prop("checked",false);
-			$("#memberAll").prop("checked",false);
-			show_noncheckmenu();
-		});
-		
-		
-		// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
-		$("input#burger-check").change(function(){
-		    if($("#burger-check").is(":checked")){
-		        $(".big").css({'width':'55.2%','position':'relative','top':'18px'});
-		        $(".big table").css({"width":"100%","top":""});
-		        $(".menucontent").css({'visibility':'visible'});
-		    }else{
-		        $(".big").css({'width':'100%','position':'','top':''});
-		        $(".big table").css("width","100%");
-		        $(".menucontent").css({'visibility':'hidden'});
-		    }
-		});  
-		
-		// 모든 조직 펼치기
-		$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
-			$(".summary").click();      // 모든 조직의 summary 클릭
-		});
-		
-			
-	});// end of$(document).ready(function(){})--------------------------
-	   
-	///////////////////////////////////////////////////////////////////////////////////////////////////////    
-	// Function declaration
-	//체크시 나타나는 메뉴
-	function show_checkmenu(){
-		$(".ml-noncheckmenu").hide();
-		$(".ml-checkmenu").fadeIn("fast");
-	}//end of show_checkmenu
-	
-	// 체크안되었을때 나타나는 메뉴
-	function show_noncheckmenu(){
-		$(".ml-checkmenu").hide();
-		$(".ml-noncheckmenu").fadeIn("fast");
-	}//end of show_noncheckmenu
-	
-	//체크박스 하나 체크 이벤트
-	function check_one(){
-		var checked = $("input[name='memberChx']:checked").length;
+//체크박스 개수
+var total = $("input[name='memberChx']").length;
 
-		if(checked<=0) {
-			$("#memberAll").prop("checked", false);
+$(document).ready(function(){
+	
+	// 답장번호(reno)가 있을 때 값 미리 넣어주기
+	const mw_to = "${requestScope.mw_to}";
+	const mw_resubject = "${requestScope.mw_resubject}";
+	if(mw_to != null ){
+		$("#mw-to").val(mw_to);
+		$("#mw-subject").val("RE: "+mw_resubject);
+	}
+	
+	
+	
+	// 전체개수 값
+	const allCnt = $("input:checkbox[name='memberChx']").length;  // 체크여부 상관없는 모든 체크박스개수
+	document.getElementById("memberCnt").textContent = allCnt;
+	
+	
+	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
+	$("#memberAll").change(function(){
+		if($("#memberAll").is(":checked")){
+			var total = $("input[name='memberChx']").length;
+			$("input[name='memberChx']").prop("checked",true);
+			show_checkmenu();
+			$("#check_ctn").text(total);
+		} else {
+			$("input[name='memberChx']").prop("checked",false);
 			show_noncheckmenu();
 		}
-		else if(total != checked){
-			$("#memberAll").prop("checked", true); 
-			show_checkmenu();
-			$("#check_ctn").text(checked);
-		}
+	});
+	
+	$("input[name='memberChx']").change(function() {
+		//체크박스 선택
+		check_one(); 
+	});
+	
+	// 프로필 클릭시 구성원 선택
+	$(".mem-tr").click(function(e){
+		//체크박스 선택시 함수 종료
+		if( $(e.target).is('input:checkbox') ) return;
+		var memcheck = $(this).find("td:first-child > input");
+		if(memcheck.prop("checked"))
+			memcheck.prop("checked",false);
+		else
+			memcheck.prop("checked",true);
+		//체크박스 선택
+		check_one();
+	});
+	
+	// 취소 버튼 누를시 선택 모두 해제하기
+	$("#ml-cancel").click(function(){
+		$("input[name='memberChx']").prop("checked",false);
+		$("#memberAll").prop("checked",false);
+		show_noncheckmenu();
+	});
+	
+	
+	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
+	$("input#burger-check").change(function(){
+	    if($("#burger-check").is(":checked")){
+	        $(".big").css({'width':'55.2%','position':'relative','top':'18px'});
+	        $(".big table").css({"width":"100%","top":""});
+	        $(".menucontent").css({'visibility':'visible'});
+	    }else{
+	        $(".big").css({'width':'100%','position':'','top':''});
+	        $(".big table").css("width","100%");
+	        $(".menucontent").css({'visibility':'hidden'});
+	    }
+	});  
+	
+	// 모든 조직 펼치기
+	$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
+		$(".summary").click();      // 모든 조직의 summary 클릭
+	});
+	
+	
+	// 부서 팀, 구성원수 구하기
+	
 		
-	}//end of check_one
+});// end of$(document).ready(function(){})--------------------------
+	   
+///////////////////////////////////////////////////////////////////////////////////////////////////////    
+// Function declaration
+//체크시 나타나는 메뉴
+function show_checkmenu(){
+	$(".ml-noncheckmenu").hide();
+	$(".ml-checkmenu").fadeIn("fast");
+}//end of show_checkmenu
+
+// 체크안되었을때 나타나는 메뉴
+function show_noncheckmenu(){
+	$(".ml-checkmenu").hide();
+	$(".ml-noncheckmenu").fadeIn("fast");
+}//end of show_noncheckmenu
+
+//체크박스 하나 체크 이벤트
+function check_one(){
+	var checked = $("input[name='memberChx']:checked").length;
+
+	if(checked<=0) {
+		$("#memberAll").prop("checked", false);
+		show_noncheckmenu();
+	}
+	else if(total != checked){
+		$("#memberAll").prop("checked", true); 
+		show_checkmenu();
+		$("#check_ctn").text(checked);
+	}
+	
+}//end of check_one
 	
 </script>
 </head>
@@ -199,21 +213,21 @@
 									<span><i class="fas fa-expand-alt unfold"></i></span>
 									<span class="unfoldAlert" style="display: none;">모든 조직 펼치기</span> <%-- 호버 이벤트시 jQuery 효과주기 --%>
 								</div>
-								<details>
-									<summary class="summary">IT</summary>
-								   	<ul>
-								      <li><a href="#" class="orgmenu">개발1팀</a><span id="cntbadge" ><span id="newCnt">1</span></span></li>
-								      <li><a href="#" class="orgmenu">개발2팀</a></li>
-								      <li><a href="#" class="orgmenu">기술지원팀1팀</a></li>
-								    </ul>
-								</details>
-								<details>
-									<summary class="summary">기획</summary>
-								   	<ul>
-								      <li><a href="#" class="orgmenu">기획1팀</a><span id="cntbadge" ><span id="newCnt">1</span></span></li>
-								      <li><a href="#" class="orgmenu">기획2팀</a></li>
-								    </ul>
-								</details>
+								<c:forEach var="dept" items="${requestScope.dtList}">
+									<details>
+										<summary class="summary">${dept.department_name}</summary>
+									   	<ul id="dept-${dept.department_no}">
+									   		<c:forTokens var="t" items="${dept.tngroup}" delims=",">
+									   			<li><a class="orgmenu">${t}</a><span id="cntbadge" ><span id="newCnt">1</span></span></li>
+									   		</c:forTokens>
+									      <!-- 
+									      <li><a href="#" class="orgmenu">개발1팀</a><span id="cntbadge" ><span id="newCnt">1</span></span></li>
+									      <li><a href="#" class="orgmenu">개발2팀</a></li>
+									      <li><a href="#" class="orgmenu">기술지원팀1팀</a></li>
+									       -->
+									    </ul>
+									</details>
+								</c:forEach>
 							</div>
 						</div>
 		            </span>

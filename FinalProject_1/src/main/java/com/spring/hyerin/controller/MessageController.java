@@ -227,6 +227,14 @@ public class MessageController {
 	@RequestMapping(value = "/message/memberList.up")
 	public ModelAndView messageMemberList(HttpServletRequest request, ModelAndView mav) {
 		
+		//부서, 팀의 정보 구해오기
+		List<Map<String,String>> dtList = service.getdt();
+		
+		for(Map<String,String> map: dtList) {
+			System.out.println(map.get("togroup"));
+		}
+		
+		mav.addObject("dtList", dtList);
 		mav.setViewName("tiles/message/message_memberList");
 		return mav;
 	}

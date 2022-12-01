@@ -54,4 +54,18 @@ public class MessageService implements InterMessageService {
 		return ms_sendtime;
 	}
 	
+	// 부서 정보 구해오기
+	@Override
+	public List<Map<String, String>> getdept() {
+		List<Map<String, String>> deptList = dao.getdept();
+		return deptList;
+	}
+	
+	//부서, 팀 이름 알아오기
+	@Override
+	public List<Map<String, String>> getdt() {
+		List<Map<String, String>> dtList = dao.getdt();
+		return dtList;
+	}
+	
 }

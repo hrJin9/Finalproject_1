@@ -5,6 +5,7 @@ drop table tbl_message_send purge;
 drop table tbl_scrap purge;
 drop table tbl_authority purge;
 
+PURGE RECYCLEBIN;
 
 -- tbl_message 테이블 생성
 create table tbl_message
@@ -38,7 +39,27 @@ nominvalue
 nocycle
 nocache;
 
+-- tbl_message_file 테이블  생성
+create table tbl_message_file
+(mfno   varchar2(50)    not null --메시지파일번호
+,fk_mno varchar2(50)    not null --메시지번호
+,m_systemfilename    varchar2(200)  -- 오리지널파일명
+,m_originfilename  varchar2(200)    -- 파일명
+,file_size   number                 -- 파일크기
 
+,constraint PK_tbl_message_file_mfno primary key(mfno)
+,constraint FK_tbl_message_file_fk_mno foreign key(fk_mno) references tbl_message(mno) on delete cascade
+);
+
+
+-- tbl_message_file 시퀀스 생성
+create sequence seq_tbl_message_file
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
 
 -- tbl_message_send 테이블 생성
 create table tbl_message_send
@@ -482,6 +503,55 @@ where fk_mno = 'm-12'
 select * from tbl_message_send
 
 
+-----------------------------------
+
+-- 파일 불러오기
+
+select *
+from tbl_message_file
 
 
-select * from tbl_message
+---------------------------------------------------------------
+-- message_write
+
+-- 부서, 팀 알아오기
+select department_no, department_name, listagg(team_no, ',') within group (order by team_no) as togroup,listagg(team_name, ',') within group (order by team_name) as tngroup, listagg(total,',') within group (order by team_no) as tcnt
+from
+(
+    select department_no, department_name, team_no, team_name, total
+    from
+    (
+        select T.fk_department_no, TC.team_no, TC.team_name, TC.total
+        from
+        (
+            select team_no, team_name, count(employee_no) as total
+            from tbl_team
+            left outer join tbl_employee
+            on fk_team_no = team_no
+            group by (team_no, team_name)
+        ) TC
+        join tbl_team T
+        on TC.team_no = T.team_no
+    ) T
+    join tbl_departments D
+    on D.department_no = T.fk_department_no
+)
+group by (department_no,department_name)
+
+
+-- 팀의 구성원수 구하기
+
+select department_no, department_name, team_no, team_name, total
+from tbl_departments
+left join tbl_team
+on department_no = fk_department_no
+join
+(
+    select fk_team_no, count(*) as total
+    from v_employee
+    group by (fk_team_no)
+)
+on fk_team_no = team_no
+
+
+
