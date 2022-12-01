@@ -10,6 +10,17 @@
 </style>
 <script>
 	$(document).ready(function(){
+		
+		// 답장번호(reno)가 있을 때 값 미리 넣어주기
+		const mw_to = "${requestScope.mw_to}";
+		const mw_resubject = "${requestScope.mw_resubject}";
+		if(mw_to != null ){
+			$("#mw-to").val(mw_to);
+			$("#mw-subject").val("RE: "+mw_resubject);
+		}
+		
+		
+		
 		<%-- 텍스트 에디터 시작 --%>
 		const editor = new toastui.Editor({
 		    el: document.querySelector("#editor"),

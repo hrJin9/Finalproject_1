@@ -528,6 +528,7 @@ from
             from tbl_team
             left outer join tbl_employee
             on fk_team_no = team_no
+            where delete_status = 1
             group by (team_no, team_name)
         ) TC
         join tbl_team T
@@ -535,23 +536,44 @@ from
     ) T
     join tbl_departments D
     on D.department_no = T.fk_department_no
+    where delete_status = 1
 )
 group by (department_no,department_name)
 
 
--- 팀의 구성원수 구하기
-
-select department_no, department_name, team_no, team_name, total
+select department_no, department_name
 from tbl_departments
-left join tbl_team
-on department_no = fk_department_no
-join
+
+
+
+
+-- 팀의 구성원수 구하기
+select department_no, department_name, team_no, team_name, total
+from
 (
-    select fk_team_no, count(*) as total
-    from v_employee
-    group by (fk_team_no)
-)
-on fk_team_no = team_no
+    select T.fk_department_no, TC.team_no, TC.team_name, TC.total
+    from
+    (
+        select team_no, team_name, count(employee_no) as total
+        from tbl_team
+        left outer join tbl_employee
+        on fk_team_no = team_no
+        where delete_status = 1
+        group by (team_no, team_name)
+    ) TC
+    join tbl_team T
+    on TC.team_no = T.team_no
+) T
+join tbl_departments D
+on D.department_no = T.fk_department_no
+where delete_status = 1
+
+select * from v_employee
 
 
+-- 구성원목록 가져오기
+select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
+from v_employee
+where status = 1
+and status = 1 and name_kr like '%'||'강'||'%'
 

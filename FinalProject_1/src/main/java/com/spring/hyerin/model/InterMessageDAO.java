@@ -20,10 +20,13 @@ public interface InterMessageDAO {
 	String getmstime(String mno);
 	
 	// 부서 정보 구해오기
-	List<Map<String, String>> getdept();
+	List<DepartmentsVO> getdept();
 	
 	//부서, 팀 이름 알아오기
 	List<Map<String, String>> getdt();
+
+	//구성원 목록을 읽어오기
+	List<EmployeeVO> getEmpList(Map<String, String> paraMap);
 
 
 }

@@ -192,13 +192,16 @@ function getMglist(tab, curpage){
 							'</tr>';
 				});//end of $.each
 				
+				$(".mgList-contents > table").html(html);
+				
 			} else { //가져올 메시지목록이 없는 경우
 				html += '<tr>'+
 						'<td width="100%">조회된 메시지가 없습니다.</td>'+
 						'</tr>';
+				$(".mgList-contents > table").html(html);
+				return;
 			}
 			
-			$(".mgList-contents > table").html(html);
 			//페이지바 함수 호출
 			pgbar(tab, curpage);
 			
@@ -240,7 +243,7 @@ function pgbar(tab, curpage){
 				}
 				while( !(loop > blockSize || pageNo > mgtotal) ) {
 					if(pageNo == curpage) {
-						pageBarHTML += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #37A652; color: white;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
+						pageBarHTML += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #4285f4; color: white !important;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
 					}
 					else {
 						pageBarHTML += "<li class='page-item'><a class='page-link' href='javascript:getMglist(\""+tab+"\", "+pageNo+")'>"+pageNo+"</a></li>";

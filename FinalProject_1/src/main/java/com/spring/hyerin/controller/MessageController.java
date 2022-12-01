@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.finalproject.common.FileManager;
 import com.spring.finalproject.common.MyUtil;
+import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
 import com.spring.hyerin.model.MessageSendVO;
 import com.spring.hyerin.model.MessageVO;
@@ -227,17 +228,67 @@ public class MessageController {
 	@RequestMapping(value = "/message/memberList.up")
 	public ModelAndView messageMemberList(HttpServletRequest request, ModelAndView mav) {
 		
+		//부서정보 가져오기
+		List<DepartmentsVO> deptvoList = service.getdept();
+		
 		//부서, 팀의 정보 구해오기
 		List<Map<String,String>> dtList = service.getdt();
 		
-		for(Map<String,String> map: dtList) {
-			System.out.println(map.get("togroup"));
-		}
-		
+		mav.addObject("deptvoList", deptvoList);
 		mav.addObject("dtList", dtList);
 		mav.setViewName("tiles/message/message_memberList");
 		return mav;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/showEmpList.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String showEmpList(HttpServletRequest request, ModelAndView mav) {
+		
+		String searchCondition = request.getParameter("searchCondition");
+		String searchVal = request.getParameter("searchVal");
+		String teamVal = request.getParameter("teamVal");
+		System.out.println("searchCondition : " + searchCondition);
+		System.out.println("searchVal : " + searchVal);
+		System.out.println("teamVal : " + teamVal);
+		if(searchCondition == null) searchCondition = "";
+		if(searchVal == null) searchVal = "";
+		if(teamVal == null) teamVal = "";
+		
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("searchCondition",searchCondition); // name_kr  role  position
+		paraMap.put("searchVal",searchVal); // ''
+		paraMap.put("teamVal",teamVal); // '' 
+		
+		
+		//구성원 목록을 읽어오기
+		List<EmployeeVO> empvoList = service.getEmpList(paraMap);
+		
+		JSONArray jsonarr = new JSONArray();
+		
+		System.out.println(empvoList.size());
+		//구성원 목록 저장하기
+		for(EmployeeVO empvo : empvoList) {
+			JSONObject jsonobj = new JSONObject();
+			jsonobj.put("fk_department_no", empvo.getFk_department_no());
+			jsonobj.put("department_name", empvo.getDepartment_name());
+			jsonobj.put("fk_team_no", empvo.getFk_team_no());
+			jsonobj.put("team_name", empvo.getTeam_name());
+			jsonobj.put("employee_no", empvo.getEmployee_no());
+			jsonobj.put("name_kr", empvo.getName_kr());
+			jsonobj.put("role", empvo.getRole());
+			jsonobj.put("position", empvo.getPosition());
+			jsonobj.put("profile_systemfilename", empvo.getProfile_systemfilename());
+			
+			jsonarr.put(jsonobj);
+		}//end of for
+		
+		return jsonarr.toString();
+	}//end of showEmpList
+	
+	
+	
 	
 	@RequestMapping(value = "/message/book.up")
 	public ModelAndView messageBook(HttpServletRequest request, ModelAndView mav) {

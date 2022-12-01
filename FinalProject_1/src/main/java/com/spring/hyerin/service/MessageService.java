@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.finalproject.common.FileManager;
+import com.spring.hyerin.model.DepartmentsVO;
+import com.spring.hyerin.model.EmployeeVO;
 import com.spring.hyerin.model.InterMessageDAO;
 import com.spring.hyerin.model.MessageSendVO;
 import com.spring.hyerin.model.MessageVO;
@@ -56,8 +58,8 @@ public class MessageService implements InterMessageService {
 	
 	// 부서 정보 구해오기
 	@Override
-	public List<Map<String, String>> getdept() {
-		List<Map<String, String>> deptList = dao.getdept();
+	public List<DepartmentsVO> getdept() {
+		List<DepartmentsVO> deptList = dao.getdept();
 		return deptList;
 	}
 	
@@ -66,6 +68,13 @@ public class MessageService implements InterMessageService {
 	public List<Map<String, String>> getdt() {
 		List<Map<String, String>> dtList = dao.getdt();
 		return dtList;
+	}
+	
+	//구성원 목록을 읽어오기
+	@Override
+	public List<EmployeeVO> getEmpList(Map<String, String> paraMap) {
+		List<EmployeeVO> empList = dao.getEmpList(paraMap);
+		return empList;
 	}
 	
 }

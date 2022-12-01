@@ -3,6 +3,8 @@ package com.spring.hyerin.service;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.hyerin.model.DepartmentsVO;
+import com.spring.hyerin.model.EmployeeVO;
 import com.spring.hyerin.model.MessageSendVO;
 import com.spring.hyerin.model.MessageVO;
 
@@ -24,10 +26,13 @@ public interface InterMessageService {
 	String getmstime(String mno);
 	
 	// 부서 정보 구해오기
-	List<Map<String, String>> getdept();
+	List<DepartmentsVO> getdept();
 	
 	//부서, 팀의 구성원수 구해오기
 	List<Map<String, String>> getdt();
+	
+	//구성원 목록을 읽어오기
+	List<EmployeeVO> getEmpList(Map<String, String> paraMap);
 	
 	
 }

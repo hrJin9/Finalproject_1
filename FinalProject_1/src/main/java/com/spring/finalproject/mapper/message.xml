@@ -121,47 +121,60 @@
 	</select>
 	
 	
+	<!-- 부서정보 가져오기 -->
+	<select id="getdept" resultType="com.spring.hyerin.model.DepartmentsVO">
+		select department_no, department_name
+		from tbl_departments
+	</select>
+	
 	<!-- 부서, 팀 알아오기 -->
 	<resultMap type="HashMap" id="getdt_Map">
 		<result property="department_no" column="department_no" javaType="String"/>
 		<result property="department_name" column="department_name" javaType="String"/>
-		<result property="togroup" column="togroup" javaType="String"/>
-		<result property="tngroup" column="tngroup" javaType="String"/>
-		<result property="tcntgroup" column="tcntgroup" javaType="String"/>
+		<result property="team_no" column="team_no" javaType="String"/>
+		<result property="team_name" column="team_name" javaType="String"/>
+		<result property="total" column="total" javaType="String"/>
 	</resultMap>
 	<select id="getdt" resultMap="getdt_Map">
-		select department_no, department_name, listagg(team_no, ',') within group (order by team_no) as togroup, listagg(team_name, ',') within group (order by team_name) as tngroup, listagg(total,',') within group (order by team_no) as tcnt
+		select department_no, department_name, team_no, team_name, total
 		from
 		(
-		    select department_no, department_name, team_no, team_name, total
+		    select T.fk_department_no, TC.team_no, TC.team_name, TC.total
 		    from
 		    (
-		        select T.fk_department_no, TC.team_no, TC.team_name, TC.total
-		        from
-		        (
-		            select team_no, team_name, count(employee_no) as total
-		            from tbl_team
-		            left outer join tbl_employee
-		            on fk_team_no = team_no
-		            where delete_status = 1
-		            group by (team_no, team_name)
-		        ) TC
-		        join tbl_team T
-		        on TC.team_no = T.team_no
-		    ) T
-		    join tbl_departments D
-		    on D.department_no = T.fk_department_no
-		    where delete_status = 1
-		)
-		group by (department_no,department_name)
+		        select team_no, team_name, count(employee_no) as total
+		        from tbl_team
+		        left outer join tbl_employee
+		        on fk_team_no = team_no
+		        where delete_status = 1
+		        group by (team_no, team_name)
+		    ) TC
+		    join tbl_team T
+		    on TC.team_no = T.team_no
+		) T
+		join tbl_departments D
+		on D.department_no = T.fk_department_no
+		where delete_status = 1
 	</select>
 	
 	
 	<!-- message_write -->
-	<!-- 주소록 정보 알아오기 -->
 	
-	
-	
+	<!-- 구성원목록 알아오기 -->
+	<select id="getEmpList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
+		from v_employee
+		where status = 1
+		<choose>
+			<when test="searchVal != ''">
+				and #{searchCondition} like '%' || #{searchVal} || '%'
+			</when>
+			<otherwise>
+				
+			</otherwise>
+		
+		</choose>
+		
 
-
+	</select>
 </mapper>
