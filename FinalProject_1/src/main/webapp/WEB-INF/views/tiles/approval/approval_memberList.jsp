@@ -139,15 +139,15 @@
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: -9px;">
-							<input type="text" class="form-control" placeholder="검색" style="border: solid 1px rgba(0, 0, 0, .1);width:90%; width: 192%;font-size: 9pt; padding: 8px 12px;">
+							<input type="text" class="form-control" placeholder="검색어를 입력해주세요" style="border: solid 1px rgba(0, 0, 0, .1);width:90%; width: 192%;font-size: 9pt; padding: 8px 12px;">
 						</div>
 					</div>
 				</div>
-				<div class="align-items-end mt-1 mr-4">
+				<!-- <div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
 						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 7%;"></a>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</form>
 	

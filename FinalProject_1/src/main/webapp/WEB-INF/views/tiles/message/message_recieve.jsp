@@ -3,6 +3,7 @@
 <%@ include file="message_header.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
 	.mg-current{ font-weight: bold; }
 	.check-star > i {
@@ -24,6 +25,7 @@
 $(document).ready(function(){
 	
 	$("#mg-recieve").css("color","#4d4f53");
+	let cururl = "${requestScope.paraMap.cururl}";
 	
 	//mno값을 읽어와서 페이지 넘기기
 	let mno = "${requestScope.paraMap.mno}";
@@ -107,12 +109,12 @@ $(document).ready(function(){
 	});
 	$("span#unread").click(function(e){
 		$("span#unread").css("font-weight","bold");
-		location.href="<%= ctxPath%>/message.up?tab=unread";
+		location.href="<%= ctxPath%>"+cururl+"&tab=unread";
 	});
 	
 	$("span#scrap").click(function(){
 		$("span#unread").css("font-weight","bold");
-		location.href="<%= ctxPath%>/message.up?tab=scrap";
+		location.href="<%= ctxPath%>"+cururl+"&tab=scrap";
 	});
 	
 });//end of ready
@@ -251,14 +253,15 @@ function show_noncheckmenu(){
 							<input type="checkbox" id="mc-star" name="mc-star" style="display: none;"/>
 							<label for="mc-star"><i class="icon icon-star-empty"></i></label>
 						</span>
-						<span id="mc-subject">메시지 제목ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴ</span> <!-- 20자 이내로 제한줘야됨 -->
+						<span id="mc-subject">${requestScope.mvo.subject}</span> <!-- 20자 이내로 제한줘야됨 -->
 						<span class="mgc-header-attach"><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
 					</div>
 					<div class="mgc-from mgc-people">
 						<div>보낸 사람</div>
 						<div>
 							<span class="pic" style="height: 25px; width: 25px; margin-right: 5px;">
-								<span style="font-size: 7pt;">지은</span>
+								<!-- 파일이 없을때만 -->
+								<span style="font-size: 7pt;">${fn:substring(requestScope.mvo.name_kr,1,3)}</span>
 							</span>
 						</div>
 						<div><span>김지은</span>·<span>마케팅</span></div>

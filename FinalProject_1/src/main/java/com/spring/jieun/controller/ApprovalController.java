@@ -1,4 +1,4 @@
-package com.spring.approval.controller;
+package com.spring.jieun.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.finalproject.service.InterFinalprojectService;
+import com.spring.jieun.service.InterApprovalService;
 
 @Controller
 public class ApprovalController {
 	@Autowired
-	private InterFinalprojectService service;
+	private InterApprovalService service;
 	
 	@RequestMapping(value = "/approval.up")
 	public String approval_view(HttpServletRequest request) {

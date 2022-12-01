@@ -1,13 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="approval_header.jsp"%> 
-<%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mdb.min.css"> --%>
-<!-- MDB -->
-<!-- <link href="https://dashboard.wantedspace.ai/css/common.css?version=2020.06.16" rel="stylesheet"/> -->
-<!-- <link href="https://dashboard.wantedspace.ai/css/bootstrap.min.css?__WB_REVISION__=64bbf58572732583d4b3e9a5e65725b8" rel="stylesheet"/>
-<link href="https://dashboard.wantedspace.ai/css/bootstrap-select.min.css?__WB_REVISION__=7551bdcaa335fbd51d4c6095dba2a7bf" rel="stylesheet"/> -->
-<!-- MDB -->
-<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script> -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/index.js"></script>
 
 <style type="text/css">
 
@@ -247,6 +244,7 @@
 		padding: 3.5px 8px;
 		font-size: 10pt;
 	}
+	
 </style>
 
 <script type="text/javascript">
@@ -268,28 +266,50 @@
 			  	/* e.preventDefault(); */
 		});
 		
-
-		$('.js-check-all').on('click', function() {
-
+		
+		/* 체크 모두선택, 모두해제 */ 
+		// 체크박스 개수	
+		var total = $("input[name='ap-selectchx']").length;
+	  $('.ap-selctchx-all').on('click', function() {
 		  	if ( $(this).prop('checked') ) {
-			  	$('th input[type="checkbox"]').each(function() {
+			  	$("input[name='ap-selectchx']").each(function() {
 			  		$(this).prop('checked', true);
 			  	})
+			  	show_checkmenu();
+				$("#check_ctn").text(total);
 		  	} else {
-		  		$('th input[type="checkbox"]').each(function() {
+		  		$("input[name='ap-selectchx']").each(function() {
 			  		$(this).prop('checked', false);
 			  	})
+			  	show_noncheckmenu();
 		  	}
-		  });
+	  });
+	
 		
-		
+	  $("input[name='ap-selectchx']").change(function() {
+			var checked = $("input[name='ap-selectchx']:checked").length;
+			show_checkmenu();
+			
+			if(checked<=0)
+				show_noncheckmenu();
+			$("#check_ctn").text(checked);
+			
+			if(total != checked)
+				$(".ap-selctchx-all").prop("checked", false);
+			else
+				$(".ap-selctchx-all").prop("checked", true); 
+			
+		});
+	  
+	  
 		
 		
 		$(".dropdown-toggle").click(function(){
 			$(".dropdown-menu").addClass("show");
 		})
 		
-		
+		//툴팁 사용
+		var tooltipel = $(".tp").tooltip();
 		
 		
 		 // 플랫피커
@@ -302,6 +322,21 @@
 		});
 	}); //end of ready	
 
+	
+	
+	// 체크했을 때 보이는 메뉴
+	function show_checkmenu(){
+		$(".ap-noncheckmenu").hide();
+		$(".ap-checkmenu").fadeIn("fast");
+		$(".fa-check").css("visibility","visible");
+	}
+	
+	// 체크안할 때 보이는 메뉴
+	function show_noncheckmenu(){
+		$(".ap-checkmenu").hide();
+		$(".ap-noncheckmenu").fadeIn("fast");
+		$(".fa-check").css("visibility","hidden");
+	}
 </script>
  
 
@@ -309,63 +344,89 @@
   
 
 <div class="mt-5 container" >
-	<div class="row">
-		 
 		
-		
-		<form action="#" class="booking-form ml-3 mb-3"  style="float: left;">
-			<div class="row" >
-				<div class="search-period-wr" style="text-align: center;">
-                	<div class="js-search-pickr-layer" data-code="unlimit">
-	                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
-		                	<div class="datebox margin-container">
-		                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">시작일</span>
-								<span><input id="datepick"class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
-							</div>
-					</div>
-                    <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
-	                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
-		                	<div class="datebox margin-container">
-		                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">종료일</span>
-								<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
-							</div>
+	<form action="#" class="booking-form ml-3 mb-3"  style="float: left;">
+		<div class="row" >
+			<div class="search-period-wr" style="text-align: center;">
+               	<div class="js-search-pickr-layer" data-code="unlimit">
+                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
+	                	<div class="datebox margin-container">
+	                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">시작일</span>
+							<span><input id="datepick"class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
 						</div>
-                	</div>
-                	<a href="#" class="btn icon icon-search" style="color: #959ca7;background-color: white;font-size: 1.3rem;position: relative;left: 213px;top: -38px;"></a>
-	            </div>
-				
-				<div>
-					<a href="#" style="color:#4285f4;font-size: 10pt;float: right;">새로불러오기</a>
-				</div>		
-				
-				
+				</div>
+                   <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
+                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
+	                	<div class="datebox margin-container">
+	                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">종료일</span>
+							<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
+						</div>
+					</div>
+               	</div>
+               	<a href="#" class="btn icon icon-search" style="color: #4285f4;background-color: transparent;font-size: 1.1rem;position: relative;left: 213px;top: -36px;"></a>
+            </div>
+			
+		<div style="display: flex;margin-bottom: 10px;height: 30px;    justify-content: space-between;">
+			<div style="display: flex;align-items: center;">
+				<div class="ap-noncheckmenu">
+					<span style="color: rgba(0,0,0,0.7);">전체 <span style="font-weight: bold;">10</span></span>
+				</div> 
+				<div class="ap-checkmenu" style="display: none;align-items: center;">
+					<button id="all-read" class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽음 표시"><i style="color: #959ca7;background-color: white;"class="icon icon-folder-plus"></i></button> <!-- 읽은상태로표시 -->
+					<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽지 않음 표시"><i style="color: #959ca7;background-color: white;" class="icon icon-folder-download"></i></button> <!-- 읽지않은상태로표시 -->
+					<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="승인/합의"><i style="color: #959ca7;background-color: white;" class="icon icon-user-check" style="right: 4px; color: #F29F05;"></i></button> <!-- 중요표시 -->
+					<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="참조자추가"><i style="color: #959ca7;background-color: white;" class="icon icon-user-plus"></i></button> <!-- 삭제 -->
+					<span><span id="check_ctn" style="color:#4285f4;"></span>개 선택</span>
+					<span>/</span>
+					<span style="color: rgba(0,0,0,0.7);">전체 <span style="font-weight: bold;">10</span></span>
+				</div>
 			</div>
 		
-					
-
-    
-		
-		</form>
+			
+			<div style="display: flex;align-items: center;">
+				<a href="#" style="color:#4285f4;font-size: 10pt;float: right;margin-right: 15px;">북마크</a>
+				<a href="#" class="icon icon-spinner11" style="font-size: 10pt;position: relative;color: #bababa;"></a>
+			</div>		
+			
+			
+		</div>
+	
+	</form>
 		 
 		    
 		 
 		 
 		    
-     
-        <table class="table custom-table">   
+     <div>
+        <table class="table custom-table" >   
           <thead>   
             <tr>
-              <th class="boardth" width="3%"scope="col"></th>
+              <th class="boardth" width="3%"scope="col">
+              
+              	<label class="control control--checkbox">
+                  <input type="checkbox" class="ap-selctchx-all"/>
+                  <div class="control__indicator icon icon-checkmark" style="color:white;font-size: 8pt;top: 6px;"></div>
+                 </label>
+              </th>
               <th class="boardth" width="6%"scope="col">북마크</th>
+              	<div class="dropdown-menu">
+				      <h5 class="dropdown-header">문서종류</h5>
+				      <a class="dropdown-item" href="#">전체</a>
+				      <a class="dropdown-item" href="#">일반</a>
+				      <a class="dropdown-item" href="#">연차</a>
+				      <a class="dropdown-item" href="#">업무</a>
+				      <a class="dropdown-item" href="#">지출결의서</a>
+				      <a class="dropdown-item" href="#">증명서</a>
+				 </div>
               <th class="boardth" width="8%"scope="col"><button type="button" data-bs-toggle="dropdown"style="color: #4c4e54;font-weight: bold;border: none; background-color: #ffff;">종류<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
               	<div class="dropdown-menu">
 				      <h5 class="dropdown-header">문서종류</h5>
 				      <a class="dropdown-item" href="#">전체</a>
-				      <a class="dropdown-item" href="#">근태</a>
-				      <a class="dropdown-item" href="#">근무</a>
-				      <a class="dropdown-item" href="#">비용</a>
-				      <a class="dropdown-item" href="#">증명서</a>
 				      <a class="dropdown-item" href="#">일반</a>
+				      <a class="dropdown-item" href="#">연차</a>
+				      <a class="dropdown-item" href="#">업무</a>
+				      <a class="dropdown-item" href="#">지출결의서</a>
+				      <a class="dropdown-item" href="#">증명서</a>
 				 </div>
 			</th>	       
               <th class="boardth" width="17%" scope="col">문서번호</th>  
@@ -377,6 +438,7 @@
 				      <a class="dropdown-item" href="#">진행</a>
 				      <a class="dropdown-item" href="#">완료</a>
 				      <a class="dropdown-item" href="#">반려</a>
+				      <a class="dropdown-item" href="#">취소</a>
 				  </div>
 			  </th>
               <th class="boardth" width="7%"scope="col">첨부파일</th> 
@@ -388,8 +450,8 @@
             <tr> 
               <td> 
               	<label class="control control--checkbox">
-                  <input type="checkbox" class="js-check-all"/>
-                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                  <input type="checkbox" name="ap-selectchx" />
+                  <div class="control__indicator icon icon-checkmark" style="color:white;font-size: 8pt;"></div>
                 </label>
               </td>
               <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
@@ -397,7 +459,7 @@
               <td>2022-11-23-1282450</td>
               <td>지출결의서-법인카드</td>
               <td>
-              	<button type="button" class="btn btn-sm button" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em;">승인</button>
+              	<button type="button" class="btn btn-sm button" style="font-weight: bold !important;border-radius: 2em !important;background-color: #07B4191F; color: #034C0B; ">승인</button>
               </td>
               <td>O</td>
               <td>1개</td>
@@ -406,8 +468,8 @@
              <tr>
               <td> 
               	<label class="control control--checkbox">
-                  <input type="checkbox" class="js-check-all"/>
-                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                  <input type="checkbox" name="ap-selectchx"/>
+                  <div class="control__indicator icon icon-checkmark" style="color:white;font-size: 8pt;"></div>
                 </label>
               </td> 
               <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
@@ -415,7 +477,7 @@
               <td>2022-11-23-1282450</td>
               <td>지출결의서-법인카드</td>
               <td>
-              	<button type="button" class="btn btn-sm button" style="background-color: #F24B171F; color: #661400; border-radius: 2em;">반려</button>
+              	<button type="button" class="btn btn-sm button" style="font-weight: bold !important;border-radius: 2em !important;background-color: #F24B171F; color: #661400; ">반려</button>
 			  </td>
               <td>O</td>
               <td>1개</td>
@@ -424,8 +486,8 @@
              <tr>
               <td> 
               	<label class="control control--checkbox">
-                  <input type="checkbox" class="js-check-all"/>
-                  <div class="control__indicator icon icon-checkmark" style="margin: 1px auto;color:white;font-size: 8pt;"></div>
+                  <input type="checkbox" name="ap-selectchx"/>
+                  <div class="control__indicator icon icon-checkmark" style="color:white;font-size: 8pt;"></div>
                 </label>
               </td> 
               <td><a href="#" class="bookmark icon icon-star-empty"></a></td>
@@ -433,7 +495,7 @@
               <td>2022-11-23-1282450</td>
               <td>지출결의서-법인카드</td>
               <td>
-              	<button type="button" class="btn btn-sm button" style="background-color: #17a6f21f;color: #06689c; border-radius: 2em;">진행중</button>
+              	<button type="button" class="btn btn-sm button" style="font-weight: bold;border-radius: 2em;background-color: #17a6f21f;color: #06689c; ">진행중</button>
 			  </td>
               <td>O</td>
               <td>1개</td>
@@ -443,9 +505,8 @@
           </tbody>  
         </table>
         
-        	<h2 class="mt-3"style="text-align: center;">페이징처리</h2>
+        	<!-- <h2 class="mt-3"style="text-align: center;">페이징처리</h2> -->
       </div>
-		
  
 	</div>
 	
