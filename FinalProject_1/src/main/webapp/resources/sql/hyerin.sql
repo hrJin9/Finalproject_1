@@ -28,8 +28,6 @@ create table tbl_message
 ALTER TABLE tbl_message ADD CONSTRAINT fk_tbl_message_mgroup foreign key(mgroup) references tbl_message(mno);
 ALTER TABLE tbl_message ADD CONSTRAINT fk_tbl_message_reno foreign key(reno) references tbl_message(mno);
 
-alter table tbl_message rename column fk_employee_no to writer;
-
 
 -- seq_tbl_message 시퀀스 생성
 create sequence seq_tbl_message
@@ -98,6 +96,9 @@ create table tbl_authority
 ,constraint CK_tbl_authority_atno check (atno in (1,2,3,4,5))
 );
 
+
+
+select * from tbl_employee
 
 -------------------------------------------------------------------------------
 -- tbl_message에 데이터 넣기
@@ -311,8 +312,12 @@ from
 left join tbl_team
 on fk_team_no = team_no;
 
+select * from tbl_employee
+where employee_no = 100006
 
+select * from tbl_employee
 
+select name_kr
 
 
 
@@ -438,10 +443,49 @@ from tbl_employee
 where status = 1 and employee_no = 
 
 
-update tbl_employee set passwd = '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382'
-
-select * from tbl_employee
 
 commit;
 
 select * from v_employee
+
+
+alter table tbl_employee add dayoff_cnt number default 0;
+
+select * from tbl_employee
+
+-------------------------------------------------------------------------------
+-- tbl_dayoff 테이블 생성
+create table tbl_dayoff
+(dono   varchar2(50)    not null -- 연차번호
+,fk_employee_no number(6)    not null -- 사원번호
+,docnt  number(10) --연차수
+,docatgo    varchar2(50)
+,startdate  date
+,enddate    date
+
+,constraint PK_tbl_dayoff_dono primary key(dono)
+,constraint fk_tbl_dayoff_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
+);
+
+
+-- tbl_attendance 테이블 생성
+create table tbl_attendance
+(adno   varchar2(50)    not null -- 근태번호
+,fk_employee_no number(6)    not null -- 사원번호
+,adcatgo    varchar2(50)
+,startdate  date
+,enddate    date
+
+,constraint PK_tbl_dayoff_adno primary key(adno)
+,constraint fk_tbl_attendance_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
+);
+
+-- tbl_attendance_catgo 테이블 생성
+create table tbl_attendance_catgo
+(adcatgono  number    not null -- 근태종류번호
+,adcatgo    varchar2(50)
+
+,constraint PK_tbl_dayoff_adcatgono primary key(adcatgono)
+);
+
+

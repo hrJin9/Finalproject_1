@@ -7,14 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.chae0.service.InterCalendarService;
 import com.spring.finalproject.service.InterFinalprojectService;
 
 @Controller
 public class CalendarController {
 
 	@Autowired
-	private InterFinalprojectService service;
-	
+	private InterCalendarService service;
+	 
 	@RequestMapping(value = "/calendar.up")
 	public String calendar(HttpServletRequest request) {
 		return "calendar/calendar.tiles";

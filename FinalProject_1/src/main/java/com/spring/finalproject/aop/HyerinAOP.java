@@ -48,24 +48,4 @@ public class HyerinAOP {
 		}
 	}//end of loginCheck
 	
-	// 사이드바체크가 필요한 메소드
-	@Pointcut("execution(public * com.spring..*Controller.*_sc(..) )")
-	public void requiredSidebar() {}
-	
-	@Before("requiredSidebar()")
-	public void sidebarCheck(JoinPoint joinpoint) {
-		joinpoint.getArgs(); // 주업무메소드의 파라미터를 모두 가져옴
-		HttpServletRequest request = (HttpServletRequest) joinpoint.getArgs()[0]; // 주업무메소드의 첫번째 파라미터를 가져옴
-		HttpServletResponse response = (HttpServletResponse) joinpoint.getArgs()[1]; // 주업무메소드의 두번째 파라미터를 가져옴
-
-		HttpSession session = request.getSession();
-		if("0".equals(session.getAttribute("sidebar_yn"))) { //사이드바 작게보기인 경우
-			
-			
-			
-		} else { //사이드바 넓게보기인경우 (0)
-			
-		}
-		
-	}
 }
