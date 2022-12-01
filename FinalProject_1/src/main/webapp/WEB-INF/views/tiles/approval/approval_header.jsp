@@ -59,7 +59,7 @@
 	
 	#subList a {
 		display: block;
-		width: 10%;
+		width: 14%;
 		padding: .9em 0;
 		/* color: #333; */
 		text-align: center;
@@ -72,7 +72,7 @@
 	    position: absolute;
 	    left: 2%;
 	    bottom: -1px;
-	    width: 10%;
+	    width: 14%;
 	    height: 2px;
 	    background: #333;
 	    transition: all .3s ease-in-out;
@@ -147,7 +147,7 @@
 	  color:#bfbfbf;
 	}
 	.icon-star-full{
-		color:#ffc107;
+		color: #0775ff;
 		padding:0 auto;
 		font-size: 11pt;
 		position: relative;
@@ -159,14 +159,11 @@
 		position: relative;
 	}
 	a.icon-star-empty:hover, a.icon-star-full:hover {
-		color: #ffc107;
+		color: #0775ff;
 	}
 	a, a:hover {
     	text-decoration: none !important;
 	}
-	a.icon-star-empty:hover {
-		color: #ffc107;
-    }
 	.title:hover{
 		cursor: pointer; 
 		text-decoration: underline;
@@ -283,7 +280,7 @@
 
 
 <nav id="subList" class="margin-container">
-	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up" style="margin-left: 2%;">상신함</a>
+	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up" style="margin-left: 2%;">내가올린결재</a>
 	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/tome.up" style="margin-left: 3%;">수신함</a>
 	<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
 	<div class="subList_underline"></div>

@@ -55,13 +55,18 @@
 	    color: #605c5c;
 	}
 	
-	@media (min-width: 576px)
+	/* @media (min-width: 576px)
 	.modal-dialog {
     	max-width: 990px !important;
 	}
 	.modal-dialog-centered {
 	    align-items: normal !important;
+    } */
+    
+    modal{
+        background: rgba(0, 0, 0, 0.5);
     }
+    
     
     
     .form-control{
@@ -141,7 +146,7 @@
     height: calc(100% - 220px);
     overflow: auto;
 }
-.dwAYaw .nt-wrapper {
+.dwAYaw .wrapper {
     padding: 10px;
     border: 1px solid rgb(224, 224, 224);
     width: 100%;
@@ -281,7 +286,7 @@
     transition: all .2s;
     width: 100%;
 }
-#myModal2 {
+#myModal_selSignMem {
   overflow: auto;
 } 
 div.option {
@@ -299,8 +304,11 @@ div.option {
     z-index: 1050;
     display: none;
     /* min-width: 430px; */
-    left: 31%;
-    top: 32%;
+    left: 37%;
+    top: 27%;
+    z-index: 3000;
+    display: none;
+    max-width: 25%;
  } 
 div.option:before {
     bottom: 0;
@@ -472,14 +480,21 @@ div#dayoff-temp{
 	});//end of $(document).ready(function(){}---------------
 	 
 	
-	async function showmodal(){
+	function showmodal(){
 		$('#writemodal').modal('show');
 	};
 	
-	function showmodal2(){
-		$('#myModal2').modal('show');
-		
+	function showmodal_selSignMem(){
+		$('#myModal_selSignMem').modal('show');
 	}
+	function showmodal_mySignMade(){
+		$('#myModal_signName').modal('show');
+	}
+	function showmodal_saveSignLine(){
+		$('#myModal_saveSignLine').modal('show');
+	}
+	
+	
 	
 	/* 모달창 닫힐때 confirm 뜨게하기 */
 	function modalclose(){
@@ -493,17 +508,19 @@ div#dayoff-temp{
 	
 	let num = 0;
 	<%-- 옵션창 열리고 닫히고  --%>
-	function optionForm(value, optionnum){
+	function optionForm(value,e){
 		 if(value=="OPEN") {
 			 option.style.display="block";
-			 num = optionnum; //옵션창 열린 박스 넘버 저장 
+			 num = $(e.target).attr("id");
+			 //num = optionnum; //옵션창 열린 박스 넘버 저장 
+			 console.log("옵션창 열릴때 num 값 =>"+num);
 		 }
 		 else{
 			 option.style.display="none";
 		 }
 	}
 	 
-	
+	// 앞에꺼 삭제하고 옵션창 열면 삭제전 값으로 num이 넘겨짐  
 	
 	/* iframe 에서 선택한 멤버 append */
 	function get_memname(memInfo){
@@ -513,7 +530,7 @@ div#dayoff-temp{
 				  +'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_appendmember(event)"></button>'
 				  +'</div>';
 		
-		console.log(num);
+		console.log("멤버append할때 num 값 =>"+num);
 		$("div#memcontent-iframe"+num).append(html);
 	}
 	
@@ -537,7 +554,7 @@ div#dayoff-temp{
 						+`<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(event)"  style="float: right;"></button>`      	  	
 			  	  	+`</div>`
 			  	  	+`<div id="memcontent-iframe`+aprCnt+`"></div>`
-			  	  	+`<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',`+aprCnt+`)">`
+			  	  	+`<button id="`+aprCnt+`" type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',event)">`
 			  	  		+`<span style="color: rgba(36, 42, 48, 0.48);">`
 			  	  			+`<span style="font-size: 10pt;text-align: left;" >대상 검색</span>`
 			  	  		+`</span>`
@@ -565,8 +582,10 @@ div#dayoff-temp{
 				const divid = $this.find("#stepdiv"+j);
 				const divid2 = $this.find("#memcontent-iframe"+j);
 				const spanid = $this.find("#stepspan"+j);
+				const btnid = $this.find("#"+j);
 				
-				--j; // 단계낮추기 
+				--j; // 단계낮추기
+				
 				spanid.text(j+"단계");
 				
 				divid.attr('id',"stepdiv"+j); // id 단계 변경  
@@ -575,6 +594,7 @@ div#dayoff-temp{
 				//console.log("divid2의 id => "+divid2.attr('id'))
 				spanid.attr('id',"stepspan"+j); // id 단계 변경 
 				//console.log("spanid의 id => "+spanid.attr('id'))
+				btnid.attr('id',j); // id 단계 변경 
 				
 				++j;	
 			}
@@ -582,6 +602,7 @@ div#dayoff-temp{
 		});// end of $("div[name='approvalstep']").each(function(){}-------------
 		
 		--aprCnt;
+		console.log("박스 aprCnt =>"+aprCnt);
 		//console.log("추가될 aprCnt =>"+aprCnt);
 	}
 	
@@ -643,8 +664,9 @@ div#dayoff-temp{
 	 
 	<!-- 모달창 -->
 	<!--  aria-labelledby="staticBackdropLabel"  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" -->
+	<%-- ****************** 결재선 상신 모달창 시작 ********************* --%>
 	<div class="modal fade" id="writemodal" tabindex="-1"   aria-labelledby="staticBackdropLabel"  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="min-width:50% !important;max-width: 75% !important;align-items: normal !important;">
+	  <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable" style="min-width:50% !important;max-width: 75% !important;align-items: normal !important;">
 	    <div class="modal-content" style="border:none">
 	      <!-- Modal Header -->
 	      <div class="modal-header">
@@ -846,11 +868,9 @@ div#dayoff-temp{
 		    	
 		    	
 		    	<div width="100%" class="sc-jIRcFI dwAYaw mt-5">
-		    		<span class="control-label"style="margin-bottom: 0;">결재라인</span>
-		    		<button type="button" class="btn" style="border-radius: 6px;font-size: 11px;height: 38px;min-width: 38px;padding: 0 14px;"><i class="icon icon-checkmark" style="margin-right: 10px;"></i><span>저장한 승인라인 가져오기</span></button>
-		    		
+		    		<span class="control-label"style="margin-bottom: 0;">결재라인</span><button type="button" class="btn" style="display: inline-block;border-radius: 6px;font-size: 11px;height: 38px;min-width: 38px;padding: 0 14px;"onclick="showmodal_saveSignLine()"><i class="icon icon-checkmark" style="margin-right: 10px;"></i><span>저장한 결재라인 가져오기</span></button>
 		    		<div class="apv-wrapper  cursor-pointer">
-		    			<table class="table table-fixed my-3" onclick="showmodal2()">
+		    			<table class="table table-fixed my-3" onclick="showmodal_selSignMem()">
 		    				<caption class="sr-only"></caption>
 		    				<thead>
 		    					<tr>
@@ -859,7 +879,7 @@ div#dayoff-temp{
 		    						<th class="sc-hhOBVt iIsGzI">결재자</th>
 		    					</tr>
 		    				</thead>
-		    				<tbody>
+		    	 			<tbody>
 		    				<tr class="sc-gYbzsP dvJzzI no-select">
 		    					<td class="sc-cCjUiG Osauc">
 		    						<div>1</div>
@@ -885,13 +905,13 @@ div#dayoff-temp{
 		    			</tbody>
 		    		</table>
 		    	</div>
-		    	<!-- <div class="nt-wrapper">
+		    	<!-- <div class="wrapper">
 		    		<div>통보</div>
 		    		<div class="sc-cabOPr hDNriY">
 		    			<div>통보자가 없습니다.</div>
 		    		</div>
 		    	</div> -->
-		    	<div class="nt-wrapper">
+		    	<div class="wrapper">
 		    		<div>참조</div>
 		    		<div class="sc-cabOPr hDNriY">
 		    		<div>참조자가 없습니다.</div>
@@ -924,9 +944,12 @@ div#dayoff-temp{
 
   
    
+   
+   
+   <%-- ****************** 결재선 라인 선택 모달창 시작 ********************* --%>
 	
-	<div class="modal fade" id="myModal2"  tabindex="-1"aria-labelledby="staticBackdropLabel" aria-hidden="true"style="background: rgba(0, 0, 0, 0.5);display: none; z-index: 1060;">
-	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 45% !important;align-items: normal !important;">
+	<div class="modal fade " id="myModal_selSignMem"  tabindex="-1"aria-labelledby="staticBackdropLabel" aria-hidden="true"style="background: rgba(0, 0, 0, 0.5);display: none; z-index: 1060;">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-height: 60%;min-height: 60%;top: 15%;">
 	    <div class="modal-content" style="border:none">
 	      <!-- Modal Header -->
 	      <div class="modal-header">
@@ -948,7 +971,7 @@ div#dayoff-temp{
 		      	  	<!-- iframe 선택된 멤버 보여주기  -->
 		      	  	<div id="memcontent-iframe1"></div>
 
-		      	  	<button type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',1)">
+		      	  	<button id="1" type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',event)">
 		      	  		<span style="color: rgba(36, 42, 48, 0.48);">
 		      	  			<span style="font-size: 10pt;text-align: left;" >대상 검색</span>
 		      	  		</span>
@@ -963,16 +986,16 @@ div#dayoff-temp{
 	      	  			<span data-lokalise="true" style="font-size: 10pt;" >+ 단계 추가하기</span>
 	      	  		</span>
 	      	  	</button>
-	      	  	<button type="button" class="mt-1 attendance-dateSelector" style="border-color:white; background-color: white;display: block;width: 100%;">
+	      	  	<!-- <button type="button" class="mt-1 attendance-dateSelector" style="border-color:white; background-color: white;display: block;width: 100%;">
 	      	  		<span class="ant-typography c-iuedIb" style="color: rgb(82 82 82);" >
-	      	  			<span data-lokalise="true" style="font-size: 10pt;" ><!-- <i class="icon icon-upload" style="margin-right: 10px;"></i> -->결재선 불러오기</span>
+	      	  			<span data-lokalise="true" style="font-size: 10pt;" ><i class="icon icon-upload" style="margin-right: 10px;"></i> 결재선 불러오기</span>
 	      	  		</span>
-	      	  	</button>
+	      	  	</button> -->
 	      	  	
             </div>
 
              <div class="modal-footer">
-              <a href="#" style="float: left;color:white;"class="btn bluebtn">개인결재선저장하기</a> 
+              <a href="#" style="float: left;color:white;"class="btn bluebtn" onclick="showmodal_mySignMade()">개인결재선저장하기</a> 
               <!-- <a href="#" data-bs-dismiss="modal" class="btn">취소</a>  -->
               <a href="#" class="btn" style="color:rgb(0 101 204)">확인</a>
             </div> 
@@ -980,15 +1003,71 @@ div#dayoff-temp{
         </div>
     </div>
     
-    
-    
-    
-    <div class="modal fade" id="myModal3"  tabindex="-1"aria-labelledby="staticBackdropLabel" aria-hidden="true"style="background: rgba(0, 0, 0, 0.5);display: none; z-index: 1060;">
-	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 45% !important;align-items: normal !important;">
+
+  
+   
+   
+   
+   <%-- ****************** 저장한 승인라인 모달창 시작 ********************* --%>
+	
+	<div class="modal fade " id="myModal_saveSignLine"  tabindex="-1"aria-labelledby="staticBackdropLabel" aria-hidden="true"style="background: rgba(0, 0, 0, 0.5);display: none; z-index: 1060;">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-height: 60%;min-height: 60%;top: 15%;">
 	    <div class="modal-content" style="border:none">
 	      <!-- Modal Header -->
 	      <div class="modal-header">
-	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1.2rem;">개인결재선으로 저장</h4>
+	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1.2rem;">저장한 결재라인</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button><!-- data-bs-dismiss="modal" -->
+	      </div>
+	     
+	      <!-- Modal body -->
+	      <div class="modal-body " style="padding: 30px;overflow: auto;">
+	      	  
+	      	  <div class="approvalplus">
+	      	  
+		      	  <div id="stepdiv1" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">
+		      	  	<div style="margin-top: 0;">
+			      	  	<span  id="stepspan1" class="spanbox" style="font-weight: bold;display: block;">1단계</span>
+						      	  	
+		      	  	</div>
+		      	  	
+		      	  	<!-- iframe 선택된 멤버 보여주기  -->
+		      	  	<div id="memcontent-iframe1"></div>
+
+		      	  	<button id="1" type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',event)">
+		      	  		<span style="color: rgba(36, 42, 48, 0.48);">
+		      	  			<span style="font-size: 10pt;text-align: left;" >대상 검색</span>
+		      	  		</span>
+		      	  	</button>
+		      	  </div>
+		      	  
+	      	  	</div>
+	      	  
+	      	  
+	      	  	
+            </div>
+
+          </div>
+        </div>
+    </div>
+    
+    
+    
+    
+     
+     
+     
+     
+     
+    
+    
+    <%-- ****************** 결재선 라인 저장 모달창 시작 ********************* --%>
+    
+    <div class="modal fade" id="myModal_signName"  tabindex="-1"aria-labelledby="myModal_signNameLabel" aria-hidden="true"style="background: rgba(0, 0, 0, 0.5);display: none; z-index: 2260;">
+	  <div class="modal-dialog modal-sm modal-dialog-centered" >
+	    <div class="modal-content" style="border:none">
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1rem;">개인결재선으로 저장</h4>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button><!-- data-bs-dismiss="modal" -->
 	      </div>
 	     
@@ -998,7 +1077,7 @@ div#dayoff-temp{
 			<div class="form-group">
 				<span class="form-inputlabel">결재선 이름</span> 
 				<div class="position-relative">
-					<input type="text" id="title" class="form-control" title="" placeholder="제목을 입력해주세요" name="title" value="">
+					<input type="text" id="title" class="form-control" title="" placeholder="" name="title" value="">
 				</div>
 			</div>
 
@@ -1012,7 +1091,9 @@ div#dayoff-temp{
     </div>
 	
 	
-	<div id="option" class="option" style="z-index:3000;">
+	
+	<%-- ****************** 결재선 멤버리스트 시작 ********************* --%>
+	<div id="option" class="option">
 	   <!-- <div style="font-size: 11pt; color: #595959; font-weight: bold; padding-bottom: 20px;">검색 옵션</div> -->
 	   <div id="mwa-container" style="height: 271px;">
 			<iframe id="mwa" name="selmemiframe"style="border: none; width: 100%;height: 280px;" src="<%= request.getContextPath()%>/approval/memberList.up"></iframe>
