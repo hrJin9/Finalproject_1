@@ -7,44 +7,59 @@
 <style>
 	.toastui-editor-defaultUI-toolbar{background-color: white;}
 	.btn:hover{color: white;}
+	#mw-to:hover{cursor:pointer;}
 </style>
 <script>
-	$(document).ready(function(){
-		
-		// 답장번호(reno)가 있을 때 값 미리 넣어주기
-		const mw_to = "${requestScope.mw_to}";
-		const mw_resubject = "${requestScope.mw_resubject}";
-		if(mw_to != null ){
-			$("#mw-to").val(mw_to);
-			$("#mw-subject").val("RE: "+mw_resubject);
-		}
-		
-		
-		
-		<%-- 텍스트 에디터 시작 --%>
-		const editor = new toastui.Editor({
-		    el: document.querySelector("#editor"),
-		    height: "390px",
-		    initialEditType: "wysiwyg",
-		    hooks: {
-		      addImageBlobHook: function (blob, callback) {
-		        const formData = new FormData();
-		        formData.append("image", blob);
-		        const imageURL = imageUpload(formData);
-		        // console.log(imageURL);
-		        callback(imageURL, "image");
-		      },
-		    },
-		    language: 'ko-KR'
-		 });
-		<%-- 텍스트 에디터 끝 --%>
-	});//end of ready
+$(document).ready(function(){
 	
-	// function declaration
-	// 보내기 버튼
-	function goSend(){ 
-		
-	};// end of goSend
+	// 답장번호(reno)가 있을 때 값 미리 넣어주기
+	const mw_to = "${requestScope.mw_to}";
+	const mw_resubject = "${requestScope.mw_resubject}";
+	if(mw_to != null ){
+		$("#mw-to").val(mw_to);
+		$("#mw-subject").val("RE: "+mw_resubject);
+	}
+	
+	//받는사람 입력시 주소록 모달 뜨기
+	$("#mw-to").click(function(){
+		$("#mw-address").trigger("click");
+	});
+	
+	
+	<%-- 텍스트 에디터 시작 --%>
+	const editor = new toastui.Editor({
+	    el: document.querySelector("#editor"),
+	    height: "390px",
+	    initialEditType: "wysiwyg",
+	    hooks: {
+	      addImageBlobHook: function (blob, callback) {
+	        const formData = new FormData();
+	        formData.append("image", blob);
+	        const imageURL = imageUpload(formData);
+	        // console.log(imageURL);
+	        callback(imageURL, "image");
+	      },
+	    },
+	    language: 'ko-KR'
+	 });
+	<%-- 텍스트 에디터 끝 --%>
+});//end of ready
+
+// function declaration
+// 보내기 버튼
+function goSend(){ 
+	
+};// end of goSend
+
+
+// 모달창에서 저장한 값 가져오기
+function setEmp(m_empno, m_empname){
+	$("#empno").val(m_empno);
+	$("#empname").val(m_empname);
+	
+	$("#mw-address-modal").modal('hide');
+}
+	
 
 </script>    
     
@@ -73,7 +88,7 @@
 		<table class="mw-table" style="width: 100%;">
 			<tr>
 				<td>받는 사람</td>
-				<td width="86.4%"><input id="mw-to" type="text" placeholder="받는사람 직접입력"/></td> <!-- 답장하기의 경우 자동으로 입력되게 --> <!-- 클릭시 자동으로 밑에 최근 보낸사람? 뜨게 -->
+				<td width="86.4%"><input id="mw-to" type="text" placeholder="받는사람" readonly/></td> <!-- 답장하기의 경우 자동으로 입력되게 --> <!-- 클릭시 자동으로 밑에 최근 보낸사람? 뜨게 -->
 				<td><button id="mw-address" class="btn" type="button" data-bs-toggle="modal" data-bs-target="#mw-address-modal" data-bs-dismiss="modal">주소록</button></td>
 			</tr>
 			<tr>
@@ -128,9 +143,10 @@
 		</div>
 	</div>
 	
-	
-	
-	
+	<form>
+		<input id="empno" type="text" value="">
+		<input id="empname" type="text" value="">
+	</form>
 	
 
 

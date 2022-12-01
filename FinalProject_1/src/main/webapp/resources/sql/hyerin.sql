@@ -575,5 +575,14 @@ select * from v_employee
 select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
 from v_employee
 where status = 1
-and status = 1 and name_kr like '%'||'강'||'%'
+and name_kr like '%'||'강'||'%'
+
+
+select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
+from v_employee
+where status = 1
+and name_kr like '%' || '강' || '%'
+
+
+
 

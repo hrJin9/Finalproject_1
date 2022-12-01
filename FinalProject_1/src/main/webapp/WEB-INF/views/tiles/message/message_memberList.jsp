@@ -47,7 +47,9 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 
 <style type="text/css">
-	
+.unfold:hover{
+	cursor: pointer;
+}
 </style>
 
 <script type="text/javascript">
@@ -61,12 +63,8 @@ $(document).ready(function(){
 	
 	//검색어 입력할때마다 구성원정보 가져오기
 	$(document).on('keyup',"#searchVal",function(e){
-		if(event.keyCode == 13){
-			const allCnt = $("input:checkbox[name='memberChx']").length;
-			console.log(allCnt);
-			document.getElementById("memberCnt").textContent = allCnt;
-			showEmpList();
-		}
+		$("#memberAll").prop("checked",false); show_noncheckmenu();
+		showEmpList();
 	});//end of keyup
 	
 	
@@ -74,8 +72,7 @@ $(document).ready(function(){
 	//팀이름 클릭시 해당 부서 사람 불러오기
 	$(document).on('click','.orgmenu',function(e){
 		let teamVal = $(e.target).attr("id");
-		console.log(teamVal);
-		$("#serachVal").val("");
+		$("#searchVal").val("");
 		showEmpList(teamVal);
 	});
 	
@@ -143,7 +140,7 @@ $(document).ready(function(){
 	
 	// 모든 조직 펼치기
 	$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
-		$(".summary").click();      // 모든 조직의 summary 클릭
+		$(".summary+ul").toggle();      // 모든 조직의 summary 클릭
 	});
 	
 	
@@ -184,6 +181,11 @@ function check_one(){
 	
 }//end of check_one
 
+//체크박스 전체개수값 구해오기
+function totalChx(){
+	const allCnt = $("input:checkbox[name='memberChx']").length;  // 체크여부 상관없는 모든 체크박스개수
+	$("#memberCnt").text(allCnt);
+}//end of totalChx
 
 //구성원을 구하는 ajax
 function showEmpList(teamVal){
@@ -206,7 +208,7 @@ function showEmpList(teamVal){
 				
 				$.each(json,function(index,item){
 					html += '<tr id="'+item.employee_no+'" class="mem-tr">'+
-								'<td><input type="checkbox" name="memberChx" id="pnum'+index+'" value=""/></td>'+
+								'<td><input type="checkbox" name="memberChx" id="'+item.name_kr+'" value="'+item.employee_no+'"/></td>'+
 								'<td>'+
 									'<div class="profile" href="#" style="padding: 1px;">';
 					if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
@@ -215,7 +217,7 @@ function showEmpList(teamVal){
 						html += '<span class="pic"><span>지은</span></span>';
 					}
 										
-					html +=				'<span class="my">'+
+					html +=	'<span class="my">'+
 											'<span class="name" style="font-size: 10.8pt;">'+item.name_kr+'</span><br>'+
 											'<span class="role" style="font-size: 9pt;">'+item.role+'</span>'+
 										'</span>'+
@@ -235,16 +237,40 @@ function showEmpList(teamVal){
 			}
 			
 			$("#empList").html(html);
+			totalChx();
 			
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		}
 	});//end of ajax
+}//end of showEmpList
+
+
+//체크박스에 체크된 값을 전송하기
+function goSubmit(){
 	
 	
-}
+	//체크된 체크박스들로 employee_no 가져오기
+	const arrEmpno = new Array();
+	const arrEmpname = new Array();
+	$("input:checkbox[name='memberChx']").each(function(index, item){
+		//체크박스유무 검사
+		if($(item).prop("checked")){
+			arrEmpno.push($(item).val());
+			arrEmpname.push($(item).attr("id"));
+		}
+	});
+	const str_empno = arrEmpno.join();
+	const str_empname = arrEmpname.join();
 	
+	parent.setEmp(str_empno, str_empname);
+}//end of goSubmit()
+
+
+
+
+
 </script>
 </head>
 <body>
@@ -260,6 +286,7 @@ function showEmpList(teamVal){
 							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;">
 								<option value="name_kr" selected>이름</option>
 								<option value="department_name">부서</option>
+								<option value="team_name">팀</option>
 								<option value="role">직무</option>
 								<option value="position">직위</option>
 							</select>
@@ -326,7 +353,7 @@ function showEmpList(teamVal){
 			<label for="memberAll">
 				<span id="check_ctn"></span>명 선택
 			</label>
-			<button type="button" id="ml-save" class="gradientbtn btn" style="font-size: 9pt;">저장</button>		
+			<button type="button" id="ml-save" class="gradientbtn btn" style="font-size: 9pt;" onclick="goSubmit()">저장</button>		
 			<button type="button" id="ml-cancel" class="btn">취소</button>
 		</span>
 	</div>

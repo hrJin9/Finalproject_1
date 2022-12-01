@@ -165,16 +165,14 @@
 		select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
 		from v_employee
 		where status = 1
-		<choose>
-			<when test="searchVal != ''">
-				and #{searchCondition} like '%' || #{searchVal} || '%'
-			</when>
-			<otherwise>
-				
-			</otherwise>
-		
-		</choose>
-		
-
+		<if test="searchVal != '' and teamVal == ''">
+			and ${searchCondition} like '%'||#{searchVal}||'%'
+		</if>
+		<if test="searchVal != '' and teamVal != ''">
+			and ${searchCondition} like '%'||#{searchVal}||'%' and fk_team_no = #{teamVal}
+		</if>
+		<if test="searchVal == '' and teamVal != ''">
+			and fk_team_no = #{teamVal}
+		</if>
 	</select>
 </mapper>
