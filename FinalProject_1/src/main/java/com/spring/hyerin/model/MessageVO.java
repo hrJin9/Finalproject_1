@@ -14,6 +14,11 @@ public class MessageVO {
 	private String m_originfilename;
 	private String file_size;
 	private String status;
+	private String w_name;
+	private String w_dept;
+	private String profile_orginfilename;
+	
+	
 	private MultipartFile attach;
 	
 	
@@ -122,6 +127,30 @@ public class MessageVO {
 
 	public void setAttach(MultipartFile attach) {
 		this.attach = attach;
+	}
+
+	public String getW_name() {
+		return w_name;
+	}
+
+	public void setW_name(String w_name) {
+		this.w_name = w_name;
+	}
+
+	public String getW_dept() {
+		return w_dept;
+	}
+
+	public void setW_dept(String w_dept) {
+		this.w_dept = w_dept;
+	}
+
+	public String getProfile_orginfilename() {
+		return profile_orginfilename;
+	}
+
+	public void setProfile_orginfilename(String profile_orginfilename) {
+		this.profile_orginfilename = profile_orginfilename;
 	}
 	
 	

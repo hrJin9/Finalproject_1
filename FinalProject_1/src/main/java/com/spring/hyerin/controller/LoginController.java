@@ -89,24 +89,6 @@ public class LoginController {
 	}// end of logout
 	
 	
-	//세션에 사이드바 정보 저장하기
-	@ResponseBody
-	@RequestMapping(value = "/sbcheck.up", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
-	public String sidebarCheck(HttpServletRequest request) {
-		
-		String sidebar_yn = request.getParameter("sidebar_yn");
-		HttpSession session = request.getSession();
-		session.setAttribute("sidebar_yn", sidebar_yn);
-		System.out.println(session.getAttribute("sidebar_yn"));
-		
-		String sbynstatus = (String)session.getAttribute("sidebar_yn");
-		
-		JSONObject jsonobj = new JSONObject();
-		jsonobj.put("sbynstatus", sbynstatus);
-		
-		return jsonobj.toString();
-	}
-	
 	
 	@RequestMapping(value = "/login/pwdFind.up")
 	public String pwdFind(HttpServletRequest request) {
