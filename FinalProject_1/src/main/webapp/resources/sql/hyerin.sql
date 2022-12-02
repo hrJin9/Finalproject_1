@@ -585,4 +585,7 @@ and name_kr like '%' || '강' || '%'
 
 
 
+alter table tbl_message_send add scrapStatus number default 0
 
+
+select * from tbl_message_send

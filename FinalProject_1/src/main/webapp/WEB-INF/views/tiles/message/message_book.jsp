@@ -122,7 +122,7 @@
 	<div class="mbbox">
 		<table class="mbtb">
 			<tr>
-				<td style="font-weight: 700;">예약날짜 및 시각</td>
+				<td style="font-weight: 700; color:#444444;">예약날짜 및 시각</td>
 				<td><input type="text" id="book-date" class="dateSelector"/></td>
 			</tr>
 			<tr>

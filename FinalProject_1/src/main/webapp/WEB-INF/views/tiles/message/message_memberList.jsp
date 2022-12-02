@@ -93,6 +93,7 @@ $(document).ready(function(){
 		} else {
 			$("input[name='memberChx']").prop("checked",false);
 			show_noncheckmenu();
+			goSubmit();
 		}
 	});
 	
@@ -117,11 +118,13 @@ $(document).ready(function(){
 		check_one();
 	});
 	
-	// 취소 버튼 누를시 선택 모두 해제하기
+	// 취소 버튼 누를시 선택 모두 해제, 값 삭제하기
 	$(document).on('click',"#ml-cancel",function(){
 		$("input[name='memberChx']").prop("checked",false);
 		$("#memberAll").prop("checked",false);
 		show_noncheckmenu();
+		// 저장된 값 삭제하기
+		goSubmit();
 	});
 	
 	
@@ -172,6 +175,7 @@ function check_one(){
 	if(checked<=0) {
 		$("#memberAll").prop("checked", false);
 		show_noncheckmenu();
+		goSubmit();
 	}
 	else if(total != checked){
 		$("#memberAll").prop("checked", true); 
@@ -208,7 +212,7 @@ function showEmpList(teamVal){
 				
 				$.each(json,function(index,item){
 					html += '<tr id="'+item.employee_no+'" class="mem-tr">'+
-								'<td><input type="checkbox" name="memberChx" id="'+item.name_kr+'" value="'+item.employee_no+'"/></td>'+
+								'<td><input type="checkbox" name="memberChx" class="'+item.department_name+'" id="'+item.name_kr+'" value="'+item.employee_no+'"/></td>'+
 								'<td>'+
 									'<div class="profile" href="#" style="padding: 1px;">';
 					if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
@@ -233,7 +237,7 @@ function showEmpList(teamVal){
 				
 				
 			} else {
-				html = '<tr><td width="100%">조회된 구성원이 없습니다.</td></tr>';
+				html = '<tr><td width="100%" style="font-size: 11pt; border-bottom: none;">조회된 구성원이 없습니다.</td></tr>';
 			}
 			
 			$("#empList").html(html);
@@ -248,9 +252,7 @@ function showEmpList(teamVal){
 
 
 //체크박스에 체크된 값을 전송하기
-function goSubmit(){
-	
-	
+function goSubmit(btn){
 	//체크된 체크박스들로 employee_no 가져오기
 	const arrEmpno = new Array();
 	const arrEmpname = new Array();
@@ -258,13 +260,21 @@ function goSubmit(){
 		//체크박스유무 검사
 		if($(item).prop("checked")){
 			arrEmpno.push($(item).val());
-			arrEmpname.push($(item).attr("id"));
+			arrEmpname.push($(item).attr("id")+"·"+$(item).attr("class"));
 		}
 	});
 	const str_empno = arrEmpno.join();
 	const str_empname = arrEmpname.join();
 	
 	parent.setEmp(str_empno, str_empname);
+	
+	if(btn == "save"){ //저장버튼을 눌렀을 경우에만 모달창을 닫는다
+		parent.$("#mw-address-modal").modal('hide');
+		//모달창 닫을때 초기화
+		parent.$("#mw-address-modal").on("hidden.bs.modal",function(){
+			location.reload();
+		});
+	}
 }//end of goSubmit()
 
 
@@ -353,7 +363,7 @@ function goSubmit(){
 			<label for="memberAll">
 				<span id="check_ctn"></span>명 선택
 			</label>
-			<button type="button" id="ml-save" class="gradientbtn btn" style="font-size: 9pt;" onclick="goSubmit()">저장</button>		
+			<button type="button" id="ml-save" class="gradientbtn btn" style="font-size: 9pt;" onclick="goSubmit('save')">저장</button>		
 			<button type="button" id="ml-cancel" class="btn">취소</button>
 		</span>
 	</div>

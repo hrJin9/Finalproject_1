@@ -31,20 +31,24 @@ public class EmployeeVO {
 	private String role;
 	private String position;
 	private String authority;
+	private String dayoff_cnt;
 	
 	
 	public EmployeeVO() {}
 	
-	public EmployeeVO(String employee_no, String fk_department_no, String fk_team_no, String name_kr, String name_en,
-			String passwd, String jointype, String hire_date, String salary, String commission_pct, String mobile,
-			String postcode, String address, String detail_address, String extra_address, String email, String gender,
-			String profile_systemfilename, String profile_orginfilename, String academic_ability, String major,
-			String militaryservice, String bank, String accountnumber, String status, String role, String position,
-			String authority) {
+	
+	public EmployeeVO(String employee_no, String fk_department_no, String department_name, String fk_team_no,
+			String team_name, String name_kr, String name_en, String passwd, String jointype, String hire_date,
+			String salary, String commission_pct, String mobile, String postcode, String address, String detail_address,
+			String extra_address, String email, String gender, String profile_systemfilename,
+			String profile_orginfilename, String academic_ability, String major, String militaryservice, String bank,
+			String accountnumber, String status, String role, String position, String authority, String dayoff_cnt) {
 		super();
 		this.employee_no = employee_no;
 		this.fk_department_no = fk_department_no;
+		this.department_name = department_name;
 		this.fk_team_no = fk_team_no;
+		this.team_name = team_name;
 		this.name_kr = name_kr;
 		this.name_en = name_en;
 		this.passwd = passwd;
@@ -70,7 +74,9 @@ public class EmployeeVO {
 		this.role = role;
 		this.position = position;
 		this.authority = authority;
+		this.dayoff_cnt = dayoff_cnt;
 	}
+
 
 	public String getEmployee_no() {
 		return employee_no;
@@ -312,6 +318,15 @@ public class EmployeeVO {
 		this.team_name = team_name;
 	}
 
+	public String getDayoff_cnt() {
+		return dayoff_cnt;
+	}
+
+	public void setDayoff_cnt(String dayoff_cnt) {
+		this.dayoff_cnt = dayoff_cnt;
+	}
+	
+	
 	
 	
 }
