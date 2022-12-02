@@ -3,7 +3,9 @@ package com.spring.hyerin.model;
 public class EmployeeVO {
 	private String employee_no;
 	private String fk_department_no;
+	private String department_name;
 	private String fk_team_no;
+	private String team_name;
 	private String name_kr;
 	private String name_en;
 	private String passwd;
@@ -19,7 +21,7 @@ public class EmployeeVO {
 	private String email;
 	private String gender;
 	private String profile_systemfilename;
-	private String profile_originfilename;
+	private String profile_orginfilename;
 	private String academic_ability;
 	private String major;
 	private String militaryservice;
@@ -29,20 +31,24 @@ public class EmployeeVO {
 	private String role;
 	private String position;
 	private String authority;
+	private String dayoff_cnt;
 	
 	
 	public EmployeeVO() {}
 	
-	public EmployeeVO(String employee_no, String fk_department_no, String fk_team_no, String name_kr, String name_en,
-			String passwd, String jointype, String hire_date, String salary, String commission_pct, String mobile,
-			String postcode, String address, String detail_address, String extra_address, String email, String gender,
-			String profile_systemfilename, String profile_originfilename, String academic_ability, String major,
-			String militaryservice, String bank, String accountnumber, String status, String role, String position,
-			String authority) {
+	
+	public EmployeeVO(String employee_no, String fk_department_no, String department_name, String fk_team_no,
+			String team_name, String name_kr, String name_en, String passwd, String jointype, String hire_date,
+			String salary, String commission_pct, String mobile, String postcode, String address, String detail_address,
+			String extra_address, String email, String gender, String profile_systemfilename,
+			String profile_orginfilename, String academic_ability, String major, String militaryservice, String bank,
+			String accountnumber, String status, String role, String position, String authority, String dayoff_cnt) {
 		super();
 		this.employee_no = employee_no;
 		this.fk_department_no = fk_department_no;
+		this.department_name = department_name;
 		this.fk_team_no = fk_team_no;
+		this.team_name = team_name;
 		this.name_kr = name_kr;
 		this.name_en = name_en;
 		this.passwd = passwd;
@@ -58,7 +64,7 @@ public class EmployeeVO {
 		this.email = email;
 		this.gender = gender;
 		this.profile_systemfilename = profile_systemfilename;
-		this.profile_originfilename = profile_originfilename;
+		this.profile_orginfilename = profile_orginfilename;
 		this.academic_ability = academic_ability;
 		this.major = major;
 		this.militaryservice = militaryservice;
@@ -68,7 +74,9 @@ public class EmployeeVO {
 		this.role = role;
 		this.position = position;
 		this.authority = authority;
+		this.dayoff_cnt = dayoff_cnt;
 	}
+
 
 	public String getEmployee_no() {
 		return employee_no;
@@ -214,12 +222,12 @@ public class EmployeeVO {
 		this.profile_systemfilename = profile_systemfilename;
 	}
 
-	public String getProfile_originfilename() {
-		return profile_originfilename;
+	public String getProfile_orginfilename() {
+		return profile_orginfilename;
 	}
 
-	public void setProfile_originfilename(String profile_originfilename) {
-		this.profile_originfilename = profile_originfilename;
+	public void setProfile_orginfilename(String profile_orginfilename) {
+		this.profile_orginfilename = profile_orginfilename;
 	}
 
 	public String getAcademic_ability() {
@@ -294,6 +302,31 @@ public class EmployeeVO {
 		this.authority = authority;
 	}
 
+	public String getDepartment_name() {
+		return department_name;
+	}
+
+	public void setDepartment_name(String department_name) {
+		this.department_name = department_name;
+	}
+
+	public String getTeam_name() {
+		return team_name;
+	}
+
+	public void setTeam_name(String team_name) {
+		this.team_name = team_name;
+	}
+
+	public String getDayoff_cnt() {
+		return dayoff_cnt;
+	}
+
+	public void setDayoff_cnt(String dayoff_cnt) {
+		this.dayoff_cnt = dayoff_cnt;
+	}
+	
+	
 	
 	
 }
