@@ -357,14 +357,14 @@ div#dayoff-temp{
 	display:hidden;
 }
 </style> 
-<script>
-	
+<script type="text/javascript">
+
 	$(document).ready(function(){
 		$("#writebtn").hide(); // 글쓰기 버튼 숨기기
-		
 		$("input.dayradio").attr("disabled", true) // 반차 라디오버튼 못누르게  
 		
-		
+		$("input#use-daycnt").val("0");
+		$("input#left-daycnt").val("${sessionScope.loginuser.dayoffcnt}");
 		
 		/* 문서 템플릿  */
 		const timeoff_temp = '';
@@ -741,13 +741,13 @@ div#dayoff-temp{
 					<div class="form-group"style="display:inline-block;position: absolute;">
 						<span class="form-inputlabel">사용연차</span> 
 						<div class="position-relative" style="display:inline-block;top:-1.4px">
-							<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="" class="form-control" value="2" readonly>
+							<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="use-daycnt" class="form-control" value="2" readonly>
 						</div>
 					</div>
 					<div class="form-group"style="display:inline-block;position: relative;right: -61px;top: -20.9px;">
 						<span class="form-inputlabel">잔여연차</span> 
 						<div class="position-relative" style="display:inline-block;top:-1.4px">
-							<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="" class="form-control" value="2" readonly>
+							<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="left-daycnt" class="form-control" value="2" readonly>
 						</div>
 					</div>
 					
@@ -757,9 +757,9 @@ div#dayoff-temp{
 						<div class="custom-control custom-checkbox" style="min-height: auto;padding-bottom: 5px;display: inline-block;">
 	   						
 	   						<input type="checkbox" class="checkbox-disable custom-control-input" id="startdate" name="startdate">
+	   						<label class="custom-control-label form-inputlabel" for="startdate" style="display: inline-block;font-size: 13px;color:#418dd0">시작일</label>
 							
 							<span>   						
-		   						<label class="custom-control-label form-inputlabel" for="startdate" style="display: inline-block;font-size: 13px;color:#418dd0">시작일</label>
 		   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
 					                <input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">
 					                <label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>

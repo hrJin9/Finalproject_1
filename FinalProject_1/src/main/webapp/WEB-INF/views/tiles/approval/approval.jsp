@@ -122,8 +122,14 @@
 	}
 	
 	
-	
-	
+	/* 상태뱃지  */
+	.btn-badge{
+	    padding: 0.1rem 0.4rem !important;
+  	    font-size: .675rem !important;
+  	    cursor: default;
+  	    font-weight: bold !important;
+  	    border-radius: 1.2em;
+	}
 	
 	
 	
@@ -165,40 +171,6 @@
 			margin-top: 0px!important;
 		}
 	
-		a {
-			// border-bottom: 1px solid rgba($black, .1);
-			font-size: 14px;
-			padding: 8px 20px;
-			position: relative;
-			color: $black;
-			&:last-child {
-				border-bottom: none;
-			}
-			.icon {
-				margin-right: 15px;
-				display: inline-block;
-			}
-			&:hover, &:active, &:focus {
-				background: $light;
-				color: $black;
-				.number {
-					color: $white;
-				}
-			}
-	
-			.number {
-				padding: 2px 6px;
-				font-size: 11px;
-				background: $orange;
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				right: 15px;
-				border-radius: 4px;
-				color: $white;
-			}
-		}		
-	
 	}
 	
 	
@@ -222,29 +194,88 @@
 		color: #2e87cd;
 		
 	}
-	#text{
-	 	visibility: hidden;
-	}
+
 </style>
 
 <script type="text/javascript">
 
-	$(document).ready(function(){ 
+	$(document).ready(function(){
+		console.log($("input#searchStartday").val())
 		//console.log($("input#searchStartday").val());
 		
+		// 검색시 검색조건 및 검색어 값 유지시키기
+		/* if( ${not empty requestScope.paraMap} ) {
+			$("select#searchType").val("${requestScope.paraMap.searchType}");
+			$("input#searchWord").val("${requestScope.paraMap.searchWord}");
+		} */
+		// 검색시 검색조건 및 검색어 값 유지시키기
+		if( ${not empty requestScope.searchStartday} ) {
+			$("input#searchStartday").val("${requestScope.searchStartday}")
+		}
+		if( ${not empty requestScope.searchEndday} ) {
+			$("input#searchEndday").val("${requestScope.searchEndday}")
+		}
+		
+		let ap_typeval = "";
+		let signynval = "";
+		let bookmark = "";
+		$("#ap_typemenu a").click(function(e){
+			ap_typeval = $(e.target).text();
+			console.log("ap_typeval => "+ap_typeval);
+			showList(ap_typeval,signynval,bookmark);
+		})
+		$("#signynmenu a").click(function(e){
+			signynval = $(e.target).text();
+			console.log("signynval => "+signynval);
+			showList(ap_typeval,signynval,bookmark)
+		})
+
+		$("input.bkList").change(function(){
+			if($(this).is(":checked")){
+				bookmark = "1";
+			}
+			else{
+				bookmark = "0";
+			}
+			
+			showList(ap_typeval,signynval,bookmark)
+		})
 		
 		/* 북마크 표시 */
 		  $('.bookmark').click(function(e) {
 			  	const $this = $(this);
+		  		const anoval = $this.next().val()
+				let yn = "";
+		  		
+		  		$this.hasClass('icon-star-empty')? yn = 'y': yn = 'n'; 
+			  	
+			  	
+			  	/* 북마크 추가하기&해제하기  find(".anoval").text()*/
+		  		$.ajax({
+					url:"<%= ctxPath%>/approval/addscrap.up",
+					type:"GET",
+					data:{"ano":anoval
+					     ,"yn":yn},
+					dataType:"json",
+					success:function(json){
+						if(json.result = 1){
+						  	if ( $this.hasClass('icon-star-empty') ) {
+						  		$this.removeClass('icon-star-empty');
+						  		$this.addClass('icon-star-full');
+						  	} else {
+						  		$this.removeClass('icon-star-full');
+						  		$this.addClass('icon-star-empty');
+						  	}
+						}
 
-			  	if ( $this.hasClass('icon-star-empty') ) {
-			  		$this.removeClass('icon-star-empty');
-			  		$this.addClass('icon-star-full');
-			  	} else {
-			  		$this.removeClass('icon-star-full');
-			  		$this.addClass('icon-star-empty');
-			  	}
-			  	/* e.preventDefault(); */
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				    }
+				}); 
+		  		
+			  	
+			  	
 		});
 		
 		
@@ -282,8 +313,17 @@
 			
 		});
 	  
-	  
-		
+	  $("#side-expand-a").click(function(){
+			
+			if($("#side-expandcx").is(":checked")){
+				$("#side-expandcx").prop("checked",false);
+				$("#side-expand").css({"background-color":"","transition":"all 0.5s"});
+				$("#side-expand").css({"background-color":"#4285f4"});
+			} else {
+				$("#side-expandcx").prop("checked",true);
+				$("#side-expand").css({"background-color":"#4285f4","transition":"all 0.5s"});
+			}
+	  }) 
 		
 		$(".dropdown-toggle").click(function(){
 			$(".dropdown-menu").addClass("show");
@@ -368,49 +408,59 @@
 		$(".fa-check").css("visibility","hidden");
 	}
 	
-	function showList(){
+	function showList(a,b,c){
 		$.ajax({
 			url:"<%= ctxPath%>/approval/myList.up",
 			type:"GET",
 			data:{"searchStartday":$("input#searchStartday").val()
-				, "searchEndday":$("input#searchStartday").val()},
+				, "searchEndday":$("input#searchEndday").val()
+				, "ap_type":a
+				, "signyn":b
+				, "bookmark":c},
 				 /* ,"searchType":$("select#searchType").val()
 				 ,"searchWord":$("input#searchWord").val()} */
 			dataType:"json",
 			success:function(json){
 				console.log(json.length);
+                let html = "";
+                let html2 = "";
                 if(json.length > 0) {
-                   let html = "";
-                   let html2 = "";
                    $.each(json, function(index, item) {
 	               	   html += '<tr><td><div style="justify-content: unset;margin-top: 6px;"><label class="control control--checkbox">'
 		                 	+'<input type="checkbox" name="ap-selectchx" /><div class="control__indicator icon icon-checkmark" ></div>'
 		   	            	+'</label></div></td>'
-		                	+'<td><div style="margin-top: 6px;"><a href="#" class="bookmark icon icon-star-empty"></a></div></td>'
-		                 	+'<td><div>'+item.ap_type+'</div></td>'
-		                 	+'<td><div>'+item.ano+'</div></td>'
-		                 	+'<td><div>'+item.title+'</div></td><td><div>';
+		                	+'<td>'
+		   	            if(item.bookmark == '0'){
+			   	            html += '<div style="margin-top: 6px;"><a class="bookmark icon icon-star-empty"></a></div>'
+		   	            }else if(item.bookmark == '1'){
+			   	            html += '<div style="margin-top: 6px;"><a class="bookmark icon icon-star-full"></a></div>'
+		   	            }	
+		   	            	
+	   	            	html += '</td>'
+		                 	 +'<td><div>'+item.ap_type+'</div></td>'
+		                 	 +'<td class="anoval"><div>'+item.ano+'</div></td>'
+		                 	 +'<td><div>'+item.title+'</div></td><td><div>';
 		                 	
 		               if(item.final_signyn == "승인"){
-		              		html += '<button type="button" class="btn btn-badge" style="cursor: default;font-weight: bold !important;border-radius: 1.2em;font-size: .675rem;padding: 0.15rem 0.5rem;background-color: #07B4191F; color: #034C0B; ">승인</button>'
+		              		html += '<button type="button" class="btn btn-badge" style="background-color: #07B4191F; color: #034C0B; ">승인</button>'
 		               }
 		               else if(item.final_signyn == "반려"){
-		            	   html += '<button type="button" class="btn btn-sm button" style="font-weight: bold !important;border-radius: 2em !important;background-color: #F24B171F; color: #661400; ">반려</button>'
+		            	   html += '<button type="button" class="btn btn-badge" style="background-color: #F24B171F; color: #661400; ">반려</button>'
 		               }
-		               else if(item.final_signyn == "진행중"){
-		            	   html +=  '<button type="button" class="btn btn-sm button" style="font-weight: bold;border-radius: 2em;background-color: #17a6f21f;color: #06689c; ">진행중</button>'
+		               else if(item.final_signyn == "진행"){
+		            	   html +=  '<button type="button" class="btn btn-badge" style="background-color: #17a6f21f;color: #06689c; ">진행중</button>'
 		               }
 		               
-		               html += '</div></td>';
+		               html += '</div></td><td><div>';
 		               
 		               if(item.ap_systemFileName==0){ // 파일이 없으면 
-		            	   html += '<td><div>X</div></td>';
+		            	   html += 'X';
 		               }
 		               else{
-		            	   html += '<td><div>O</div></td>';
+		            	   html += 'O';
 		               }
 	              	
-	               	   html += '<button type="button" class="btn btn-badge" style="cursor: default;font-weight: bold !important;border-radius: 1.2em;font-size: .675rem;padding: 0.15rem 0.5rem;background-color: #07B4191F; color: #034C0B; ">'+item.final_signyn+'</button></div></td>'
+	               	   html += '</div></td><button type="button" class="btn btn-badge" style="cursor: default;font-weight: bold !important;border-radius: 1.2em;font-size: .675rem;padding: 0.15rem 0.5rem;background-color: #07B4191F; color: #034C0B; ">'+item.final_signyn+'</button></div></td>'
 		                 	+'<td><div>'+item.ap_systemFileName+'</div></td>'
 		                 	+'<td><div>'+item.feedbackcnt+'개</div></td>'
 		                 	+'<td><div>'+item.writeday+'</div></td></tr>';
@@ -420,11 +470,14 @@
 		               }
                    });
                    
+               }else{
+            	   html = "";
+            	   html2 = ""; 
+               }
                    $("#tabledata").html(html);
 				   $("div#pageBar").html(html2);
 				   // console.log(html2);
                      
-               }
 			},
 			error: function(request, status, error){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -459,7 +512,7 @@
 						</div>
 					</div>
                	</div>
-               	<button id="daysearch"class="btn icon icon-search" style="color: rgb(46, 135, 205);background-color: transparent;font-size: 1rem;top: -34px;left: 212px;position: relative;"></button>
+               	<a id="daysearch"class="btn icon icon-search" style="color: rgb(46, 135, 205);background-color: transparent;font-size: 1rem;top: -34px;left: 212px;position: relative;"></a>
             </div>
 			
 		<div style="display: flex;margin-bottom: 10px;height: 30px;font-size: 11pt;justify-content: space-between;">
@@ -480,14 +533,21 @@
 		
 			
 			<div style="display: flex;align-items: center;">
-				<a style="color:#d0d0d0;font-size: 0.9em;font-size: bold;"class="dropdown-link btn" href="#" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20">10개씩 보기</a>
-		           <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="color:#d0d0d0;min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton" >
-		             <a class="dropdown-item" href="#">10개씩 보기</a>
-		             <a class="dropdown-item" href="#">30개씩 보기</a>
-		             <a class="dropdown-item" href="#">50개씩 보기</a>
+				<!-- <a id="bkList"style="cursor:pointer;color: #0775ff;;font-weight: bold;font-size: 9pt;float: right;margin-right: 15px;">북마크</a> --> <!-- 내가북마크한 문서  -->
+				<input class="bkList" type="checkbox" id="toggle" hidden>
+				 <label for="toggle" class="toggleSwitch tp" data-bs-toggle="tooltip" data-bs-placement="top" title="즐겨찾기만">
+				  <span class="toggleButton"></span>
+				</label>
+				
+				<a  class="icon icon-spinner11" style="margin-right:10px;font-size: 10pt;position: relative;color: #d0d0d0;" onclick="showList()"></a> <!-- 문서 새로고침 -->
+				 
+				
+				<a style="color:#d0d0d0;font-size: 0.9em;font-size: bold;cursor: pointer;"class="dropdown-link icon icon-circle-down" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>
+		           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="color:#d0d0d0;min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton" >
+		             <a class="dropdown-item" >10개씩 보기</a>
+		             <a class="dropdown-item" >30개씩 보기</a>
+		             <a class="dropdown-item" >50개씩 보기</a>
 		           </div> 
-				<a href="#" style="color: #0775ff;;font-weight: bold;font-size: 9pt;float: right;margin-right: 15px;">북마크</a> <!-- 내가북마크한 문서  -->
-				<a href="#" class="icon icon-spinner11" style="font-size: 10pt;position: relative;color: #bababa;" onclick="showList()"></a> <!-- 문서 새로고침 --> 
 			</div>		
 		
 		</div>
@@ -503,25 +563,25 @@
                  </label>
               </th>
               <th class="boardth" width="6%"scope="col">북마크</th>
-              <th class="boardth" width="8%"scope="col"><button type="button" data-bs-toggle="dropdown"style="color: #7d7d7d;font-weight: bold;border: none; background-color: #ffff;">종류<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
-              	<div class="dropdown-menu">
+              <th class="boardth" width="8%"scope="col"><button id="ap_type_sel"type="button" data-bs-toggle="dropdown"style="color: #7d7d7d;font-weight: bold;border: none; background-color: #ffff;">종류<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+              	<div id="ap_typemenu" class="dropdown-menu">
 				      <h5 class="dropdown-header">문서종류</h5>
 				      <a class="dropdown-item" href="#">전체</a>
 				      <a class="dropdown-item" href="#">일반</a>
 				      <a class="dropdown-item" href="#">연차</a>
 				      <a class="dropdown-item" href="#">업무</a>
-				      <a class="dropdown-item" href="#">지출결의서</a>
+				      <a class="dropdown-item" href="#">지출</a>
 				      <a class="dropdown-item" href="#">증명서</a>
 				 </div>
 			</th>	       
               <th class="boardth" width="17%" scope="col">문서번호</th>  
               <th class="boardth" width="17%"scope="col">제목</th>
-              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="color: #7d7d7d;font-weight: bold;border: none; background-color: #ffff;">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
-				  <div class="dropdown-menu">
+              <th class="boardth" width="12%" scope="col"><button id="signyn_sel" type="button" data-bs-toggle="dropdown" style="color: #7d7d7d;font-weight: bold;border: none; background-color: #ffff;">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+				  <div id="signynmenu"class="dropdown-menu">
 				      <h5 class="dropdown-header">진행상태</h5>
 				      <a class="dropdown-item" href="#">전체</a>
 				      <a class="dropdown-item" href="#">진행</a>
-				      <a class="dropdown-item" href="#">완료</a>
+				      <a class="dropdown-item" href="#">승인</a>
 				      <a class="dropdown-item" href="#">반려</a>
 				      <a class="dropdown-item" href="#">취소</a>
 				  </div>
@@ -542,9 +602,16 @@
 		            </label>
 		            </div>
 	              </td>
-	              <td><div style="margin-top: 6px;"><a href="#" class="bookmark icon icon-star-empty"></a></div></td>
+	              <td>
+              		<c:if test="${approvalvo.bookmark=='0'}">
+	            		<div style="margin-top: 6px;"><a class="bookmark icon icon-star-empty"></a><input hidden="hidden" type="text" value="${approvalvo.ano}"></div>
+              		</c:if>
+              		<c:if test="${approvalvo.bookmark=='1'}">
+	            		<div style="margin-top: 6px;"><a class="bookmark icon icon-star-full"></a><input hidden="hidden" type="text" value="${approvalvo.ano}"></div>
+              		</c:if>
+              	  </td>
 	              <td><div>${approvalvo.ap_type}</div></td>
-	              <td><div>${approvalvo.ano}</div></td>
+	              <td class="anoval"><div>${approvalvo.ano}</div></td>
 	              <td><div>${approvalvo.title}</div></td>
 	              <td>
 	              	<div>
@@ -552,10 +619,13 @@
 		              		<button type="button" class="btn btn-badge" style="cursor: default;font-weight: bold !important;border-radius: 1.2em;font-size: .675rem;padding: 0.15rem 0.5rem;background-color: #07B4191F; color: #034C0B; ">승인</button>
 	              		</c:if>
 	              		<c:if test="${approvalvo.final_signyn=='반려'}">
-		              		<button type="button" class="btn btn-sm button" style="font-weight: bold !important;border-radius: 2em !important;background-color: #F24B171F; color: #661400; ">반려</button> 
+		              		<button type="button" class="btn btn-badge" style="font-weight: bold !important;border-radius: 2em !important;background-color: #F24B171F; color: #661400; ">반려</button> 
 	              		</c:if>
-	              		<c:if test="${approvalvo.final_signyn=='진행중'}">
-		              		<button type="button" class="btn btn-sm button" style="font-weight: bold;border-radius: 2em;background-color: #17a6f21f;color: #06689c; ">진행중</button>
+	              		<c:if test="${approvalvo.final_signyn=='진행'}">
+		              		<button type="button" class="btn btn-badge" style="font-weight: bold;border-radius: 2em;background-color: #17a6f21f;color: #06689c; ">진행중</button>
+	              		</c:if>
+	              		<c:if test="${approvalvo.final_signyn=='취소'}">
+		              		<button type="button" class="btn btn-badge" style="font-weight: bold;border-radius: 2em;background-color: #17a6f21f;color: #06689c; ">진행중</button>
 	              		</c:if>
 	              	</div>
 	              </td>

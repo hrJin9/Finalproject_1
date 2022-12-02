@@ -19,6 +19,7 @@ public class ApprovalVO {
 	private String writeday; 			// default sysdate      -- 작성일자
 	private String modifyday; 			// 수정일
 	private String fk_ano_refer; 		// 참고문서
+	private String bookmark; 		// 북마크 
 	
 	private String feedbackcnt; 		// 피드백갯수 
 	
@@ -34,6 +35,12 @@ public class ApprovalVO {
 	private String feedback; //  피드백
 	
 	
+	public String getBookmark() {
+		return bookmark;
+	}
+	public void setBookmark(String bookmark) {
+		this.bookmark = bookmark;
+	}
 	public String getModifyday() {
 		return modifyday;
 	}
@@ -55,7 +62,7 @@ public class ApprovalVO {
 		this.final_signyn = final_signyn;
 	}
 	public String getAno() {
-		return ano.substring(2);
+		return ano;
 	}
 	public void setAno(String ano) {
 		this.ano = ano;
