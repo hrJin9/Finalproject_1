@@ -1,5 +1,8 @@
 package com.spring.hyerin.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +17,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.finalproject.common.FileManager;
 import com.spring.finalproject.common.MyUtil;
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.hyerin.model.MessageFileVO;
 import com.spring.hyerin.model.MessageSendVO;
 import com.spring.hyerin.model.MessageVO;
 import com.spring.hyerin.service.InterMessageService;
@@ -219,9 +227,71 @@ public class MessageController {
 	}
 	
 	@RequestMapping(value = "/message/write.up")
-	public ModelAndView messageWrite(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView rl_messageWrite(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
+		//답메시지일 경우
+		String mgroup = request.getParameter("mgroup"); // 원메시지 및 그룹
+		String reno = request.getParameter("reno"); //답메시지 번호
+		String re_subject = request.getParameter("subject");
+		
+		if(mgroup == null) mgroup = "";
+		if(reno == null) reno = "";
+		if(re_subject == null) re_subject = "";
+		else re_subject = "RE: " + request.getParameter("subject");
+		
+//		System.out.println("mgroup: " + mgroup);
+//		System.out.println("reno: " + reno);
+//		System.out.println("re_subject: "+re_subject);
+		
+		mav.addObject("mgroup",mgroup);
+		mav.addObject("reno",reno);
+		mav.addObject("re_subject",re_subject);
 		mav.setViewName("message/message_write.tiles");
+		return mav;
+	}
+	
+	
+	
+	@RequestMapping(value = "/sendMessage.up", method = {RequestMethod.POST})
+	public ModelAndView SendMessage(ModelAndView mav, MultipartHttpServletRequest mrequest, MultipartFile[] attaches, MessageVO mvo, MessageSendVO msvo) throws Exception {
+		
+		// mno 채번해오기
+		String mno = service.getmno();
+		
+		String reno = mvo.getReno();
+		// 1. 메시지 insert
+		if(reno != "") {
+			mvo.setMgroup(mvo.getMgroup());
+			mvo.setReno(reno);
+		}
+		mvo.setMno(mno);
+		mvo.setWriter(mvo.getWriter());
+		mvo.setSubject(mvo.getSubject());
+		mvo.setContent(mvo.getContent());
+		
+		int n = 0;
+		try {
+			n = service.addMessage(attaches, mrequest, msvo, mvo);
+		} catch(Throwable e) {
+			e.printStackTrace();
+		}
+		
+		if(n==1) {
+			System.out.println("모두 성공");
+			mav.setViewName("message/message_send.tiles");
+		} else {
+			String loc = "/message/write.up";
+			String message = "실패";
+			mav.addObject("log",mrequest.getContextPath() + loc);
+			mav.addObject("message",message);
+			mav.setViewName("msg");
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value = "/message/book.up")
+	public ModelAndView messageBook(HttpServletRequest request, ModelAndView mav) {
+		mav.setViewName("tiles/message/message_book");
 		return mav;
 	}
 	
@@ -248,9 +318,6 @@ public class MessageController {
 		String searchCondition = request.getParameter("searchCondition");
 		String searchVal = request.getParameter("searchVal");
 		String teamVal = request.getParameter("teamVal");
-		System.out.println("searchCondition : " + searchCondition);
-		System.out.println("searchVal : " + searchVal);
-		System.out.println("teamVal : " + teamVal);
 		if(searchCondition == null) searchCondition = "";
 		if(searchVal == null) searchVal = "";
 		if(teamVal == null) teamVal = "";
@@ -288,14 +355,6 @@ public class MessageController {
 	}//end of showEmpList
 	
 	
-	
-	
-	@RequestMapping(value = "/message/book.up")
-	public ModelAndView messageBook(HttpServletRequest request, ModelAndView mav) {
-		
-		mav.setViewName("tiles/message/message_book");
-		return mav;
-	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////
 	public String getCurrentURL(HttpServletRequest request) {

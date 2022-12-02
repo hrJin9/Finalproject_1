@@ -3,8 +3,12 @@ package com.spring.hyerin.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.hyerin.model.MessageFileVO;
 import com.spring.hyerin.model.MessageSendVO;
 import com.spring.hyerin.model.MessageVO;
 
@@ -34,5 +38,11 @@ public interface InterMessageService {
 	//구성원 목록을 읽어오기
 	List<EmployeeVO> getEmpList(Map<String, String> paraMap);
 	
+	// mno 채번해오기
+	String getmno();
+	
+	// 메시지 insert
+	int addMessage(MultipartFile[] attaches, MultipartHttpServletRequest mrequest, MessageSendVO msvo, MessageVO mvo) throws Exception;
+
 	
 }

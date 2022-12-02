@@ -12,7 +12,6 @@ public class MessageFileVO {
 	
 	public MessageFileVO(String mfno, String fk_mno, String m_systemfilename, String m_originfilename,
 			String file_size) {
-		super();
 		this.mfno = mfno;
 		this.fk_mno = fk_mno;
 		this.m_systemfilename = m_systemfilename;
@@ -49,6 +48,7 @@ public class MessageFileVO {
 	public void setFile_size(String file_size) {
 		this.file_size = file_size;
 	}
+
 	
 	
 }

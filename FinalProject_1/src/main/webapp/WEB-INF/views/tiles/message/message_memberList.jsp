@@ -63,7 +63,9 @@ $(document).ready(function(){
 	
 	//검색어 입력할때마다 구성원정보 가져오기
 	$(document).on('keyup',"#searchVal",function(e){
-		$("#memberAll").prop("checked",false); show_noncheckmenu();
+		$("#memberAll").prop("checked",false);
+		$("input:checkbox[name='memberChx']").prop("checked",false);
+		show_noncheckmenu();
 		showEmpList();
 	});//end of keyup
 	
@@ -123,8 +125,6 @@ $(document).ready(function(){
 		$("input[name='memberChx']").prop("checked",false);
 		$("#memberAll").prop("checked",false);
 		show_noncheckmenu();
-		// 저장된 값 삭제하기
-		goSubmit();
 	});
 	
 	
@@ -267,13 +267,14 @@ function goSubmit(btn){
 	const str_empname = arrEmpname.join();
 	
 	parent.setEmp(str_empno, str_empname);
+	console.log(str_empname);
 	
 	if(btn == "save"){ //저장버튼을 눌렀을 경우에만 모달창을 닫는다
 		parent.$("#mw-address-modal").modal('hide');
 		//모달창 닫을때 초기화
-		parent.$("#mw-address-modal").on("hidden.bs.modal",function(){
-			location.reload();
-		});
+		//parent.$("#mw-address-modal").on("hidden.bs.modal",function(){
+			//location.reload();
+		//});
 	}
 }//end of goSubmit()
 

@@ -70,5 +70,35 @@ public class MessageDAO implements InterMessageDAO {
 		return empList;
 	}
 	
+	// mno 채번해오기
+	@Override
+	public String getmno() {
+		String mno = sqlsession.selectOne("message.getmno");
+		return mno;
+	}
+	
+	
+	// tbl_message에 메시지 insert하기 
+	@Override
+	public int addMessage(MessageVO mvo) {
+		int n = sqlsession.insert("message.addMessage", mvo);
+		return n;
+	}
+	
+	
+	// tbl_message_file에 insert
+	@Override
+	public int addMF(MessageFileVO mfvo) {
+		int n = sqlsession.insert("message.addMF", mfvo);
+		return n;
+	}
+	
+	// tbl_message_send에 수신자 insert하기
+	@Override
+	public int addMS(MessageSendVO msvo) {
+		int n = sqlsession.insert("message.addMS", msvo);
+		return n;
+	}
+	
 	
 }

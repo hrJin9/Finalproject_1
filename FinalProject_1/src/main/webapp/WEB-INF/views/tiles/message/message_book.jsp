@@ -98,23 +98,44 @@
 		width: 100%; 
 	}
 	
+	tr:hover{
+		background-color: white !important;
+	}
+	
 </style>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		// 플랫피커
-	 	flatpickr.localize(flatpickr.l10ns.ko);
-	 	flatpickr($(".dateSelector"));
-		$(".dateSelector").flatpickr({
-			dateFormat: "Y-m-d H:i",
-			defaultDate: new Date(),
-			enableTime: true,
-			minuteIncrement: 30,
-			local: 'ko'
-		});
+$(document).ready(function(){
+	// 플랫피커
+ 	flatpickr.localize(flatpickr.l10ns.ko);
+ 	flatpickr($(".dateSelector"));
+	$(".dateSelector").flatpickr({
+		dateFormat: "Y-m-d H:i",
+		enableTime: true,
+		minDate: new Date(),
+		minuteIncrement: 30,
+		local: 'ko'
+	});
+
+	// 취소 클릭시 리셋 및 모달창 닫기
+	$("#mb-cancel").click(function(){
+		$("#book-date").val("");
+		parent.getMstime();
+		parent.$("#mw-book-modal").modal('hide');
+	});
 	
-		
-	}); //end of ready
+	//확인버튼 클릭시 예약날짜 input 값 전송
+	$("#mb-submit").click(function(){
+		parent.getMstime($("#book-date").val());
+		parent.$("#mw-book-modal").modal('hide');
+	});
+	
+	
+}); //end of ready
+
+// 
+
+
 </script>
 	
 </head>
@@ -123,7 +144,7 @@
 		<table class="mbtb">
 			<tr>
 				<td style="font-weight: 700; color:#444444;">예약날짜 및 시각</td>
-				<td><input type="text" id="book-date" class="dateSelector"/></td>
+				<td><input type="text" id="book-date" class="dateSelector" placeholder="예약날짜 선택"/></td>
 			</tr>
 			<tr>
 				<td colspan="2">

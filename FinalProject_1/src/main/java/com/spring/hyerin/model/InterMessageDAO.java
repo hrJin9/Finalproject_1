@@ -27,6 +27,18 @@ public interface InterMessageDAO {
 
 	//구성원 목록을 읽어오기
 	List<EmployeeVO> getEmpList(Map<String, String> paraMap);
+	
+	// mno 채번해오기
+	String getmno();
+
+	// tbl_message에 메시지 insert하기 
+	int addMessage(MessageVO mvo);
+	
+	// tbl_message_file에 파일 insert하기
+	int addMF(MessageFileVO mfvo);
+	
+	// tbl_message_send에 수신자 insert하기
+	int addMS(MessageSendVO msvo);
 
 
 }

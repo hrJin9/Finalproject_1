@@ -1863,6 +1863,11 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	padding: 8px 10px;
 }
 
+.mw-table td:first-child{
+	padding-top: 10px;
+	color: #444444;
+}
+
 #mw-to, #mw-subject {
 	width: 100%;
 	border: none;
@@ -1873,17 +1878,16 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 #mw-to:focus, #mw-subject:focus{
 	outline: none;
-	border-bottom: solid 1px #2E83F2;
 }
 
 #mw-address{
-	background: #4d4f53;
 	height: 35px;
 	width: 65px;
 	font-size: 10pt;
 	color: white;
 	border: none;
 	border-radius: 5px;
+	background-color: #4285f4;
 }
 
 

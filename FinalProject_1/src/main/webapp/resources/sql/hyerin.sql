@@ -583,9 +583,14 @@ from v_employee
 where status = 1
 and name_kr like '%' || '강' || '%'
 
+select * from tbl_employee
+
+select * from tbl_message
 
 
-alter table tbl_message_send add scrapStatus number default 0
 
+------------------------------------------------
 
-select * from tbl_message_send
+-- 메시지 insert하기
+insert into tbl_message (mno, writer, mgroup, reno, subject, content, status)
+values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, default)
