@@ -41,11 +41,11 @@ public class MessageDAO implements InterMessageDAO {
 		return msvoList;
 	}
 	
-	// 메시지 보낸시간 알아오기
+	// 메시지의 파일 정보 알아오기
 	@Override
-	public String getmstime(String mno) {
-		String ms_sendtime = sqlsession.selectOne("message.getmstime",mno);
-		return ms_sendtime;
+	public List<MessageFileVO> getmfile(String mno) {
+		List<MessageFileVO> mfList = sqlsession.selectList("message.getmfile", mno);
+		return mfList;
 	}
 	
 	
@@ -99,6 +99,30 @@ public class MessageDAO implements InterMessageDAO {
 		int n = sqlsession.insert("message.addMS", msvo);
 		return n;
 	}
+	
+	// 관련메시지 3개  알아오기
+	@Override
+	public Map<String,String> getmgroupList(Map<String, String> paraMap) {
+		Map<String, String> mgroupList = sqlsession.selectOne("message.getmgroupList",paraMap);
+		return mgroupList;
+	}
+	
+	
+	//해당 메시지 읽음처리하기
+	@Override
+	public int changeMgStatus(MessageSendVO msvo) {
+		int n = sqlsession.update("message.changeMgStatus", msvo);
+		return n;
+	}
+	
+	// 탭별 메시지 개수 알아오기
+	@Override
+	public int getMgCnt(Map<String, String> paraMap) {
+		int mgCnt = sqlsession.selectOne("message.getMgCnt",paraMap);
+		return mgCnt;
+	}
+
+	
 	
 	
 }

@@ -63,11 +63,11 @@ public class MessageService implements InterMessageService {
 		return msvo;
 	}
 	
-	// 메시지 보낸시간 알아오기
+	// 메시지의 파일 정보 알아오기
 	@Override
-	public String getmstime(String mno) {
-		String ms_sendtime = dao.getmstime(mno);
-		return ms_sendtime;
+	public List<MessageFileVO> getmfile(String mno) {
+		List<MessageFileVO> mfList = dao.getmfile(mno); 
+		return mfList;
 	}
 	
 	// 부서 정보 구해오기
@@ -143,12 +143,12 @@ public class MessageService implements InterMessageService {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}//end of for
-			else {
+			}//end of if
+			else { // 첨부파일이 없는 경우
 				m = 1;
 				break;
 			}
-		}
+		}//end of for
 		
 		// 3. tbl_message_send에 메시지 송신 insert
 		if(m == 1) {
@@ -159,16 +159,41 @@ public class MessageService implements InterMessageService {
 				MessageSendVO ist_msvo = new MessageSendVO();
 				ist_msvo.setFk_mno(mvo.getMno());
 				ist_msvo.setReceiver(empno);
-				if(msvo.getMs_sendtime() != "") ist_msvo.setMs_sendtime(msvo.getMs_sendtime());
-				
-				l = dao.addMS(ist_msvo);
+				try {
+					l = dao.addMS(ist_msvo);
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
 		}
-		
-		
-		
 		return l;
 	}//end of addMessage
+	
+	// 관련메시지 3개  알아오기
+	@Override
+	public Map<String,String> getmgroupList(Map<String, String> paraMap) {
+		Map<String,String> mgroupList = dao.getmgroupList(paraMap);
+		return mgroupList;
+	}
+	
+	
+	//해당 메시지 읽음처리하기
+	@Override
+	public int changeMgStatus(MessageSendVO msvo) {
+		int n = dao.changeMgStatus(msvo);
+		return n;
+	}
+	
+	
+	// 탭별 메시지 개수 알아오기
+	@Override
+	public int getMgCnt(Map<String, String> paraMap){
+		int mgCnt = dao.getMgCnt(paraMap);
+		return mgCnt;
+	}
+
+	
+	
 	
 	
 	

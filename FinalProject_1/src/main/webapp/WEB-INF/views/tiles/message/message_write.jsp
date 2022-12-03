@@ -56,14 +56,18 @@
 var filecnt = 1;
 var editer;
 $(document).ready(function(){
-	console.log("${sessionScope.loginuser.employee_no}");
 	
 	// 답장번호(reno)가 있을 때 값 미리 넣어주기
-	const mw_to = "${requestScope.mw_to}";
-	const mw_resubject = "${requestScope.mw_resubject}";
-	if(mw_to != '' ){
-		$("#mw-to").val(mw_to);
-		$("#mw-subject").val("RE: "+mw_resubject);
+	const to = "${requestScope.paraMap.to}";
+	const toname = "${requestScope.paraMap.name}";
+	const re_subject = "${requestScope.paraMap.re_subject}";
+	
+	console.log(re_subject);
+	if(to != '' ){
+		$("#mw-subject").val(re_subject);
+		$("#empno").val(to);
+		$("#empname").val(toname);
+		setEmpname();
 	}
 	
 	//받는사람 입력시 주소록 모달 뜨기
@@ -155,7 +159,12 @@ function setEmp(m_empno, m_empname){
 		
 	} //중복제거 끝
 	
-	// 저장된 값 가공하기
+	setEmpname();
+	
+}//end of setEmp
+
+// 모달창의 값 가공하기
+function setEmpname(){
 	str_empname = $("#empname").val();
 	var empnameArr = str_empname.split(",");
 	var html = '';
@@ -173,11 +182,12 @@ function setEmp(m_empno, m_empname){
 	} else {
 		$("#mw-to").html("");
 	}
-}//end of setEmp
+}
+
 
 // 모달창에서 저장한 메시지 예약전송시간 가지고오기
 function getMstime(mstime){
-	$("#ms_sendtime").val(mstime);
+	$("#sendtime").val(mstime);
 }//end of getMstime
 
 
@@ -221,8 +231,8 @@ function goSend(){
 	
 	const mwform = document.mgwriteFrm;
 	mwform.writer.value = "${sessionScope.loginuser.employee_no}";
-	mwform.mgroup.value = "${requestScope.mgroup}";
-	mwform.reno.value = "${requestScope.reno}";
+	mwform.mgroup.value = "${requestScope.paraMap.mgroup}";
+	mwform.reno.value = "${requestScope.paraMap.reno}";
 	mwform.content.value = content;
 	mwform.action = "<%= ctxPath%>/sendMessage.up";
 	mwform.submit();
@@ -316,7 +326,7 @@ function goSend(){
 	
 		<input id="empno" type="text" name="receiver" value="">
 		<input id="empname" type="text" value="">
-		<input id="ms_sendtime" type="text" name="ms_sendtime" value="">
+		<input id="sendtime" type="text" name="sendtime" value="">
 		<input id="mgroup" type="text" name="mgroup" value="">
 		<input id="reno" type="text" name="reno" value="">
 		<input id="writer" type="text" name="writer" value="">

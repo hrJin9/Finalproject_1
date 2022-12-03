@@ -19,57 +19,68 @@
 		transition: 0.2s;
 	}
 	
+	.tab-now{
+		font-weight: 800 !important;
+		color: rgb(77, 79, 83) !important;
+	}
+	.mgcatgo{
+		font-weight: 600;
+		color: #777777;
+	}
+	.nonmgList:hover{
+		background-color: white !important;
+		cursor: default !important;
+	}
 	
 </style>
 <script>
 
+var oncecnt = 0;
+var tabcnt = 0;
 $(document).ready(function(){
 	
 	$("#mg-recieve").css("color","#4d4f53");
-	$("span#all").css("font-weight","bold");
 	// 첫로딩시 전체 보여주기
-	var tab = "all";
-	getMglist(tab,1);
+	getMglist(1);
 	
-	
+	// 첫로딩시 안읽은 메시지수 보여주기
+	getMgCnt("unread");
+	getMgCnt("all");
+
 	// 전체, 안읽음, 중요 목록 읽어오기
-	$("span#all").click(function(e){
-		$("span#all").css("font-weight","bold");
-		checkall_reset();
-		var tab = "all";
-		getMglist(tab,1);
+	$(document).on("click","span#all", function(e){
+		$(".mgcatgo").removeClass("tab-now"); $(this).addClass("tab-now");
+		mgListbyCatgo();
+		getMgCnt("all");
 	});
 	
-	$("span#unread").click(function(e){
-		$("span#unread").css("font-weight","bold");
-		checkall_reset();
-		var tab = "unread";
-		getMglist(tab,1);
+	$(document).on("click","span#unread", function(e){
+		$(".mgcatgo").removeClass("tab-now"); $(this).addClass("tab-now");
+		mgListbyCatgo();
+		getMgCnt("unread");
 	});
 	
-	$("span#scrap").click(function(){
-		$("span#unread").css("font-weight","bold");
-		checkall_reset();
-		var tab = "scrap";
-		getMglist(tab,1);
+	$(document).on("click","span#scrap", function(){
+		$(".mgcatgo").removeClass("tab-now"); $(this).addClass("tab-now");
+		mgListbyCatgo();
+		getMgCnt("scrap");
 	});
 	
 	//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
 	$(document).on("click",".mgList-contents tr",function(e){
+		if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *") || $(e.target).is("#nonmgList")) return; //중요표시나 체크박스 클릭시 함수 종료
+		
 		$(this).parent().find("tr").css("background-color","white");
-		if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *")) return; //중요표시나 체크박스 클릭시 함수 종료
 		const mno = $(this).attr("id");
-		
 		// 클릭한 tr 색깔 변경하기
-		$("tr#"+mno).css("background-color","rgba(230,230,230,0.6)");
-		
+		$("tr#"+mno).css("background-color","rgba(230,230,230,0.4)");
+		// 메시지 읽음상태로 변경
+		changeStatus(mno);
+		// 안읽은 메시지 개수 갱신
+		getMgCnt("unread");
 		// 클릭한 메시지 정보를 알아오는 ajax
 		selectonemg(mno);
 	});
-	
-
-	
-
 	
 	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
 	$(document).on('change','#mg-selectchx-all',function(){
@@ -121,11 +132,41 @@ $(document).ready(function(){
 	});
 	
 	
+	// 답장하기 버튼 클릭이벤트
+	$(document).on('click',".mgc-writebtn",function(){
+		var mgroup = "";
+		const depthno = $(this).parent().attr("id");
+		if(depthno != "0"){ // 이전 mgroup이 있는 경우
+			mgroup = $(this).find("span:first-child").attr("id");
+		}
+		var reno = $(this).attr("id");
+		var re_subject = $("#mc-subject").text().substr(0,14)+"...";
+		var to = $(this).find("span:nth-child(2)").attr("id");
+		var toname = $(this).find("span:nth-child(3)").attr("id");
+		
+		location.href="<%=ctxPath%>/message/write.up?to="+to+"&name="+toname+"&mgroup="+mgroup+"&reno="+reno+"&depthno="+depthno+"&re_subject="+re_subject;
+		
+	});
 	
 	
+	// 검색input 엔터 이벤트
+	$("#searchVal").keyup(function(e){
+		if(event.keyCode==13){
+			mgListbyCatgo(1);
+			checkall_reset();
+		}
+	});
 	
 	
 });//end of ready
+
+////////////////////////////////////////////////////////////////////////////////////////
+// 중요 등 메시지목록카테고리 클릭 함수
+function mgListbyCatgo(){
+	checkall_reset();
+	getMglist(1);
+}//end of mgListbyCatgo
+
 
 //체크했을 때 보이는 메뉴
 function show_checkmenu(){
@@ -148,25 +189,68 @@ function checkall_reset(){
 	show_noncheckmenu();
 }//end of checkall_change
 
+// 탭별 메시지 개수 알아오기
+function getMgCnt(tab, cnt){
+	if(tab == null){
+		for (var i=0; i<3; i++){
+			if($(".mgcatgo").eq(i).hasClass("tab-now")){
+				tab = $(".mgcatgo").eq(i).attr("id");
+			}
+		}
+	}
+	$.ajax({
+		url: "<%= ctxPath%>/getMgCnt.up",
+		type: "post",
+		data: {"receiver":"${sessionScope.loginuser.employee_no}",
+				"tab":tab},
+		dataType:"json",
+		success:function(json){
+			const mgCnt = json.mgCnt;
+			if(tab == "unread"){
+				$("#unread > span").text(mgCnt);
+				if(tabcnt == 0){
+					tabcnt ++;
+					return;
+				}
+			}
+			$(".mg-noncheckmenu > span:last-child").text(mgCnt);
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+		
+	}); //end of ajax
+
+}//end of getUnreadCnt()
+
 
 //메시지 목록을 가져오는 ajax 
-function getMglist(tab, curpage){
+function getMglist(curpage){
+	
+	const searchCondition = $("#searchCondition").val();
+	const searchVal = $("#searchVal").val();
+	var tab = "";
+	for (var i=0; i<3; i++){
+		if($(".mgcatgo").eq(i).hasClass("tab-now"))
+			tab = $(".mgcatgo").eq(i).attr("id");
+	}
+	
 	$.ajax({
 		url: "<%= ctxPath%>/mglist.up",
 		type: "post",
 		data: {"tab":tab,
-				"curpage":curpage},
+				"curpage":curpage,
+				"searchCondition":searchCondition,
+				"searchVal":searchVal},
 		dataType:"json",
 		success:function(json){
 			let html = '';
-			
 			if(json.length > 0 ){ // 가져올 메시지목록이 있는 경우
 				$.each(json, function(index, item){
 					if(item.ms_checktime == null)
-						html += '<tr id="'+item.mno+'" class="mg-unread">'
+						html += '<tr id="'+item.mno+'" class="mg-unread">';
 					else
-						html += '<tr id="'+item.mno+'" class="mg-read">'
-					
+						html += '<tr id="'+item.mno+'" class="mg-read">';
 					html += '<td width="3%"><input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx'+index+'"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>' + 
 							'<td width="3%">'+
 								'<input id="check-star'+index+'" type="checkbox" name="check-star" style="display: none;"/>'+
@@ -175,39 +259,43 @@ function getMglist(tab, curpage){
 								'</label>'+
 							'</td>'+
 							'<td width="72%">'+
-								'<div>'+
+								'<div id="mg-subjectcontainer">'+
 									'<span id="mg-subject">'+item.subject+'</span>';
-					if(item.file_size != null) // 첨부파일이 있을 경우
+					if(item.filecnt != null) // 첨부파일이 있을 경우
 						html += '<span><i class="fas fa-paperclip"></i></span>';
-					
 					html += '</div>'+
 							'<div><span>'+item.w_name+'</span>·<span>'+item.w_deptname+'</span></div>'+
 							'</td>'+
 							'<td width="22%">'+
-								'<div>'+item.ms_sendtime+'</div>';
-					if(item.file_zie != null) //첨부파일이 있을 경우
-						html += '<div><span>'+item.file_size+'</span>MB</div>';
-					
-					html += '</td>'+
+								'<div>'+item.sendtime+'</div>'+
+							'</td>'+
 							'</tr>';
+							
 				});//end of $.each
 				
 				$(".mgList-contents > table").html(html);
+				//페이지바 함수 호출
+				pgbar(curpage);
+				
+				// 첫로딩시 첫번째 메시지 보여주기
+				if(oncecnt > 0) return;
+				else {
+					var firstmno = $(".mgList-contents table tr:first-child").attr("id");
+					selectonemg(firstmno);
+					oncecnt++;
+				}
+				
 				
 			} else { //가져올 메시지목록이 없는 경우
 				html += '<tr>'+
-						'<td width="100%">조회된 메시지가 없습니다.</td>'+
+						'<td width="100%" id="nonmgList">조회된 메시지가 없습니다.</td>'+
 						'</tr>';
 				$(".mgList-contents > table").html(html);
+				// 페이지 바 없애기
+				$(".mg-paging").html("");
 				return;
 			}
 			
-			//페이지바 함수 호출
-			pgbar(tab, curpage);
-			
-			// 첫로딩시 첫번째 메시지 보여주기
-			var firstmno = $(".mgList-contents table tr:first-child").attr("id");
-			selectonemg(firstmno);	
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -218,17 +306,27 @@ function getMglist(tab, curpage){
 	
 }//end of getMglist
 
-function pgbar(tab, curpage){
+function pgbar(curpage){
+	const searchCondition = $("#searchCondition").val();
+	const searchVal = $("#searchVal").val();
+	var tab = "";
+	for (var i=0; i<3; i++){
+		if($(".mgcatgo").eq(i).hasClass("tab-now"))
+			tab = $(".mgcatgo").eq(i).attr("id");
+	}
+	
 	$.ajax({
 		url: "<%= ctxPath%>/mgtotal.up",
 		data: {"tab":tab,
-				"sizePerPage":2},
+				"sizePerPage":10,
+				"searchCondition":searchCondition,
+				"searchVal":searchVal},
 		type: "post",
 		dataType:"json",
 		success:function(json){
 			if(json.mgtotal > 0){ // 메시지목록이 있는 경우
 				const mgtotal = json.mgtotal;
-				const blockSize = 2;
+				const blockSize = 10;
 				let loop = 1;
 				if(typeof curpage == "string"){
 					curpage = Number(curpage);
@@ -261,6 +359,7 @@ function pgbar(tab, curpage){
 				pageBarHTML += "</ul></nav>";
 				
 				$(".mg-paging").html(pageBarHTML);
+				$("#curpage").val(curpage); //페이지 클릭할때마다 값 저장하기
 				
 			}//end of if
 			
@@ -270,6 +369,28 @@ function pgbar(tab, curpage){
 		}
 	});
 }//end of pgbar
+
+
+
+// 메시지 읽음처리하는 ajax
+function changeStatus(mno){
+	$.ajax({
+		url: "<%= ctxPath%>/changeMgStatus.up",
+		data: {"fk_mno":mno,
+				"receiver":"${sessionScope.loginuser.employee_no}"},
+		async: false,
+		dataType:"json",
+		success:function(json){
+			getMglist($("#curpage").val());
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	}); //end of ajax
+	
+}//end of changeStatus()
+
+
 
 // 메시지 하나 읽어오는 ajax 함수
 function selectonemg(mno){
@@ -314,72 +435,26 @@ function selectonemg(mno){
 						'<div id="mgc-toList"></div>'+
 					'</div>'+
 							'</div>'+
-							'<div class="mgc-header-right">'+
-								'<button type="button" class="mgc-writebtn button gradientbtn btn">'+
-									'<span><i class="fas fa-reply"></i></span>'+
-									'<span>답장하기</span>'+
+							'<div id="'+json.depthno+'" class="mgc-header-right">'+
+								'<button type="button" id="'+json.mno+'" class="mgc-writebtn button gradientbtn btn">'+
+									'<span id="'+json.mgroup+'"><i class="fas fa-reply"></i></span>'+
+									'<span id="'+json.writer+'">답장하기</span>'+
+									'<span id="'+json.w_name+'·'+json.w_dept+'"></span>'+
 								'</button>'+
-								'<div id="mgc-date">2022. 11. 13(화) 오후 1:45</div>'+
+								'<div id="mgc-date">'+json.sendtime+'</div>'+
 							'</div>'+
 						'</div>'+
 						'<hr class="HRhr" style="margin:0px;"/>'+
 						'<div class="mgc-body">'+
 							'<div class="mgc-content">'+json.content+'</div>'+
 							'<div class="accordion mgc-ac" id="accordionPanelsStayOpenExample">'+
-							  '<div class="accordion-item">'+
-							    '<h2 class="accordion-header" id="panelsStayOpen-headingOne">'+
-							      '<button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">'+
-										'<div><i class="fas fa-paperclip"></i></div>'+
-										'<div>첨부파일 <span>1</span></div>'+
-							      '</button>'+
-							    '</h2>'+
-							    '<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">'+
-							      '<div class="accordion-body mgc-attach mgc-ac-content">'+
-							      	'<div>'+
-								      	'<span><i class="fas fa-download"></i></span>'+
-								      	'<span>첨부파일명</span>'+
-								      	'<span>(10MB)</span>'+
-							      	'</div>'+
-							      	'<div>'+
-								      	'<span><i class="fas fa-download"></i></span>'+
-								      	'<span>첨부파일명</span>'+
-								      	'<span>(10MB)</span>'+
-							      	'</div>'+
-							      '</div>'+
-							    '</div>'+
-							  '</div>'+
-							  '<div class="accordion-item">'+
-							    '<h2 class="accordion-header" id="panelsStayOpen-headingTwo">'+
-							      '<button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">'+
-									'<div><i class="fas fa-envelope-open-text"></i></div>'+
-									'<div>주고받은 메시지 <span>1</span></div>'+
-							      '</button>'+
-							    '</h2>'+
-							    '<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">'+
-							      '<div class="accordion-body mgc-ac-content mgc-ac-ref">'+
-							      		'<div class="mg-read mg-now">'+
-							      			'<span><i class="fas fa-envelope-open"></i></span>'+
-							      			'<span>메시지 제목</span>'+
-							      			'<span>2022. 11. 13(화) 오후  1:00</span>'+
-							      		'</div>'+
-							      		'<div class="mg-read">'+
-							      			'<span><i class="fas fa-envelope-open"></i></span>'+
-							      			'<span>메시지 제목</span>'+
-							      			'<span>2022. 11. 13(화) 오후  1:00</span>'+
-							      		'</div>'+
-							      		'<div class="mg-unread">'+
-							      			'<span><i class="fas fa-envelope"></i></span>'+
-							      			'<span>메시지 제목</span>'+
-							      			'<span>2022. 11. 13(화) 오후  1:00</span>'+
-							      		'</div>'+
-							      '</div>'+
-							    '</div>'+
-							  '</div>'+
 							'</div>'+
 						'</div>'+
 					'</div>';
 			
 			$(".mg-right-container").html(html);
+			
+			
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -406,22 +481,101 @@ function selectonemg(mno){
 		}
 	});//end of ajax
 			
-	// 송신시간을 알아오는 ajax
+	
+	// 첨부파일을 알아오는 ajax
 	$.ajax({
-		url: "<%= ctxPath%>/getmstime.up",
+		url: "<%= ctxPath%>/getmfile.up",
 		data: {"mno":mno},
 		type: "post",
 		async: false,
 		dataType:"json",
-		success:function(json3){
-			let dtext = json3.ms_sendtime;
-			$("#mgc-date").text(dtext);
+		success:function(json4){
+			var filecnt = json4.length;
+			
+			if(json4.length > 0){ // 첨부파일이 있는 경우
+				var html = '<div class="accordion-item">'+
+							'<h2 class="accordion-header" id="panelsStayOpen-headingOne">'+
+						      '<button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">'+
+									'<div><i class="fas fa-paperclip"></i></div>'+
+									'<div>첨부파일 <span id="filecnt">'+filecnt+'</span></div>'+
+						      '</button>'+
+						    '</h2>'+
+						    '<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">'+
+						      '<div class="accordion-body mgc-attach mgc-ac-content">';
+				$.each(json4, function(index, item){
+					html += '<div>'+
+						      	'<span><i class="fas fa-download"></i></span>'+
+						      	'<span>'+item.m_originfilename+'</span>'+
+						      	'<span style="color: #999999; font-weight: 500;"> ('+item.file_size+'bytes)</span>'+
+					      	'</div>';
+				});
+				html +=  '</div>'+
+						'</div>'+
+					  '</div>';
+			
+				$("#accordionPanelsStayOpenExample").append(html);
+			}
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		}
 	});//end of ajax
+	
+	
+	// 관련메시지 3개를 알아오는 ajax
+	$.ajax({
+		url: "<%= ctxPath%>/getmgroupList.up",
+		data: {"mno":mno,
+				"receiver":"${sessionScope.loginuser.employee_no}"},
+		type: "post",
+		async: false,
+		dataType:"json",
+		success:function(json5){
+			if(json5.n_mno != null || json5.b_mno != null){ //관련메시지가 있을 때
+				var html = '<div id="mgroup" class="accordion-item">'+
+						    '<h2 class="accordion-header" id="panelsStayOpen-headingTwo">'+
+						      '<button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">'+
+								'<div><i class="fas fa-envelope-open-text"></i></div>'+
+								'<div>주고받은 메시지 <span>'+'</span></div>'+
+						      '</button>'+
+						    '</h2>'+
+						    '<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">'+
+						      '<div class="accordion-body mgc-ac-content mgc-ac-ref">';
+				if(json5.n_mno != null){
+					html += '<div id="'+json5.n_mno+'" class="mg-unread">'+
+									'<span><i class="fas fa-envelope-open-text"></i></span>'+
+									'<span>'+json5.n_subject+'</span>'+
+									'<span style="position:relative; right: 20px;">'+json5.n_writer+'</span>'+
+					      			'<span style="font-size:9pt;">'+json5.n_sendtime+'</span>'+
+			      			'</div>';
+				}
+					html+=			'<div id="'+json5.mno+'" class="mg-unread mg-now">'+
+											'<span><i class="fas fa-envelope-open-text"></i></span>'+
+											'<span>'+json5.subject+'</span>'+
+											'<span style="position:relative; right: 20px;">'+json5.writer+'</span>'+
+							      			'<span style="font-size:9pt;">'+json5.sendtime+'</span>'+
+					      			'</div>';
+				if(json5.b_mno != null){
+					html +=	'<div id="'+json5.b_mno+'" class="mg-unread">'+
+								'<span><i class="fas fa-envelope-open-text"></i></span>'+
+								'<span>'+json5.b_subject+'</span>'+
+								'<span style="position:relative; right: 20px;">'+json5.b_writer+'</span>'+
+				      			'<span style="font-size:9pt;">'+json5.b_sendtime+'</span>'+
+		      			'</div>';
+				}
+				html += '</div>'+
+						    '</div>'+
+						  '</div>';
+						  
+				$("#accordionPanelsStayOpenExample").append(html);
+			}//end of if
 			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});//end of ajax
+	
 	
 	
 }//end of selectonemg
@@ -437,20 +591,20 @@ function selectonemg(mno){
 <div class="message-container">
 	<div class="mg-left-container">
 		<div class="mgList-info">
-			<span id="all" >전체</span>
-			<span id="unread">안읽음<span>5</span></span>
-			<span id="scrap">중요<span>2</span></span>
+			<span id="all" class="mgcatgo tab-now">전체</span>
+			<span id="unread" class="mgcatgo">안읽음<span></span></span>
+			<span id="scrap" class="mgcatgo">중요</span>
 			<div class="mg-search">
-				<form action="#" class="mg-form">
+				<form action="#" class="mg-form" onsubmit="return false">
 				<%-- 검색 --%>
 				<div>
 					<div class="form-group">
 						<div class="form-field">
 							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
-								<option value="" selected>전체</option>
-								<option value="">보낸이</option>
-								<option value="">제목</option>
-								<option value="">내용</option>
+								<option value="all" selected>전체</option>
+								<option value="writer">보낸이</option>
+								<option value="subject">제목</option>
+								<option value="content">내용</option>
 							</select>
 						</div>
 					</div>
@@ -458,7 +612,7 @@ function selectonemg(mno){
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: -9px;">
-							<input type="text" class="form-control" placeholder="검색" style="width:90%; font-size: 9pt; padding:6px 12px;">
+							<input id="searchVal" type="text" class="form-control" placeholder="검색" style="width:90%; font-size: 9pt; padding:6px 12px;">
 						</div>
 					</div>
 				</div>
@@ -496,112 +650,14 @@ function selectonemg(mno){
 				<table>
 				</table>
 			</div>
-			<div class="mg-paging">
+			<div class="mg-paging" style="margin-top: 10px;">
 			</div>
 		</div>
 	</div>
 	
 	<div class="mg-right-container">
-	<%-- 
-		<div class="mgc-container">
-			<div class="mgc-header">
-				<div class="mgc-header-left">
-					<div class="mgc-subject">
-						<span>
-							<input type="checkbox" id="mc-star" name="mc-star" style="display: none;"/>
-							<label for="mc-star"><i class="icon icon-star-empty"></i></label>
-						</span>
-						<span id="mc-subject"></span> <!-- 20자 이내로 제한줘야됨 -->
-						<span class="mgc-header-attach"><i class="fas fa-paperclip"></i></span> <!-- 첨부파일 있을 때만 -->
-					</div>
-					<div class="mgc-from mgc-people">
-						<div>보낸 사람</div>
-						<div>
-							<span class="pic" style="height: 25px; width: 25px; margin-right: 5px;">
-								<!-- 파일이 없을때만 -->
-								<span style="font-size: 7pt;">${fn:substring(requestScope.mvo.name_kr,1,3)}</span>
-							</span>
-						</div>
-						<div><span>김지은</span>·<span>마케팅</span></div>
-					</div>
-					<div class="mgc-to mgc-people">
-						<div>받는 사람</div>
-						<div><span>김지은</span>·<span>마케팅</span></div>
-						<div>, <span>김지은</span>·<span>마케팅</span></div>
-						<div>, <span>김지은</span>·<span>마케팅</span></div>
-						<div>, <span>김지은</span>·<span>마케팅</span></div>
-						<div> 외 7명</div>
-					</div>
-				</div>
-				<div class="mgc-header-right">
-					<button type="button" class="mgc-writebtn button gradientbtn btn"> <!-- 메시지 보낸사람이 본인이라면 이 버튼이 뜨면 안됨! -->
-						<span><i class="fas fa-reply"></i></span>
-						<span>답장하기</span>
-					</button>
-					<div id="mgc-date">2022. 11. 13(화) 오후 1:45</div>
-				</div>
-			</div>
-			<hr class="HRhr" style="margin:0px;"/>
-			<div class="mgc-body">
-				<div class="mgc-content">어쩌구저쩌구.....메시지 내용</div>
-				<!-- 첨부파일, 관련메시지 아코디언 시작 -->
-				<div class="accordion mgc-ac" id="accordionPanelsStayOpenExample">
-				  <div class="accordion-item">
-				    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-				      <button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
-							<div><i class="fas fa-paperclip"></i></div>
-							<div>첨부파일 <span>1</span></div> <!-- 없으면 0이라고 뜸 -->
-				      </button>
-				    </h2>
-				    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
-				      <div class="accordion-body mgc-attach mgc-ac-content">
-				      	<div>
-					      	<span><i class="fas fa-download"></i></span>
-					      	<span>첨부파일명</span>
-					      	<span>(10MB)</span>
-				      	</div>
-				      	<div>
-					      	<span><i class="fas fa-download"></i></span>
-					      	<span>첨부파일명</span>
-					      	<span>(10MB)</span>
-				      	</div>
-				      </div>
-				    </div>
-				  </div>
-				  <div class="accordion-item">
-				    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-				      <button class="accordion-button collapsed mgc-more" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-						<div><i class="fas fa-envelope-open-text"></i></div>
-						<div>주고받은 메시지 <span>1</span></div> <!-- 없으면 0이라고 뜸 -->
-				      </button>
-				    </h2>
-				    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-				      <div class="accordion-body mgc-ac-content mgc-ac-ref">
-				      		<div class="mg-read mg-now"> <!-- 현재 보고있는 파일인 경우 mg-now 추가  -->
-				      			<span><i class="fas fa-envelope-open"></i></span>
-				      			<span>메시지 제목</span>
-				      			<span>2022. 11. 13(화) 오후  1:00</span>
-				      		</div>
-				      		<!-- 읽은 메시지 -->
-				      		<div class="mg-read">
-				      			<span><i class="fas fa-envelope-open"></i></span>
-				      			<span>메시지 제목</span>
-				      			<span>2022. 11. 13(화) 오후  1:00</span>
-				      		</div>
-				      		<!-- 안읽은 메시지 -->
-				      		<div class="mg-unread">
-				      			<span><i class="fas fa-envelope"></i></span>
-				      			<span>메시지 제목</span>
-				      			<span>2022. 11. 13(화) 오후  1:00</span>
-				      		</div>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-				<!-- 첨부파일, 관련메시지 아코디언 끝 -->
-			</div>
-		</div>
-		 --%>
 	</div>
+	
+	<input id="curpage" type="text" value=""/>
 
 </div>

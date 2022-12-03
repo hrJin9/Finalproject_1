@@ -26,8 +26,11 @@ public interface InterMessageService {
 	// 메시지 수신자 정보 알아오기
 	List<MessageSendVO> getmsvoList(String mno);
 	
-	// 메시지 보낸시간 알아오기
-	String getmstime(String mno);
+	
+	// 메시지의 파일 정보 알아오기
+	List<MessageFileVO> getmfile(String mno);
+	
+	
 	
 	// 부서 정보 구해오기
 	List<DepartmentsVO> getdept();
@@ -43,6 +46,17 @@ public interface InterMessageService {
 	
 	// 메시지 insert
 	int addMessage(MultipartFile[] attaches, MultipartHttpServletRequest mrequest, MessageSendVO msvo, MessageVO mvo) throws Exception;
+
+	// 관련메시지 3개  알아오기
+	Map<String,String> getmgroupList(Map<String, String> paraMap);
+	
+	//해당 메시지 읽음처리하기
+	int changeMgStatus(MessageSendVO msvo);
+	
+	
+	// 탭별 메시지 개수 알아오기
+	int getMgCnt(Map<String, String> paraMap);
+	
 
 	
 }

@@ -9,6 +9,7 @@ public class MessageSendVO {
 	private String r_name;
 	private String r_dept;
 	private String profile_orginfilename;
+	private String receiverstatus;
 	
 	public MessageSendVO(){}
 
@@ -83,6 +84,14 @@ public class MessageSendVO {
 
 	public void setProfile_orginfilename(String profile_orginfilename) {
 		this.profile_orginfilename = profile_orginfilename;
+	}
+
+	public String getReceiverstatus() {
+		return receiverstatus;
+	}
+
+	public void setReceiverstatus(String receiverstatus) {
+		this.receiverstatus = receiverstatus;
 	}
 	
 	

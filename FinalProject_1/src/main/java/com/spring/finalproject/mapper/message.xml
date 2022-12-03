@@ -16,38 +16,45 @@
 		<result property="reno" column="reno" javaType="String"/>
 		<result property="subject" column="subject" javaType="String"/>
 		<result property="content" column="content" javaType="String"/>
-		<result property="ms_sendtime" column="ms_sendtime" javaType="String"/>
+		<result property="sendtime" column="sendtime" javaType="String"/>
 		<result property="ms_checktime" column="ms_checktime" javaType="String"/>
+		<result property="depthno" column="depthno" javaType="String"/>
+		<result property="filecnt" column="filecnt" javaType="String"/>
 	</resultMap>
 	<select id="getmvoList" parameterType="HashMap" resultMap="getmvoList_Map">
-		select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status
+		select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status, depthno, filecnt
 		from
 		(
-		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, ms_sendtime, ms_checktime, TM.status
+		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status, depthno
 		    from
 		    (
-		        select row_number() over(order by ms_sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, ms_sendtime, ms_checktime
+		        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
-		        <if test="tab == 'all'">
-		        	where receiver = #{empno} and status = 1
-		        </if>
-		         <if test="tab == 'unread'">
-			        where receiver = #{empno} and status = 1 and ms_checktime is null
+		        where receiver = #{empno} and delete_status = 1
+		        <if test="tab == 'unread'">
+			        and ms_checktime is null
 		        </if>
 		        <if test="tab == 'scrap'">
-					join tbl_scrap S
-					on S.tno = mno
-					where receiver = #{empno} and status = 1
+					and scrapstatus = 1
+		        </if>
+				<if test="searchCondition != 'writer' and searchVal != ''">
+		        	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
 		        </if>
 		    ) TM
 		    left join v_employee E
 		    on E.employee_no = writer
-		    order by ms_sendtime desc
+		    <if test="searchCondition == 'writer' and serachVal != ''">
+		    	where name_kr like '%'||lower(#{searchVal})||'%'
+		    </if>
+		    order by sendtime desc
 		) TMM
 		left join v_employee
 		on employee_no = receiver
+		left join
+		(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
+		on mno = fk_mno
 		where rno between #{startRno} and #{endRno}
 	</select>
 	
@@ -56,28 +63,30 @@
 		select ceil(count(*)/#{sizePerPage})
 		from
 		(
-		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, ms_sendtime, ms_checktime, TM.status
+		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status
 		    from
 		    (
-		        select row_number() over(order by ms_sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, ms_sendtime, ms_checktime
+		        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
-		        <if test="tab == 'all'">
-		        	where receiver = #{empno} and status = 1
-		        </if>
-		         <if test="tab == 'unread'">
-			        where receiver = #{empno} and status = 1 and ms_checktime is null
+		        where receiver = #{empno} and delete_status = 1
+		        <if test="tab == 'unread'">
+			         and ms_checktime is null
 		        </if>
 		        <if test="tab == 'scrap'">
-					join tbl_scrap S
-					on S.tno = mno
-					where receiver = #{empno} and status = 1
+					and scrapstatus = 1
+		        </if>
+		        <if test="searchCondition != 'writer' and searchVal != ''">
+		        	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
 		        </if>
 		    ) TM
 		    left join v_employee E
 		    on E.employee_no = writer
-		    order by ms_sendtime desc
+		    <if test="searchCondition == 'writer' and serachVal != ''">
+		    	where name_kr like '%'||lower(#{searchVal})||'%'
+		    </if>
+		    order by sendtime desc
 		) TMM
 		left join v_employee
 		on employee_no = receiver
@@ -90,14 +99,14 @@
 	
 	<!-- 메시지 내용 -->
 	<select id="getmvo" parameterType="String" resultType="com.spring.hyerin.model.MessageVO">
-		select mno, reno, writer, name_kr as w_name, department_name as w_dept, subject, content, profile_orginfilename
+		select mno, mgroup,reno, writer, name_kr as w_name, department_name as w_dept, subject, content, to_char(sendtime, 'yyyy. mm. dd AM hh:mi') as sendtime, profile_orginfilename, depthno
 		from tbl_message join v_employee on employee_no = writer
 		where mno = #{mno}
 	</select>
 	
 	<!-- 수신자정보 -->
 	<select id="getmsvoList" parameterType="String" resultType="com.spring.hyerin.model.MessageSendVO">
-		select fk_mno, receiver, name_kr as r_name, department_name as r_dept, profile_orginfilename, to_char(ms_sendtime, 'yyyy. mm. dd AM hh:mi') as ms_sendtime
+		select fk_mno, receiver, name_kr as r_name, department_name as r_dept, profile_orginfilename
 		from tbl_message_send join v_employee on receiver = employee_no
 		where fk_mno = #{mno}
 	</select>
@@ -105,16 +114,17 @@
 	
 	<!-- 보낸시간 가져오기 -->
 	<select id="getmstime" parameterType="String" resultType="String">
-		select distinct to_char(ms_sendtime, 'yyyy. mm. dd AM hh:mi') as ms_sendtime
-		from tbl_message_send
-		where fk_mno = #{mno}
+		select distinct to_char(sendtime, 'yyyy. mm. dd AM hh:mi') as sendtime
+		from tbl_message
+		where mno = #{mno}
 	</select>
 	
 	
 	<!-- 메시지 파일 가져오기  -->
 	<select id="getmfile" parameterType="String" resultType="com.spring.hyerin.model.MessageFileVO">
-		
-	
+		select mfno, fk_mno, m_systemfilename, m_originfilename, file_size
+		from tbl_message_file
+		where fk_mno = #{fk_mno}
 	</select>
 	
 	
@@ -155,8 +165,6 @@
 	</select>
 	
 	
-	<!-- message_write -->
-	
 	<!-- 구성원목록 알아오기 -->
 	<select id="getEmpList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
 		select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
@@ -182,12 +190,18 @@
 	
 	<!-- tbl_message에 메시지 하나 insert하기 -->
 	<insert id="addMessage" parameterType="com.spring.hyerin.model.MessageVO">
-		insert into tbl_message (mno, writer, mgroup, reno, subject, content, status)
-		<if test="reno != ''">
-			values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, default)
+		insert into tbl_message (mno, writer, mgroup, reno, subject, content, sendtime, status, depthno)
+		<if test="mgroup != '' and sendtime != ''">
+			values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, to_date(#{sendtime},'yyyy/mm/dd hh24:mi'), default, #{depthno}+1)
 		</if>
-		<if test="reno == ''">
-			values(#{mno}, #{writer}, #{mno}, null, #{subject}, #{content}, default)
+		<if test="mgroup != '' and sendtime == ''">
+			values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, sysdate, default, #{depthno}+1)
+		</if>
+		<if test="mgroup == '' and sendtime != ''">
+			values(#{mno}, #{writer}, #{mno}, null, #{subject}, #{content}, to_date(#{sendtime},'yyyy/mm/dd hh24:mi'), default, default)
+		</if>
+		<if test="mgroup == '' and sendtime == ''">
+			values(#{mno}, #{writer}, #{mno}, null, #{subject}, #{content}, sysdate, default, default)
 		</if>
 	</insert>
 	
@@ -200,15 +214,78 @@
 	
 	<!-- tbl_message_send에 수신자 insert하기 -->
 	<insert id="addMS" parameterType="com.spring.hyerin.model.MessageSendVO">
-		insert into tbl_message_send (msno, fk_mno, receiver, ms_sendtime, ms_checktime, scrapstatus)
-		<if test="ms_sendtime != ''">
-			values('ms-'||seq_tbl_message_send.nextval, #{fk_mno}, #{receiver}, to_date(#{ms_sendtime},'yyyy/mm/dd hh24:mi'), null, default)
-		</if>
-		<if test="ms_sendtime == ''">
-			values('ms-'||seq_tbl_message_send.nextval, #{fk_mno}, #{receiver}, sysdate, null, default)
-		</if>
+		insert into tbl_message_send (msno, fk_mno, receiver, ms_checktime, scrapstatus)
+		values('ms-'||seq_tbl_message_send.nextval, #{fk_mno}, #{receiver}, null, default)
 	</insert>
 	
+	
+	<!-- 주고받은 메시지(관련메시지) 최근 3개 알아오기 -->
+	<resultMap type="HashMap" id="getmgroupList_Map">
+		<result property="n_mno" column="n_mno" javaType="String"/>
+		<result property="n_writer" column="n_writer" javaType="String"/>
+		<result property="n_subject" column="n_subject" javaType="String"/>
+		<result property="n_sendtime" column="n_sendtime" javaType="String"/>
+		<result property="mno" column="mno" javaType="String"/>
+		<result property="writer" column="writer" javaType="String"/>
+		<result property="subject" column="subject" javaType="String"/>
+		<result property="sendtime" column="sendtime" javaType="String"/>
+		<result property="b_mno" column="b_mno" javaType="String"/>
+		<result property="b_writer" column="b_writer" javaType="String"/>
+		<result property="b_subject" column="b_subject" javaType="String"/>
+		<result property="b_sendtime" column="b_sendtime" javaType="String"/>
+	</resultMap>
+	
+	<select id="getmgroupList" parameterType="HashMap" resultMap="getmgroupList_Map">
+		select n_mno, n_writer, n_subject, to_char(n_sendtime, 'yyyy. mm. dd AM hh:mi') as n_sendtime, mno, writer, subject, to_char(sendtime, 'yyyy. mm. dd AM hh:mi') as sendtime, b_mno, name_kr||'·'||department_name as b_writer, b_subject, to_char(b_sendtime, 'yyyy. mm. dd AM hh:mi') as b_sendtime
+		from
+		(
+		    select n_mno, n_writer, n_subject, n_sendtime, MF.mno, MF.writer, MF.subject, MF.sendtime, b_mno, B.writer as b_writer, B.subject as b_subject, B.sendtime as b_sendtime
+		    from
+		    (
+		        select n_mno, name_kr||'·'||department_name as n_writer, n_subject,n_sendtime, mno, writer, subject, sendtime,b_mno
+		        from
+		        (
+		        select n_mno, N.writer as n_writer, N.subject as n_subject, N.sendtime as n_sendtime, M.mno, M.writer, M.sendtime, M.subject, M.b_mno
+		        from
+		        (
+		           select LAG(mno) OVER (ORDER BY to_number(substr(mno,3))) as n_mno, 
+		                  mno, subject, name_kr||'·'||department_name as writer, sendtime,
+		                  LEAD(mno) OVER (ORDER BY to_number(substr(mno,3))) as b_mno
+		           from tbl_message
+		           join v_employee on writer = employee_no
+		           where mgroup = (select mgroup from tbl_message where mno = #{mno})
+		        ) M
+		        left join tbl_message N
+		        on N.mno = M.n_mno
+		        ) 
+		        left join v_employee on employee_no = n_writer
+		    ) MF
+		    left join tbl_message B
+		    on MF.b_mno = B.mno
+		)
+		left join v_employee on employee_no = b_writer
+		where mno = #{mno}
+	</select>
+	
+	<!-- 메시지 읽음처리하기 -->
+	<update id="changeMgStatus" parameterType="com.spring.hyerin.model.MessageSendVO">
+		update tbl_message_send set ms_checktime = sysdate
+		where fk_mno = #{fk_mno} and receiver = #{receiver}
+	</update>
+	
+	
+	<!-- 메시지 개수 알아오기 -->
+	<select id="getMgCnt" parameterType="HashMap" resultType="int">
+		select count(*) from tbl_message_send
+		where receiver = #{receiver}
+		<if test="tab == 'unread'">
+			and ms_checktime is null
+		</if>
+		<if test="tab == 'scrap'">
+			and scrapstatus = 1
+		</if>
+		
+	</select>
 	
 	
 </mapper>

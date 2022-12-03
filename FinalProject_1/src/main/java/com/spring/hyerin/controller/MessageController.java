@@ -2,6 +2,7 @@ package com.spring.hyerin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.xmlbeans.impl.jam.mutable.MField;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,18 +52,32 @@ public class MessageController {
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put("mno",mno);
-		//현재 페이지 저장
-		/*
-		 * String cururl = getCurrentURL(request); if(cururl.contains("&tab")) { int
-		 * firsttab = cururl.indexOf("&tab"); cururl =
-		 * cururl.replaceAll(cururl.substring(firsttab), ""); }
-		 * paraMap.put("cururl",cururl);
-		 */
 		
 		mav.addObject("paraMap",paraMap);
 		mav.setViewName("message/message_recieve.tiles");
 		return mav;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getMgCnt.up", produces = "text/plain;charset=UTF-8")
+	public String getUnreadCnt(HttpServletRequest request, ModelAndView mav) {
+		String receiver = request.getParameter("receiver");
+		String tab = request.getParameter("tab");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("receiver",receiver);
+		paraMap.put("tab",tab);
+		
+		// 탭별 메시지 개수 알아오기
+		int mgCnt = service.getMgCnt(paraMap);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("mgCnt", mgCnt);
+		
+		return jsonobj.toString();
+	}//end of getUnreadCnt
+
+	
 	
 	
 	@ResponseBody
@@ -70,6 +86,11 @@ public class MessageController {
 		
 		// 탭정보 가져오기
 		String tab = request.getParameter("tab"); // "all", "unread", "scrap"
+		// 검색정보 가져오기
+		String searchCondition = request.getParameter("searchCondition");
+		String searchVal = request.getParameter("searchVal");
+		if("all".equals(searchCondition)) searchCondition = "subject";
+		if(searchVal == null) searchVal = ""; 
 		
 		// 로그인된 유저 정보(receiver) 가져오기
 		HttpSession session = request.getSession();
@@ -77,7 +98,7 @@ public class MessageController {
 		String empno = emp.getEmployee_no();
 		
 		String curpage = request.getParameter("curpage");
-		int sizePerPage = 2;
+		int sizePerPage = 10;
 		if (curpage == null) curpage = "1";
 		int startRno = ((Integer.parseInt(curpage) - 1) * sizePerPage) + 1;
 		int endRno = startRno + sizePerPage - 1;
@@ -85,6 +106,8 @@ public class MessageController {
 		// 맵에 정보값 넣어주기
 		Map<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put("tab", tab);
+		paraMap.put("searchCondition", searchCondition);
+		paraMap.put("searchVal", searchVal);
 		paraMap.put("empno", empno);
 		paraMap.put("startRno", String.valueOf(startRno));
 		paraMap.put("endRno", String.valueOf(endRno));
@@ -107,12 +130,9 @@ public class MessageController {
 				jsonobj.put("reno", map.get("reno"));
 				jsonobj.put("subject", map.get("subject"));
 				jsonobj.put("content", map.get("content"));
-				jsonobj.put("m_systemfilename", map.get("m_systemfilename"));
-				jsonobj.put("m_originfilename", map.get("m_originfilename"));
-				jsonobj.put("file_size", map.get("file_size"));
-				jsonobj.put("ms_sendtime", map.get("ms_sendtime"));
+				jsonobj.put("sendtime", map.get("sendtime"));
 				jsonobj.put("ms_checktime", map.get("ms_checktime"));
-				
+				jsonobj.put("filecnt", map.get("filecnt"));
 				jsonarr.put(jsonobj);
 			}//end of for
 		}//end of if
@@ -131,9 +151,16 @@ public class MessageController {
 		String tab = request.getParameter("tab");
 		String sizePerPage = request.getParameter("sizePerPage");
 		
+		// 검색정보 가져오기
+		String searchCondition = request.getParameter("searchCondition");
+		String searchVal = request.getParameter("searchVal");
+		if("all".equals(searchCondition)) searchCondition = "subject";
+		if(searchVal == null) searchVal = ""; 
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put("tab",tab);
+		paraMap.put("searchCondition", searchCondition);
+		paraMap.put("searchVal", searchVal);
 		paraMap.put("sizePerPage",sizePerPage);
 		paraMap.put("empno",empno);
 		
@@ -145,6 +172,19 @@ public class MessageController {
 		
 		return jsonobj.toString();
 	}//end of mgtotal
+	
+	@ResponseBody
+	@RequestMapping(value = "/changeMgStatus.up", produces = "text/plain;charset=UTF-8")
+	public String changeMgStatus(HttpServletRequest request, MessageSendVO msvo, ModelAndView mav) {
+		
+		//해당 메시지 읽음처리하기
+		int n = service.changeMgStatus(msvo);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("n",n);
+		
+		return jsonobj.toString();
+	}//end of selectOnemgReceivers
 	
 	
 	@ResponseBody
@@ -159,15 +199,15 @@ public class MessageController {
 		// 메시지 내용정보 저장하기
 		JSONObject jsonobj = new JSONObject();
 		jsonobj.put("mno", mvo.getMno());
+		jsonobj.put("mgroup", mvo.getMgroup());
 		jsonobj.put("reno", mvo.getReno());
 		jsonobj.put("writer", mvo.getWriter());
 		jsonobj.put("w_name", mvo.getW_name());
 		jsonobj.put("w_dept", mvo.getW_dept());
 		jsonobj.put("subject", mvo.getSubject());
 		jsonobj.put("content", mvo.getContent());
-		jsonobj.put("m_systemfilename", mvo.getM_systemfilename());
-		jsonobj.put("m_originfilename", mvo.getM_originfilename());
-		jsonobj.put("file_size", mvo.getFile_size());
+		jsonobj.put("sendtime", mvo.getSendtime());
+		jsonobj.put("depthno", mvo.getDepthno());
 		jsonobj.put("profile_orginfilename", mvo.getProfile_orginfilename());
 		
 		return jsonobj.toString();
@@ -197,19 +237,58 @@ public class MessageController {
 		return jsonarr.toString();
 	}//end of selectOnemgReceivers
 	
+	
 	@ResponseBody
-	@RequestMapping(value = "/getmstime.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
-	public String getmstime(HttpServletRequest request, ModelAndView mav) {
+	@RequestMapping(value = "/getmfile.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String getmfile(HttpServletRequest request, HttpServletResponse response ,ModelAndView mav) {
 		String mno = request.getParameter("mno");
 		
-		// 메시지 보낸시간 알아오기
-		String ms_sendtime = service.getmstime(mno);
+		// 한 메시지의 파일 정보 알아오기
+		List<MessageFileVO> mfList = service.getmfile(mno);
+		
+		JSONArray jsonarr = new JSONArray();
+		for(MessageFileVO mf : mfList) {
+			
+			JSONObject jsonobj = new JSONObject();
+			jsonobj.put("m_systemfilename", mf.getM_systemfilename());
+			jsonobj.put("m_originfilename", mf.getM_originfilename());
+			jsonobj.put("file_size", mf.getFile_size());
+			jsonarr.put(jsonobj);
+		}
+		
+		return jsonarr.toString();
+	}//end of selectOnemgReceivers
+	
+	@ResponseBody
+	@RequestMapping(value = "/getmgroupList.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String getmgroupList(HttpServletRequest request, HttpServletResponse response ,ModelAndView mav) {
+		String mno = request.getParameter("mno");
+		String receiver = request.getParameter("receiver");
+		
+		Map<String,String> paraMap = new HashMap<String, String>();
+		paraMap.put("mno", mno);
+		paraMap.put("receiver", receiver);
+		
+		// 관련메시지 3개  알아오기
+		Map<String,String> mgroup = service.getmgroupList(paraMap);
 		
 		JSONObject jsonobj = new JSONObject();
-		jsonobj.put("ms_sendtime", ms_sendtime);
+		jsonobj.put("n_mno", mgroup.get("n_mno"));
+		jsonobj.put("n_writer", mgroup.get("n_writer"));
+		jsonobj.put("n_subject", mgroup.get("n_subject"));
+		jsonobj.put("n_sendtime", mgroup.get("n_sendtime"));
+		jsonobj.put("mno", mgroup.get("mno"));
+		jsonobj.put("writer", mgroup.get("writer"));
+		jsonobj.put("subject", mgroup.get("subject"));
+		jsonobj.put("sendtime", mgroup.get("sendtime"));
+		jsonobj.put("b_mno", mgroup.get("b_mno"));
+		jsonobj.put("b_writer", mgroup.get("b_writer"));
+		jsonobj.put("b_subject", mgroup.get("b_subject"));
+		jsonobj.put("b_sendtime", mgroup.get("b_sendtime"));
 		
 		return jsonobj.toString();
 	}//end of selectOnemgReceivers
+	
 	
 	
 	@RequestMapping(value = "/message/send.up")
@@ -219,12 +298,6 @@ public class MessageController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/message/temp.up")
-	public ModelAndView messageTemp(HttpServletRequest request, ModelAndView mav) {
-		
-		mav.setViewName("message/message_temp.tiles");
-		return mav;
-	}
 	
 	@RequestMapping(value = "/message/write.up")
 	public ModelAndView rl_messageWrite(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
@@ -232,20 +305,25 @@ public class MessageController {
 		//답메시지일 경우
 		String mgroup = request.getParameter("mgroup"); // 원메시지 및 그룹
 		String reno = request.getParameter("reno"); //답메시지 번호
-		String re_subject = request.getParameter("subject");
+		String re_subject = request.getParameter("re_subject");
+		String to = request.getParameter("to");
+		String name = request.getParameter("name");
+		String depthno = request.getParameter("depthno");
 		
 		if(mgroup == null) mgroup = "";
 		if(reno == null) reno = "";
 		if(re_subject == null) re_subject = "";
-		else re_subject = "RE: " + request.getParameter("subject");
+		else re_subject = "RE: " + re_subject;
 		
-//		System.out.println("mgroup: " + mgroup);
-//		System.out.println("reno: " + reno);
-//		System.out.println("re_subject: "+re_subject);
+		Map<String,String> paraMap = new HashMap<String, String>();
+		paraMap.put("mgroup", mgroup);
+		paraMap.put("reno", reno);
+		paraMap.put("re_subject", re_subject);
+		paraMap.put("to", to);
+		paraMap.put("name", name);
+		paraMap.put("depthno", depthno);
 		
-		mav.addObject("mgroup",mgroup);
-		mav.addObject("reno",reno);
-		mav.addObject("re_subject",re_subject);
+		mav.addObject("paraMap",paraMap);
 		mav.setViewName("message/message_write.tiles");
 		return mav;
 	}
@@ -258,16 +336,16 @@ public class MessageController {
 		// mno 채번해오기
 		String mno = service.getmno();
 		
-		String reno = mvo.getReno();
+		String mgroup = mvo.getMgroup();
 		// 1. 메시지 insert
-		if(reno != "") {
+		if( mgroup != "") {
 			mvo.setMgroup(mvo.getMgroup());
-			mvo.setReno(reno);
+			mvo.setReno(mvo.getReno());
 		}
 		mvo.setMno(mno);
-		mvo.setWriter(mvo.getWriter());
-		mvo.setSubject(mvo.getSubject());
-		mvo.setContent(mvo.getContent());
+//		mvo.setWriter(mvo.getWriter());
+//		mvo.setSubject(mvo.getSubject());
+//		mvo.setContent(mvo.getContent());
 		
 		int n = 0;
 		try {
@@ -277,11 +355,10 @@ public class MessageController {
 		}
 		
 		if(n==1) {
-			System.out.println("모두 성공");
 			mav.setViewName("message/message_send.tiles");
 		} else {
 			String loc = "/message/write.up";
-			String message = "실패";
+			String message = "메시지 전송이 실패되었습니다.";
 			mav.addObject("log",mrequest.getContextPath() + loc);
 			mav.addObject("message",message);
 			mav.setViewName("msg");

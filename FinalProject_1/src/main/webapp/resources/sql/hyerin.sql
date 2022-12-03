@@ -434,13 +434,13 @@ commit;
 
 
 -- 스크랩한거 보여주는거
-select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status, filecnt
 from
 (
-    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
+    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content,ms_sendtime, ms_checktime, TM.status
     from
     (
-        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+        select mno, writer, receiver, mgroup, reno, subject, content, status, ms_sendtime, ms_checktime
         from tbl_message M
         join tbl_message_send MS
         on M.mno = MS.fk_mno
@@ -451,11 +451,12 @@ from
 ) TMM
 left join v_employee
 on employee_no = receiver
-join tbl_scrap S
-on S.tno = mno
+left join
+(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
+on mno = fk_mno
 where receiver = '100006' and TMM.status = 1
 
-
+select * from tbl_message_file
 
 -- 메시지목록 전체개수 구하기
 select ceil(count(*)/10)
@@ -483,7 +484,7 @@ on employee_no = receiver
 -------------------------------------------------------------------------------
 
 -- tbl_message 에서 해당 메시지 하나 내용을 알아오기
-select mno, reno, writer, name_kr as w_name, department_name as w_dept, subject, content, m_systemfilename, m_originfilename, file_size, profile_orginfilename
+select mno, reno, writer, name_kr as w_name, department_name as w_dept, subject, content
 from tbl_message join v_employee on employee_no = writer
 
 select * from tbl_message
@@ -587,10 +588,137 @@ select * from tbl_employee
 
 select * from tbl_message
 
+delete from tbl_message where mno = 'm-21'
 
 
+commit;
 ------------------------------------------------
 
 -- 메시지 insert하기
 insert into tbl_message (mno, writer, mgroup, reno, subject, content, status)
 values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, default)
+
+select * from tbl_message_file
+
+-- 메시지 파일에 insert하기
+insert into tbl_message_file (mfno, fk_mno, m_systemfilename, m_originfilename, file_size)
+values('mf-'||seq_tbl_message_file.nextval, #{fk_mno}, #{m_systemfilename}, #{m_originfilename}, #{file_size})
+
+select * from tbl_message_send
+
+-- tbl_message_send 메시지 수신자에 insert하기
+insert into tbl_message_send (msno, fk_mno, receiver, ms_sendtime, ms_checktime, scrapstatus)
+values('ms-'||seq_tbl_message_send.nextval, #{fk_mno}, #{receiver}, #{ms_sendtime}, null, default)
+
+
+-------------------------------------------------------------------------------
+
+select * from tbl_message
+where mno = 'm-58'
+
+select * from tbl_message_send
+where fk_mno = 'm-58'
+
+
+select * from tbl_message_send
+
+select * from tbl_message_file
+
+
+--  메시지파일 읽어오기
+select mfno, fk_mno, m_systemfilename, m_originfilename, file_size
+from tbl_message_file
+where fk_mno = #{fk_mno}
+
+
+
+
+select * from tbl_message_send 
+
+select * from tbl_message
+
+-- 관련메시지 현재것과 관련된 이전, 다음글 3개만 가져오기 
+select mno, mgroup,name_kr, department_name, subject, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, receiverstatus
+from
+    (select row_number() over(order by ms_sendtime desc) as rno, mno, mgroup, name_kr, department_name, subject, ms_sendtime, receiverstatus
+    from
+        (
+        select distinct mno, mgroup, name_kr, department_name, subject, ms_sendtime ,receiverstatus
+        from tbl_message
+        left join tbl_message_send
+        on mno = fk_mno
+        left join v_employee
+        on writer = employee_no
+        where mgroup = (select mgroup from tbl_message where mno = 'm-12') 
+        and mno in (
+        select n_mno, mno, b_mno
+            from (
+                   select LAG(mno) OVER (ORDER BY to_number(substr(mno,3))) as n_mno,
+                   mno,
+                   LEAD(mno) OVER (ORDER BY to_number(substr(mno,3))) as b_mno
+                   from tbl_message
+                   where mgroup = (select mgroup from tbl_message where mno = 'm-12')
+                 )
+            where mno = 'm-12'        
+        )        
+        order by to_number(substr(mno,3))
+        )
+    )
+
+
+
+-- 관련메시지 3개 읽어오기...ㅜ
+select n_mno, n_writer, n_subject,n_sendtime, mno, writer, subject, sendtime, b_mno, name_kr||'·'||department_name as b_writer, b_subject, b_sendtime
+from
+(
+    select n_mno, n_writer, n_subject, n_sendtime, MF.mno, MF.writer, MF.subject, MF.sendtime, b_mno, B.writer as b_writer, B.subject as b_subject, B.sendtime as b_sendtime
+    from
+    (
+        select n_mno, name_kr||'·'||department_name as n_writer, n_subject,n_sendtime, mno, writer, subject, sendtime,b_mno
+        from
+        (
+        select n_mno, N.writer as n_writer, N.subject as n_subject, N.sendtime as n_sendtime, M.mno, M.writer, M.sendtime, M.subject, M.b_mno
+        from
+        (
+           select mgroup, LAG(mno) OVER (ORDER BY to_number(substr(mno,3))) as n_mno, mno, subject, name_kr||'·'||department_name as writer, sendtime, LEAD(mno) OVER (ORDER BY to_number(substr(mno,3))) as b_mno
+           from tbl_message
+           join v_employee on writer = employee_no
+           where mgroup = (select mgroup from tbl_message where mno = 'm-16')
+        ) M
+        left join tbl_message N
+        on N.mno = M.n_mno
+        ) 
+        left join v_employee on employee_no = n_writer
+    ) MF
+    left join tbl_message B
+    on MF.b_mno = B.mno
+)
+left join v_employee on employee_no = b_writer
+where mno = 'm-16'
+
+
+select * from tbl_message_send whe
+
+select * from tbl_departments
+
+alter table tbl_message_send add delete_status number default 1
+
+select * from tbl_message_send
+
+
+alter table tbl_message_send drop column receiverstatus;
+
+
+-- 메시지 전체 목록 읽어오기
+select count(*) from tbl_message_send
+where receiver = 100006
+
+--안읽었을때
+select count(*) from tbl_message_send
+where receiver = 100006
+and ms_checktime is null
+
+
+
+
+
