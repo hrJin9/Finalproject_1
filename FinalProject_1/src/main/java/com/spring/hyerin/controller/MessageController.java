@@ -43,7 +43,7 @@ public class MessageController {
 	
 	@Autowired
 	private FileManager fileManager;
-
+	
 	@RequestMapping(value = "/message.up")
 	public ModelAndView rl_messageHome(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
@@ -133,6 +133,8 @@ public class MessageController {
 				jsonobj.put("sendtime", map.get("sendtime"));
 				jsonobj.put("ms_checktime", map.get("ms_checktime"));
 				jsonobj.put("filecnt", map.get("filecnt"));
+				jsonobj.put("scrapstatus", map.get("scrapstatus"));
+				jsonobj.put("delete_status", map.get("delete_status"));
 				jsonarr.put(jsonobj);
 			}//end of for
 		}//end of if
@@ -192,9 +194,14 @@ public class MessageController {
 	public String selectOnemg(HttpServletRequest request, ModelAndView mav) {
 		
 		String mno = request.getParameter("mno");
+		String receiver = request.getParameter("receiver");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("mno",mno);
+		paraMap.put("receiver",receiver);
 		
 		// 메시지 내용등 정보 알아오기
-		MessageVO mvo = service.getmvo(mno);
+		MessageVO mvo = service.getmvo(paraMap);
 		
 		// 메시지 내용정보 저장하기
 		JSONObject jsonobj = new JSONObject();
@@ -208,6 +215,7 @@ public class MessageController {
 		jsonobj.put("content", mvo.getContent());
 		jsonobj.put("sendtime", mvo.getSendtime());
 		jsonobj.put("depthno", mvo.getDepthno());
+		jsonobj.put("scrapstatus", mvo.getScrapstatus());
 		jsonobj.put("profile_orginfilename", mvo.getProfile_orginfilename());
 		
 		return jsonobj.toString();
@@ -250,6 +258,7 @@ public class MessageController {
 		for(MessageFileVO mf : mfList) {
 			
 			JSONObject jsonobj = new JSONObject();
+			jsonobj.put("mfno", mf.getMfno());
 			jsonobj.put("m_systemfilename", mf.getM_systemfilename());
 			jsonobj.put("m_originfilename", mf.getM_originfilename());
 			jsonobj.put("file_size", mf.getFile_size());
@@ -289,6 +298,41 @@ public class MessageController {
 		return jsonobj.toString();
 	}//end of selectOnemgReceivers
 	
+	@ResponseBody
+	@RequestMapping(value = "/chxStatus.up", produces = "text/plain;charset=UTF-8")
+	public String chxStatus(HttpServletRequest request, HttpServletResponse response ,ModelAndView mav) {
+		
+		JSONObject jsonobj = new JSONObject();
+		
+		String[] fk_mnoArr = request.getParameterValues("fk_mnoArr");
+		String receiver = request.getParameter("receiver"); 
+		String condition = request.getParameter("condition"); // read, unread, scrap, delete
+		String scrapstatus = request.getParameter("scrapstatus"); // read, unread, scrap, delete
+		
+		if(scrapstatus == null) scrapstatus = "";
+		
+		int n = 0;
+		if (fk_mnoArr != null) {
+			for(String fk_mno : fk_mnoArr) {
+				Map<String,String> paraMap = new HashMap<String, String>();
+				paraMap.put("receiver", receiver);
+				paraMap.put("condition", condition);
+				paraMap.put("fk_mno", fk_mno);
+				paraMap.put("scrapstatus", scrapstatus);
+				try {
+					//체크된 것 condition에 따라 상태 update해주기
+					n = service.chxStatus(paraMap);
+				} catch (Exception e) {
+					n = 0;
+					e.printStackTrace();
+				}
+				
+			}//end of for
+		}//end of if
+		
+		jsonobj.put("n", n);
+		return jsonobj.toString();
+	}//end of chxRead
 	
 	
 	@RequestMapping(value = "/message/send.up")

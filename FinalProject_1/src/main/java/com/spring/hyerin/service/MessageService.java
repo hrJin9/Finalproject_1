@@ -51,8 +51,8 @@ public class MessageService implements InterMessageService {
 	
 	//로그인 유저가 클릭한 메시지내용 1개 불러오기
 	@Override
-	public MessageVO getmvo(String mno) {
-		MessageVO mvo = dao.getmvo(mno);
+	public MessageVO getmvo(Map<String, String> paraMap) {
+		MessageVO mvo = dao.getmvo(paraMap);
 		return mvo;
 	}
 	
@@ -190,6 +190,14 @@ public class MessageService implements InterMessageService {
 	public int getMgCnt(Map<String, String> paraMap){
 		int mgCnt = dao.getMgCnt(paraMap);
 		return mgCnt;
+	}
+
+	
+	//체크된것 처리하기
+	@Override
+	public int chxStatus(Map<String, String> paraMap) {
+		int n = dao.chxStatus(paraMap);
+		return n;
 	}
 
 	

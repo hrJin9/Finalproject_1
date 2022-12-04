@@ -11,7 +11,7 @@ public interface InterMessageDAO {
 	int getmgtotal(Map<String, String> paraMap);
 	
 	//로그인 유저가 클릭한 메시지내용 1개 불러오기
-	MessageVO getmvo(String mno);
+	MessageVO getmvo(Map<String, String> paraMap);
 	
 	// 메시지 수신자 정보 알아오기
 	List<MessageSendVO> getmsvoList(String mno);
@@ -48,6 +48,9 @@ public interface InterMessageDAO {
 
 	// 탭별 메시지 개수 알아오기
 	int getMgCnt(Map<String, String> paraMap);
+	
+	//체크된것 읽음처리하기
+	int chxStatus(Map<String, String> paraMap);
 	
 
 

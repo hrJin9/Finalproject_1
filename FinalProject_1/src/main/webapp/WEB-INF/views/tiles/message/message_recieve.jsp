@@ -6,14 +6,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
 	.mg-current{ font-weight: bold; }
-	.check-star > i {
+	.check-star + label > i {
 		font-size: 15pt;
 		color: rgba(0,0,0,0.1);
 		position: relative;
 		top: 3px;
 	}
 	
-	.check-star > i:hover{
+	.check-star:checked + label > i, .mc-star:checked +label > i {
+		color: #ffc107;
+	}
+	
+	.check-star + label > i:hover, .mc-star +label > i:hover {
 		cursor: pointer;
 		color: #ffc107;
 		transition: 0.2s;
@@ -27,6 +31,14 @@
 		font-weight: 600;
 		color: #777777;
 	}
+	
+	.nonmgList {
+		color: rgb(77, 79, 83);
+		font-size: 10pt;
+		text-align: left;
+		padding: 10px 5px;
+	}
+	
 	.nonmgList:hover{
 		background-color: white !important;
 		cursor: default !important;
@@ -36,42 +48,28 @@
 <script>
 
 var oncecnt = 0;
-var tabcnt = 0;
 $(document).ready(function(){
 	
 	$("#mg-recieve").css("color","#4d4f53");
 	// 첫로딩시 전체 보여주기
-	getMglist(1);
-	
-	// 첫로딩시 안읽은 메시지수 보여주기
-	getMgCnt("unread");
-	getMgCnt("all");
+	getMglist("all",1);
 
 	// 전체, 안읽음, 중요 목록 읽어오기
-	$(document).on("click","span#all", function(e){
-		$(".mgcatgo").removeClass("tab-now"); $(this).addClass("tab-now");
-		mgListbyCatgo();
-		getMgCnt("all");
-	});
-	
-	$(document).on("click","span#unread", function(e){
-		$(".mgcatgo").removeClass("tab-now"); $(this).addClass("tab-now");
-		mgListbyCatgo();
-		getMgCnt("unread");
-	});
-	
-	$(document).on("click","span#scrap", function(){
-		$(".mgcatgo").removeClass("tab-now"); $(this).addClass("tab-now");
-		mgListbyCatgo();
-		getMgCnt("scrap");
+	$(".mgcatgo").click(function(){
+		$(".mgcatgo").removeClass("tab-now");
+		$(this).addClass("tab-now");
+		var tab = $(this).attr("id");
+		checkall_reset();
+		getMglist(tab,1);
 	});
 	
 	//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
 	$(document).on("click",".mgList-contents tr",function(e){
 		if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *") || $(e.target).is("#nonmgList")) return; //중요표시나 체크박스 클릭시 함수 종료
 		
-		$(this).parent().find("tr").css("background-color","white");
 		const mno = $(this).attr("id");
+		//$(this).parent().find("tr").css("background-color","white");
+		
 		// 클릭한 tr 색깔 변경하기
 		$("tr#"+mno).css("background-color","rgba(230,230,230,0.4)");
 		// 메시지 읽음상태로 변경
@@ -96,6 +94,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	//체크박스 하나 선택 이벤트
 	$(document).on("change","input[name='mg-selectchx']",function() {
 		// 체크박스 개수
 		var total = $("input[name='mg-selectchx']").length;
@@ -117,18 +116,26 @@ $(document).ready(function(){
 	var tooltipel = $(".tp").tooltip();
 	
 	
-	// 중요표시 별표
-	$(document).on("click",".check-star",function(){
-		const itag = $(this).find("i");
-		if ( itag.hasClass('icon-star-empty') ) {
+	// 중요표시 (스크랩) 별표기능
+	$(document).on("change",".check-star, .mc-star",function(){
+		const itag = $(this).next().find("i");
+		var mno = $(this).parent().parent().attr("id");
+		
+		console.log(mno);
+		
+		if ( $(this).is(":checked") ) { //중요표시가 체크되어있는 경우
 			itag.removeClass('icon-star-empty');
 			itag.addClass('icon-star-full');
-			itag.css("color","#ffc107");  	
-		} else {
+			
+			//chxStatus("scrap","unscrap",mno);
+			
+			
+		} else { //중요표시가 되어있는 경우
 	  		itag.removeClass('icon-star-full');
 	  		itag.addClass('icon-star-empty');
-	  		itag.css("color",""); 
+	  		//chxStatus("scrap","scrap",mno);
 	  	}
+		
 	});
 	
 	
@@ -158,14 +165,25 @@ $(document).ready(function(){
 	});
 	
 	
+	//첨부파일 클릭 이벤트
+	$(document).on("click",".mfname",function(e){
+		console.log($(this).attr("id"));
+	});
+	
+	
+	//상태(모두읽음등) 클릭 이벤트
+	$(".tp").click(function(e){
+		var condition = $(this).attr("id");
+		chxStatus(condition);
+		getMglist();
+		
+	});
+	
+	
+	
 });//end of ready
 
 ////////////////////////////////////////////////////////////////////////////////////////
-// 중요 등 메시지목록카테고리 클릭 함수
-function mgListbyCatgo(){
-	checkall_reset();
-	getMglist(1);
-}//end of mgListbyCatgo
 
 
 //체크했을 때 보이는 메뉴
@@ -189,15 +207,9 @@ function checkall_reset(){
 	show_noncheckmenu();
 }//end of checkall_change
 
+
 // 탭별 메시지 개수 알아오기
-function getMgCnt(tab, cnt){
-	if(tab == null){
-		for (var i=0; i<3; i++){
-			if($(".mgcatgo").eq(i).hasClass("tab-now")){
-				tab = $(".mgcatgo").eq(i).attr("id");
-			}
-		}
-	}
+function getMgCnt(tab){
 	$.ajax({
 		url: "<%= ctxPath%>/getMgCnt.up",
 		type: "post",
@@ -208,33 +220,31 @@ function getMgCnt(tab, cnt){
 			const mgCnt = json.mgCnt;
 			if(tab == "unread"){
 				$("#unread > span").text(mgCnt);
-				if(tabcnt == 0){
-					tabcnt ++;
-					return;
-				}
 			}
-			$(".mg-noncheckmenu > span:last-child").text(mgCnt);
+			return mgCnt;
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		}
 		
 	}); //end of ajax
-
 }//end of getUnreadCnt()
 
 
 //메시지 목록을 가져오는 ajax 
-function getMglist(curpage){
-	
+function getMglist(tab, curpage){
+	if(tab == null){
+		for (var i=0; i<3; i++){
+			if($(".mgcatgo").eq(i).hasClass("tab-now")){
+				tab = $(".mgcatgo").eq(i).attr("id");
+			}
+		}
+	}
+	if(curpage == null)
+		curpage = $("#curpage").val();
+		
 	const searchCondition = $("#searchCondition").val();
 	const searchVal = $("#searchVal").val();
-	var tab = "";
-	for (var i=0; i<3; i++){
-		if($(".mgcatgo").eq(i).hasClass("tab-now"))
-			tab = $(".mgcatgo").eq(i).attr("id");
-	}
-	
 	$.ajax({
 		url: "<%= ctxPath%>/mglist.up",
 		type: "post",
@@ -252,12 +262,21 @@ function getMglist(curpage){
 					else
 						html += '<tr id="'+item.mno+'" class="mg-read">';
 					html += '<td width="3%"><input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/><label for="mg-selectchx'+index+'"><i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i></label></td>' + 
-							'<td width="3%">'+
-								'<input id="check-star'+index+'" type="checkbox" name="check-star" style="display: none;"/>'+
+							'<td width="3%">';
+					if(item.scrapstatus == 1) {
+						html += '<input id="check-star'+index+'" type="checkbox" name="check-star" class="check-star" checked/>'+
+								'<label for="check-star'+index+'">'+
+									'<i class="icon icon-star-full" style="color: rgb(255, 193, 7);"></i>'+
+								'</label>';
+					}
+					else{
+						html += '<input id="check-star'+index+'" type="checkbox" name="check-star" style="display: none;"/>'+
 								'<label for="check-star'+index+'" class="check-star">'+
 									'<i class="icon icon-star-empty"></i>'+
-								'</label>'+
-							'</td>'+
+								'</label>';
+					}
+					
+					html += '</td>'+
 							'<td width="72%">'+
 								'<div id="mg-subjectcontainer">'+
 									'<span id="mg-subject">'+item.subject+'</span>';
@@ -277,6 +296,13 @@ function getMglist(curpage){
 				//페이지바 함수 호출
 				pgbar(curpage);
 				
+				// 전체 개수 불러와서 값 넣어주기
+				var tabcnt = getMgCnt(tab);
+				console.log(tab);
+				console.log(tabcnt);
+				$("#totalcnt").text(tabcnt);
+				
+				
 				// 첫로딩시 첫번째 메시지 보여주기
 				if(oncecnt > 0) return;
 				else {
@@ -288,12 +314,11 @@ function getMglist(curpage){
 				
 			} else { //가져올 메시지목록이 없는 경우
 				html += '<tr>'+
-						'<td width="100%" id="nonmgList">조회된 메시지가 없습니다.</td>'+
+						'<td width="100%" id="nonmgList" >조회된 메시지가 없습니다.</td>'+
 						'</tr>';
 				$(".mgList-contents > table").html(html);
 				// 페이지 바 없애기
 				$(".mg-paging").html("");
-				return;
 			}
 			
 		},
@@ -306,6 +331,8 @@ function getMglist(curpage){
 	
 }//end of getMglist
 
+
+//페이지바 가져오는 함수
 function pgbar(curpage){
 	const searchCondition = $("#searchCondition").val();
 	const searchVal = $("#searchVal").val();
@@ -372,7 +399,7 @@ function pgbar(curpage){
 
 
 
-// 메시지 읽음처리하는 ajax
+// 메시지 상태 읽음으로  처리하는 ajax
 function changeStatus(mno){
 	$.ajax({
 		url: "<%= ctxPath%>/changeMgStatus.up",
@@ -381,7 +408,9 @@ function changeStatus(mno){
 		async: false,
 		dataType:"json",
 		success:function(json){
+			// 메시지 리스트 갱신
 			getMglist($("#curpage").val());
+			
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -397,7 +426,8 @@ function selectonemg(mno){
 	
 	$.ajax({
 		url: "<%= ctxPath%>/selectOnemg.up",
-		data: {"mno":mno},
+		data: {"mno":mno,
+				"receiver":"${sessionScope.loginuser.employee_no}"},
 		type: "post",
 		async: false,
 		dataType:"json",
@@ -407,11 +437,19 @@ function selectonemg(mno){
 			html += '<div class="mgc-container">'+
 					'<div class="mgc-header">'+
 					'<div class="mgc-header-left">'+
-					'<div class="mgc-subject">'+
-					'<span>'+
-						'<input type="checkbox" id="mc-star" name="mc-star" style="display: none;"/>'+
-						'<label for="mc-star"><i class="icon icon-star-empty"></i></label>'+
-					'</span>'+
+					'<div id="'+json.mno+'" class="mgc-subject">'+
+					'<span>';
+			if(json.scrapstatus == 1) {
+				html += '<input type="checkbox" id="mc-star" name="mc-star" class="mc-star" style="display: none;" checked/>'+
+						'<label for="mc-star"><i class="icon icon-star-full" style="color: rgb(255, 193, 7);"></i></label>';		
+				
+			}
+			else{
+				html += '<input type="checkbox" id="mc-star" name="mc-star" class="mc-star" style="display: none;"/>'+
+				'<label for="mc-star"><i class="icon icon-star-empty"></i></label>';
+			}
+			
+			html += '</span>'+
 					'<span id="mc-subject">'+json.subject+'</span>';
 			if(json.filesize != null) html += '<span class="mgc-header-attach"><i class="fas fa-paperclip"></i></span>';
 			html += '</div>'+
@@ -505,7 +543,7 @@ function selectonemg(mno){
 				$.each(json4, function(index, item){
 					html += '<div>'+
 						      	'<span><i class="fas fa-download"></i></span>'+
-						      	'<span>'+item.m_originfilename+'</span>'+
+						      	'<span id="'+item.mfno+'" class="mfname">'+item.m_originfilename+'</span>'+
 						      	'<span style="color: #999999; font-weight: 500;"> ('+item.file_size+'bytes)</span>'+
 					      	'</div>';
 				});
@@ -581,6 +619,52 @@ function selectonemg(mno){
 }//end of selectonemg
 
 
+// 선택된 mno 읽어오기
+function getcheckedmno(){
+	var checkedArr = $("input[name='mg-selectchx']:checked");
+	
+	//체크된 mno 읽어오기
+	var checkednoArr = new Array();
+	checkedArr.each(function(index, item){
+		var checkedno = $(item).parent().parent().attr("id");
+		checkednoArr.push(checkedno);
+	});
+	
+	return checkednoArr;
+}//end of getcheckedmno
+
+// 선택한것 표시 변경 하기
+function chxStatus(condition,scrapstatus,checkednoArr){
+	
+	if(checkednoArr == null)
+		checkednoArr = getcheckedmno();
+	
+	// 읽음표시하는 ajax 표시
+	$.ajax({
+		url: "<%= ctxPath%>/chxStatus.up",
+		traditional: true, //배열 넘기기 옵션
+		data: {"fk_mnoArr":checkednoArr,
+				"receiver":"${sessionScope.loginuser.employee_no}",
+				"condition":condition,
+				"scrapstatus":scrapstatus},
+		dataType:"json",
+		success:function(json){
+			if(json.n == 1){
+				// 읽던 페이지 읽어오기
+				
+			}
+			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+		
+		
+	});//end of ajax
+	
+}//end of chxStatus()
+
+
 
 
 </script>
@@ -635,13 +719,13 @@ function selectonemg(mno){
 					<div class="mg-noncheckmenu">
 						<span>1</span>	<!-- 지금 보고있는 메시지 -->
 						<span>/</span>
-						<span>10</span>	<!-- 전체수량 -->
+						<span id="totalcnt">10</span>	<!-- 전체수량 -->
 					</div>
 					<div class="mg-checkmenu" style="display: none;">
-						<button id="all-read" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽음 표시"><i class="fas fa-envelope-open"></i></button> <!-- 읽은상태로표시 -->
-						<button class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽지 않음 표시"><i class="fas fa-envelope"></i></button> <!-- 읽지않은상태로표시 -->
-						<button class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="중요 표시"><i class="fas fa-star" style="right: 4px; color: #F29F05;"></i></button> <!-- 중요표시 -->
-						<button class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="삭제"><i class="fas fa-trash"></i></button> <!-- 삭제 -->
+						<button id="read" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽음 표시"><i class="fas fa-envelope-open"></i></button> <!-- 읽은상태로표시 -->
+						<button id="unread" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽지 않음 표시"><i class="fas fa-envelope"></i></button> <!-- 읽지않은상태로표시 -->
+						<button id="scrap" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="중요 표시"><i class="fas fa-star" style="right: 4px; color: #F29F05;"></i></button> <!-- 중요표시 -->
+						<button id="delete" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="삭제"><i class="fas fa-trash"></i></button> <!-- 삭제 -->
 						<span><span id="check_ctn"></span>개 선택</span>
 					</div>
 				</div>
@@ -659,5 +743,8 @@ function selectonemg(mno){
 	</div>
 	
 	<input id="curpage" type="text" value=""/>
+	<input id="allcnt" type="text" value=""/>
+	<input id="unreadcnt" type="text" value=""/>
+	<input id="scrapcnt" type="text" value=""/>
 
 </div>

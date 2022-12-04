@@ -29,8 +29,8 @@ public class MessageDAO implements InterMessageDAO {
 	
 	//로그인 유저가 클릭한 메시지내용 1개 불러오기
 	@Override
-	public MessageVO getmvo(String mno) {
-		MessageVO mvo = sqlsession.selectOne("message.getmvo",mno);
+	public MessageVO getmvo(Map<String, String> paraMap) {
+		MessageVO mvo = sqlsession.selectOne("message.getmvo",paraMap);
 		return mvo;
 	}
 	
@@ -120,6 +120,13 @@ public class MessageDAO implements InterMessageDAO {
 	public int getMgCnt(Map<String, String> paraMap) {
 		int mgCnt = sqlsession.selectOne("message.getMgCnt",paraMap);
 		return mgCnt;
+	}
+
+	//체크된것 읽음처리하기
+	@Override
+	public int chxStatus(Map<String, String> paraMap) {
+		int n = sqlsession.update("message.chxStatus",paraMap);
+		return n;
 	}
 
 	

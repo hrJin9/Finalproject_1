@@ -17,6 +17,7 @@ public class MessageVO {
 	private String w_dept;
 	private String profile_orginfilename;
 	private String filecnt;
+	private String scrapstatus;
 	
 	
 	private MultipartFile attach;
@@ -148,6 +149,14 @@ public class MessageVO {
 
 	public void setDepthno(String depthno) {
 		this.depthno = depthno;
+	}
+
+	public String getScrapstatus() {
+		return scrapstatus;
+	}
+
+	public void setScrapstatus(String scrapstatus) {
+		this.scrapstatus = scrapstatus;
 	}
 	
 	

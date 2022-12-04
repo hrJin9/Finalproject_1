@@ -1600,10 +1600,12 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mg-unread{
 	color: #4d4f53 !important;
+	font-weight: 500 !important;
 }
 
 .mg-read {
-	color: rgba(0,0,0,0.5);
+	color: #D2D6D9 !important;
+	font-weight: 500 !important;
 }
 
 
