@@ -200,10 +200,10 @@
 	<insert id="addMessage" parameterType="com.spring.hyerin.model.MessageVO">
 		insert into tbl_message (mno, writer, mgroup, reno, subject, content, sendtime, status, depthno)
 		<if test="mgroup != '' and sendtime != ''">
-			values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, to_date(#{sendtime},'yyyy/mm/dd hh24:mi'), default, #{depthno}+1)
+			values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, to_date(#{sendtime},'yyyy/mm/dd hh24:mi'), default, #{depthno})
 		</if>
 		<if test="mgroup != '' and sendtime == ''">
-			values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, sysdate, default, #{depthno}+1)
+			values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, sysdate, default, #{depthno})
 		</if>
 		<if test="mgroup == '' and sendtime != ''">
 			values(#{mno}, #{writer}, #{mno}, null, #{subject}, #{content}, to_date(#{sendtime},'yyyy/mm/dd hh24:mi'), default, default)
@@ -285,7 +285,7 @@
 	<!-- 메시지 개수 알아오기 -->
 	<select id="getMgCnt" parameterType="HashMap" resultType="int">
 		select count(*) from tbl_message_send
-		where receiver = #{receiver}
+		where receiver = #{receiver} and delete_status = 1
 		<if test="tab == 'unread'">
 			and ms_checktime is null
 		</if>
@@ -304,10 +304,10 @@
 		<if test="condition == 'unread'">
 			ms_checktime = null
 		</if>
-		<if test="condition == 'scrap' and scrapstatus == 'unscrap'">
+		<if test="condition == 'unscrap'">
 			scrapstatus = 0
 		</if>
-		<if test="condition == 'scrap' and scrapstatus == 'scrap'">
+		<if test="condition == 'scrap'">
 			scrapstatus = 1
 		</if>
 		<if test="condition == 'delete'">
@@ -318,5 +318,11 @@
 	
 	
 	
+	<!-- 메시지파일 정보 알아오기 -->
+	<select id="getmfvo" parameterType="com.spring.hyerin.model.MessageFileVO" resultType="com.spring.hyerin.model.MessageFileVO">
+		select mfno, fk_mno, m_systemfilename, m_originfilename, file_size
+		from tbl_message_file
+		where mfno = #{mfno}
+	</select>
 	
 </mapper>

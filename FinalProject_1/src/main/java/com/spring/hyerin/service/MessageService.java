@@ -201,6 +201,14 @@ public class MessageService implements InterMessageService {
 	}
 
 	
+	// 해당 메시지 파일의 정보 가져오기
+	@Override
+	public MessageFileVO getmfvo(MessageFileVO mfvo_y) {
+		MessageFileVO mfvo = dao.getmfvo(mfvo_y);
+		return mfvo;
+	}
+
+	
 	
 	
 	

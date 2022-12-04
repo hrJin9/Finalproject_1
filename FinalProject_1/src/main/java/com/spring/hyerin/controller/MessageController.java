@@ -62,19 +62,24 @@ public class MessageController {
 	@RequestMapping(value = "/getMgCnt.up", produces = "text/plain;charset=UTF-8")
 	public String getUnreadCnt(HttpServletRequest request, ModelAndView mav) {
 		String receiver = request.getParameter("receiver");
-		String tab = request.getParameter("tab");
+		String[] tabs = request.getParameterValues("tab");
 		
-		Map<String, String> paraMap = new HashMap<String, String>();
-		paraMap.put("receiver",receiver);
-		paraMap.put("tab",tab);
+		JSONArray jsonarr = new JSONArray();
+		for(String tab : tabs) {
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("receiver",receiver);
+			paraMap.put("tab",tab);
+			
+			// 탭별 메시지 개수 알아오기
+			int mgCnt = service.getMgCnt(paraMap);
+			
+			JSONObject jsonobj = new JSONObject();
+			jsonobj.put("mgCnt", mgCnt);
+			
+			jsonarr.put(jsonobj);
+		}
 		
-		// 탭별 메시지 개수 알아오기
-		int mgCnt = service.getMgCnt(paraMap);
-		
-		JSONObject jsonobj = new JSONObject();
-		jsonobj.put("mgCnt", mgCnt);
-		
-		return jsonobj.toString();
+		return jsonarr.toString();
 	}//end of getUnreadCnt
 
 	
@@ -96,7 +101,6 @@ public class MessageController {
 		HttpSession session = request.getSession();
 		EmployeeVO emp = (EmployeeVO) session.getAttribute("loginuser");
 		String empno = emp.getEmployee_no();
-		
 		String curpage = request.getParameter("curpage");
 		int sizePerPage = 10;
 		if (curpage == null) curpage = "1";
@@ -129,7 +133,7 @@ public class MessageController {
 				jsonobj.put("mgroup", map.get("mgroup"));
 				jsonobj.put("reno", map.get("reno"));
 				jsonobj.put("subject", map.get("subject"));
-				jsonobj.put("content", map.get("content"));
+				jsonobj.put("content", MyUtil.secureCode(map.get("content")));
 				jsonobj.put("sendtime", map.get("sendtime"));
 				jsonobj.put("ms_checktime", map.get("ms_checktime"));
 				jsonobj.put("filecnt", map.get("filecnt"));
@@ -140,6 +144,7 @@ public class MessageController {
 		}//end of if
 		
 		return jsonarr.toString();
+		
 	}//end of mglist
 	
 	@ResponseBody
@@ -202,21 +207,24 @@ public class MessageController {
 		
 		// 메시지 내용등 정보 알아오기
 		MessageVO mvo = service.getmvo(paraMap);
-		
 		// 메시지 내용정보 저장하기
 		JSONObject jsonobj = new JSONObject();
-		jsonobj.put("mno", mvo.getMno());
-		jsonobj.put("mgroup", mvo.getMgroup());
-		jsonobj.put("reno", mvo.getReno());
-		jsonobj.put("writer", mvo.getWriter());
-		jsonobj.put("w_name", mvo.getW_name());
-		jsonobj.put("w_dept", mvo.getW_dept());
-		jsonobj.put("subject", mvo.getSubject());
-		jsonobj.put("content", mvo.getContent());
-		jsonobj.put("sendtime", mvo.getSendtime());
-		jsonobj.put("depthno", mvo.getDepthno());
-		jsonobj.put("scrapstatus", mvo.getScrapstatus());
-		jsonobj.put("profile_orginfilename", mvo.getProfile_orginfilename());
+		try {
+			jsonobj.put("mno", mvo.getMno());
+			jsonobj.put("mgroup", mvo.getMgroup());
+			jsonobj.put("reno", mvo.getReno());
+			jsonobj.put("writer", mvo.getWriter());
+			jsonobj.put("w_name", mvo.getW_name());
+			jsonobj.put("w_dept", mvo.getW_dept());
+			jsonobj.put("subject", mvo.getSubject());
+			jsonobj.put("content", mvo.getContent());
+			jsonobj.put("sendtime", mvo.getSendtime());
+			jsonobj.put("depthno", mvo.getDepthno());
+			jsonobj.put("scrapstatus", mvo.getScrapstatus());
+			jsonobj.put("profile_orginfilename", mvo.getProfile_orginfilename());
+		} catch(Exception e) {
+			return jsonobj.toString();
+		}
 		
 		return jsonobj.toString();
 	}//end of selectOnemg
@@ -307,9 +315,6 @@ public class MessageController {
 		String[] fk_mnoArr = request.getParameterValues("fk_mnoArr");
 		String receiver = request.getParameter("receiver"); 
 		String condition = request.getParameter("condition"); // read, unread, scrap, delete
-		String scrapstatus = request.getParameter("scrapstatus"); // read, unread, scrap, delete
-		
-		if(scrapstatus == null) scrapstatus = "";
 		
 		int n = 0;
 		if (fk_mnoArr != null) {
@@ -318,7 +323,6 @@ public class MessageController {
 				paraMap.put("receiver", receiver);
 				paraMap.put("condition", condition);
 				paraMap.put("fk_mno", fk_mno);
-				paraMap.put("scrapstatus", scrapstatus);
 				try {
 					//체크된 것 condition에 따라 상태 update해주기
 					n = service.chxStatus(paraMap);
@@ -333,6 +337,49 @@ public class MessageController {
 		jsonobj.put("n", n);
 		return jsonobj.toString();
 	}//end of chxRead
+	
+	
+	@RequestMapping(value = "/mfDownload.up")
+	public void mfDownload(HttpServletRequest request, HttpServletResponse response, MessageFileVO mfvo_y) {
+		
+		// 해당 메시지 파일의 정보 가져오기
+		MessageFileVO mfvo = service.getmfvo(mfvo_y);
+		
+		response.setContentType("text/html; charset=UTF-8"); // 웹페이지로 찍어주겠다는 뜻
+		PrintWriter out = null; // out은 웹브라우저에 기술하는 대상체
+		try {
+			
+			if(mfvo.getM_systemfilename() == null) {
+				out = response.getWriter();
+				out.println("<script type='text/javasript'>alert('존재하지 않는 첨부파일입니다.'); </script>");
+				return; // 종료
+			}
+			
+			String fileName = mfvo.getM_systemfilename();
+			String orgFilename = mfvo.getM_originfilename();
+			
+			HttpSession session = request.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root + "resources" + File.separator + "files";
+			
+			boolean flag = false; // 파일다운로드 성공/실패를 알려주는 용도
+			flag = fileManager.dofileDownload(fileName, orgFilename, path, response);
+			if (!flag) { // false(다운로드 실패)일 경우 메시지 띄움
+				out = response.getWriter();
+				out.println("<script type='text/javasript'>alert('파일다운로드가 실패되었습니다.'); history.back(); </script>");
+			}
+		} catch (NumberFormatException | IOException e) {
+			try {
+				out = response.getWriter();
+				out.println("<script type='text/javasript'>alert('파일다운로드가 불가능합니다.'); history.back(); </script>");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+	}
+	
+	
 	
 	
 	@RequestMapping(value = "/message/send.up")
@@ -380,16 +427,13 @@ public class MessageController {
 		// mno 채번해오기
 		String mno = service.getmno();
 		
-		String mgroup = mvo.getMgroup();
+		System.out.println(mvo.getDepthno());
+		
 		// 1. 메시지 insert
-		if( mgroup != "") {
-			mvo.setMgroup(mvo.getMgroup());
-			mvo.setReno(mvo.getReno());
-		}
 		mvo.setMno(mno);
-//		mvo.setWriter(mvo.getWriter());
-//		mvo.setSubject(mvo.getSubject());
-//		mvo.setContent(mvo.getContent());
+		if(!"".equals(mvo.getDepthno())) {
+			mvo.setDepthno(String.valueOf( Integer.parseInt(mvo.getDepthno()) + 1 ));
+		}
 		
 		int n = 0;
 		try {
@@ -455,7 +499,6 @@ public class MessageController {
 		
 		JSONArray jsonarr = new JSONArray();
 		
-		System.out.println(empvoList.size());
 		//구성원 목록 저장하기
 		for(EmployeeVO empvo : empvoList) {
 			JSONObject jsonobj = new JSONObject();

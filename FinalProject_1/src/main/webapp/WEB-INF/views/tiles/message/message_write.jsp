@@ -233,6 +233,7 @@ function goSend(){
 	mwform.writer.value = "${sessionScope.loginuser.employee_no}";
 	mwform.mgroup.value = "${requestScope.paraMap.mgroup}";
 	mwform.reno.value = "${requestScope.paraMap.reno}";
+	mwform.depthno.value = "${requestScope.paraMap.depthno}";
 	mwform.content.value = content;
 	mwform.action = "<%= ctxPath%>/sendMessage.up";
 	mwform.submit();
@@ -329,6 +330,7 @@ function goSend(){
 		<input id="sendtime" type="text" name="sendtime" value="">
 		<input id="mgroup" type="text" name="mgroup" value="">
 		<input id="reno" type="text" name="reno" value="">
+		<input id="depthno" type="text" name="depthno" value="">
 		<input id="writer" type="text" name="writer" value="">
 		<input id="content" type="text" name="content" value="">
 	</form>

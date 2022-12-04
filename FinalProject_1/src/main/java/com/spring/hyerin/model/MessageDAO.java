@@ -128,6 +128,13 @@ public class MessageDAO implements InterMessageDAO {
 		int n = sqlsession.update("message.chxStatus",paraMap);
 		return n;
 	}
+	
+	// 해당 메시지 파일의 정보 가져오기
+	@Override
+	public MessageFileVO getmfvo(MessageFileVO mfvo_y) {
+		MessageFileVO mfvo = sqlsession.selectOne("message.getmfvo",mfvo_y);
+		return mfvo;
+	}
 
 	
 	

@@ -60,6 +60,9 @@ public interface InterMessageService {
 	//체크된것 상태 처리하기
 	int chxStatus(Map<String, String> paraMap);
 	
+	// 해당 메시지 파일의 정보 가져오기
+	MessageFileVO getmfvo(MessageFileVO mfvo_y);
+	
 
 	
 }
