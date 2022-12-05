@@ -148,6 +148,8 @@ $(document).ready(function(){
 	// 중요표시 (스크랩) 별표기능 (하나하나)
 	$(document).on("change",".check-star, .mc-star",function(){
 		const itag = $(this).next().find("i");
+		const citag = $(".mc-star").next().find("i");
+		
 		var mno = $(this).parent().parent().attr("id");
 		var mcno = $(".mgc-subject").attr("id");
 		
@@ -157,8 +159,10 @@ $(document).ready(function(){
 		}
 		
 		if ( $(this).is(":checked") ) { //중요표시로 체크한 경우
+			itag.removeClass('icon-star-empty'); itag.addClass('icon-star-full'); itag.css("color","#ffc107");
+			
 			if (star_status){ // 목록과 내용이 같은 경우
-				itag.removeClass('icon-star-empty'); itag.addClass('icon-star-full'); itag.css("color","#ffc107");
+				citag.removeClass('icon-star-empty'); citag.addClass('icon-star-full'); citag.css("color","#ffc107");
 				$(this).prop("checked",true);
 				$(".mc-star").prop("checked",true);
 			}
@@ -169,6 +173,7 @@ $(document).ready(function(){
 	  		itag.removeClass('icon-star-full'); itag.addClass('icon-star-empty'); itag.css("color","rgba(0,0,0,0.1)");
 	  		
 	  		if (star_status){
+		  		citag.removeClass('icon-star-full'); citag.addClass('icon-star-empty'); citag.css("color","rgba(0,0,0,0.1)");
 	  			$(this).prop("checked",false);
 	  			$(".mc-star").prop("checked",false);
 			}
@@ -193,10 +198,7 @@ $(document).ready(function(){
 		var toname = $(this).find("span:nth-child(3)").attr("id");
 		var mgroup = $(".mgc-header-left").attr("id");
 		
-		location.href="<%=ctxPath%>/message/write.up?to="+to+"&name="+toname+"&mgroup="+mgroup+"&reno="+reno+"&depthno="+depthno+"&re_subject="+re_subject;
-		
-	});
-	
+		//location.href="<%=ctxPath%>/message/write.up?to="+to+"&mgroup="+mgroup+"&reno="+reno+"&depthno="+depthno+"&re_subject="+re_subject+"&name="+toname;
 	
 	// 검색input 엔터 이벤트
 	$("#searchVal").keyup(function(e){
@@ -579,7 +581,7 @@ function selectonemg(mno){
 				
 			}
 			else{
-				html += '<input type="checkbox" id="mc-star" name="mc-star" class="mc-star star"style="display:none;" />'+
+				html += '<input type="checkbox" id="mc-star" name="mc-star" class="mc-star star" style="display:none;" />'+
 				'<label for="mc-star"><i class="icon icon-star-empty"></i></label>';
 			}
 			
