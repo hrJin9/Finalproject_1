@@ -120,9 +120,6 @@ $(document).ready(function(){
 		// 체크박스 개수
 		var checked = $("input[name='mg-selectchx']:checked").length;
 		
-		console.log(total);
-		console.log(checked);
-		
 		ms_check(itag);
 		show_checkmenu($(this));
 		if(!$(e.target).is(":checked")){
@@ -346,6 +343,9 @@ function getMgCnt(tab){
 
 //메시지 목록을 가져오는 ajax 
 function getMglist(tab, curpage){
+	
+	var selectedNoArr = getcheckedmno();
+
 	if(tab == null){
 		for (var i=0; i<3; i++){
 			if($(".mgcatgo").eq(i).hasClass("tab-now")){
@@ -442,6 +442,19 @@ function getMglist(tab, curpage){
 		}
 		
 	}); //end of ajax
+	
+	//console.log(selectedNoArr);
+	
+	
+	// 여기 왜안되냐고 하아아아악ㅇㅁㄹ느ㅏㅣ나을
+	$(".mg-selectchx").prop("checked",false);
+	
+	$.each(selectedNoArr,function(index, item){
+		
+		console.log($("tr#"+item).find(".mg-selectchx").prop("checked"));
+		$("tr#"+item).find(".mg-selectchx").prop("checked",true);
+	});
+	
 	
 	
 }//end of getMglist

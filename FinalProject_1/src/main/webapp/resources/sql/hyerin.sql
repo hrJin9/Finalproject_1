@@ -721,4 +721,108 @@ and ms_checktime is null
 
 
 
+-------------------------------------
 
+select * from tbl_message_send
+
+update tbl_message_send set ms_checktime = null
+
+update tbl_message_send set ms_checktime = sysdate --모두 읽음 표시
+
+update tbl_message_send set ms_checktime = null -- 모두 안읽음 표시
+
+update tbl_message_send set scrapstatus = 1 -- 스크랩표시
+
+commit;
+
+
+
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status, depthno, filecnt, scapstatus, delete_status
+from
+(
+    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status, depthno,  scapstatus, delete_status
+    from
+    (
+        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+        where receiver = 100006 and delete_status = 1
+       
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+
+    order by sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+left join
+(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
+on mno = fk_mno
+where rno between #{startRno} and #{endRno}
+
+
+select mno, mgroup,reno, writer, w_name, w_dept, subject, content, sendtime, profile_orginfilename, depthno, scrapstatus
+from (
+    select mno, mgroup,reno, writer, name_kr as w_name, department_name as w_dept, subject, content, to_char(sendtime, 'yyyy. mm. dd AM hh:mi') as sendtime, profile_orginfilename, depthno
+    from tbl_message join v_employee on employee_no = writer
+    where mno = 'm-67'
+)
+join tbl_message_send
+on mno = fk_mno
+where receiver = 100006
+
+select * from tbl_message_file
+
+
+
+select mfno, fk_mno, m_systemfilename, m_originfilename, file_size
+from tbl_message_file
+
+select * from tbl_message
+order by sendtime desc\
+
+select * from tbl_employee
+
+
+select * from tbl_employee
+where fk_department_no = 10
+
+
+update tbl_employee set position = '부장'
+where position = '경력'
+
+사원, 대리 ,과장, 부장
+
+3 대리 5명
+
+14명 사원
+
+
+
+
+
+-- 사장 
+
+
+
+select * from tbl_team
+
+
+
+
+
+select * from tbl_departments
+
+
+
+
+대표
+
+사원, 대리, 과장, 부장
+
+
+
+
+select * from tbl_employee
