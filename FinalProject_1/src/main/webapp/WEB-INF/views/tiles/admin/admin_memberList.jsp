@@ -188,7 +188,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		// 모든 체크박스가 체크가 되었다가 그 중 하나만 이라도 체크를 해제하면 전체선택 체크박스에도 체크를 해제하도록 한다.
+		// 체크박스 전체선택 및 체크박스 하나 해제시 전체선택 해제
 		$(".chkboxpnum").click(function(){
 		      
 		   var bFlag = false;

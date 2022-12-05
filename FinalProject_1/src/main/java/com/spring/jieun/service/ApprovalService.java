@@ -32,4 +32,26 @@ public class ApprovalService implements InterApprovalService {
 		return approvalList;
 	}
 
+	//	*** 북마크 추가 업데이트 ***
+	@Override
+	public int updateaddbookmark(Map<String, String> paraMap) {
+		String yn = paraMap.get("yn");
+		int n = 0;
+		if("y".equals(yn)) {
+			n = dao.updateaddbookmark(paraMap);
+		}
+		else{
+			n = dao.updatedeletebookmark(paraMap);
+		}
+		
+		return n;
+	}
+
+	// 로그인한 사원 연차갯수 알아오기 
+	@Override
+	public int seldayoffcnt(Map<String, String> paraMap) {
+		int result = dao.seldayoffcnt(paraMap);
+		return result;
+	}
+
 }

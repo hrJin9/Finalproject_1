@@ -744,11 +744,13 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .dayoff-line{
-	display: inline-block;
-	height: 15px; width: 1px;
-	background-color: rgba(0,0,0,0.3);
-	position: relative; top: 3px;
-	margin: 0 5px;
+    display: inline-block;
+    height: 12.5px;
+    width: 0.9px;
+    background-color: #e3e3e3;
+    position: relative;
+    top: 2px;
+    margin: 0 5.8px;
 }
 
 
@@ -844,7 +846,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-subject{	
 	font-weight: bold;
 	font-size: 12pt;
-	margin: 30px 0 20px 0;
+	margin: 38px 0 20px 0;
 }
 
 

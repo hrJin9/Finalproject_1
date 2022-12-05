@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.finalproject.common.FileManager;
+import com.spring.finalproject.common.MyUtil;
 import com.spring.hyerin.model.EmployeeVO;
 import com.spring.jieun.model.ApprovalVO;
 import com.spring.jieun.service.InterApprovalService;
@@ -30,6 +31,7 @@ public class ApprovalController {
 	@Autowired // Type 에 따라 알아서 Bean 을 주입해준다 
 	private FileManager fileManager; // 이미 빈으로 올라간 클래스
 	
+//	*** 문서리스트 ***
 	@RequestMapping(value = "/approval.up") 
 	public ModelAndView rl_approval(HttpServletRequest request,HttpServletResponse response, ModelAndView mav) {
 		
@@ -42,6 +44,12 @@ public class ApprovalController {
 		
 		String searchStartday = request.getParameter("searchStartday");
 		String searchEndday = request.getParameter("searchEndday");
+		
+		String bookmark = request.getParameter("bookmark");
+		if(bookmark == null || "0".equals(bookmark)) {
+			bookmark = "";
+		}
+		System.out.println("bookmark => "+bookmark);
 		
 		if(searchStartday == null) {
 			searchStartday = "";
@@ -69,8 +77,13 @@ public class ApprovalController {
 		
 		Map<String,String> paraMap = new HashMap<>();
 		paraMap.put("employee_no", employee_no);
-		paraMap.put("searchStartday", searchStartday);
-		paraMap.put("searchEndday", searchEndday);
+		paraMap.put("searchStartday", "");
+		paraMap.put("searchEndday", "");
+		
+		paraMap.put("final_signyn", "");
+		paraMap.put("ap_type", "");
+		paraMap.put("bookmark", "");
+		
 		//paraMap.put("searchType", searchType);
 		//paraMap.put("searchWord", searchWord.trim());
 		
@@ -137,8 +150,8 @@ public class ApprovalController {
  		
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
- 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[맨처음]</a></li>";
- 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+ 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'>[맨처음]</a></li>";
+ 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
  		}
  		
  		 
@@ -147,7 +160,7 @@ public class ApprovalController {
  				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color: red; padding: 2px 4px; '>"+pageNo+"</li>";
  			}
  			else {
- 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+ 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
  			}
  			loop ++;
  			pageNo ++;
@@ -155,8 +168,8 @@ public class ApprovalController {
  		
  		// === [다음][마지막] 만들기 === //
  		if(pageNo <= totalPage) {
- 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
- 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+ 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+ 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
  		}
  		
  		pageBar += "</ul>";
@@ -176,6 +189,7 @@ public class ApprovalController {
 		return mav;
 	}	
 	
+//	*** 문서리스트 필터 ajax ***
 	@ResponseBody
 	@RequestMapping(value = "/approval/myList.up", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8") // 오로지 GET방식만 허락하는 것임.
 	public String approval_myview(HttpServletRequest request,HttpServletResponse response) {
@@ -189,14 +203,48 @@ public class ApprovalController {
 		System.out.println("searchStartday => "+searchStartday);
 		String searchEndday = request.getParameter("searchEndday");
 		System.out.println("searchEndday => "+searchEndday);
+		String final_signyn = request.getParameter("signyn");
+		String ap_type = request.getParameter("ap_type");
+		System.out.println("ap_type => "+ap_type);
+		String bookmark = request.getParameter("bookmark");
+		System.out.println("bookmark => "+bookmark);
 		
 		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 		
+		if(final_signyn == null || "전체".equals(final_signyn)) {
+			final_signyn = "";
+		}
+		if(ap_type == null || "전체".equals(ap_type) ) {
+			ap_type = "";
+		}
+		if(bookmark == null || "0".equals(bookmark)) {
+			bookmark = "";
+		}
+		
+		switch (final_signyn) {
+		case "진행":
+			final_signyn = "0";
+			break;
+		case "승인":
+			final_signyn = "1";
+			break;
+		case "반려":
+			final_signyn = "2";
+			break;
+		case "취소":
+			final_signyn = "3";
+			break;
+		}
+		
+		System.out.println("final_signyn => "+final_signyn);
 		
 		Map<String,String> paraMap = new HashMap<>();
 		paraMap.put("employee_no", employee_no);
 		paraMap.put("searchStartday", searchStartday);
 		paraMap.put("searchEndday", searchEndday);
+		paraMap.put("final_signyn", final_signyn);
+		paraMap.put("ap_type", ap_type);
+		paraMap.put("bookmark", bookmark);
 		
 		// 먼저 총게시물 건수(totalCount) 를 고해와야 한다.
 		// 총 게시물 건수(totalCount)는 검색조건이 있을때와 없을때로 나뉘어진다. 
@@ -255,8 +303,8 @@ public class ApprovalController {
  		
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
- 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[맨처음]</a></li>";
- 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+ 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'>[맨처음]</a></li>";
+ 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
  		}
  		
  		 
@@ -265,7 +313,7 @@ public class ApprovalController {
  				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color: red; padding: 2px 4px; '>"+pageNo+"</li>";
  			}
  			else {
- 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+ 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
  			}
  			loop ++;
  			pageNo ++;
@@ -273,8 +321,8 @@ public class ApprovalController {
  		
  		// === [다음][마지막] 만들기 === //
  		if(pageNo <= totalPage) {
- 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
- 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+ 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+ 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
  		}
  		
  		pageBar += "</ul>";
@@ -292,6 +340,7 @@ public class ApprovalController {
 				jsonobj.put("ap_systemFileName", aprvo.getAp_systemFileName());
 				jsonobj.put("feedbackcnt", aprvo.getFeedbackcnt());
 				jsonobj.put("writeday", aprvo.getWriteday());
+				jsonobj.put("bookmark", aprvo.getBookmark());
 				
 				if( i==0 ) {
 					jsonobj.put("pageBar", pageBar);
@@ -308,24 +357,65 @@ public class ApprovalController {
 		
 	}
 	
-	
-	
-	
-	@RequestMapping(value = "/approval/writing.up")
-	public String approval_writing(HttpServletRequest request) {
-		return "/approval/approval_writing.tiles";
+//	*** 북마크 추가 업데이트 ***  
+	@ResponseBody
+	@RequestMapping(value = "/approval/addscrap.up", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8") // 오로지 GET방식만 허락하는 것임.
+	public String approval_addscrap(HttpServletRequest request,HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		String employee_no = loginuser.getEmployee_no();
+		
+		String ano = request.getParameter("ano");
+		System.out.println("anoval => "+ano);
+		String yn = request.getParameter("yn");
+		
+		Map<String,String> paraMap = new HashMap<>();
+		paraMap.put("ano", ano);
+		paraMap.put("employee_no", employee_no);
+		paraMap.put("yn", yn);
+		int result = service.updateaddbookmark(paraMap);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("result", result);
+		return jsonobj.toString(); // "[]" 또는 "[{},{},{}]"
+		
 	}
 	
+	
+	
+	// 로그인한 사원 연차갯수 알아오기 
+	@RequestMapping(value = "/approval/writing.up")
+	public ModelAndView rl_approval_writing(HttpServletRequest request,HttpServletResponse response, ModelAndView mav) {
+//		HttpSession session = request.getSession();
+//		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+//		String employee_no = loginuser.getEmployee_no();
+//		
+//		Map<String,String> paraMap = new HashMap<>();
+//		paraMap.put("employee_no", employee_no);
+//		
+		// 로그인한 사원 연차갯수 알아오기 
+		//int cnt = service.seldayoffcnt(paraMap);
+		
+		//mav.addObject("dayoffcnt", cnt);
+		mav.setViewName("tiles/approval/approval_writing");
+		return mav;
+	}
 	
 	
 	@RequestMapping(value = "/approval/memberList.up")
-	public ModelAndView approval_memberList(HttpServletRequest request, ModelAndView mav) {
-		
-		mav.setViewName("tiles/approval/approval_memberList");
-		return mav;
+	public String approval_memberList(HttpServletRequest request) {
+		return "/approval/approval_memberList.tiles";
 	}
 
 	
+
 	
 	
+//////////////////////////////////////////////////////////////////////////////////////
+	public String getCurrentURL(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String url = MyUtil.getCurrentURL(request);
+		session.setAttribute("goBackURL", url);
+		return url;
+	}
 }

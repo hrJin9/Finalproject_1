@@ -27,5 +27,25 @@ public class ApprovalDAO implements InterApprovalDAO{
 		List<ApprovalVO> approvalList = sqlsession.selectList("approval.approvalListSearchWithPaging", paraMap); 
 		return approvalList;
 	}
+	//	북마크 추가 업데이트
+	@Override
+	public int updateaddbookmark(Map<String, String> paraMap) {
+		int n = sqlsession.update("approval.updateaddbookmark",paraMap);
+		return n;
+	}
+
+	//	북마크 삭제 업데이트
+	@Override
+	public int updatedeletebookmark(Map<String, String> paraMap) {
+		int n = sqlsession.update("approval.updatedeletebookmark",paraMap);
+		return n;
+	}
+
+	// 로그인한 사원 연차갯수 알아오기
+	@Override
+	public int seldayoffcnt(Map<String, String> paraMap) {
+		int n = sqlsession.selectOne("approval.seldayoffcnt",paraMap);
+		return n;
+	}
 	
 }
