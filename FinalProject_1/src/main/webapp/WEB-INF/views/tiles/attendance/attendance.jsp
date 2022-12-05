@@ -1,19 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="attendance_header.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="attendance_header.jsp"%>
-<style>
+<style type="text/css">
 	.workstatus-save:hover{color: white;}
+	
+	.workwirte-container {margin-bottom: 11px;}
+	
+	.delete {
+		display: none;
+	    border: solid 1px rgba(0, 0, 0, .1);
+	    border-radius: 5px;
+	    background-color: white;
+	    height: 25px;
+	    width: 25px;
+	    font-size: 9pt;
+	    position: absolute;
+	    right: -4%;
+	    top: 23%;
+		z-index: 9999 !important;
+	    font-weight: 700;
+	    color: #e60000;
+	    padding: 0;
+	}
+	.delete:hover {
+	    color: #e60000;
+	}
 </style>
 
-<script>
+<script type="text/javascript">
 	$(document).ready(function(){
+		var attendancetype;
+		var todaydate;
 
 		$("a#attendance").addClass("list_iscurrent");
 	 	$("a#dayoff").removeClass("list_iscurrent");
 		
-	 	// 플랫피커
+	 	// 날짜피커
 	 	flatpickr.localize(flatpickr.l10ns.ko);
 	 	flatpickr($(".dateSelector"));
 		$(".dateSelector").flatpickr({
@@ -30,7 +54,8 @@
 		    noCalendar: true,
 		    dateFormat: "H:i",
 			local: 'ko'
-		});
+	 	}); 
+	 	 
 		
 		// 오늘 버튼 클릭시 오늘로 날짜 설정
 		$(".today").click(function(){
@@ -53,7 +78,6 @@
 			putDate();
 			putTodayDot();
 		});
-	 	
 	 	
 	 	// 시간 infobox
 	 	$(".workingiweek-infobox").hide();
@@ -84,26 +108,177 @@
 	 		$('.offcanvas').offcanvas('show');
 	 		
 	 		// header에 날짜를 알아오기
-	 		const mmdd = $(e.target).parent().find("span.date").text();
-	 		const mm = mmdd.substr(0,2);
-	 		const dd = mmdd.substr(4,2);
-	 		$("#offcanvasScrollingLabel").text(mm+"월 "+dd+"일");
-	 		
+	 		const yyyymmdd = $(e.target).parent().find("span.date").text();
+	 		const yyyy = yyyymmdd.substr(0,4);
+	 		const mm = yyyymmdd.substr(6,2);
+	 		const dd = yyyymmdd.substr(10,2);
+	 		$("#offcanvasScrollingLabel").text(yyyy+"년 "+mm+"월 "+dd+"일");
+	 		todaydate = yyyy+"년 "+mm+"월 "+dd+"일"
 	 	});
 	 	
 	 	
-	 	// 근무정보 선택 dropdown 값 선택이벤트
-	 	$(".workStatusbox li").click(function(){
+	 	// 근무형태 선택 dropdown 값 선택이벤트
+	 	/* $(".workStatusbox li").click(function(){
 	 		const selectedimg = $(this).find("img").attr("src");
 	 		const selectedtxt = $(this).find("a").text();
 	 		$("#workwriteStatus > img").attr("src",selectedimg);
 	 		$("#workwriteStatus > span").text(selectedtxt);
-	 	});
+	 		attendancetype = selectedtxt;
+	 	}); */
+	 	/* $(document).on("click", ".workStatusbox li", function(e){
+	 		const selectedimg = $(this).find("img").attr("src");
+	 		const selectedtxt = $(this).find("a").text();
+	 		$("#workwriteStatus > img").attr("src",selectedimg);
+	 		$("#workwriteStatus > span").text(selectedtxt);
+	 		attendancetype = selectedtxt;
+	 	});  */
+	 	
+	 	
+	 	// 근무형태 containter hover 시 삭제버튼 생성
+	 	$(document).on("mouseenter", "div.workwirte-container", function(e){
+	 		$("button.delete").css("display","block");
+	 	}); 
+	 	$(document).on("mouseleave", "div.workwirte-container", function(e){
+	 		$("button.delete").css("display","none");
+	 	}); 
+	 	
+	 	// 여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 	/* $(document).on("click", "#del_stepattendance", function(e){
+	 		//$(this).parent("").remove(); //.remove 하면 모든 input이 삭제되어 버리기 때문에 따로 input에 class나 id를 안줬으면 last-child로 마지막 것 부터 하나씩 잡아 지워나간다.
+	 		$(this).parents("attendanceplus *").remove(); //.remove 하면 모든 input이 삭제되어 버리기 때문에 따로 input에 class나 id를 안줬으면 last-child로 마지막 것 부터 하나씩 잡아 지워나간다.
+
+		}); */
 	 	
 	 	
 	 	
 	 	
-	}); //end of ready
+	 	$("span#all").click(function(e){
+			$("span#all").css("font-weight","bold");
+			location.href="<%= ctxPath%>/attendance.up";
+		});
+	 	
+	 	
+	 	// 저장하기 버튼 클릭시
+	 	$("#goSave").click(function(){
+	 		
+	 		if(attendancetype == null || attendancetype == '') {
+	 			attendancetype = '근무'
+	 		}
+	 		
+	 		var att = [];
+	 		var start = [];
+	 		var end = [];
+	 		
+	 		//var select = document.getElementsByClassName('workwirte-container'); // 전체박스
+	 		//console.log("select 길이 : "+ select.length);
+	 		var select = $(".workwirte-container"); // 전체박스 번호
+	 		//console.log("select 길이 : "+ select.length);
+	 		
+	 		//var stime = $(".stime").val();
+	 		//var etime = $(".etime").val();
+	 		
+	 		for (var i=0; i<select.length; i++) {
+            	att.push(select[i].innerText); // 근무형태
+            }
+	 		
+	 		/*for (var z=0; z<select.length; z++) { 
+	 			//start.push(select[z].getElementsByClassName('stime'));
+	 			//start.push(select[z].stime);
+	 			//console.log(select[z]);
+	 			//console.log(select[z].findOne("#workwriteStart"));
+	 			//start.push(select[z].find("#startdate").val());
+            }*/
+	 		
+	 		/*for (var x=0; x<select.length; x++) {
+	 			//end.push(select[x].getElementsByClassName('workEndbox'));
+            }*/
+	 		
+	 		var stimearr = $(".stime");
+			for (var z=0; z<stimearr.length; z++) { 
+				start.push($(".stime").eq(z).val());
+			}
+			
+	 		var etimearr = $(".etime");
+			for (var x=0; x<etimearr.length; x++) { 
+				end.push($(".etime").eq(x).val());
+			}
+	 		
+	 		for (var j=0; j<att.length; j++) {
+	 			console.log("att>>>>" + att[j]);
+	 			console.log("start>>>>" + start[j]);
+	 			console.log("end>>>>" + end[j]);
+            }
+	 		
+	 		
+	 		
+	 		
+	 		//var attendancetype = ["123","가나다","abc"];
+	 		//var startdate = ["123","가나다","abc"];
+	 		//var enddate = ["123","가나다","abc"];
+	 		
+	 		<%-- $.ajax({
+				url:"<%= request.getContextPath()%>/attendance2.up",
+				data:{"employee_no":$("input#employee_no").val()
+					 ,"attendancetype":attendancetype
+					 ,"todaydate":todaydate
+					 ,"startdate":startdate
+					 ,"enddate":enddate,
+				type:"POST",
+				dataType:"JSON",   // AttendanceController.java 로 data 를 보낸다.
+				success:function(json){   // AttendanceController.java 에서 jsonObj.put() 한 json.name 을 받아옴.
+					// json ==> {"n":1,"name":"이예은"} 또는 {"n":0,"name":"이예은"}
+					/* const n  = json.n;
+					if(n==0) {  // 포인트가 300점이 초과한다면
+						alert(json.name + "님의 포인트는 300점을 초과할 수 없으므로 댓글쓰기가 불가합니다."); 
+					}
+					else {
+						// goReadComment();  // 페이징 처리 안한 댓글 읽어오기
+						goViewComment(1);    // 페이징 처리한 댓글 읽어오기.  맨처음에 (1)페이지를 읽어온다.				  
+					}
+					
+					$("input#commentContent").val("");  // 입력한 댓글이 update 되면 입력란 비우기
+				},
+				error: function(request, status, error){
+		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        }					
+			});  --%>
+	 		
+	 		
+	 		<%-- $.ajax({
+				url:"<%= request.getContextPath()%>/attendance2.up",
+				data:{"employee_no":$("input#employee_no").val()
+					 ,"attendancetype":attendancetype
+					 ,"todaydate":todaydate
+					 ,"startdate":$("input#startdate").val()
+					 ,"enddate":$("input#enddate").val()},
+				type:"POST",
+				dataType:"JSON",   // AttendanceController.java 로 data 를 보낸다.
+				success:function(json){   // AttendanceController.java 에서 jsonObj.put() 한 json.name 을 받아옴.
+					// json ==> {"n":1,"name":"이예은"} 또는 {"n":0,"name":"이예은"}
+					/* const n  = json.n;
+					if(n==0) {  // 포인트가 300점이 초과한다면
+						alert(json.name + "님의 포인트는 300점을 초과할 수 없으므로 댓글쓰기가 불가합니다."); 
+					}
+					else {
+						// goReadComment();  // 페이징 처리 안한 댓글 읽어오기
+						goViewComment(1);    // 페이징 처리한 댓글 읽어오기.  맨처음에 (1)페이지를 읽어온다.				  
+					}
+					
+					$("input#commentContent").val("");  // 입력한 댓글이 update 되면 입력란 비우기 */
+				},
+				error: function(request, status, error){
+		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        }					
+			});  --%>
+	 		
+	 		
+	 		
+	 		
+	 	})// end of $("#goSave").click(function()----------
+	 	
+	 	
+	});//end of $(document).ready(function(){})------------------
+	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// function declaration
@@ -116,6 +291,7 @@
 	 	var selected_date = $(".dateSelector").val();
 	 	var selected_yy = selected_date.substr(0,4);
 	 	var selected_mm = selected_date.substr(6,2);
+	 	
 	 	var selected_dd = selected_date.substr(10,2);
 	 	var valDate = new Date(selected_yy, selected_mm-1, selected_dd);
 
@@ -135,7 +311,7 @@
 			mm = String(mm).length === 1 ? '0' + mm : mm;
 			dd = String(dd).length === 1 ? '0' + dd : dd;
 			
-			thisWeek[i] = mm + '. ' + dd;
+			thisWeek[i] = yyyy + '. ' + mm + '. ' + dd;
 			thisWeekArr[i] = new Date(yyyy, mm-1, dd);
 		}
 	}//end of getSelectedDate()
@@ -167,8 +343,88 @@
 		});
 	}//end of putTodayDot()
 	
+	/* 근무상태 박스 한개 비우기 */
+	function del_stepattendance(e){
+		const del_box = $(e.target).parent();
+		console.log("del_box =>"+del_box)
+		del_box.remove();
+		
+		//$("#workwirte-container"+num).remove();
+	}
+	
+	// 근무형태 변경하기
+	let id = null;
+	function add_workwriteStatus(num, e){
+		// num = $(e.target).attr("id");
+		id = $(e.target).attr("id");
+		//console.log("id 값 =>"+id);
+		//console.log("num 값 =>"+num);
+		const selectedimg = $(e.target).find("img").attr("src");
+ 		const selectedtxt = $(e.target).text();
+ 		
+ 		//console.log("selectedimg 값 =>"+selectedimg);
+		//console.log("selectedtxt 값 =>"+selectedtxt);
+ 		$("#workwriteStatus"+num +" > img").attr("src",selectedimg);
+ 		$("#workwriteStatus"+num +" > span").text(selectedtxt);
+ 		//attendancetype = selectedtxt;
+	}
+	
+     var i = 0;   
+	/* 근무 박스 추가 */
+	function attendanceplus(){
+     ++i;
+     var html = '<div class="workwirte-container dropdown" id="workwirte-container'+i+'" onclick="add_workwriteStatus('+i+',event)">'
+                	+'<div class="dropdown-toggle workwritebox btn" id="workwriteStatus'+i+'" data-bs-toggle="dropdown" aria-expanded="false">'
+		               +'<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>'
+		                  +'<span>근무</span>'
+	                +'</div>'
+	                  +'<ul class="dropdown-menu workStatusbox" id="workStatusbox'+i+'" aria-labelledby="workwriteStatus" style="min-width: 7rem;">'
+	                  +'<li>'
+	                     +'<a id="statusval-working" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>근무</a>'
+	                  +'</li>'
+	                  +'<li>'
+	                     +'<a id="statusval-remote" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/laptop_1f4bb.png" width="16px"/>원격근무</a>'
+	                  +'</li>'
+	                  +'<li>'
+	                     +'<a id="statusval-outside" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/oncoming-automobile_1f698.png" width="16px"/>외근</a>'
+	                  +'</li>'
+	                  +'<li>'
+	                     +'<a id="statusval-trip" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/spiral-calendar_1f5d3-fe0f.png" width="16px"/>출장</a>'
+	                  +'</li>'
+	                +'</ul>'
+	               
+	                +'<div class="workStartbox" id="workwriteStart">'
+	                  +'<input type="text" class="timeSelector stime" id="startdate'+i+'" name="timepicker" placeholder="시작 시각"/>   '               
+	                +'</div>'
+	                +'<div style="display:inline-block;">'
+	                  +'<i class="fa-solid fa-arrow-right" style="color: #C6C6C6"></i>'
+	                +'</div>'
+	               
+	                +'<div class="workEndbox" id="workwriteEnd">'
+	                  +'<input type="text" class="timeSelector etime" id="enddate'+i+'" name="timepicker" placeholder="종료 시각"/>'                  
+	                +'</div>'
+	                +'<button type="button" class="delete btn" onclick="del_stepattendance(event)">X</button>'
+	                +'<input type="hidden" id="employee_no" value="${sessionScope.loginuser.employee_no}"/>'
+	             +'</div>'
+                +'</div>';
+	       $("div.attendanceplus").append(html);
+	       $(document).find("input[name=timepicker]").removeClass('hasDatepicker').flatpickr({
+	            enableTime: true,
+	            noCalendar: true,
+	            dateFormat: "H:i",
+	            local: 'ko'});  
+  	 }
+	
+	
+	/* 근무상태 박스 전체 비우기 */
+	function del_allapproval(){
+		i = 0;
+		$(".attendanceplus").empty();
+	}
+	
 	
 </script>
+
 <div class="attendance-container">
 	<div class="datebox margin-container">
 		<span class="" style="display: inline-block; width: 140px; ">
@@ -255,7 +511,7 @@
 		  </div>
 		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 		  <div class="offcanvas-body">
-		  	<form>
+		  	<form id="attendance_frm">
 			  	<div>
 			  		<div class="todayworkStatus-container">
 				  		<span>총 근무</span>
@@ -263,67 +519,58 @@
 				  		<div class="line"></div>
 			  		</div>
 			  		<!-- 근무 1개  -->
-			  		<div class="workwirte-container dropdown">
-						<div class="dropdown-toggle workwritebox btn" id="workwriteStatus" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
-							<span>근무</span>
-						</div>
-						<ul class="dropdown-menu workStatusbox" aria-labelledby="workwriteStatus" style="min-width: 7rem;">
-							<li>
-								<a id="statusval-working" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
-									근무
-								</a>
-							</li>
-							<li>
-								<a id="statusval-outside" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/oncoming-automobile_1f698.png" width="16px"/>
-									외근
-								</a>
-							</li>
-							<li>
-								<a id="statusval-remote" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/laptop_1f4bb.png" width="16px"/>
-									원격근무
-								</a>
-							</li>
-							<li>
-								<a id="statusval-trip" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/spiral-calendar_1f5d3-fe0f.png" width="16px"/>
-									출장
-								</a>
-							</li>
-							<hr class="HRhr"style="margin:0; height:1px; background-color: rgba(242, 242, 242); border:none;"/>
-							<li>
-								<a class="dropdown-item" href="#">
-									<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
-									<span id="statusval-allday">하루종일</span>
-								</a>
-							</li>
-							<li>
-								<a class="dropdown-item" href="#">
-									<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="16px"/>
-									<span id="statusval-input">시간입력</span>
-								</a>
-							</li>
-						</ul>
-						
-						<div class="workStartbox" id="workwriteStart">
-							<input type="text" class="timeSelector" placeholder="시작 시각"/>						
-						</div>
-						<div style="display:inline-block;">
-							<i class="fa-solid fa-arrow-right" style="color: #C6C6C6"></i>
-						</div>
-						
-						<div class="workEndbox" id="workwriteEnd">
-							<input type="text" class="timeSelector" placeholder="종료 시각"/>						
+			  	    <div class="attendanceplus">
+				  	    <div class="workwirte-container dropdown" id="workwirte-container0" onclick="add_workwriteStatus(0,event)">
+							<div class="dropdown-toggle workwritebox btn" id="workwriteStatus0" data-bs-toggle="dropdown" aria-expanded="false">
+								<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
+								<span>근무</span>
+							</div>
+	 						<ul class="dropdown-menu workStatusbox" id="workStatusbox" aria-labelledby="workwriteStatus" style="min-width: 7rem;">
+								<li>
+									<a id="statusval-working" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/woman-technologist_1f469-200d-1f4bb.png" width="16px"/>
+										근무
+									</a>
+								</li>
+								<li>
+									<a id="statusval-remote" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/laptop_1f4bb.png" width="16px"/>
+										원격근무
+									</a>
+								</li>
+								<li>
+									<a id="statusval-outside" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/oncoming-automobile_1f698.png" width="16px"/>
+										외근
+									</a>
+								</li>
+								<li>
+									<a id="statusval-trip" class="dropdown-item" href="#"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/325/spiral-calendar_1f5d3-fe0f.png" width="16px"/>
+										출장
+									</a>
+								</li>
+							</ul> 
+							
+							<div class="workStartbox" id="workwriteStart">
+								<input type="text" class="timeSelector stime" id="startdate" name="timepicker" placeholder="시작 시각"/>						
+							</div>
+							<div style="display:inline-block;">
+								<i class="fa-solid fa-arrow-right" style="color: #C6C6C6"></i>
+							</div>
+							
+							<div class="workEndbox" id="workwriteEnd">
+								<input type="text" class="timeSelector etime" id="enddate" name="timepicker" placeholder="종료 시각"/>						
+							</div>
+							<!-- <button type="button" class="delete btn" onclick="del_stepattendance(event)"><i class="fas fa-times"></i></button> -->
+							<button type="button" class="delete btn" onclick="del_stepattendance(event)">X</button>
+							<input type="hidden" id="employee_no" value="${sessionScope.loginuser.employee_no}"/>
 						</div>
 					</div>
-					
 					<!-- 근무 1개 끝  -->
 					
-			  		<div class="workadd">
+			  		<div class="workadd" onclick="attendanceplus(1)">
 			  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt;">추가하기</span></div>
 		  			</div>
 		  			<div class="workstatus-buttoncontainer">
-		  				<button type="button" class="workstatus-del btn"><i class="fa-solid fa-trash-can"></i></button>
-			  			<button type="button" class="workstatus-save gradientbtn btn">저장하기</button>
+		  				<button type="button" class="workstatusall-del btn" onclick="del_allapproval()"><i class="fa-solid fa-trash-can" ></i></button> <%-- 전체 삭제하기 --%>
+			  			<button type="button" class="workstatus-save gradientbtn btn" id="goSave">저장하기</button>
 			  			<button type="reset" class="workstatus-cancel btn">취소</button>
 		  			</div>
 			  	</div>

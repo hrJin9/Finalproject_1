@@ -54,7 +54,7 @@
 			<div>
 				<div style="background-color:#5E9FF2;"></div>
 				<span>사용</span>
-				<div class="dayoff-minus">- 1일</div>
+				<div class="dayoff-minus">- ${requestScope.usedays}일</div>
 			</div>
 		</div>
 		<div class="dayoff-adjustmentbox">
