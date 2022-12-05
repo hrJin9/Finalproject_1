@@ -781,48 +781,97 @@ select mfno, fk_mno, m_systemfilename, m_originfilename, file_size
 from tbl_message_file
 
 select * from tbl_message
-order by sendtime desc\
+order by sendtime desc
 
 select * from tbl_employee
 
 
 select * from tbl_employee
-where fk_department_no = 10
+where fk_team_no = 1
 
 
 update tbl_employee set position = '부장'
 where position = '경력'
 
-사원, 대리 ,과장, 부장
-
-3 대리 5명
-
-14명 사원
 
 
+update tbl_employee set position = '부장' 
+where fk_team_no = 1
 
 
+update tbl_employee set position = '부장'
+where fk_team_no = 41 and position = '과장'
 
--- 사장 
 
-
-
-select * from tbl_team
+update tbl_employee set position = '사원'
+where name_kr like '%2'
 
 
 
+update tbl_employee set position = '대리'
+where name_kr like '%2'
+
+commit;
 
 
-select * from tbl_departments
+
+update tbl_employee set manager_no = (select employee_no from tbl_employee where fk_team_no = 3 and position = '대리')
+where fk_team_no = 3 and position = '사원'
+
+
+create or replace procedure pcd_update_manager_no
+(p_mp IN varchar2
+,p_ep IN varchar2
+)
+is
+begin
+for i in 1..45 loop
+update tbl_employee set manager_no = (select employee_no from tbl_employee where fk_department_no = 10 and position = p_mp)
+where fk_department_no = 10 and position = p_ep
+end loop;
+end pcd_update_manager_no;
+
+
+exec pcd_update_manager_no('부장','과장');
+
+select * from tbl_employee
+
+
+select employee_no, name_kr, manager_no, position from tbl_employee
+where fk_team_no = 1
+
+
+select employee_no from tbl_employee where fk_team_no = 1 and position = '대리'
 
 
 
-
-대표
-
-사원, 대리, 과장, 부장
+update tbl_employee set manager_no = (select employee_no from tbl_employee where fk_team_no = i and position = p_mp)
+where fk_team_no = i and position = p_ep;
 
 
+update tbl_employee set manager_no = (select employee_no from tbl_employee where fk_department_no = 10 and position = '부장')
+where fk_department_no = 90 and position = '대리'
 
 
 select * from tbl_employee
+
+desc tbl_employee
+
+update tbl_employee set jointype = '경력'
+where name_kr like '%3'
+
+
+-- 사장 넣기
+
+insert into tbl_employee
+values(1, null, null, '서영학', 'Younghak seo','9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', '사장', null, sysdate-365, 10000,null, '010-2341-1231', '21105', null, null, null, 'younghak121@naver.com', 1, null, null, '대졸', '경영학과', null, null, null, 1, 'CEO' , '대표', 1, 0 )
+
+
+update tbl_employee set jointype = '경력'
+where position in ('과장','부장','사장','대리')
+
+commit;
+
+
+
+
