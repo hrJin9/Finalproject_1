@@ -34,7 +34,7 @@
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
-		        where receiver = #{empno} and delete_status = 1
+		        where receiver = #{empno} and delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
 		        <if test="tab == 'unread'">
 			        and ms_checktime is null
 		        </if>
@@ -58,6 +58,7 @@
 		(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
 		on mno = fk_mno
 		where rno between #{startRno} and #{endRno}
+		
 	</select>
 	
 	<!-- 메시지리스트의 총페이지수 알아오기 -->
@@ -65,21 +66,21 @@
 		select ceil(count(*)/#{sizePerPage})
 		from
 		(
-		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status
+		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status, depthno,  scrapstatus, delete_status
 		    from
 		    (
-		        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime
+		        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
-		        where receiver = #{empno} and delete_status = 1
+		        where receiver = #{empno} and delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
 		        <if test="tab == 'unread'">
-			         and ms_checktime is null
+			        and ms_checktime is null
 		        </if>
 		        <if test="tab == 'scrap'">
 					and scrapstatus = 1
 		        </if>
-		        <if test="searchCondition != 'writer' and searchVal != ''">
+				<if test="searchCondition != 'writer' and searchVal != ''">
 		        	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
 		        </if>
 		    ) TM
@@ -92,6 +93,9 @@
 		) TMM
 		left join v_employee
 		on employee_no = receiver
+		left join
+		(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
+		on mno = fk_mno
 	</select>
 	
 	

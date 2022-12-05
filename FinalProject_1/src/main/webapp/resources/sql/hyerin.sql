@@ -874,4 +874,79 @@ commit;
 
 
 
+----------------------------------------------------------------------------------
+-- 보낸 메시지함 
 
+
+
+
+
+
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status, depthno, filecnt, scrapstatus, delete_status
+from
+(
+    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status, depthno,  scrapstatus, delete_status
+    from
+    (
+        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+        where receiver = #{empno} and delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
+        <if test="tab == 'unread'">
+            and ms_checktime is null
+        </if>
+        <if test="tab == 'scrap'">
+            and scrapstatus = 1
+        </if>
+        <if test="searchCondition != 'writer' and searchVal != ''">
+            and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+        </if>
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+    <if test="searchCondition == 'writer' and serachVal != ''">
+        where name_kr like '%'||lower(#{searchVal})||'%'
+    </if>
+    order by sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+left join
+(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
+on mno = fk_mno
+where rno between #{startRno} and #{endRno}
+
+
+
+
+select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+        where writer = 100006 and delete_status = 1
+
+
+
+select 
+from
+(
+    select row_number() over(order by sendtime desc) as rno, mno, mgroup, reno, subject, content, status, sendtime, depthno, writer_scrapstatus
+    from tbl_message
+    where writer = 100006 and status = 1
+)
+left join v_employee E
+on E.employee_no = writer
+
+
+
+
+
+
+
+<if test="tab == 'scrap'">
+    and scrapstatus = 1
+</if>
+<if test="searchCondition != 'receiver' and searchVal != ''">
+    and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+</if>

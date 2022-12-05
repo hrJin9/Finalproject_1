@@ -1,0 +1,58 @@
+@charset "UTF-8";
+	.mg-current{ font-weight: bold; }
+	.check-star + label > i {
+		font-size: 15pt;
+		position: relative;
+		top: 3px;
+	}
+	
+	.check-star:checked + label > i, .mc-star:checked +label > i {
+		color: #ffc107;
+	}
+	
+	.check-star + label > i, .mc-star +label > i {
+		color: rgba(0,0,0,0.1);
+	}
+	
+	.check-star + label > i:hover, .mc-star +label > i:hover {
+		cursor: pointer;
+		color: #ffc107;
+		transition: 0.2s;
+	}
+	
+	.tab-now{
+		font-weight: 800 !important;
+		color: rgb(77, 79, 83) !important;
+	}
+	.mgcatgo{
+		font-weight: 600;
+		color: #777777;
+	}
+	
+	.nonmgList {
+		color: rgb(77, 79, 83);
+		font-size: 10pt;
+		text-align: left;
+		padding: 10px 5px;
+	}
+	
+	.nonmgList:hover{
+		background-color: white !important;
+		cursor: default !important;
+	}
+	
+	.chxi{
+	    position: relative;
+	    top: 3px;
+	    color: rgba(0,0,0,0.1);
+	    font-size: 12pt;
+	}
+	
+	.chxi:hover{cursor:pointer; color: #37A652; transition: all .2s;}
+	
+	
+	#mgc-toList {
+		width: 85%;
+	}
+	
+	

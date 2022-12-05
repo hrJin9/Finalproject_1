@@ -107,48 +107,50 @@ public class MessageService implements InterMessageService {
 		int n = 0, m = 0, l = 0; 
 		try {
 			n = dao.addMessage(mvo);
-			n = 1;
 		} catch(Throwable e) {
 			e.printStackTrace();
 		}
 		
-		// 2. tbl_message_file 파일 insert
-		for(MultipartFile attach: attaches) {
-			if(!attach.isEmpty()) { // 첨부파일이 있는 경우
-				MessageFileVO mfvo = new MessageFileVO();
-					
-				HttpSession session = mrequest.getSession();
-				String root = session.getServletContext().getRealPath("/");
-				String path = root + "resources" + File.separator + "files";
+		if (n == 1) {
+			// 2. tbl_message_file 파일 insert
+			for(MultipartFile attach: attaches) {
+				if(!attach.isEmpty()) { // 첨부파일이 있는 경우
+					MessageFileVO mfvo = new MessageFileVO();
+						
+					HttpSession session = mrequest.getSession();
+					String root = session.getServletContext().getRealPath("/");
+					String path = root + "resources" + File.separator + "files";
 
-				String newFileName = "";
-				byte[] bytes = null;
-				long fileSize = 0;
+					String newFileName = "";
+					byte[] bytes = null;
+					long fileSize = 0;
 
-				try {
-					bytes = attach.getBytes();
-					// 첨부파일의 내용을 읽어오는 것
-					String originalFileName = attach.getOriginalFilename();
-					newFileName = fileManager.doFileUpload(bytes, originalFileName, path);
-					fileSize = attach.getSize(); // 첨부파일의 크기(단위는 byte)
-					
-					mfvo.setFk_mno(mvo.getMno());
-					mfvo.setM_systemfilename(newFileName);
-					mfvo.setM_originfilename(originalFileName);
-					System.out.println(mfvo.getM_systemfilename());
-					mfvo.setFile_size(String.valueOf(fileSize));
-					
-					m = dao.addMF(mfvo);
-					
-				} catch (IOException e) {
-					e.printStackTrace();
+					try {
+						bytes = attach.getBytes();
+						// 첨부파일의 내용을 읽어오는 것
+						String originalFileName = attach.getOriginalFilename();
+						newFileName = fileManager.doFileUpload(bytes, originalFileName, path);
+						fileSize = attach.getSize(); // 첨부파일의 크기(단위는 byte)
+						
+						mfvo.setFk_mno(mvo.getMno());
+						mfvo.setM_systemfilename(newFileName);
+						mfvo.setM_originfilename(originalFileName);
+						System.out.println(mfvo.getM_systemfilename());
+						mfvo.setFile_size(String.valueOf(fileSize));
+						
+						m = dao.addMF(mfvo);
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}//end of if
+				else { // 첨부파일이 없는 경우
+					m = 1;
+					break;
 				}
-			}//end of if
-			else { // 첨부파일이 없는 경우
-				m = 1;
-				break;
-			}
-		}//end of for
+			}//end of for
+			
+		}
 		
 		// 3. tbl_message_send에 메시지 송신 insert
 		if(m == 1) {

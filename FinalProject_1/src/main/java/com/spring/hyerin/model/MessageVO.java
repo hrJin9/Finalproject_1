@@ -18,6 +18,7 @@ public class MessageVO {
 	private String profile_orginfilename;
 	private String filecnt;
 	private String scrapstatus;
+	private String writer_scrapstatus;
 	
 	
 	private MultipartFile attach;
@@ -157,6 +158,14 @@ public class MessageVO {
 
 	public void setScrapstatus(String scrapstatus) {
 		this.scrapstatus = scrapstatus;
+	}
+
+	public String getWriter_scrapstatus() {
+		return writer_scrapstatus;
+	}
+
+	public void setWriter_scrapstatus(String writer_scrapstatus) {
+		this.writer_scrapstatus = writer_scrapstatus;
 	}
 	
 	

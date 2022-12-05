@@ -1622,7 +1622,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .mgc-header{
-	height: 130px;
+	margin-bottom: 20px;
 	display: flex;
 }
 

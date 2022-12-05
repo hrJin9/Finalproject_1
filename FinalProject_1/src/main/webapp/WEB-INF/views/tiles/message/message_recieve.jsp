@@ -5,58 +5,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
-	.mg-current{ font-weight: bold; }
-	.check-star + label > i {
-		font-size: 15pt;
-		position: relative;
-		top: 3px;
-	}
-	
-	.check-star:checked + label > i, .mc-star:checked +label > i {
-		color: #ffc107;
-	}
-	
-	.check-star + label > i, .mc-star +label > i {
-		color: rgba(0,0,0,0.1);
-	}
-	
-	.check-star + label > i:hover, .mc-star +label > i:hover {
-		cursor: pointer;
-		color: #ffc107;
-		transition: 0.2s;
-	}
-	
-	.tab-now{
-		font-weight: 800 !important;
-		color: rgb(77, 79, 83) !important;
-	}
-	.mgcatgo{
-		font-weight: 600;
-		color: #777777;
-	}
-	
-	.nonmgList {
-		color: rgb(77, 79, 83);
-		font-size: 10pt;
-		text-align: left;
-		padding: 10px 5px;
-	}
-	
-	.nonmgList:hover{
-		background-color: white !important;
-		cursor: default !important;
-	}
-	
-	.chxi{
-	    position: relative;
-	    top: 3px;
-	    color: rgba(0,0,0,0.1);
-	    font-size: 12pt;
-	}
-	
-	.chxi:hover{cursor:pointer; color: #37A652; transition: all .2s;}
-	
-	
 </style>
 <script>
 
@@ -67,7 +15,7 @@ $(document).ready(function(){
 	// 첫로딩시 전체 보여주기
 	getMgCnt("all");
 	getMglist("all",1);
-
+ 
 	// 전체, 안읽음, 중요 목록 읽어오기
 	$(".mgcatgo").click(function(){
 		$(".mgcatgo").removeClass("tab-now");
@@ -78,21 +26,25 @@ $(document).ready(function(){
 		getMglist(tab,1);
 	});
 	
+	
 	//메시지 목록 클릭 이벤트 => 해당 페이지로 이동.
 	$(document).on("click",".mgList-contents tr",function(e){
 		if($(e.target).is("td:first-child *") || $(e.target).is("td:nth-child(2) *") || $(e.target).is("#nonmgList")) return; //중요표시나 체크박스 클릭시 함수 종료
 		
+		$(".mgList-contents tr").css("background-color","inherit");
 		const mno = $(this).attr("id");
-		
-		// 클릭한 tr 색깔 변경하기
-		$(this).css({"background-color":"rgba(230,230,230,0.4)","color":"#D2D6D9"});
 		// 메시지 읽음상태로 변경
 		changeStatus(mno);
 		// 메시지 개수 갱신
 		getMgCnt();
 		// 클릭한 메시지 정보를 알아오는 ajax
 		selectonemg(mno);
+		
+		// 클릭한 tr 색깔 변경하기
+		$(this).css({"background-color":"rgba(230,230,230,0.4)","color":"#D2D6D9"});
+		
 	});
+	
 	
 	
 	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
@@ -112,6 +64,7 @@ $(document).ready(function(){
 			show_noncheckmenu();
 		}
 	});
+	
 	
 	//체크박스 하나 선택 이벤트
 	$(document).on("change","input[name='mg-selectchx']",function(e) {
@@ -152,36 +105,19 @@ $(document).ready(function(){
 		
 		var mno = $(this).parent().parent().attr("id");
 		var mcno = $(".mgc-subject").attr("id");
-		
-		var star_status = false;
-		if(mno == mcno){ // 목록과 내용이 같은 경우
-			star_status = true;
-		}
-		
 		if ( $(this).is(":checked") ) { //중요표시로 체크한 경우
 			itag.removeClass('icon-star-empty'); itag.addClass('icon-star-full'); itag.css("color","#ffc107");
-			
-			if (star_status){ // 목록과 내용이 같은 경우
-				citag.removeClass('icon-star-empty'); citag.addClass('icon-star-full'); citag.css("color","#ffc107");
-				$(this).prop("checked",true);
-				$(".mc-star").prop("checked",true);
-			}
-			
+
 			chxStatus("scrap",mno);
 			
 		} else { //체크를 해제한 경우
 	  		itag.removeClass('icon-star-full'); itag.addClass('icon-star-empty'); itag.css("color","rgba(0,0,0,0.1)");
-	  		
-	  		if (star_status){
-		  		citag.removeClass('icon-star-full'); citag.addClass('icon-star-empty'); citag.css("color","rgba(0,0,0,0.1)");
-	  			$(this).prop("checked",false);
-	  			$(".mc-star").prop("checked",false);
-			}
-	  		
 	  		chxStatus("unscrap",mno);
 	  	}
 		
+		//메시지 정보 다시 불러오기 => 와 너무 느린데....
 		getMglist();
+		selectonemg(mcno);
 	});
 	
 	
@@ -198,7 +134,8 @@ $(document).ready(function(){
 		var toname = $(this).find("span:nth-child(3)").attr("id");
 		var mgroup = $(".mgc-header-left").attr("id");
 		
-		//location.href="<%=ctxPath%>/message/write.up?to="+to+"&mgroup="+mgroup+"&reno="+reno+"&depthno="+depthno+"&re_subject="+re_subject+"&name="+toname;
+		location.href="<%=ctxPath%>/message/write.up?to="+to+"&mgroup="+mgroup+"&reno="+reno+"&depthno="+depthno+"&re_subject="+re_subject+"&name="+toname;
+	});
 	
 	// 검색input 엔터 이벤트
 	$("#searchVal").keyup(function(e){
@@ -216,7 +153,7 @@ $(document).ready(function(){
 	});
 	
 	
-	//상태(모두읽음등) 클릭 이벤트
+	//상태(모두읽음등) 툴팁 클릭 이벤트
 	$(".tp").click(function(e){
 		var condition = $(this).attr("id");
 		
@@ -228,7 +165,8 @@ $(document).ready(function(){
 		}
 		
 		chxStatus(condition);
-		
+		checkall_reset();
+		selectonemg($("#curmno").val());
 	});
 	
 	//관련 메시지 클릭시 해당 메시지로 이동
@@ -241,7 +179,6 @@ $(document).ready(function(){
 		// 클릭한 메시지 정보를 알아오는 ajax
 		selectonemg(mno);
 	});
-	
 	
 });//end of ready
 
@@ -277,6 +214,10 @@ function show_noncheckmenu(){
 function checkall_reset(){
 	$("#mg-selectchx-all").prop("checked", false);
 	$("input[name='mg-selectchx']").prop("checked",false);
+	$("#mg-selectchx-all + label > i").css({"color":"rgba(0,0,0,0.1)","transition":"all .2s"});
+	$("#mg-selectchx-all + label > i").removeClass("icon-checkbox-checked");
+	$("#mg-selectchx-all + label > i").addClass("icon-checkbox-unchecked");
+	
 	show_noncheckmenu();
 }//end of checkall_change
 
@@ -345,7 +286,6 @@ function getMgCnt(tab){
 
 //메시지 목록을 가져오는 ajax 
 function getMglist(tab, curpage){
-	
 	var selectedNoArr = getcheckedmno();
 
 	if(tab == null){
@@ -378,9 +318,8 @@ function getMglist(tab, curpage){
 					else
 						html += '<tr id="'+item.mno+'" class="mg-read">';
 					html += '<td width="3%">'+
-								'<input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox"" style="display: none;"/>'+
+								'<input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/>'+
 									'<label for="mg-selectchx'+index+'">'+
-									//'<i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999; visibility:hidden;"></i>'+
 									'<i class="icon icon-checkbox-unchecked chxi"></i>'+
 							'</label></td>' + 
 							'<td width="3%">';
@@ -436,7 +375,9 @@ function getMglist(tab, curpage){
 				$(".mgList-contents > table").html(html);
 				// 페이지 바 없애기
 				$(".mg-paging").html("");
+				
 			}
+			
 			
 		},
 		error: function(request, status, error){
@@ -445,19 +386,8 @@ function getMglist(tab, curpage){
 		
 	}); //end of ajax
 	
-	//console.log(selectedNoArr);
-	
-	
-	// 여기 왜안되냐고 하아아아악ㅇㅁㄹ느ㅏㅣ나을
-	$(".mg-selectchx").prop("checked",false);
-	
-	$.each(selectedNoArr,function(index, item){
-		
-		console.log($("tr#"+item).find(".mg-selectchx").prop("checked"));
-		$("tr#"+item).find(".mg-selectchx").prop("checked",true);
-	});
-	
-	
+	// 전체 체크상태 리셋
+	checkall_reset();
 	
 }//end of getMglist
 
@@ -552,7 +482,7 @@ function changeStatus(mno){
 
 
 // 메시지 하나 읽어오는 ajax 함수
-function selectonemg(mno){
+function selectonemg(mno, tpcheck){
 	
 	var mnostatus = false;
 	$.ajax({
@@ -627,6 +557,8 @@ function selectonemg(mno){
 					'</div>';
 			
 			$(".mg-right-container").html(html);
+			$("#curmno").val(mno);
+			
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -634,7 +566,8 @@ function selectonemg(mno){
 		
 	});//end of ajax
 	
-	// 자기가쓴일 경우 함수 종료
+	
+	// 자기가쓴일 경우 함수 또는 별체크 등일 경우종료
 	if(mnostatus) return;
 	
 	// 수신자 정보를 알아오는 ajax
@@ -790,13 +723,13 @@ function chxStatus(condition,checkednoArr){
 				
 				// 목록 갱신
 				getMglist();
-				
+				/* 
 				// 체크했던 값 마저 체크해주기
 				$.each(checkednoArr,function(index,item){ // 이거 외안되..?
 					const bool = $("tr#"+item).find(".mg-selectchx").is(":checked");// 이게 왜 true임..하;;
 					$("tr#"+item).find(".mg-selectchx").prop("checked",true);
 				});
-				
+				 */
 			}
 			
 		},
@@ -808,8 +741,6 @@ function chxStatus(condition,checkednoArr){
 	});//end of ajax
 	
 }//end of chxStatus()
-
-
 
 </script>
 
@@ -858,7 +789,7 @@ function chxStatus(condition,checkednoArr){
 		<hr class="HRhr" style="margin: 0;"/>
 		<div class="mgList">
 			<div class="mgList-menu">
-				<input id="mg-selectchx-all" class="mg-selectchx" type="checkbox" style="display: none;"/>
+				<input id="mg-selectchx-all" class="mg-selectchx" type="checkbox" style="display:none;"/>
 				<label for="mg-selectchx-all">
 					<!-- <i class="fas fa-check" style="color: white; font-weight: bold; font-size: 9pt; z-index: 999;"></i> -->
 					<i class="icon icon-checkbox-unchecked chxi" style="font-size: 12pt; position: relative; top: 6px; color: rgba(0,0,0,0.1);"></i>
@@ -895,5 +826,6 @@ function chxStatus(condition,checkednoArr){
 	<input id="allcnt" type="text" value=""/>
 	<input id="unreadcnt" type="text" value=""/>
 	<input id="scrapcnt" type="text" value=""/>
+	<input id="curmno" type="text" value=""/>
 
 </div>
