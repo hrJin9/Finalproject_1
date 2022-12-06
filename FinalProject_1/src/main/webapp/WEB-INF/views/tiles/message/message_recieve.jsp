@@ -107,17 +107,16 @@ $(document).ready(function(){
 		var mcno = $(".mgc-subject").attr("id");
 		if ( $(this).is(":checked") ) { //중요표시로 체크한 경우
 			itag.removeClass('icon-star-empty'); itag.addClass('icon-star-full'); itag.css("color","#ffc107");
-
 			chxStatus("scrap",mno);
 			
 		} else { //체크를 해제한 경우
 	  		itag.removeClass('icon-star-full'); itag.addClass('icon-star-empty'); itag.css("color","rgba(0,0,0,0.1)");
 	  		chxStatus("unscrap",mno);
+	  		
 	  	}
 		
-		//메시지 정보 다시 불러오기 => 와 너무 느린데....
 		getMglist();
-		selectonemg(mcno);
+		//selectonemg(mcno);
 	});
 	
 	
@@ -166,6 +165,7 @@ $(document).ready(function(){
 		
 		chxStatus(condition);
 		checkall_reset();
+		getMglist(null, 1);
 		selectonemg($("#curmno").val());
 	});
 	
@@ -295,6 +295,7 @@ function getMglist(tab, curpage){
 			}
 		}
 	}
+	
 	if(curpage == null)
 		curpage = $("#curpage").val();
 		
@@ -313,12 +314,18 @@ function getMglist(tab, curpage){
 			let html = '';
 			if(json.length > 0 ){ // 가져올 메시지목록이 있는 경우
 				$.each(json, function(index, item){
+					
+					// 보낸시간 가공하기
+					var timeindex = item.sendtime.indexOf("오");
+					var senddate = item.sendtime.substring(0,timeindex);
+					var sendtime = item.sendtime.substring(timeindex);
+					
 					if(item.ms_checktime == null)
 						html += '<tr id="'+item.mno+'" class="mg-unread">';
 					else
 						html += '<tr id="'+item.mno+'" class="mg-read">';
 					html += '<td width="3%">'+
-								'<input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/>'+
+								'<input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display:none;"/>'+
 									'<label for="mg-selectchx'+index+'">'+
 									'<i class="icon icon-checkbox-unchecked chxi"></i>'+
 							'</label></td>' + 
@@ -330,14 +337,14 @@ function getMglist(tab, curpage){
 								'</label>';
 					}
 					else{
-						html += '<input id="check-star'+index+'" type="checkbox" name="check-star" class="check-star star" style="display:none;" />'+
+						html += '<input id="check-star'+index+'" type="checkbox" name="check-star" class="check-star star" style="display:none;"/>'+
 								'<label for="check-star'+index+'">'+
 									'<i class="icon icon-star-empty"></i>'+
 								'</label>';
 					}
 					
 					html += '</td>'+
-							'<td width="72%">'+
+							'<td width="70%">'+
 								'<div id="mg-subjectcontainer">'+
 									'<span id="mg-subject">'+item.subject+'</span>';
 					if(item.filecnt != null) // 첨부파일이 있을 경우
@@ -345,8 +352,8 @@ function getMglist(tab, curpage){
 					html += '</div>'+
 							'<div><span>'+item.w_name+'</span>·<span>'+item.w_deptname+'</span></div>'+
 							'</td>'+
-							'<td width="22%">'+
-								'<div>'+item.sendtime+'</div>'+
+							'<td width="24%">'+
+								'<div>'+senddate+'<div>'+sendtime+'</div></div>'+
 							'</td>'+
 							'</tr>';
 							
@@ -482,7 +489,7 @@ function changeStatus(mno){
 
 
 // 메시지 하나 읽어오는 ajax 함수
-function selectonemg(mno, tpcheck){
+function selectonemg(mno){
 	
 	var mnostatus = false;
 	$.ajax({
@@ -506,6 +513,7 @@ function selectonemg(mno, tpcheck){
 					'<div id="'+json.mno+'" class="mgc-subject">'+
 					'<span>';
 			if(json.scrapstatus == 1) {
+				console.log(json.scrapstatus);
 				html += '<input type="checkbox" id="mc-star" name="mc-star" class="mc-star star" style="display:none;" checked/>'+
 						'<label for="mc-star"><i class="icon icon-star-full" style="color: rgb(255, 193, 7);"></i></label>';		
 				
@@ -709,27 +717,22 @@ function chxStatus(condition,checkednoArr){
 	if(checkednoArr == null)
 		checkednoArr = getcheckedmno();
 	
+	console.log(condition);
+	console.log(checkednoArr);
 	
 	// 선택한것 표시 변경하는 ajax
 	$.ajax({
 		url: "<%= ctxPath%>/chxStatus.up",
 		traditional: true, //배열 넘기기 옵션
-		data: {"fk_mnoArr":checkednoArr,
+		data: {"mnoArr":checkednoArr,
 				"receiver":"${sessionScope.loginuser.employee_no}",
 				"condition":condition},
 		dataType:"json",
 		success:function(json){
 			if(json.n == 1){
-				
 				// 목록 갱신
 				getMglist();
-				/* 
-				// 체크했던 값 마저 체크해주기
-				$.each(checkednoArr,function(index,item){ // 이거 외안되..?
-					const bool = $("tr#"+item).find(".mg-selectchx").is(":checked");// 이게 왜 true임..하;;
-					$("tr#"+item).find(".mg-selectchx").prop("checked",true);
-				});
-				 */
+				selectonemg($("#curmno").val());
 			}
 			
 		},
@@ -822,7 +825,7 @@ function chxStatus(condition,checkednoArr){
 	<div class="mg-right-container">
 	</div>
 	
-	<input id="curpage" type="text" value=""/>
+	<input id="curpage" type="text" value=""/>	
 	<input id="allcnt" type="text" value=""/>
 	<input id="unreadcnt" type="text" value=""/>
 	<input id="scrapcnt" type="text" value=""/>

@@ -9,18 +9,27 @@ public class MessageSendVO {
 	private String r_name;
 	private String r_dept;
 	private String profile_orginfilename;
-	private String receiverstatus;
+	private String delete_status;
+	private String scrap_status;
 	
 	public MessageSendVO(){}
-
-	public MessageSendVO(String msno, String fk_mno, String receiver, String ms_sendtime, String ms_checktime) {
-		super();
+	
+	public MessageSendVO(String msno, String fk_mno, String receiver, String ms_sendtime, String ms_checktime,
+			String r_name, String r_dept, String profile_orginfilename, String delete_status, String scrap_status) {
 		this.msno = msno;
 		this.fk_mno = fk_mno;
 		this.receiver = receiver;
 		this.ms_sendtime = ms_sendtime;
 		this.ms_checktime = ms_checktime;
+		this.r_name = r_name;
+		this.r_dept = r_dept;
+		this.profile_orginfilename = profile_orginfilename;
+		this.delete_status = delete_status;
+		this.scrap_status = scrap_status;
 	}
+
+
+
 
 	public String getMsno() {
 		return msno;
@@ -86,13 +95,22 @@ public class MessageSendVO {
 		this.profile_orginfilename = profile_orginfilename;
 	}
 
-	public String getReceiverstatus() {
-		return receiverstatus;
+	public String getDelete_status() {
+		return delete_status;
 	}
 
-	public void setReceiverstatus(String receiverstatus) {
-		this.receiverstatus = receiverstatus;
+	public void setDelete_status(String delete_status) {
+		this.delete_status = delete_status;
 	}
+
+	public String getScrap_status() {
+		return scrap_status;
+	}
+
+	public void setScrap_status(String scrap_status) {
+		this.scrap_status = scrap_status;
+	}
+
 	
 	
 	

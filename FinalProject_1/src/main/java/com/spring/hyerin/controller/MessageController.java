@@ -12,16 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.xmlbeans.impl.jam.mutable.MField;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -59,19 +56,29 @@ public class MessageController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getMgCnt.up", produces = "text/plain;charset=UTF-8")
-	public String getUnreadCnt(HttpServletRequest request, ModelAndView mav) {
-		String receiver = request.getParameter("receiver");
+	@RequestMapping(value = {"/getMgCnt.up","/getMsMgCnt.up"}, produces = "text/plain;charset=UTF-8")
+	public String getMgCnt(HttpServletRequest request, ModelAndView mav) {
 		String[] tabs = request.getParameterValues("tab");
+		String receiver = request.getParameter("receiver"); // 받은 메시지일 경우
+		String writer = request.getParameter("writer"); // 보낸메시지일 경우
+		if(receiver == null) receiver = ""; // 보낸메시지일 경우
+		if(writer == null) writer = "";
 		
 		JSONArray jsonarr = new JSONArray();
 		for(String tab : tabs) {
 			Map<String, String> paraMap = new HashMap<String, String>();
 			paraMap.put("receiver",receiver);
+			paraMap.put("writer",writer);
 			paraMap.put("tab",tab);
 			
-			// 탭별 메시지 개수 알아오기
-			int mgCnt = service.getMgCnt(paraMap);
+			int mgCnt;
+			if(!"".equals(receiver)) { //받은메시지일 경우 
+				// 탭별 메시지 개수 알아오기
+				mgCnt = service.getMgCnt(paraMap);
+			} else {
+				// 탭별 메시지 개수 알아오기
+				mgCnt = service.getMsMgCnt(paraMap);
+			}
 			
 			JSONObject jsonobj = new JSONObject();
 			jsonobj.put("mgCnt", mgCnt);
@@ -80,9 +87,8 @@ public class MessageController {
 		}
 		
 		return jsonarr.toString();
-	}//end of getUnreadCnt
+	}//end of getMgCnt
 
-	
 	
 	
 	@ResponseBody
@@ -137,7 +143,7 @@ public class MessageController {
 				jsonobj.put("sendtime", map.get("sendtime"));
 				jsonobj.put("ms_checktime", map.get("ms_checktime"));
 				jsonobj.put("filecnt", map.get("filecnt"));
-				jsonobj.put("scrapstatus", map.get("scrapstatus"));
+				jsonobj.put("scrapstatus", map.get("scrap_status"));
 				jsonobj.put("delete_status", map.get("delete_status"));
 				jsonarr.put(jsonobj);
 			}//end of for
@@ -146,6 +152,7 @@ public class MessageController {
 		return jsonarr.toString();
 		
 	}//end of mglist
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "/mgtotal.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
@@ -180,6 +187,100 @@ public class MessageController {
 		return jsonobj.toString();
 	}//end of mgtotal
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mg_sendlist.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String mg_sendlist(HttpServletRequest request, ModelAndView mav) {
+		
+		// 탭정보 가져오기
+		String tab = request.getParameter("tab"); // "all", "unread", "scrap"
+		// 검색정보 가져오기
+		String searchCondition = request.getParameter("searchCondition");
+		String searchVal = request.getParameter("searchVal");
+		if("all".equals(searchCondition)) searchCondition = "subject";
+		if(searchVal == null) searchVal = ""; 
+		
+		// 로그인된 유저 정보(receiver) 가져오기
+		HttpSession session = request.getSession();
+		EmployeeVO emp = (EmployeeVO) session.getAttribute("loginuser");
+		String empno = emp.getEmployee_no();
+		String curpage = request.getParameter("curpage");
+		int sizePerPage = 10;
+		if (curpage == null) curpage = "1";
+		int startRno = ((Integer.parseInt(curpage) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		// 맵에 정보값 넣어주기
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("empno",empno);
+		paraMap.put("tab", tab);
+		paraMap.put("searchCondition", searchCondition);
+		paraMap.put("searchVal", searchVal);
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+		
+		// 로그인유저의 메시지리스트 불러오기
+		List<MessageVO> mvoList = service.getMsmvoList(paraMap);
+		
+		JSONArray jsonarr = new JSONArray();
+		if(mvoList != null) {
+			for(MessageVO mvo : mvoList) {
+				JSONObject jsonobj = new JSONObject();
+				jsonobj.put("mno", mvo.getMno());
+				jsonobj.put("writer", mvo.getWriter());
+				jsonobj.put("mgroup", mvo.getMgroup());
+				jsonobj.put("reno", mvo.getReno());
+				jsonobj.put("subject", mvo.getSubject());
+				jsonobj.put("sendtime", mvo.getSendtime());
+				jsonobj.put("depthno", mvo.getDepthno());
+				jsonobj.put("writer_scrapstatus", mvo.getScrap_status());
+				jsonobj.put("receiver_name", mvo.getReceiver_name());
+				jsonobj.put("scrapstatus", mvo.getScrap_status());
+				jsonobj.put("filecnt", mvo.getFilecnt());
+				jsonarr.put(jsonobj);
+			}//end of for
+		}//end of if
+		
+		return jsonarr.toString();
+		
+	}//end of mg_sendlist
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/msmgtotal.up", method = {RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
+	public String msmgtotal(HttpServletRequest request, ModelAndView mav) {
+		
+		// 로그인된 유저 정보(receiver) 가져오기
+		HttpSession session = request.getSession();
+		EmployeeVO emp = (EmployeeVO) session.getAttribute("loginuser");
+		String empno = emp.getEmployee_no();
+		String tab = request.getParameter("tab");
+		String sizePerPage = request.getParameter("sizePerPage");
+		
+		// 검색정보 가져오기
+		String searchCondition = request.getParameter("searchCondition");
+		String searchVal = request.getParameter("searchVal");
+		if("all".equals(searchCondition)) searchCondition = "subject";
+		if(searchVal == null) searchVal = ""; 
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("tab",tab);
+		paraMap.put("searchCondition", searchCondition);
+		paraMap.put("searchVal", searchVal);
+		paraMap.put("sizePerPage",sizePerPage);
+		paraMap.put("empno",empno);
+		
+		// 메시지리스트의 총페이지수 알아오기
+		int mgtotal = service.getMsmgtotal(paraMap);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("mgtotal", mgtotal);
+		
+		return jsonobj.toString();
+	}//end of mgtotal
+	
+	
+	
 	@ResponseBody
 	@RequestMapping(value = "/changeMgStatus.up", produces = "text/plain;charset=UTF-8")
 	public String changeMgStatus(HttpServletRequest request, MessageSendVO msvo, ModelAndView mav) {
@@ -200,6 +301,7 @@ public class MessageController {
 		
 		String mno = request.getParameter("mno");
 		String receiver = request.getParameter("receiver");
+		if(receiver == null) receiver = "";
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put("mno",mno);
@@ -220,7 +322,7 @@ public class MessageController {
 			jsonobj.put("content", mvo.getContent());
 			jsonobj.put("sendtime", mvo.getSendtime());
 			jsonobj.put("depthno", mvo.getDepthno());
-			jsonobj.put("scrapstatus", mvo.getScrapstatus());
+			jsonobj.put("scrapstatus", mvo.getScrap_status());
 			jsonobj.put("profile_orginfilename", mvo.getProfile_orginfilename());
 		} catch(Exception e) {
 			return jsonobj.toString();
@@ -307,25 +409,32 @@ public class MessageController {
 	}//end of selectOnemgReceivers
 	
 	@ResponseBody
-	@RequestMapping(value = "/chxStatus.up", produces = "text/plain;charset=UTF-8")
+	@RequestMapping(value = {"/chxStatus.up","/SendchxStatus.up"}, produces = "text/plain;charset=UTF-8")
 	public String chxStatus(HttpServletRequest request, HttpServletResponse response ,ModelAndView mav) {
 		
 		JSONObject jsonobj = new JSONObject();
 		
-		String[] fk_mnoArr = request.getParameterValues("fk_mnoArr");
+		String[] mnoArr = request.getParameterValues("mnoArr");
 		String receiver = request.getParameter("receiver"); 
 		String condition = request.getParameter("condition"); // read, unread, scrap, delete
+		if(receiver == null) receiver = ""; // 보낸 메시지일 경우
 		
 		int n = 0;
-		if (fk_mnoArr != null) {
-			for(String fk_mno : fk_mnoArr) {
+		if (mnoArr != null) {
+			for(String mno : mnoArr) {
 				Map<String,String> paraMap = new HashMap<String, String>();
 				paraMap.put("receiver", receiver);
 				paraMap.put("condition", condition);
-				paraMap.put("fk_mno", fk_mno);
+				paraMap.put("mno", mno);
 				try {
 					//체크된 것 condition에 따라 상태 update해주기
-					n = service.chxStatus(paraMap);
+					if(!"".equals(receiver)) {
+						n = service.chxStatus(paraMap);
+					}
+					else {
+						//보낸 메시지 => 체크된 것 condition에 따라 상태 update해주기
+						n = service.sendchxStatus(paraMap);
+					}
 				} catch (Exception e) {
 					n = 0;
 					e.printStackTrace();
@@ -336,7 +445,7 @@ public class MessageController {
 		
 		jsonobj.put("n", n);
 		return jsonobj.toString();
-	}//end of chxRead
+	}//end of chxStatus
 	
 	
 	@RequestMapping(value = "/mfDownload.up")
@@ -383,7 +492,7 @@ public class MessageController {
 	
 	
 	@RequestMapping(value = "/message/send.up")
-	public ModelAndView messageRecieve(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView rl_messageRecieve(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		mav.setViewName("message/message_send.tiles");
 		return mav;
@@ -426,8 +535,6 @@ public class MessageController {
 		
 		// mno 채번해오기
 		String mno = service.getmno();
-		
-		System.out.println(mvo.getDepthno());
 		
 		// 1. 메시지 insert
 		mvo.setMno(mno);

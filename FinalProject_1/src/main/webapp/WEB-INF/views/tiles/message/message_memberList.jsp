@@ -71,8 +71,13 @@ $(document).ready(function(){
 	
 	
 	
-	//팀이름 클릭시 해당 부서 사람 불러오기
+	//팀이름 클릭시 해당 팀 사람 불러오기
 	$(document).on('click','.orgmenu',function(e){
+		//체크박스 해제시키기
+		$("#memberAll").prop("checked",false);
+		$("input:checkbox[name='memberChx']").prop("checked",false);
+		show_noncheckmenu();
+		
 		let teamVal = $(e.target).attr("id");
 		$("#searchVal").val("");
 		showEmpList(teamVal);
@@ -131,7 +136,7 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".big").css({'width':'55.2%','position':'relative','top':'18px'});
+	        $(".big").css({'width':'55.1%','position':'relative','top':'18px'});
 	        $(".big table").css({"width":"100%","top":""});
 	        $(".menucontent").css({'visibility':'visible'});
 	    }else{
@@ -211,6 +216,7 @@ function showEmpList(teamVal){
 			if(json.length > 0 ){ //불러올 구성원목록이 있는 경우
 				
 				$.each(json,function(index,item){
+					
 					html += '<tr id="'+item.employee_no+'" class="mem-tr">'+
 								'<td><input type="checkbox" name="memberChx" class="'+item.department_name+'" id="'+item.name_kr+'" value="'+item.employee_no+'"/></td>'+
 								'<td>'+
@@ -227,12 +233,21 @@ function showEmpList(teamVal){
 										'</span>'+
 									'</div>'+
 								'</td>'+
-								'<td>'+
-									'<span class="positionIcon">'+
+								'<td>';
+					if(item.employee_no == 1){ //사장(대표)인 경우
+						html +=	'<span class="positionIcon">'+
+											'<span>'+item.position+'</span>'+
+										'</span>'+
+									'</td>'+
+								'</tr>';
+						
+					} else{
+						html +=	'<span class="positionIcon">'+
 										'<span>'+item.department_name+' '+item.team_name+'&nbsp;|&nbsp;'+item.position+'</span>'+
 									'</span>'+
 								'</td>'+
 							'</tr>';
+					}
 				});//end of each
 				
 				
@@ -364,7 +379,7 @@ function goSubmit(btn){
 			<label for="memberAll">
 				<span id="check_ctn"></span>명 선택
 			</label>
-			<button type="button" id="ml-save" class="gradientbtn btn" style="font-size: 9pt;" onclick="goSubmit('save')">저장</button>		
+			<button type="button" id="ml-save" class="bluebtn btn" style="font-size: 9pt;" onclick="goSubmit('save')">저장</button>		
 			<button type="button" id="ml-cancel" class="btn">취소</button>
 		</span>
 	</div>

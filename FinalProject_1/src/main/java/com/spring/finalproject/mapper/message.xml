@@ -3,7 +3,7 @@
 <mapper namespace="message">
 	
 	
-	<!-- 한 사용자의 메시지목록 불러오기 -->
+	<!-- 받은 메시지목록 불러오기 -->
 	<resultMap type="HashMap" id="getmvoList_Map">
 		<result property="mno" column="mno" javaType="String"/>
 		<result property="writer" column="writer" javaType="String"/>
@@ -20,26 +20,28 @@
 		<result property="ms_checktime" column="ms_checktime" javaType="String"/>
 		<result property="depthno" column="depthno" javaType="String"/>
 		<result property="filecnt" column="filecnt" javaType="String"/>
-		<result property="scrapstatus" column="scrapstatus" javaType="String"/>
-		<result property="delete_status" column="delete_status" javaType="String"/>
+		<result property="scrap_status" column="scrap_status" javaType="String"/>
 	</resultMap>
 	<select id="getmvoList" parameterType="HashMap" resultMap="getmvoList_Map">
-		select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status, depthno, filecnt, scrapstatus, delete_status
+		select rno, mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd AM hh:mi') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.delete_status, depthno, filecnt, scrap_status
 		from
 		(
-		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status, depthno,  scrapstatus, delete_status
+		    select row_number() over(order by sendtime desc) as rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.delete_status, depthno, TM.scrap_status, filecnt
 		    from
 		    (
-		        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
+		        select mno, writer, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, depthno, MS.scrap_status, MS.delete_status, filecnt
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
-		        where receiver = #{empno} and delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
+		        left join
+		        (select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno) F
+		        on mno = F.fk_mno
+		        where receiver = #{empno} and MS.delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
 		        <if test="tab == 'unread'">
 			        and ms_checktime is null
 		        </if>
 		        <if test="tab == 'scrap'">
-					and scrapstatus = 1
+					and MS.scrap_status = 1
 		        </if>
 				<if test="searchCondition != 'writer' and searchVal != ''">
 		        	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
@@ -48,15 +50,11 @@
 		    left join v_employee E
 		    on E.employee_no = writer
 		    <if test="searchCondition == 'writer' and serachVal != ''">
-		    	where name_kr like '%'||lower(#{searchVal})||'%'
+		    	where lower(name_kr) like '%'||lower(#{searchVal})||'%'
 		    </if>
-		    order by sendtime desc
 		) TMM
 		left join v_employee
 		on employee_no = receiver
-		left join
-		(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
-		on mno = fk_mno
 		where rno between #{startRno} and #{endRno}
 		
 	</select>
@@ -66,19 +64,22 @@
 		select ceil(count(*)/#{sizePerPage})
 		from
 		(
-		    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status, depthno,  scrapstatus, delete_status
+		    select row_number() over(order by sendtime desc) as rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.delete_status, depthno, TM.scrap_status, filecnt
 		    from
 		    (
-		        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
+		        select mno, writer, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, depthno, MS.scrap_status, MS.delete_status, filecnt
 		        from tbl_message M
 		        join tbl_message_send MS
 		        on M.mno = MS.fk_mno
-		        where receiver = #{empno} and delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
+		        left join
+		        (select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno) F
+		        on mno = F.fk_mno
+		        where receiver = #{empno} and MS.delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
 		        <if test="tab == 'unread'">
 			        and ms_checktime is null
 		        </if>
 		        <if test="tab == 'scrap'">
-					and scrapstatus = 1
+					and MS.scrap_status = 1
 		        </if>
 				<if test="searchCondition != 'writer' and searchVal != ''">
 		        	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
@@ -87,33 +88,112 @@
 		    left join v_employee E
 		    on E.employee_no = writer
 		    <if test="searchCondition == 'writer' and serachVal != ''">
-		    	where name_kr like '%'||lower(#{searchVal})||'%'
+		    	where lower(name_kr) like '%'||lower(#{searchVal})||'%'
 		    </if>
-		    order by sendtime desc
 		) TMM
 		left join v_employee
 		on employee_no = receiver
-		left join
-		(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
-		on mno = fk_mno
 	</select>
 	
 	
+	
+	<!-- 보낸 메시지목록 알아오기 -->
+	<select id="getMsmvoList" parameterType="HashMap" resultType="com.spring.hyerin.model.MessageVO">
+		select rno, writer, mno, mgroup, reno, subject, delete_status, to_char(sendtime,'yy. mm. dd AM hh:mi') as sendtime, depthno, scrap_status, receiver_name, filecnt
+		from 
+		(
+		    select row_number() over(order by sendtime desc) as rno, writer, mno, mgroup, reno, subject, M.delete_status, sendtime, depthno, M.scrap_status, receiver_name, filecnt
+		    from
+		    (
+		        select writer, mno, mgroup, reno, subject, M.delete_status, sendtime, depthno, M.scrap_status, 
+		        LISTAGG(name_kr,',') WITHIN GROUP (ORDER BY name_kr) AS receiver_name, filecnt
+		        from tbl_message M
+		        left join tbl_message_send MS
+		        on mno = fk_mno
+		        left join v_employee
+		        on receiver = employee_no
+		        left join ( select fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno ) F
+				on F.fk_mno = mno
+		        group by (writer, mno, mgroup, reno, subject, M.delete_status, sendtime, depthno, M.scrap_status, filecnt)
+		    ) M
+		    left join v_employee E
+		    on E.employee_no = writer
+		    where writer = #{empno} and M.delete_status = 1
+		    <if test="tab == 'scrap'">
+		    	and scrap_status = 1
+		    </if>
+		    <if test="searchCondition != 'receiver_name' and searchVal != ''">
+		    	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+		    </if>
+		    <if test="searchCondition == 'receiver_name' and serachVal != ''">
+		    	and lower(receiver_name) like '%'||lower(#{searchVal})||'%'
+		    </if>
+		    order by sendtime desc
+		)
+		where rno between #{startRno} and #{endRno}
+	</select>
+	
+	
+	<!-- 보낸메시지 총개수 알아오기 -->
+	<select id="getMsmgtotal" parameterType="HashMap" resultType="int">
+		select ceil(count(*)/10)
+		from 
+		(
+		    select row_number() over(order by sendtime desc) as rno, writer, mno, mgroup, reno, subject, M.delete_status, sendtime, depthno, M.scrap_status, receiver_name, filecnt
+		    from
+		    (
+		        select writer, mno, mgroup, reno, subject, M.delete_status, sendtime, depthno, M.scrap_status, 
+		        LISTAGG(name_kr,',') WITHIN GROUP (ORDER BY name_kr) AS receiver_name, filecnt
+		        from tbl_message M
+		        left join tbl_message_send MS
+		        on mno = fk_mno
+		        left join v_employee
+		        on receiver = employee_no
+		        left join ( select fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno ) F
+				on F.fk_mno = mno
+		        group by (writer, mno, mgroup, reno, subject, M.delete_status, sendtime, depthno, M.scrap_status, filecnt)
+		    ) M
+		    left join v_employee E
+		    on E.employee_no = writer
+		    where writer = #{empno} and M.delete_status = 1
+		    <if test="tab == 'scrap'">
+		    	and scrap_status = 1
+		    </if>
+		    <if test="searchCondition != 'receiver_name' and searchVal != ''">
+		    	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+		    </if>
+		    <if test="searchCondition == 'receiver_name' and serachVal != ''">
+		    	and lower(receiver_name) like '%'||lower(#{searchVal})||'%'
+		    </if>
+		    order by sendtime desc
+		)
+	</select>
 	
 	
 	<!-- 로그인 유저가 클릭한 메시지내용 1개 불러오기 -->
 	
 	<!-- 메시지 내용 -->
 	<select id="getmvo" parameterType="HashMap" resultType="com.spring.hyerin.model.MessageVO">
-		select mno, mgroup,reno, writer, w_name, w_dept, subject, content, sendtime, profile_orginfilename, depthno, scrapstatus
-		from (
-		    select mno, mgroup,reno, writer, name_kr as w_name, department_name as w_dept, subject, content, to_char(sendtime, 'yyyy. mm. dd AM hh:mi') as sendtime, profile_orginfilename, depthno
-		    from tbl_message join v_employee on employee_no = writer
-		    where mno = #{mno}
-		)
-		join tbl_message_send
-		on mno = fk_mno
-		where receiver = #{receiver}
+		<if test="receiver == ''">
+			select mno, mgroup,reno, writer, w_name, w_dept, subject, content, sendtime, profile_orginfilename, depthno, scrap_status
+			from (
+			    select mno, mgroup,reno, writer, name_kr as w_name, department_name as w_dept, subject, content, to_char(sendtime, 'yyyy. mm. dd AM hh:mi') as sendtime, profile_orginfilename, depthno, scrap_status
+			    from tbl_message join v_employee on employee_no = writer
+			    where mno = #{mno}
+			)
+		</if>
+		
+		<if test="receiver != ''">
+			select mno, mgroup,reno, writer, w_name, w_dept, subject, content, sendtime, profile_orginfilename, depthno, MS. scrap_status
+			from (
+			    select mno, mgroup,reno, writer, name_kr as w_name, department_name as w_dept, subject, content, to_char(sendtime, 'yyyy. mm. dd AM hh:mi') as sendtime, profile_orginfilename, depthno
+			    from tbl_message join v_employee on employee_no = writer
+			    where mno = #{mno}
+			)
+			join tbl_message_send MS
+			on mno = fk_mno
+			where receiver = #{receiver}
+		</if>
 	</select>
 	
 	<!-- 수신자정보 -->
@@ -179,7 +259,7 @@
 	
 	<!-- 구성원목록 알아오기 -->
 	<select id="getEmpList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
-		select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
+		select nvl(fk_department_no,0) as fk_department_no, nvl(department_name,0) as department_name, nvl(fk_team_no,0) as fk_team_no, nvl(team_name,0) as team_name, employee_no, name_kr, role, position, profile_systemfilename
 		from v_employee
 		where status = 1
 		<if test="searchVal != '' and teamVal == ''">
@@ -202,7 +282,7 @@
 	
 	<!-- tbl_message에 메시지 하나 insert하기 -->
 	<insert id="addMessage" parameterType="com.spring.hyerin.model.MessageVO">
-		insert into tbl_message (mno, writer, mgroup, reno, subject, content, sendtime, status, depthno)
+		insert into tbl_message (mno, writer, mgroup, reno, subject, content, sendtime, delete_status, depthno)
 		<if test="mgroup != '' and sendtime != ''">
 			values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, to_date(#{sendtime},'yyyy/mm/dd hh24:mi'), default, #{depthno})
 		</if>
@@ -226,7 +306,7 @@
 	
 	<!-- tbl_message_send에 수신자 insert하기 -->
 	<insert id="addMS" parameterType="com.spring.hyerin.model.MessageSendVO">
-		insert into tbl_message_send (msno, fk_mno, receiver, ms_checktime, scrapstatus)
+		insert into tbl_message_send (msno, fk_mno, receiver, ms_checktime, scrap_status)
 		values('ms-'||seq_tbl_message_send.nextval, #{fk_mno}, #{receiver}, null, default)
 	</insert>
 	
@@ -264,6 +344,7 @@
 		                  mno, subject, name_kr||'·'||department_name as writer, sendtime,
 		                  LEAD(mno) OVER (ORDER BY to_number(substr(mno,3))) as b_mno
 		           from tbl_message
+		           left join (select fk_mno, receiver from tbl_message_send where receiver = #{receiver} and delete_status = 1 group by (fk_mno, receiver))on mno = fk_mno
 		           join v_employee on writer = employee_no
 		           where mgroup = (select mgroup from tbl_message where mno = #{mno})
 		        ) M
@@ -286,7 +367,7 @@
 	</update>
 	
 	
-	<!-- 메시지 개수 알아오기 -->
+	<!-- 받은 메시지 개수 알아오기 -->
 	<select id="getMgCnt" parameterType="HashMap" resultType="int">
 		select count(*) from tbl_message_send
 		where receiver = #{receiver} and delete_status = 1
@@ -294,7 +375,17 @@
 			and ms_checktime is null
 		</if>
 		<if test="tab == 'scrap'">
-			and scrapstatus = 1
+			and scrap_status = 1
+		</if>
+	</select>
+	
+	
+	<!-- 보낸 메시지 개수 알아오기 -->
+	<select id="getMsMgCnt" parameterType="HashMap" resultType="int">
+		select count(*) from tbl_message
+		where writer = #{writer} and delete_status = 1
+		<if test="tab == 'scrap'">
+			and scrap_status = 1
 		</if>
 	</select>
 	
@@ -309,15 +400,29 @@
 			ms_checktime = null
 		</if>
 		<if test="condition == 'unscrap'">
-			scrapstatus = 0
+			scrap_status = 0
 		</if>
 		<if test="condition == 'scrap'">
-			scrapstatus = 1
+			scrap_status = 1
 		</if>
 		<if test="condition == 'delete'">
 			delete_status = 0
 		</if>
-		where fk_mno = #{fk_mno} and receiver = #{receiver}
+		where fk_mno = #{mno} and receiver = #{receiver}
+	</update>
+	
+	<update id="sendchxStatus" parameterType="HashMap">
+		update tbl_message set 
+		<if test="condition == 'unscrap'">
+			scrap_status = 0
+		</if>
+		<if test="condition == 'scrap'">
+			scrap_status = 1
+		</if>
+		<if test="condition == 'delete'">
+			delete_status = 0
+		</if>
+		where mno = #{mno}
 	</update>
 	
 	

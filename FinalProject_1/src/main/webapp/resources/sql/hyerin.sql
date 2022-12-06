@@ -878,26 +878,98 @@ commit;
 -- 보낸 메시지함 
 
 
-
-
-
-
-select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status, depthno, filecnt, scrapstatus, delete_status
-from
+select rno, writer, mno, mgroup, reno, subject, status, sendtime, depthno, writer_scrapstatus, receiver_name, filecnt
+from 
 (
-    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status, depthno,  scrapstatus, delete_status
+    select row_number() over(order by sendtime desc) as rno, writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus, receiver_name, filecnt
     from
     (
-        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
+        select writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus, 
+        --name_kr as receiver_name, 
+        LISTAGG(name_kr,',') WITHIN GROUP (ORDER BY name_kr) AS receiver_name
+        from tbl_message M
+        left join tbl_message_send MS
+        on mno = fk_mno
+        left join v_employee
+        on receiver = employee_no
+        group by (writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus)
+    ) M
+    left join v_employee E
+    on E.employee_no = writer
+    left join ( select fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno ) F
+    on F.fk_mno = mno
+    where writer = 100006 and M.status = 1
+    --and receiver_name like '%'||'강'||'%'
+    --and writer_scrapstatus = 1
+)
+where rno between 1 and 10
+
+
+select * from tbl_message
+
+select * from tbl_message_send
+
+select * from tbl_message_file
+
+( select fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno )
+
+
+
+-- 총 개수
+select ceil(count(*)/10)
+from 
+(
+    select row_number() over(order by sendtime desc) as rno, writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus, receiver_name
+    from
+    (
+        select writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus, 
+        --name_kr as receiver_name, 
+        LISTAGG(name_kr,',') WITHIN GROUP (ORDER BY name_kr) AS receiver_name
+        from tbl_message M
+        left join tbl_message_send MS
+        on mno = fk_mno
+        left join v_employee
+        on receiver = employee_no
+        group by (writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus)
+    ) M
+    left join v_employee E
+    on E.employee_no = writer
+    where writer = 100006 and M.status = 1
+    --and receiver_name like '%'||'강'||'%'
+    --and writer_scrapstatus = 1
+)
+
+
+
+
+-- 보낸  메시지 개수 알아오기
+select count(*) from tbl_message_send
+where receiver = #{receiver} and delete_status = 1
+
+
+alter table tbl_message rename column status to delete_status
+
+
+alter table tbl_message_send rename column scrapstatus to scrap_status
+
+
+select * from tbl_message
+select rno, mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd AM hh24:mi') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.delete_status, depthno, filecnt, scrap_status, delete_status
+from
+(
+    select row_number() over(order by sendtime desc) as rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.delete_status, depthno,  scrap_status, delete_status
+    from
+    (
+        select mno, writer, receiver, mgroup, reno, subject, content, M.delete_status, sendtime, ms_checktime, depthno, MS.scrap_status, MS.delete_status
         from tbl_message M
         join tbl_message_send MS
         on M.mno = MS.fk_mno
-        where receiver = #{empno} and delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
+        where receiver = 100006 and MS.delete_status = 1 and sendtime <= sysdate
         <if test="tab == 'unread'">
             and ms_checktime is null
         </if>
         <if test="tab == 'scrap'">
-            and scrapstatus = 1
+            and MS.scrap_status = 1
         </if>
         <if test="searchCondition != 'writer' and searchVal != ''">
             and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
@@ -906,7 +978,7 @@ from
     left join v_employee E
     on E.employee_no = writer
     <if test="searchCondition == 'writer' and serachVal != ''">
-        where name_kr like '%'||lower(#{searchVal})||'%'
+        where lower(name_kr) like '%'||lower(#{searchVal})||'%'
     </if>
     order by sendtime desc
 ) TMM
@@ -918,35 +990,50 @@ on mno = fk_mno
 where rno between #{startRno} and #{endRno}
 
 
+select * from tbl_employee
+
+desc tbl_employee
 
 
-select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
-        from tbl_message M
-        join tbl_message_send MS
-        on M.mno = MS.fk_mno
-        where writer = 100006 and delete_status = 1
+select * from tbl_message_send
+
+select fk_mno, receiver from tbl_message_send
+where delete_status = 1 and receiver = 100006
+group by (fk_mno, receiver)
+
+
+select * from tbl_message_send
 
 
 
-select 
+
+ select n_mno, N.writer as n_writer, N.subject as n_subject, N.sendtime as n_sendtime, M.mno, M.writer, M.sendtime, M.subject, M.b_mno
 from
 (
-    select row_number() over(order by sendtime desc) as rno, mno, mgroup, reno, subject, content, status, sendtime, depthno, writer_scrapstatus
-    from tbl_message
-    where writer = 100006 and status = 1
-)
-left join v_employee E
-on E.employee_no = writer
+select LAG(mno) OVER (ORDER BY to_number(substr(mno,3))) as n_mno, 
+      mno, subject, name_kr||'·'||department_name as writer, sendtime,
+      LEAD(mno) OVER (ORDER BY to_number(substr(mno,3))) as b_mno
+from tbl_message
+join v_employee on writer = employee_no
+where mgroup = (select mgroup from tbl_message where mno = 'm-12')
 
 
 
 
+select * from tbl_message
+where writer = 100006
 
 
+select * from tbl_message_send
+where fk_mno = 'm-93' and receiver = 100006
 
-<if test="tab == 'scrap'">
-    and scrapstatus = 1
-</if>
-<if test="searchCondition != 'receiver' and searchVal != ''">
-    and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
-</if>
+select nvl(fk_department_no, '없음')
+from v_employee
+
+select * from v_employee
+
+select nvl(fk_department_no,'없음') as fk_department_no, nvl(department_name,'없음') as department_name, nvl(fk_team_no,'없음') as fk_team_no, nvl(team_name,'없음') as team_name, employee_no, name_kr, role, position, profile_systemfilename
+		from v_employee
+		where status = 1
+
+

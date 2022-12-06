@@ -55,6 +55,18 @@ public interface InterMessageDAO {
 	// 해당 메시지 파일의 정보 가져오기
 	MessageFileVO getmfvo(MessageFileVO mfvo_y);
 	
+	// 로그인유저의 메시지리스트 불러오기
+	List<MessageVO> getMsmvoList(Map<String, String> paraMap);
+	
+	// 메시지리스트의 총페이지수 알아오기
+	int getMsmgtotal(Map<String, String> paraMap);
+	
+	// 탭별 메시지 개수 알아오기
+	int getMsMgCnt(Map<String, String> paraMap);
+	
+	//보낸 메시지 => 체크된 것 condition에 따라 상태 update해주기
+	int sendchxStatus(Map<String, String> paraMap);
+	
 
 
 }

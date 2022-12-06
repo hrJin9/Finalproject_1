@@ -115,26 +115,9 @@ $(document).ready(function(){
 	  		chxStatus("unscrap",mno);
 	  	}
 		
-		//메시지 정보 다시 불러오기 => 와 너무 느린데....
+		//메시지 정보 다시 불러오기
 		getMglist();
 		selectonemg(mcno);
-	});
-	
-	
-	// 답장하기 버튼 클릭이벤트
-	$(document).on('click',".mgc-writebtn",function(){
-		var mgroup = "";
-		const depthno = $(this).parent().attr("id");
-		if(depthno != "0"){ // 이전 mgroup이 있는 경우
-			mgroup = $(this).find("span:first-child").attr("id");
-		}
-		var reno = $(this).attr("id");
-		var re_subject = $("#mc-subject").text().substr(0,14)+"...";
-		var to = $(this).find("span:nth-child(2)").attr("id");
-		var toname = $(this).find("span:nth-child(3)").attr("id");
-		var mgroup = $(".mgc-header-left").attr("id");
-		
-		location.href="<%=ctxPath%>/message/write.up?to="+to+"&mgroup="+mgroup+"&reno="+reno+"&depthno="+depthno+"&re_subject="+re_subject+"&name="+toname;
 	});
 	
 	// 검색input 엔터 이벤트
@@ -166,6 +149,7 @@ $(document).ready(function(){
 		
 		chxStatus(condition);
 		checkall_reset();
+		getMglist(null, 1);
 		selectonemg($("#curmno").val());
 	});
 	
@@ -246,14 +230,14 @@ function getMgCnt(tab){
 	
 	var tabstatus = false;
 	if (tab == null){
-		tab = ["all","unread","scrap"];
+		tab = ["all","scrap"];
 		tabstatus = true;
 	}
 	
 	$.ajax({
-		url: "<%= ctxPath%>/getMgCnt.up",
+		url: "<%= ctxPath%>/getMsMgCnt.up",
 		traditional: true,
-		data: {"receiver":"${sessionScope.loginuser.employee_no}",
+		data: {"writer":"${sessionScope.loginuser.employee_no}",
 				"tab":tab},
 		dataType:"json",
 		success:function(json){
@@ -264,8 +248,7 @@ function getMgCnt(tab){
 					cntArr.push(item.mgCnt);
 				});
 				$("span#all").children().text(cntArr[0]);
-				$("span#unread").children().text(cntArr[1]);
-				$("span#scrap").children().text(cntArr[2]);
+				$("span#scrap").children().text(cntArr[1]);
 				
 			} else {
 				$("#totalcnt").text(json[0].mgCnt);
@@ -298,7 +281,7 @@ function getMglist(tab, curpage){
 	const searchVal = $("#searchVal").val();
 	
 	$.ajax({
-		url: "<%= ctxPath%>/mglist.up",
+		url: "<%= ctxPath%>/mg_sendlist.up",
 		type: "post",
 		data: {"tab":tab,
 				"curpage":curpage,
@@ -309,17 +292,19 @@ function getMglist(tab, curpage){
 			let html = '';
 			if(json.length > 0 ){ // 가져올 메시지목록이 있는 경우
 				$.each(json, function(index, item){
-					if(item.ms_checktime == null)
-						html += '<tr id="'+item.mno+'" class="mg-unread">';
-					else
-						html += '<tr id="'+item.mno+'" class="mg-read">';
-					html += '<td width="3%">'+
-								'<input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display: none;"/>'+
+					// 보낸시간 가공하기
+					var timeindex = item.sendtime.indexOf("오");
+					var senddate = item.sendtime.substring(0,timeindex);
+					var sendtime = item.sendtime.substring(timeindex);
+					
+					html += '<tr id="'+item.mno+'" class="mg-unread">'+
+							'<td width="3%">'+
+								'<input id="mg-selectchx'+index+'" name="mg-selectchx" class="mg-selectchx" type="checkbox" style="display:none;"/>'+
 									'<label for="mg-selectchx'+index+'">'+
 									'<i class="icon icon-checkbox-unchecked chxi"></i>'+
 							'</label></td>' + 
 							'<td width="3%">';
-					if(item.scrapstatus == 1) {
+					if(item.writer_scrapstatus == 1) {
 						html += '<input id="check-star'+index+'" type="checkbox" name="check-star" class="check-star star" style="display:none;" checked/>'+
 								'<label for="check-star'+index+'">'+
 									'<i class="icon icon-star-full" style="color: rgb(255, 193, 7);"></i>'+
@@ -333,16 +318,16 @@ function getMglist(tab, curpage){
 					}
 					
 					html += '</td>'+
-							'<td width="72%">'+
+							'<td width="70%">'+
 								'<div id="mg-subjectcontainer">'+
 									'<span id="mg-subject">'+item.subject+'</span>';
 					if(item.filecnt != null) // 첨부파일이 있을 경우
 						html += '<span><i class="fas fa-paperclip"></i></span>';
 					html += '</div>'+
-							'<div><span>'+item.w_name+'</span>·<span>'+item.w_deptname+'</span></div>'+
+							'<div><span>${sessionScope.loginuser.name_kr}</span></div>'+
 							'</td>'+
-							'<td width="22%">'+
-								'<div>'+item.sendtime+'</div>'+
+							'<td width="24%">'+
+								'<div>'+senddate+'<div>'+sendtime+'</div></div>'+
 							'</td>'+
 							'</tr>';
 							
@@ -366,7 +351,7 @@ function getMglist(tab, curpage){
 				
 			} else { //가져올 메시지목록이 없는 경우
 				html += '<tr>'+
-						'<td width="100%" id="nonmgList" >조회된 메시지가 없습니다.</td>'+
+						'<td width="100%" id="nonmgList">조회된 메시지가 없습니다.</td>'+
 						'</tr>';
 				$(".mgList-contents > table").html(html);
 				// 페이지 바 없애기
@@ -399,7 +384,7 @@ function pgbar(curpage){
 	}
 	
 	$.ajax({
-		url: "<%= ctxPath%>/mgtotal.up",
+		url: "<%= ctxPath%>/msmgtotal.up",
 		data: {"tab":tab,
 				"sizePerPage":10,
 				"searchCondition":searchCondition,
@@ -457,13 +442,12 @@ function pgbar(curpage){
 
 
 // 메시지 하나 읽어오는 ajax 함수
-function selectonemg(mno, tpcheck){
+function selectonemg(mno){
 	
 	var mnostatus = false;
 	$.ajax({
 		url: "<%= ctxPath%>/selectOnemg.up",
-		data: {"mno":mno,
-				"receiver":"${sessionScope.loginuser.employee_no}"},
+		data: {"mno":mno},
 		type: "post",
 		async: false,
 		dataType:"json",
@@ -682,26 +666,16 @@ function chxStatus(condition,checkednoArr){
 	
 	// 선택한것 표시 변경하는 ajax
 	$.ajax({
-		url: "<%= ctxPath%>/chxStatus.up",
+		url: "<%= ctxPath%>/SendchxStatus.up",
 		traditional: true, //배열 넘기기 옵션
-		data: {"fk_mnoArr":checkednoArr,
-				"receiver":"${sessionScope.loginuser.employee_no}",
+		data: {"mnoArr":checkednoArr,
 				"condition":condition},
 		dataType:"json",
 		success:function(json){
 			if(json.n == 1){
-				
 				// 목록 갱신
 				getMglist();
-				/* 
-				// 체크했던 값 마저 체크해주기
-				$.each(checkednoArr,function(index,item){ // 이거 외안되..?
-					const bool = $("tr#"+item).find(".mg-selectchx").is(":checked");// 이게 왜 true임..하;;
-					$("tr#"+item).find(".mg-selectchx").prop("checked",true);
-				});
-				 */
 			}
-			
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -730,7 +704,7 @@ function chxStatus(condition,checkednoArr){
 						<div class="form-field">
 							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; border-radius: 5px; border:1px solid #ced4da;">
 								<option value="all" selected>전체</option>
-								<option value="writer">보낸이</option>
+								<option value="receiver_name">받는이</option>
 								<option value="subject">제목</option>
 								<option value="content">내용</option>
 							</select>
@@ -770,8 +744,6 @@ function chxStatus(condition,checkednoArr){
 						<span id="totalcnt"></span>	<!-- 전체수량 -->
 					</div>
 					<div class="mg-checkmenu" style="display: none;">
-						<button id="read" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽음 표시"><i class="fas fa-envelope-open"></i></button> <!-- 읽은상태로표시 -->
-						<button id="unread" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽지 않음 표시"><i class="fas fa-envelope"></i></button> <!-- 읽지않은상태로표시 -->
 						<button id="scrap" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="중요 표시"><i class="fas fa-star" style="color: #F29F05; right: 4px;"></i></button> <!-- 중요표시 -->
 						<button id="unscrap" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="중요 표시 해제"><i class="icon icon-star-empty" style="right: 5px; color: rgba(0,0,0,0.1); font-size: 14pt; bottom:4px;"></i></button> <!-- 중요표시 -->
 						<button id="delete" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="삭제"><i class="fas fa-trash" style="right: 2px;"></i></button> <!-- 삭제 -->

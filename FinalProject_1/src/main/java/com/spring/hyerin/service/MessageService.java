@@ -209,6 +209,34 @@ public class MessageService implements InterMessageService {
 		MessageFileVO mfvo = dao.getmfvo(mfvo_y);
 		return mfvo;
 	}
+	
+	// 로그인유저의 메시지리스트 불러오기
+	@Override
+	public List<MessageVO> getMsmvoList(Map<String, String> paraMap) {
+		List<MessageVO> getMsmvoList = dao.getMsmvoList(paraMap);
+		return getMsmvoList;
+	}
+	
+	// 메시지리스트의 총페이지수 알아오기
+	@Override
+	public int getMsmgtotal(Map<String, String> paraMap) {
+		int msmgtotal = dao.getMsmgtotal(paraMap);
+		return msmgtotal;
+	}
+	
+	// 탭별 메시지 개수 알아오기
+	@Override
+	public int getMsMgCnt(Map<String, String> paraMap) {
+		int MsMgCnt = dao.getMsMgCnt(paraMap);
+		return MsMgCnt;
+	}
+	
+	//보낸 메시지 => 체크된 것 condition에 따라 상태 update해주기
+	@Override
+	public int sendchxStatus(Map<String, String> paraMap) {
+		int n = dao.sendchxStatus(paraMap);
+		return n;
+	}
 
 	
 	
