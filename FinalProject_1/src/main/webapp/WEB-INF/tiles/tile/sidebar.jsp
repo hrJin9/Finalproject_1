@@ -169,7 +169,7 @@
       	</c:if>
       	<c:if test="${not empty sessionScope.loginuser.profile_systemfilename}">
       		<span class="pic sbpics" style="background-color: inherit; -webkit-mask-image: inherit; -webkit-mask-size: unset;">
-      			<img src="<%=ctxPath%>/resources/files/${sessionScope.loginuser.profile_systemfilename}" width="38px" height="38px">
+      			<img src="<%=ctxPath%>/resources/files/${sessionScope.loginuser.profile_systemfilename}" width="38px" height="38px" style="border-radius: 25px; border: solid 1px rgba(0,0,0,0.1);">
       		</span>
       	</c:if>
       <span class="my"><span class="name">${sessionScope.loginuser.name_kr}</span><br>
