@@ -24,6 +24,7 @@ import com.spring.finalproject.common.FileManager;
 import com.spring.finalproject.service.InterFinalprojectService;
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.hyerin.service.InterLoginService;
 import com.spring.hyerin.service.InterMemberService;
 import com.spring.hyerin.service.MemberService;
 
@@ -31,6 +32,9 @@ import com.spring.hyerin.service.MemberService;
 public class MemberController {
 	@Autowired
 	private InterMemberService service;
+	
+	@Autowired
+	private InterLoginService loginservice;
 	
 	@Autowired
 	private FileManager fileManager;
@@ -195,6 +199,25 @@ public class MemberController {
 		
 		return jsonobj.toString();
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/reSession.up")
+	public String reSession(HttpServletRequest request){
+		
+		String profile_systemfilename = request.getParameter("profile_systemfilename");
+		
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		loginuser.setProfile_systemfilename(profile_systemfilename);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("n", 1);
+		
+		return jsonobj.toString();
+	}
+	
+	
 	
 	
 	

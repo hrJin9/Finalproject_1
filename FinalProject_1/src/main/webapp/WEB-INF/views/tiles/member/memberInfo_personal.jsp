@@ -180,8 +180,131 @@ $(document).ready(function(){
 		location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
 	});
 	
-});// end of $(document).ready(function(){})-------------------------------
+	// 카메라 버튼을 눌러 파일을 변경하면 프로필사진 등록
+	$(document).on("change","#addprofile",handleImgFileSelect);
 	
+	
+	// 핸드폰 버튼 클릭시 핸드폰번호 복사
+	$("#phone").click(function(){
+		var mobile = "${requestScope.evo.mobile}";
+		window.navigator.clipboard.writeText(mobile);
+		alert("복사성공");
+	});
+	
+	// 메시지 버튼 클릭시 메시지 보내기로 이동
+	$("#message").click(function(){
+		location.href="<%= ctxPath%>/message/write.up?to="+"${requestScope.empno}";
+	});
+	
+	
+});// end of $(document).ready(function(){})-------------------------------
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+function handleImgFileSelect(e){
+	var file = e.target.files;
+	var reg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
+	
+	if (!file[0].type.match(reg)) {
+        alert("이미지 파일을 선택해주세요.");
+        return;
+    } 
+	
+	addProfile();
+}
+
+
+function addProfile(){
+	
+	var form = new FormData();
+	form.append("addprofile", $("#addprofile")[0].files[0]);
+	
+	$.ajax({
+		url: "<%= ctxPath%>/addProfile.up",
+		type : "POST",
+		processData : false,
+		contentType : false,
+		data : form,
+		success:function(response){
+			// 기존에 있던 pic 시스템에서 삭제하기
+			var systemfn = $(".profileimg").attr("src");
+			systemfn = systemfn.split("/");
+			systemfn = systemfn.reverse()[0];
+			
+			//시스템에서 기존 이미지 삭제하기
+			delImg(systemfn);
+			
+			// 로그인한 유저라면 이미지를 바꿔주기
+			if("${sessionScope.loginuser.employee_no}" == "${requestScope.evo.employee_no}"){
+				getImg("${requestScope.evo.employee_no}");
+			}
+			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
+	
+}//end of addProfile
+
+//기존에 있던 pic 시스템에서 삭제하기
+function delImg(systemfn){
+	$.ajax({
+		url: "<%= ctxPath%>/delImg.up",
+		data: {"profile_systemfilename":systemfn},
+		type: "post",
+		dataType:"json",
+		success:function(json){
+			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
+	
+}//end of getImg()
+
+// pic을 바꿔주기
+function getImg(empno){
+	$.ajax({
+		url: "<%= ctxPath%>/getImg.up",
+		data: {"empno":empno},
+		type: "post",
+		dataType:"json",
+		success:function(json){
+			var html = '<span><img class="profileimg" src="<%=ctxPath%>/resources/files/'+json.profile_systemfilename+'" width="150px" height="150px"/></span>';
+			var sbsrc = '<%=ctxPath%>/resources/files/'+json.profile_systemfilename;
+			$(".sbpics > img").attr("src", sbsrc);
+			$(".profiles").html(html);
+			
+			//세션 새로고침 해주기
+			reSession(json.profile_systemfilename);
+			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
+	
+}//end of getImg()
+
+function reSession(filename){
+	$.ajax({
+		url: "<%= ctxPath%>/reSession.up",
+		data: {"profile_systemfilename":filename},
+		type: "post",
+		dataType:"json",
+		success:function(json){
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
+}
+
+
+
+
 </script>
 
 <div class="member_container">

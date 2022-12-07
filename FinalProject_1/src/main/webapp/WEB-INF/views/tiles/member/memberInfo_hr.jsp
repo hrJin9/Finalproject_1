@@ -276,10 +276,13 @@ function getImg(empno){
 		dataType:"json",
 		success:function(json){
 			var html = '<span><img class="profileimg" src="<%=ctxPath%>/resources/files/'+json.profile_systemfilename+'" width="150px" height="150px"/></span>';
-			var sbhtml = '<img src="<%=ctxPath%>/resources/files/'+json.profile_systemfilename+'" width="38px" height="38px" style="border-radius: 25px; border: solid 1px rgba(0,0,0,0.1);"/>';
-			
-			$(".sbpics").html(sbhtml);
+			var sbsrc = '<%=ctxPath%>/resources/files/'+json.profile_systemfilename;
+			$(".sbpics > img").attr("src", sbsrc);
 			$(".profiles").html(html);
+			
+			//세션 새로고침 해주기
+			reSession(json.profile_systemfilename);
+			
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -288,6 +291,19 @@ function getImg(empno){
 	
 }//end of getImg()
 
+function reSession(filename){
+	$.ajax({
+		url: "<%= ctxPath%>/reSession.up",
+		data: {"profile_systemfilename":filename},
+		type: "post",
+		dataType:"json",
+		success:function(json){
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
+}
 
 
 
