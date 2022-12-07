@@ -305,10 +305,10 @@ exec pcd_tbl_team_insert('IT',100);
 
 create or replace view v_employee
 as
-select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
+select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday
 from
     (
-    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
+    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday
     from tbl_employee E
     left join tbl_departments D
     on fk_department_no = department_no
@@ -867,6 +867,12 @@ insert into tbl_employee
 values(1, null, null, '서영학', 'Younghak seo','9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', '사장', null, sysdate-365, 10000,null, '010-2341-1231', '21105', null, null, null, 'younghak121@naver.com', 1, null, null, '대졸', '경영학과', null, null, null, 1, 'CEO' , '대표', 1, 0 )
 
 
+-- 관리자 넣기
+insert into tbl_employee
+values(99, null, null, '관리자', 'Admin','9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', '관리자계정', null, sysdate, null,null, null, null, null, null, null, 'younghak121@naver.com', 1, null, null, null, null, null, null, null, 99, null , null, 99, 0, null)
+
+desc tbl_employee
+
 update tbl_employee set jointype = '경력'
 where position in ('과장','부장','사장','대리')
 
@@ -1027,13 +1033,56 @@ where writer = 100006
 select * from tbl_message_send
 where fk_mno = 'm-93' and receiver = 100006
 
-select nvl(fk_department_no, '없음')
+select nvl(fk_department_no, 0)
 from v_employee
 
 select * from v_employee
 
-select nvl(fk_department_no,'없음') as fk_department_no, nvl(department_name,'없음') as department_name, nvl(fk_team_no,'없음') as fk_team_no, nvl(team_name,'없음') as team_name, employee_no, name_kr, role, position, profile_systemfilename
+select nvl(fk_department_no,) as fk_department_no, nvl(department_name,'없음') as department_name, nvl(fk_team_no,'없음') as fk_team_no, nvl(team_name,'없음') as team_name, employee_no, name_kr, role, position, profile_systemfilename
 		from v_employee
 		where status = 1
 
+    select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
+    from v_employee
+    where employee_no = 600139
 
+
+select * from tbl_authority
+
+
+권한 => 인사팀한테는 급여, 로그, 구성원 정보 볼수 있게 해야될거같고..
+
+인사이트 => 대리부터 다 볼수있게 해보자..
+
+
+select * from tbl_departments
+
+update tbl_employee set authority = 2
+where position in ('대리','과장','부장')
+
+update tbl_employee set authority = 24
+where fk_department_no = 40
+and position in ('과장','대리','부장')
+
+
+
+update tbl_employee set authority = 120
+where fk_department_no = 40 and position in ('과장','대리','부장')
+
+
+select * from tbl_employee
+where fk_department_no = 40
+
+select * from tbl_employee
+where employee_no =600139
+
+alter table tbl_employee add birthday date;
+
+
+update tbl_employee set birthday = to_date('1970/01/21')
+where name_kr like '%서영학%'
+
+select * from tbl_employee
+
+
+commit;

@@ -233,8 +233,8 @@
 		          <col />
 		     	</colgroup>
 		          <tbody>
-		                <tr>
-		                   <tr>
+	                <tr>
+	                   <tr>
 		                   <td>사번</td>   
 		                   <td>102503</td>   
 		                </tr>

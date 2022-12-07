@@ -70,6 +70,8 @@ $(document).ready(function(){
 		setEmpname();
 	}
 	
+	getempname();
+	
 	//받는사람 입력시 주소록 모달 뜨기
 	$(".mw-totd").click(function(e){
 		if($(e.target).is("#mw-to *")) return;
@@ -124,44 +126,67 @@ $(document).ready(function(){
 //function declaration
 
 // 모달창에서 저장한 값 가져오기
-function setEmp(m_empno, m_empname){
+function setEmp(m_empno){
 	ex_empno = $("#empno").val();
-	ex_empname = $("#empname").val();
+	//ex_empname = $("#empname").val();
 	if(ex_empno != ''){ // 이미 오류
 		// input에 있는 값 중복제거하기
 		var ex_empnoArr = ex_empno.split(",");
-		var ex_empnameArr = ex_empname.split(",");
 		var m_empnoArr = m_empno.split(",");
-		var m_empnameArr = m_empname.split(",");
 		
 		// 원래 있는 값인 경우 교집합을 빼서 문자열로 만들어준다
 		//교집합 구하기
 		var internoArr = ex_empnoArr.filter(x => m_empnoArr.includes(x));
-		var internameArr = ex_empnameArr.filter(x => m_empnameArr.includes(x));
 		
 		// 대칭차집합 구하기
 		var symEmpnoArr = ex_empnoArr.filter(x => !m_empnoArr.includes(x)).concat(m_empnoArr.filter(x => !ex_empnoArr.includes(x)));
-		var symEmpnameArr = ex_empnameArr.filter(x => !m_empnameArr.includes(x)).concat(m_empnameArr.filter(x => !ex_empnameArr.includes(x)));
 		
 		var newEmpnoArr = symEmpnoArr.concat(internoArr);
-		var newEmpnameArr = symEmpnameArr.concat(internameArr);
 		
 		var str_newEmpno = newEmpnoArr.join(",");
-		var str_newEmpname = newEmpnameArr.join(",");
 		
 		$("#empno").val(str_newEmpno);
-		$("#empname").val(str_newEmpname);
 		
 	} else {
-		
 		$("#empno").val(m_empno);
-		$("#empname").val(m_empname);
-		
 	} //중복제거 끝
 	
-	setEmpname();
+	// 이름 불러오기
+	getempname();
 	
 }//end of setEmp
+
+
+//empno가 변경될때마다 name값 및 부서명도 가져오기
+function getempname(){
+	var str_empno = $("#empno").val();
+	var empnoArr = str_empno.split(",");
+	
+	$.ajax({
+		url: "<%= ctxPath%>/getempname.up",
+		traditional: true, //배열 넘기기 옵션
+		data: {"empnoArr":empnoArr},
+		dataType:"json",
+		success:function(json){
+			if(json.length > 0){
+				var html = '';
+				$.each(json,function(index, item){
+					if(index+1 == json.length) html += item.name + '·' + item.dept_name;
+					else html += item.name + '·' + item.dept_name + ',';
+				});
+				$("#empname").val(html);
+				
+				//보낼사람에 이름 보여주기
+				setEmpname();
+			}
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});//end of ajax
+	
+}
+
 
 // 모달창의 값 가공하기
 function setEmpname(){

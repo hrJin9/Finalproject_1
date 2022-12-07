@@ -100,7 +100,7 @@ public class MessageService implements InterMessageService {
 
 	// 메시지 insert (transaction)
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = {Throwable.class })
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = {Throwable.class})
 	public int addMessage(MultipartFile[] attaches, MultipartHttpServletRequest mrequest, MessageSendVO msvo, MessageVO mvo) throws Exception{
 		
 		// 1. tbl_message 메시지 insert
@@ -236,6 +236,13 @@ public class MessageService implements InterMessageService {
 	public int sendchxStatus(Map<String, String> paraMap) {
 		int n = dao.sendchxStatus(paraMap);
 		return n;
+	}
+	
+	// empname, deptname 알아오기
+	@Override
+	public List<EmployeeVO> getempname(Map<String, String[]> paraMap) {
+		List<EmployeeVO> empList = dao.getempname(paraMap); 
+		return empList;
 	}
 
 	

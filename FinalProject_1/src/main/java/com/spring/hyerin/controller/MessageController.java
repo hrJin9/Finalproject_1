@@ -528,6 +528,28 @@ public class MessageController {
 		return mav;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/getempname.up", produces = "text/plain;charset=UTF-8")
+	public String getempname(HttpServletRequest request, HttpServletResponse response) {
+		
+		String[] empnoArr = request.getParameterValues("empnoArr");
+		Map<String,String[]> paraMap = new HashMap<String, String[]>();
+		paraMap.put("empnoArr", empnoArr);
+		
+		// empname, deptname 알아오기
+		List<EmployeeVO> empList = service.getempname(paraMap);
+		
+		JSONArray jsonarr = new JSONArray();
+		for(EmployeeVO emp : empList) {
+			JSONObject jsonobj = new JSONObject();
+			jsonobj.put("name", emp.getName_kr());
+			jsonobj.put("dept_name", emp.getDepartment_name());
+			jsonarr.put(jsonobj);
+		}
+		
+		return jsonarr.toString();
+	}//end of getempname
+	
 	
 	
 	@RequestMapping(value = "/sendMessage.up", method = {RequestMethod.POST})

@@ -175,6 +175,7 @@ function show_noncheckmenu(){
 
 //체크박스 하나 체크 이벤트
 function check_one(){
+	var total = $("input[name='memberChx']").length;
 	var checked = $("input[name='memberChx']:checked").length;
 
 	if(checked<=0) {
@@ -182,7 +183,12 @@ function check_one(){
 		show_noncheckmenu();
 		goSubmit();
 	}
-	else if(total != checked){
+	
+	if(total != checked){
+		$("#memberAll").prop("checked", false); 
+		show_checkmenu();
+		$("#check_ctn").text(checked);
+	} else {
 		$("#memberAll").prop("checked", true); 
 		show_checkmenu();
 		$("#check_ctn").text(checked);
@@ -281,7 +287,7 @@ function goSubmit(btn){
 	const str_empno = arrEmpno.join();
 	const str_empname = arrEmpname.join();
 	
-	parent.setEmp(str_empno, str_empname);
+	parent.setEmp(str_empno);
 	console.log(str_empname);
 	
 	if(btn == "save"){ //저장버튼을 눌렀을 경우에만 모달창을 닫는다
@@ -341,7 +347,7 @@ function goSubmit(btn){
 						<input class="burger-check" type="checkbox" id="burger-check" />
 						<label class="burger-icon" for="burger-check"><span class="burger-sticks"></span></label>
 						<div class="menu">
-							<div class="menucontent" style="width: 340px; visibility: hidden; padding: 27px 0px 10px 38px; height: calc(100% - 16px);">
+							<div class="menucontent" style="width: 340px; visibility: hidden; padding: 27px 0px 10px 38px; height: 500px; overflow-y: auto;">
 								<div style="font-size: 12pt; font-weight: bold; color: #4C4E54; padding-bottom: 27px;">
 									<span style="padding-right: 190px;">조직도</span>
 									<span><i class="fas fa-expand-alt unfold"></i></span>

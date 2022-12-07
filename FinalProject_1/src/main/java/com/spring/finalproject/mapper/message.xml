@@ -434,4 +434,16 @@
 		where mfno = #{mfno}
 	</select>
 	
+	
+	<!-- empname, deptname 알아오기 -->
+	<select id="getempname" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, name_kr, department_name
+		from v_employee
+		where employee_no in
+		<foreach collection="empnoArr" index="i" open="(" separator="," close=")">
+			'${empnoArr[i]}'
+		</foreach>
+	</select>
+	
+	
 </mapper>

@@ -162,13 +162,16 @@
   <div class="sidebar">
 
     <div class="profile profile2" href="#" style="margin-top: 29px; margin-bottom:30px;">
-      <span class="pic">
       	<c:if test="${empty sessionScope.loginuser.profile_systemfilename }">
+	      <span class="pic sbpics">
       		<span>${fn:substring(sessionScope.loginuser.name_kr,1,3)}</span>
+	      </span>
       	</c:if>
       	<c:if test="${not empty sessionScope.loginuser.profile_systemfilename}">
+      		<span class="pic sbpics" style="background-color: inherit; -webkit-mask-image: inherit; -webkit-mask-size: unset;">
+      			<img src="<%=ctxPath%>/resources/files/${sessionScope.loginuser.profile_systemfilename}" width="38px" height="38px">
+      		</span>
       	</c:if>
-      </span>
       <span class="my"><span class="name">${sessionScope.loginuser.name_kr}</span><br>
       <span class="role">${sessionScope.loginuser.role}</span>
       </span>
@@ -203,7 +206,7 @@
   </div>
   
   <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 1; box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.1);">
-     <a class="list-group-item list-group-item-action" href="<%= request.getContextPath()%>/myInfo_hr.up" style="font-size: 14px; cursor: pointer;">
+     <a class="list-group-item list-group-item-action" href="<%= request.getContextPath()%>/memberInfo_hr.up?empno=${sessionScope.loginuser.employee_no}" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>
         <span style="font-size: 8.5pt; color: #737373;">${sessionScope.loginuser.email}</span><br>

@@ -75,6 +75,9 @@ public interface InterMessageService {
 	//보낸 메시지 => 체크된 것 condition에 따라 상태 update해주기
 	int sendchxStatus(Map<String, String> paraMap);
 	
+	// empname, deptname 알아오기
+	List<EmployeeVO> getempname(Map<String, String[]> paraMap);
+	
 
 	
 }

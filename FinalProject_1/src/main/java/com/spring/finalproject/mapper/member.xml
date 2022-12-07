@@ -4,10 +4,67 @@
 
 
 	<select id="getLoginMember" resultType="com.spring.hyerin.model.EmployeeVO" parameterType="HashMap">
-		select employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, role, position, authority
+		select employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, role, position, authority,birthday
 		from tbl_employee
 		where status = 1 and employee_no = #{userid} 
 	</select>
 	
-
+	<!-- 부서정보 가져오기 -->
+	<select id="getdept" resultType="com.spring.hyerin.model.DepartmentsVO">
+		select department_no, department_name
+		from tbl_departments
+	</select>
+	
+	<!-- 부서, 팀 알아오기 -->
+	<resultMap type="HashMap" id="getdt_Map">
+		<result property="department_no" column="department_no" javaType="String"/>
+		<result property="department_name" column="department_name" javaType="String"/>
+		<result property="team_no" column="team_no" javaType="String"/>
+		<result property="team_name" column="team_name" javaType="String"/>
+		<result property="total" column="total" javaType="String"/>
+	</resultMap>
+	<select id="getdt" resultMap="getdt_Map">
+		select department_no, department_name, team_no, team_name, total
+		from
+		(
+		    select T.fk_department_no, TC.team_no, TC.team_name, TC.total
+		    from
+		    (
+		        select team_no, team_name, count(employee_no) as total
+		        from tbl_team
+		        left outer join tbl_employee
+		        on fk_team_no = team_no
+		        where delete_status = 1
+		        group by (team_no, team_name)
+		    ) TC
+		    join tbl_team T
+		    on TC.team_no = T.team_no
+		) T
+		join tbl_departments D
+		on D.department_no = T.fk_department_no
+		where delete_status = 1
+	</select>
+	
+	
+	<select id="getempvo" parameterType="String" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, to_char(hire_date,'yyyy. mm. dd') as hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, to_char(birthday,'yyyy-mm-dd') as birthday
+		from v_employee
+		where employee_no = #{empno}
+	</select>
+	
+	
+	<!-- 프로필사진 업로드해주기 -->
+	<update id="addProfile" parameterType="HashMap">
+		update tbl_employee set profile_systemfilename = #{profile_systemfilename}, profile_orginfilename = #{profile_orginfilename}, filesize = #{filesize}
+		where employee_no = #{employee_no}
+	</update>
+	
+	
+	<!-- 프로필사진 이름 가져오기 -->
+	<select id="getImg" parameterType="String" resultType="String">
+		select profile_systemfilename
+		from tbl_employee
+		where employee_no = #{employee_no}
+	</select>
+	
 </mapper>

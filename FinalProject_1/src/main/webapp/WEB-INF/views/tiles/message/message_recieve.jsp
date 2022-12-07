@@ -10,6 +10,8 @@
 
 var oncecnt = 0;
 $(document).ready(function(){
+	//툴팁 사용
+	var tooltipel = $(".tp").tooltip();
 	
 	$("#mg-recieve").css("color","#4d4f53");
 	// 첫로딩시 전체 보여주기
@@ -94,10 +96,6 @@ $(document).ready(function(){
 	});
 	
 	
-	//툴팁 사용
-	var tooltipel = $(".tp").tooltip();
-	
-	
 	// 중요표시 (스크랩) 별표기능 (하나하나)
 	$(document).on("change",".check-star, .mc-star",function(){
 		const itag = $(this).next().find("i");
@@ -130,10 +128,10 @@ $(document).ready(function(){
 		var reno = $(this).attr("id");
 		var re_subject = $("#mc-subject").text().substr(0,14)+"...";
 		var to = $(this).find("span:nth-child(2)").attr("id");
-		var toname = $(this).find("span:nth-child(3)").attr("id");
+		//var toname = $(this).find("span:nth-child(3)").attr("id");
 		var mgroup = $(".mgc-header-left").attr("id");
 		
-		location.href="<%=ctxPath%>/message/write.up?to="+to+"&mgroup="+mgroup+"&reno="+reno+"&depthno="+depthno+"&re_subject="+re_subject+"&name="+toname;
+		location.href="<%=ctxPath%>/message/write.up?to="+to+"&mgroup="+mgroup+"&reno="+reno+"&depthno="+depthno+"&re_subject="+re_subject;
 	});
 	
 	// 검색input 엔터 이벤트

@@ -155,7 +155,7 @@
 </style>   
 
 <script type="text/javascript">
-	$(document).ready(function(){
+$(document).ready(function(){
 		
         flatpickr.localize(flatpickr.l10ns.ko);
         flatpickr($(".dateSelector"));

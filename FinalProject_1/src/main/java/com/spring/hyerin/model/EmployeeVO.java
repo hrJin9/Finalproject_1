@@ -1,5 +1,7 @@
 package com.spring.hyerin.model;
 
+import java.util.Calendar;
+
 public class EmployeeVO {
 	private String employee_no;
 	private String fk_department_no;
@@ -32,6 +34,8 @@ public class EmployeeVO {
 	private String position;
 	private String authority;
 	private String dayoff_cnt;
+	private String birthday;
+	private String age;
 	
 	
 	public EmployeeVO() {}
@@ -42,8 +46,7 @@ public class EmployeeVO {
 			String salary, String commission_pct, String mobile, String postcode, String address, String detail_address,
 			String extra_address, String email, String gender, String profile_systemfilename,
 			String profile_orginfilename, String academic_ability, String major, String militaryservice, String bank,
-			String accountnumber, String status, String role, String position, String authority, String dayoff_cnt) {
-		super();
+			String accountnumber, String status, String role, String position, String authority, String dayoff_cnt, String age) {
 		this.employee_no = employee_no;
 		this.fk_department_no = fk_department_no;
 		this.department_name = department_name;
@@ -75,6 +78,7 @@ public class EmployeeVO {
 		this.position = position;
 		this.authority = authority;
 		this.dayoff_cnt = dayoff_cnt;
+		this.age = age;
 	}
 
 
@@ -325,6 +329,37 @@ public class EmployeeVO {
 	public void setDayoff_cnt(String dayoff_cnt) {
 		this.dayoff_cnt = dayoff_cnt;
 	}
+
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+
+	public String getAge() {
+		int age = 0;
+		
+		Calendar currentDate = Calendar.getInstance();
+		// 현재날짜와 시간을 얻어온다.
+		
+		int currentYear = currentDate.get(Calendar.YEAR);
+		
+		age = currentYear - Integer.parseInt(birthday.substring(0, 4)) + 1;    
+		System.out.println(age);
+		
+		return String.valueOf(age);
+	}
+
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+	
 	
 	
 	

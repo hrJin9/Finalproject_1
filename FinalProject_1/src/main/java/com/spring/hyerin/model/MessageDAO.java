@@ -163,6 +163,13 @@ public class MessageDAO implements InterMessageDAO {
 		int n = sqlsession.update("message.sendchxStatus",paraMap);
 		return n;
 	}
+	
+	// empname, deptname 알아오기
+	@Override
+	public List<EmployeeVO> getempname(Map<String, String[]> paraMap) {
+		List<EmployeeVO> empList = sqlsession.selectList("message.getempname", paraMap);
+		return empList;
+	}
 
 	
 	
