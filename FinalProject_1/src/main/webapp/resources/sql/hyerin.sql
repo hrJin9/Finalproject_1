@@ -1084,5 +1084,61 @@ where name_kr like '%서영학%'
 
 select * from tbl_employee
 
+select * from tbl_authority
+
+
+insert into tbl_authority
+values(6, '근태')
+
+update tbl_authority set atno = 7
+where atno = 6
 
 commit;
+
+
+
+select * from tbl_team
+
+update tbl_team set team_name = '전산1팀'
+where team_no = 38
+
+update tbl_team set team_name = '전산2팀'
+where team_no = 39
+
+
+-- 부서/팀마다 권한주기
+인사부서 => 인사이트, 구성원, 근태 : 42 : 부서 40
+재무부서 => 인사이트, 급여 : 8 : 부서 70
+IT부서 전산팀 => 로그 : 5 : 팀 38, 39
+
+update tbl_employee set authority = 5
+where fk_team_no in (38, 39)
+
+commit;
+
+
+update tbl_employee set authority = 99
+where employee_no = 99 or employee_no = 1
+
+
+
+select * from tbl_attendance
+
+--근무시간 넣어주기
+insert into tbl_attendance
+values(seq_attendance_no.nextval, 100006, '근무', to_date('2022/12/08 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022/12/08 17:30', 'yyyy-mm-dd hh24:mi'))
+
+commit;
+
+desc tbl_attendance
+
+
+select * from user_sequences
+
+
+
+
+
+
+to_char()
+

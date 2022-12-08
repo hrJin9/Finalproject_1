@@ -5,165 +5,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <% String ctxPath = request.getContextPath(); %> 
-
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/memberInfo.css?after">
 <style type="text/css">
-	.member_container:not(.pic){
-		color: #4d4f53;
-	}
-	/* 페이지 전체 레이아웃 */
-	.member_container {
-		width: 88%;
-		margin: 0 auto;
-	}
-
-	/* 상단 프로필 */
-	.myInfo {
-		padding: 10px 20px;
-		font-weight: 500;
-	}
-	
-	.myprofiles{
-		display: flex;
-	}
-	
-	#team, #role {
-		color: #808080; 
-		padding-right: 14px;
-	}
-		
-	#phone, #message {
-		border: 0.3px solid #d9d9d9;
-	    margin-top: 15px;
-	    margin-right: 3px;
-	    padding: 3.5px 6.5px 3.5px 6.5px;
-	    background-color: white;
-	    border-radius: 3px;
-	    font-size: 9pt;
-	    color: #555555;
-	}	
-	
-	#status {
-	    border: 0.3px solid #d9d9d9;
-	    margin-top: 17px;
-	    margin-right: 3px;
-	    padding: 3.5px 7px 3.2px 7px;
-	    background-color: white;
-	    border-radius: 3px;
-	    font-size: 9.2pt;
-	}	
-	
-	/* nav바 */
-	hr{
-		border-top: solid 1px #949DA6 !important;
-	}
-	
-	#list a:hover{
-		color: #4d4f53;
-		cursor: pointer;
-	}
-		
-	#list {
-		position: relative;
-		display: flex;
-		width: 600px;
-		font-size: 12pt;
-		font-weight: bold;
-	}
-	
-	#list a {
-		display: block;
-		width: 14%;
-		padding: .75em 0;
-		text-decoration: none;
-		text-align: left;
-		margin-right: 13px;
-		color: #D2D6D9;
-	}
-	
-	.list_underline {
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		width: 10%;
-		height: 3px;
-		background: #4285f4;
-		transition: all .3s ease-in-out;
-		/* margin-left: 5%; */
-	}
-	
-	#list a:nth-child(1).list_iscurrent ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2).list_iscurrent ~ .list_underline {
-		left: 16%; /* width랑 margin-left랑 합친거 */
-		width: 10%;
-	}
-	#list a:nth-child(1):hover ~ .list_underline {
-		left: 0;
-	}
-	#list a:nth-child(2):hover ~ .list_underline {
-		left: 16%;
-		width: 10%;
-	}
-	
-	/* 인사정보, 근무정보 */
-	#hrInfo, #workInfo {
-		font-weight: bold;
-		font-size: 15pt;
-	}
-	
-	.content {
-		color: #556372; 
-		font-size: 11pt;
-		margin-bottom: 60px;
-	}
-	
-	.content td {
-		padding-left: 1px;
-	}
-	
-	.addprofileimg{
-	    display: inline-block;
-	    height: 30px;
-	    width: 31px;
-	    border-radius: 50%;
-	    border: solid 1px #d9d9d9d9;
-	    background-color: white;
-	    cursor: pointer;
-	    position: relative;
-	    top: 115px;
-	    right: 30px;
-	}
-	
-	.addprofileimg:hover{
-		background-color: #f1f1f1;
-	}
-	
-	
-	.addprofileimg > i{
-	    font-size: 11pt;
-	    color: #555555;
-	    margin: auto;
-	    position: relative;
-	    left: 7px;
-	    top: 2px;
-	}
-	
-	input[type='checkbox'], input[type='radio']{
-		position: relative;
-		top: 2px;
-		margin-right: 2px;
-	}
-	
-	.gradientbtn {
-		color: white !important;
-	}
-	
-	.profileimg{
-		border-radius: 50px;
-		border: solid 1px rgba(0,0,0,0.1);
-	}
-	
 </style>   
 
 <script type="text/javascript">
@@ -368,7 +211,7 @@ function reSession(filename){
 		          	<!-- 본인이 아닐때 보여지는건 소속, 직위, 직무 -->
 		          	<c:set var="at" value="${requestScope.evo.authority}"/>
 		          	<c:set var="logat" value="${sessionScope.loginuser.authority}"/>
-	          		 <c:if test="${sessionScope.loginuser.employee_no == requestScope.empno || logat==3 || logat==6 || logat==12 || logat==15 || logat==24 || logat==30 || logat==60 || logat==120 || logat==99}">
+	          		 <c:if test="${sessionScope.loginuser.employee_no == requestScope.empno || logat==3 || logat==6 || logat==12 || logat==15 || logat==21 || logat==24 || logat==30 || logat==42 || logat==60 || logat==84 || logat==105 || logat==120 || logat==210 || logat==420 || logat==840 || logat==99}">
 		                <tr>
 						   <td>사번</td>   
 						   <td>${requestScope.evo.employee_no}</td>   
@@ -401,7 +244,7 @@ function reSession(filename){
 			          </tbody>
 				 	</table>
 				 	
-				 	<c:if test="${sessionScope.loginuser.employee_no == requestScope.empno || logat==3 || logat==6 || logat==12 || logat==15 || logat==24 || logat==30 || logat==60 || logat==120 || logat==99}">
+				 	<c:if test="${sessionScope.loginuser.employee_no == requestScope.empno || logat==3 || logat==6 || logat==12 || logat==15 || logat==21 || logat==24 || logat==30 || logat==42 || logat==60 || logat==84 || logat==105 || logat==120 || logat==210 || logat==420 || logat==840 || logat==99}">
 				 	<div id="workInfo">근무 정보</div><br>
 				 	<table class="table table-borderless content" style="float: left;">
 				       <colgroup>
@@ -463,7 +306,7 @@ function reSession(filename){
 		                   	 </span>
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
-		                   	 		<c:when test="${at==2 || at==6 || at==8 || at==10 || at==24 || at==30 || at==40 || at==120}">
+		                   	 		<c:when test="${at==2 || at==6 || at==8 || at==10 || at==14 || at==24 || at==30 ||  at==40 || at==42 || at==56 || at==70 || at==120 || at==210 || at==280 || at==840}">
 				                		<input type="checkbox" class="custom-control-radio2" id="insight" name="authority" value="2" checked>
 				                	</c:when>
 				                	<c:otherwise>
@@ -474,7 +317,7 @@ function reSession(filename){
 		                   	 </span>
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
-		                   	 		<c:when test="${at==3 || at==6 || at==12 || at==15 || at==24 || at==30 || at==60 || at==120}">
+		                   	 		<c:when test="${at==3 || at==6 || at==12 || at==15 || at==21 || at==24 || at==30 || at==42 || at==60 || at==84 || at==105 || at==120 || at==210 || at==420 || at==840}">
 					               		<input type="checkbox" class="custom-control-radio2" id="member" name="authority" value="3" checked>
 					                </c:when>
 				                	<c:otherwise>
@@ -485,7 +328,7 @@ function reSession(filename){
 		                   	 </span>
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
-		                   	 		<c:when test="${at==4 || at==8 || at==12 || at==20 || at==24 || at==40 || at==60 || at==120}">
+		                   	 		<c:when test="${at==4 || at==8 || at==12 || at==20 || at==24 || at==28 || at==40 || at==56 || at==60 || at==84 || at==120 || at==140 || at==280 || at==420 || at==840}">
 					               		<input type="checkbox" class="custom-control-radio2" id="payroll" name="authority" value="4" checked>
 					                </c:when>
 				                	<c:otherwise>
@@ -496,7 +339,7 @@ function reSession(filename){
 		                   	 </span>
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
-		                   	 		<c:when test="${at==5 || at==10 || at==15 || at==20 || at==30 || at==40 || at==60 || at==120}">
+		                   	 		<c:when test="${at==5 || at==10 || at==15 || at==30 || at==35 || at==40 || at==60 || at==70 || at==105 || at==120 || at==140 || at==210 || at==280 || at==420 || at==840}">
 					               		<input type="checkbox" class="custom-control-radio2" id="log" name="authority" value="5" checked>
 					                </c:when>
 				                	<c:otherwise>
@@ -504,6 +347,17 @@ function reSession(filename){
 				                	</c:otherwise>
 				                </c:choose>
 				                <label for="log" class="js-period-type radio-label-checkbox2" data-code="unlimit">로그</label>
+		                   	 </span>
+		                   	 <span style="margin-right: 30px;">
+		                   	 	<c:choose>
+		                   	 		<c:when test="${at==7 || at==14 || at==20 || at==21 || at==28 || at==35 || at==42 || at==56 || at==70 || at==84 || at==105 || at==140 || at==210 || at==280 || at==420 || at==840}">
+					               		<input type="checkbox" class="custom-control-radio2" id="attendance" name="authority" value="7" checked>
+					                </c:when>
+				                	<c:otherwise>
+					               		<input type="checkbox" class="custom-control-radio2" id="attendance" name="authority" value="7">
+				                	</c:otherwise>
+				                </c:choose>
+				                <label for="attendance" class="js-period-type radio-label-checkbox2" data-code="unlimit">근태</label>
 		                   	 </span>
 		                   	 <span>
 		                   	 	<c:choose>
@@ -556,12 +410,12 @@ function reSession(filename){
 	      </div>
 	      </c:if>
        </div>
-       
-       <div style="position: absolute; right: 140px; top: 365px;"> 
+       <c:if test="${sessionScope.loginuser.employee_no == requestScope.empno}">
+       <div style="position: absolute; right: 140px; top: 373px;"> 
 			<div class=moreInfo>
 				<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
 				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
-				<span style="font-size: 13pt;">7시간 20분</span>  
+				<span style="font-size: 13pt;">7시간 20분</span>
 			</div><br> 
 			<div class=moreInfo>
 				<div style="padding-bottom: 21px; transform: scaleX(-1); padding-left: 176px;"><ion-icon name="leaf-outline"></ion-icon></div>
@@ -574,7 +428,7 @@ function reSession(filename){
 				<span style="font-size: 13pt;">11월 급여명세서</span>  
 			</div><br> 
 		</div>
-       
+       </c:if>
 	</form>
   
 </div>

@@ -614,7 +614,7 @@ function showEmpList(teamVal){
 							<div style="font-size: 12pt; font-weight: bold; color: #4C4E54; padding-bottom: 27px;">
 								<span style="padding-right: 190px;">조직도</span>
 								<span><i class="fas fa-expand-alt unfold"></i></span>
-								<span class="unfoldAlert" style="display: none;">모든 조직 펼치기</span> <%-- 호버 이벤트시 jQuery 효과주기 --%>
+								<span class="unfoldAlert">모든 조직 펼치기</span> <%-- 호버 이벤트시 jQuery 효과주기 --%>
 							</div>
 							<div style="width:250px;">
 								<div id="" class="orgmenu" style="font-size: 11pt;font-weight: 700; color: #4C4E54; margin-bottom: 5px;">전체</div>

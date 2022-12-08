@@ -36,6 +36,8 @@ public class EmployeeVO {
 	private String dayoff_cnt;
 	private String birthday;
 	private String age;
+	private String workinghour;
+	
 	
 	
 	public EmployeeVO() {}

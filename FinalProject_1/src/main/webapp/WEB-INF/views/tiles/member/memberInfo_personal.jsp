@@ -6,266 +6,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
-    
+
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/memberInfo.css?after">
 <style type="text/css">
-.offcanvas-body::-webkit-scrollbar {
-    width: 8px;  /* 스크롤바의 너비 */
-}
-
-.offcanvas-body::-webkit-scrollbar-thumb {
-    height: 30%; /* 스크롤바의 길이 */
-	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
-    border-radius: 10px;
-}
-
-.offcanvas-body::-webkit-scrollbar-track {
-	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
-}
-
-
-.member_container:not(.pic){
-	color: #4d4f53;
-}
-
-/* 페이지 전체 레이아웃 */
-.member_container {
-	width: 88%;
-	margin: 0 auto;
-}
-
-/* 상단 프로필 */
-.myInfo {
-	padding: 10px 20px;
-	font-weight: 500;
-}
-.myprofiles{
-	display: flex;
-}
-
-.myprofiles{
-	display: flex;
-}
-
-#team, #role {
-	color: #808080; 
-	padding-right: 14px;
-}
-	
-#phone, #message {
-	border: 0.3px solid #d9d9d9;
-    margin-top: 15px;
-    margin-right: 3px;
-    padding: 3.5px 6.5px 3.5px 6.5px;
-    background-color: white;
-    border-radius: 3px;
-    font-size: 9pt;
-    color: #555555;
-}	
-
-#status {
-    border: 0.3px solid #d9d9d9;
-    margin-top: 17px;
-    margin-right: 3px;
-    padding: 3.5px 7px 3.2px 7px;
-    background-color: white;
-    border-radius: 3px;
-    font-size: 9.2pt;
-}	
-
-/* nav바 */
-hr{
-	border-top: solid 1px #949DA6 !important;
-}
-
-#list a:hover{
-	color: #000000;
-	cursor: pointer;
-}
-	
-#list {
-	position: relative;
-	display: flex;
-	width: 600px;
-	font-size: 12pt;
-	font-weight: bold;
-}
-
-#list a {
-	display: block;
-	width: 14%;
-	padding: .75em 0;
-	color: #333;
-	text-decoration: none;
-	text-align: left;
-	margin-right: 13px;
-	color: #D2D6D9;
-}
-
-.list_underline {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	width: 10%;
-	height: 3px;
-	background: #4285f4;
-	transition: all .3s ease-in-out;
-}
-
-#list a:nth-child(1).list_iscurrent ~ .list_underline {
-	left: 0;
-}
-#list a:nth-child(2).list_iscurrent ~ .list_underline {
-	left: 16%; /* width랑 margin-left랑 합친거 */
-	width: 10%;
-}
-#list a:nth-child(1):hover ~ .list_underline {
-	left: 0;
-}
-#list a:nth-child(2):hover ~ .list_underline {
-	left: 16%;
-	width: 10%;
-}
-
-/* 개인정보 */
-#personalInfo {
-	font-weight: bold;
-	font-size: 15pt;
-}
-
-.content {
-	color: #556372; 
-	font-size: 11.5pt;
-	margin-bottom: 70px;
-}
-
-.content td {
-	padding-left: 1px;
-}
-
-.addprofileimg{
-    display: inline-block;
-    height: 30px;
-    width: 31px;
-    border-radius: 50%;
-    border: solid 1px #d9d9d9d9;
-    background-color: white;
-    cursor: pointer;
-    position: relative;
-    top: 115px;
-    right: 30px;
-}
-
-.addprofileimg:hover{
-	background-color: #f1f1f1;
-}
-
-
-.addprofileimg > i{
-    font-size: 11pt;
-    color: #555555;
-    margin: auto;
-    position: relative;
-    left: 7px;
-    top: 2px;
-}
-
-input[type='checkbox'], input[type='radio']{
-	position: relative;
-	top: 2px;
-	margin-right: 2px;
-}
-
-.gradientbtn {
-	color: white !important;
-}
-/* 오프캔버스 */
-.offcanvas-end {
-	width: 711px;
-}
-
-form input, form > select {
-	border: 1.5px solid #cccccc;
-	border-radius: 3.5px;
-	width: 100%;
-	padding: 10px 17px;
-	margin: 7px 0 18px 0;
-	opacity: 0.85;
-	font-size: 10pt;
-	line-height: 20px;
-}
-
-#idCheck, 
-#emailCheck,
-#btn_emailVerifyCodeCheck,
-#mobileCheck,
-#btn_mobileVerifyCodeCheck	{
-    background-color: #4285f4;
-    color: white;
-    height: 41px;
-    width: 100px;
-    border-style: none;
-    border-radius: 4px;
-} 
-
-
-input:focus {
-	border: 1.8px solid #4285f4;
-   	outline: none;
-}
-
-#phoneCheck, 
-#mobileCheckBtn,
-#mobileCodeCheckBtn,
-#emailCheckBtn, 
-#emailCodeCheckBtn {
-    background-color: #cfc9c9;
-    color: white;
-    height: 40px;
-    width: 100px;
-    border-style: none;
-    border-radius: 7px;
-} 
-
-#addressBtn {
-    background-color: #cfc9c9;
-    color: white;
-    height: 40px;
-    width: 100px;
-    border-style: none;
-    border-radius: 7px;
-}
-
-#btnUpdate {
-	width: 190px;
-    padding: 7.5px;
-    border: 1px solid #4285f4;
-	background-color: #4285f4;
-	color: white;
-	font-size: 13pt;
-	border-radius: 30px;
-}
-
-#btnUpdate:hover {
-	opacity: 1;
-}
-	/* 우측 사이드 근무시간, 남은연차, 급여 */
-.moreInfo {
-	border: 1px solid #e6e6e6;
-	padding: 15.5px 22px;
-	margin-bottom: 22px;
-	width: 246px;  
-	height: 130px; 
-	border-radius: 10px;
-	display: inline-block;
-	float: left;
-	font-size: 18pt;
-	/* box-shadow: 3px 3px 10px 5px #f2f2f2;    */
-} 
-.update {
-	margin-left: 765px;
-	color: #a6a6a6; 
-	font-size: 10pt;
-}
 </style>   
 
 <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>  <!-- src 경로는 daum에서 준 우편번호찾기 사이트이다. -->
@@ -554,7 +297,11 @@ function reSession(filename){
 		
 		<div class="">
 			<%-- <div id="personalInfo">개인 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
-			<div id="personalInfo">개인 정보<span><i class="fas fa-pen update"></i></span></div><br>
+			<div id="personalInfo">개인 정보
+				<c:if test="${sessionScope.loginuser.employee_no == requestScope.empno}">
+				<span><i class="fas fa-pen update"></i></span>
+				</c:if>
+			</div><br>
 		 	<table class="table table-borderless content" style="float: left;">
 		       <colgroup>
 		          <col width="16%" />
@@ -644,7 +391,8 @@ function reSession(filename){
 		 <button type="reset" class="workstatus-cancel">취소</button><br><br><br><br>
        </div>
         -->
-        	<div style="position: absolute; right: 140px; top: 365px;"> 
+        <c:if test="${sessionScope.loginuser.employee_no == requestScope.empno}">
+    	<div style="position: absolute; right: 140px; top: 373px;"> 
 		<div class=moreInfo>
 			<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
 			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
@@ -661,6 +409,7 @@ function reSession(filename){
 			<span style="font-size: 13pt;">11월 급여명세서</span>  
 		</div><br> 
 	</div>
+	</c:if>
 	
 	<!-- 오프캔버스 시작 -->
 	<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
