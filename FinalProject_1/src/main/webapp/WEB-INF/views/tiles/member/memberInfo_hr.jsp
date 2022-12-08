@@ -436,7 +436,7 @@ function reSession(filename){
 				        </tbody>
 				 	</table>
 		 		</c:if>
-		 		
+		 	
 		 	<c:if test="${logat == 99}"> <!-- 관리자계정일때만 권한 주기 -->
 		 	<div id="workInfo">계정 정보</div><br>
 		 	<table class="table table-borderless content" style="float: left;">
@@ -556,6 +556,25 @@ function reSession(filename){
 	      </div>
 	      </c:if>
        </div>
+       
+       <div style="position: absolute; right: 140px; top: 365px;"> 
+			<div class=moreInfo>
+				<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
+				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
+				<span style="font-size: 13pt;">7시간 20분</span>  
+			</div><br> 
+			<div class=moreInfo>
+				<div style="padding-bottom: 21px; transform: scaleX(-1); padding-left: 176px;"><ion-icon name="leaf-outline"></ion-icon></div>
+				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">남은연차</span>
+				<span style="font-size: 13pt;">25일</span>  
+			</div><br> 
+			<div class=moreInfo>
+				<div style="padding-bottom: 21px;"><ion-icon name="server-outline"></ion-icon></div>
+				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">급여</span>  
+				<span style="font-size: 13pt;">11월 급여명세서</span>  
+			</div><br> 
+		</div>
+       
 	</form>
   
 </div>
