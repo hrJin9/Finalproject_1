@@ -218,6 +218,28 @@ public class MemberController {
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping(value = "/getWorkinghour.up")
+	public String getWorkinghour(HttpServletRequest request){
+		
+		String employee_no = request.getParameter("employee_no");
+		
+		// 해당 사원의 오늘 근무시간 알아오기
+		int working_min = service.getWorkinghour(employee_no);
+		
+		System.out.println(working_min);
+		
+		JSONObject jsonobj = new JSONObject();
+			int working_h = working_min/60;
+			int working_m = working_min%60;
+			
+			jsonobj.put("working_h", working_h);
+			jsonobj.put("working_m", working_m);
+		return jsonobj.toString();
+		
+	}
+	
+	
 	
 	
 	

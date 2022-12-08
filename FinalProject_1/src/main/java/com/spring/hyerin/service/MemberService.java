@@ -48,5 +48,12 @@ public class MemberService implements InterMemberService {
 		String filename = dao.getImg(employee_no);
 		return filename;
 	}
+
+	// 해당 사원의 오늘 근무시간 알아오기
+	@Override
+	public int getWorkinghour(String employee_no) {
+		int workingmin = dao.getWorkinghour(employee_no);
+		return workingmin;
+	}
 	
 }

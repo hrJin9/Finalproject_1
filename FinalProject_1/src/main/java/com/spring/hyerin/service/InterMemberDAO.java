@@ -23,4 +23,7 @@ public interface InterMemberDAO {
 	//프로필 파일이름 알아오기
 	String getImg(String employee_no);
 
+	// 해당 사원의 오늘 근무시간 알아오기
+	int getWorkinghour(String employee_no);
+
 }

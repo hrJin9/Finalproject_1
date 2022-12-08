@@ -1133,12 +1133,18 @@ commit;
 desc tbl_attendance
 
 
-select * from user_sequences
+
+
+select * from tbl_attendance
+
+
+
+-- 오늘 근무시간 구하기
+select (endtime - starttime)*24*60 as working_min
+from tbl_attendance 
+where fk_employee_no = 100006 and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
 
 
 
 
-
-
-to_char()
 

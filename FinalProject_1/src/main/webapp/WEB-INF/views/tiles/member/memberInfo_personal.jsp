@@ -49,6 +49,10 @@ $(document).ready(function(){
 		empno = "${sessionScope.loginuser.employee_no}";
 	}
 	
+	// 첫페이지 로딩시 근무시간 읽어오기
+	getWorkinghour();
+	
+	
 	// nav바에서 인사정보 클릭시 인사정보 페이지로 이동
 	$(".memberInfo_hView").click(function(){
 		location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
@@ -249,6 +253,34 @@ function reSession(filename){
 	});
 }
 
+
+function getWorkinghour(){
+	$.ajax({
+		url: "<%= ctxPath%>/getWorkinghour.up",
+		data: {"employee_no":"${requestScope.evo.employee_no}"},
+		type: "post",
+		dataType:"json",
+		success:function(json){
+			var html = '';
+			if(json != null){
+				if(json.working_m != null){
+					html = json.working_h + '시간 ' + json.working_m + '분';
+				} else {
+					html = json.working_h + '시간';
+				}
+			} else {
+				html = '정보 없음';
+			}
+			
+			$("#working").html(html);
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
+	
+}//end of getWorkinghour
+
 </script>
 
 <div class="member_container">
@@ -331,7 +363,7 @@ function reSession(filename){
 						<tr>
 						  <td>생년월일</td>   
 						  <td style="float:left; margin-right:0;">
-						  		${requestScope.evo.birthday}&nbsp;(${requsetScope.evo.age}세)<span style="padding-left: 10px;">/</span>
+						  		${requestScope.evo.birthday}&nbsp;<span style="padding-left: 10px;">/</span>
 							  <span style="padding-left: 10px;">
 								  <c:if test="${requestScope.evo.gender == 1}">
 								  	남성
@@ -392,21 +424,21 @@ function reSession(filename){
        </div>
         -->
         <c:if test="${sessionScope.loginuser.employee_no == requestScope.empno}">
-    	<div style="position: absolute; right: 140px; top: 373px;"> 
-		<div class=moreInfo>
-			<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
-			<span style="font-size: 13pt;">7시간 20분</span>  
-		</div><br> 
-		<div class=moreInfo>
-			<div style="padding-bottom: 21px; transform: scaleX(-1); padding-left: 176px;"><ion-icon name="leaf-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">남은연차</span>
-			<span style="font-size: 13pt;">25일</span>  
-		</div><br> 
-		<div class=moreInfo>
-			<div style="padding-bottom: 21px;"><ion-icon name="server-outline"></ion-icon></div>
-			<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">급여</span>  
-			<span style="font-size: 13pt;">11월 급여명세서</span>  
+		<div style="position: absolute; right: 140px; top: 373px;"> 
+			<div class="moreInfo" onclick="javascript:location.href='<%= ctxPath%>/attendance.up'">
+				<div style="padding-bottom: 21px;"><ion-icon name="time-outline"></ion-icon></div>
+				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">근무시간</span> 
+				<span id="working" style="font-size: 13pt;"></span>
+			</div><br> 
+			<div class="moreInfo" onclick="javascript:location.href='<%= ctxPath%>/dayoff/index.up'">
+				<div style="padding-bottom: 21px; transform: scaleX(-1); padding-left: 176px;"><ion-icon name="leaf-outline"></ion-icon></div>
+				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">남은연차</span>
+				<span style="font-size: 13pt;">${requestScope.evo.dayoff_cnt}일</span>  
+			</div><br> 
+			<div class="moreInfo" onclick="javascript:location.href='<%= ctxPath%>/payroll.up'">
+				<div style="padding-bottom: 21px;"><ion-icon name="server-outline"></ion-icon></div>
+				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">급여</span>  
+				<span style="font-size: 13pt;">11월 급여명세서</span>  
 		</div><br> 
 	</div>
 	</c:if>
