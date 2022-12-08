@@ -278,7 +278,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workinghour > td:first-child{
-	width: 15%;
+	width: 17.6%;
 }
 
 .workinghour td {
@@ -287,7 +287,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workinghour > td:first-child ~ td {
-	width: 3%;
+	width: 2.98%;
 }
 
 
@@ -330,7 +330,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 
-.workingtotalhourByday{
+.workingtotalhourByday {
     display: inline-block;
     border: solid 1px rgba(242, 242, 242);
     border-radius: 5px;
@@ -346,6 +346,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
     padding-top: 3px;
     padding-right: 3px;
     text-align: center;
+    z-index: 99;
 }
 .workingtotalhourByday > span{
 	margin-left: 4px;
@@ -375,12 +376,14 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
  */
 
 .line{
-	display: inline-block;
+    display: inline-block;
     background-color: rgba(242, 242, 242);
-    height: 1px;
-    width: 216px;
+    height: 1.4px;
+    width: 217px;
     margin-left: 48px;
     margin-bottom: 7px;
+    position: absolute;
+    top: 12%;
 }
 
 .workStatusbox{
