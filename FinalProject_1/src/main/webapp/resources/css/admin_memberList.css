@@ -22,10 +22,9 @@
 	display: block;
 	width: 24%;
 	padding: 0.7em 0 0.3em 0;
-	color: #333;
 	text-decoration: none;
 	margin-right: 4%;
-	color: black;
+	color: #4d4f53;
 }
 	
 /* 검색 */
@@ -179,8 +178,8 @@ th {
 	border-top: solid 1.5px #d9d9d9 !important;
 }
 
-th {
-	font-weight: 500 !important;
+th *{
+	font-weight: 600 !important;
 }
 
 th > span {

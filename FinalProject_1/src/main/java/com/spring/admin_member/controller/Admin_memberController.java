@@ -46,11 +46,11 @@ public class Admin_memberController {
 		int sizePerPage = Integer.parseInt(s_sizePerPage);
 		int cur = Integer.parseInt(s_cur);
 		
-		System.out.println("s_sizePerPage: " + s_sizePerPage);
-		System.out.println("dropCondition: " + dropCondition);
-		System.out.println("dropVal: " + dropVal);
-		System.out.println("searchCondition: " + searchCondition);
-		System.out.println("searchVal: " + searchVal);
+//		System.out.println("s_sizePerPage: " + s_sizePerPage);
+//		System.out.println("dropCondition: " + dropCondition);
+//		System.out.println("dropVal: " + dropVal);
+//		System.out.println("searchCondition: " + searchCondition);
+//		System.out.println("searchVal: " + searchVal);
 		
 		//검색어 처리
 		if(dropCondition == null || "".equals(dropCondition)) dropCondition = "";
@@ -74,7 +74,7 @@ public class Admin_memberController {
 		int totalCount = service.getEmpTotal(paraMap);
 		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 		
-		System.out.println("totalCount: " + totalCount);
+//		System.out.println("totalCount: " + totalCount);
 		
 		//페이지 처리
 		try {
@@ -89,7 +89,6 @@ public class Admin_memberController {
 		
 		paraMap.put("startRno", String.valueOf(startRno));
 		paraMap.put("endRno", String.valueOf(endRno));
-		paraMap.put("totalCount", String.valueOf(totalCount));
 		
 		// 구성원리스트 가져오기
 		List<EmployeeVO> evoList = service.getEmpList(paraMap);
@@ -144,10 +143,13 @@ public class Admin_memberController {
 		// 고용형태 가져오기
 		List<String> jtList = service.getjointype();
 		
+		
 		// 검색조건, 검색어 뷰단에서 유지
 		if (!"".equals(searchCondition) && !"".equals(searchVal) || !"".equals(dropVal)) {
 			mav.addObject("paraMap", paraMap);
 		}
+		
+		mav.addObject("totalCount",totalCount);
 		mav.addObject("pageBar", pageBarHTML);
 		mav.addObject("gobackURL", gobackURL.replaceAll("&", " "));
 		mav.addObject("evoList",evoList);

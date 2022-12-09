@@ -18,6 +18,8 @@ $(document).ready(function(){
 	var sc = "${requestScope.paraMap.searchCondition}";
 	var sv = "${requestScope.paraMap.searchVal}";
 	var sp = "${requestScope.paraMap.sizePerPage}";
+	var dc = "${requestScope.paraMap.dropCondition}";
+	var dv = "${requestScope.paraMap.dropVal}";
 	
 	if(sc != "") 
 		$("#searchCondition").val(sc);
@@ -25,6 +27,10 @@ $(document).ready(function(){
 		$("input[name='sv']").val(sv);
 	if(sp != "")
 		$("#cntselect").val(sp);
+	if(dc != "")
+		$("#dc").val(dc);
+	if(dv != "")
+		$("#dv").val(dv);
 	
 	
 	// 체크박스 전체선택 및 체크박스 하나 해제시 전체선택 해제
@@ -44,6 +50,28 @@ $(document).ready(function(){
 	      $("#memberAll").prop("checked",true);
 	   }
 	   
+	});
+	
+	$("#searchVal").keyup(function(e){
+		if(event.keyCode == 13){
+			var frm = document.memform;
+			frm.action = "<%=ctxPath%>/admin_memberList.up";
+			frm.submit();
+		}
+	});
+	
+	
+	$(".dropdown-menu > a").click(function(){
+		var dc = $(this).parent().attr("id");
+		var dv = $(this).attr("id");
+		
+		$("#dc").val(dc);
+		$("#dv").val(dv);
+		
+		console.log("${requestScope.gobackURL}");
+		var frm = document.memform;
+		frm.action = "<%=ctxPath%>/admin_memberList.up";
+		frm.submit();
 	});
       
 		
@@ -71,38 +99,38 @@ function allCheckBox() {
 <hr class="HRhr" style="margin-top: 0px;"/><br>
 
 <div class="admin_container">
-	<div style="margin-bottom: 15px; float: left;">
-		<span>전체&nbsp; <span style="color:#4285f4;" id="memberCnt">${requestScope.paraMap.totalCount}</span>명</span>
+	<div style="margin-bottom: 15px; float: left; color: #4d4f53; font-weight: 600; ">
+		<span>전체&nbsp; <span style="color:#4285f4;" id="memberCnt">${requestScope.totalCount}</span>명</span>
 	</div>
 	<div class="contentsmargin" style="clear: both;">
 		<div style="float:left;">
 			<div style="display: inline-block;">
-			    <a href="<%= request.getContextPath()%>/admin_memberAdd_hr.up" id="memberadd" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
+			    <a href="<%= request.getContextPath()%>/admin_memberAdd_hr.up" id="memberadd" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
 			       	<span><i class="fas fa-plus"></i></span>
 			       	<span>구성원추가</span>
 		       	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a href="#" id="memberdelete" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
+	      	 	<a href="#" id="memberdelete" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
 			       	<span><i class="fas fa-times"></i></span>
 			       	<span>구성원삭제</span>
 	      	 	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a href="#" id="memberupdate" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#212529;">
+	      	 	<a href="#" id="memberupdate" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
 			       	<span><i class="fas fa-pencil-alt"></i></span>
 			       	<span>멤버수정</span>
 	      	 	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a href="#" id="listdownload" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
+	      	 	<a href="#" id="listdownload" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #d9d9d9; border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
 			       	<span><i class="fa-solid fa-download"></i></span>
 			       	<span>목록 다운로드</span>
 	      	 	</a>
 	      	 </div>
 		</div>
 		<%-- 검색 --%>
-		<form class="booking-form ml-3">
+		<form name="memform" class="booking-form ml-3">
 			<div class="row" style="padding-bottom: 20px; float:right;">
 				<%-- 검색 --%>
 				<div class=" mr-2">
@@ -119,7 +147,7 @@ function allCheckBox() {
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-							<input type="text" class="form-control" name="sv" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+							<input id="searchVal" type="text" class="form-control" name="sv" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
 						</div>
 					</div>
 				</div>
@@ -151,6 +179,7 @@ function allCheckBox() {
 		              <th onclick="sortTable()" class="boardth" width="11%" scope="col" id="namearray"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
 		              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 						  <div id="department_name" class="dropdown-menu">
+					  			<a id="" class="dropdown-item" href="#">전체</a>
 						  		<c:forEach var="dvo" items="${requestScope.dvoList}">
 						  			<a id="${dvo.department_name}" class="dropdown-item" href="#">${dvo.department_name}</a>
 						  		</c:forEach>
@@ -176,6 +205,7 @@ function allCheckBox() {
 					  </th>
 		              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
 						  <div id="position" class="dropdown-menu">
+						  		<a id="" class="dropdown-item" href="#">전체</a>
 						  		<c:forEach var="position" items="${requestScope.pList}">
 						  			<a id="${position}" class="dropdown-item" href="#">${position}</a>
 						  		</c:forEach>
@@ -204,6 +234,7 @@ function allCheckBox() {
 					  </th>
 		              <th class="boardth" width="10%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">고용형태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
 						  <div id="employeementtype" class="dropdown-menu">
+						  		<a id="" class="dropdown-item" href="#">전체</a>
 						  		<c:forEach var="jointype" items="${requestScope.jtList}">
 						  			<a id="${jointype}" class="dropdown-item" href="#">${jointype}</a>
 						  		</c:forEach>
@@ -225,12 +256,14 @@ function allCheckBox() {
 		              <th class="boardth" width="14%"scope="col"><span>연락처</span></th> 
 		              <th class="boardth" width="10%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">권한<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
 						  <div id="authority" class="dropdown-menu">
+						      <a id="" class="dropdown-item" href="#">전체</a>
 						      <a id="1" class="dropdown-item" href="#">일반</a>
 						      <a id="0" class="dropdown-item" href="#">관리</a>
 						  </div>
 		              </th>  
 		              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">계정상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
 						  <div id="status" class="dropdown-menu">
+						      <a id="" class="dropdown-item" href="#">전체</a>
 						      <a id="1" class="dropdown-item" href="#">정상</a>
 						      <a id="0" class="dropdown-item" href="#">중지</a>
 						  </div>
@@ -238,6 +271,7 @@ function allCheckBox() {
 		            </tr> 
 				</thead>
 				<tbody>
+					<c:if test="${not empty requestScope.evoList }">
 					<c:forEach var="emp" items="${requestScope.evoList}" varStatus="status">
 						 <tr> 
 			              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
@@ -263,12 +297,21 @@ function allCheckBox() {
 			              </c:if>
 			            </tr> 
 					</c:forEach>
+					</c:if>
+					<c:if test="${empty requestScope.evoList}">
+						<tr>
+							<td colspan="9" style="color: #9c9c9c;">조회된 구성원이 없습니다.</td>
+						</tr>
+					</c:if>
 		    	</tbody>        
 			</table>
 			<div>
 				${requestScope.pageBar}
 			</div>
 		</div>
+		
+		<input id="dc" type="text" name="dc" value=""/>
+		<input id="dv" type="text" name="dv" value=""/>
 		</form>
 	</div>
 </div>
