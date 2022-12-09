@@ -2,6 +2,9 @@ package com.spring.hyerin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.finalproject.common.AES256;
 import com.spring.finalproject.common.FileManager;
 import com.spring.finalproject.service.InterFinalprojectService;
 import com.spring.hyerin.model.DepartmentsVO;
@@ -34,10 +38,11 @@ public class MemberController {
 	private InterMemberService service;
 	
 	@Autowired
-	private InterLoginService loginservice;
+	private FileManager fileManager;
 	
 	@Autowired
-	private FileManager fileManager;
+	private AES256 aes;
+	
 	
 	@RequestMapping(value = "/memberRegister.up")
 	public String memberRegister(HttpServletRequest request) {
@@ -45,13 +50,16 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/myInfo_hr.up")
-	public ModelAndView rl_myInfo_hr(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	public ModelAndView rl_myInfo_hr(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) throws Throwable {
 		
 		String empno = request.getParameter("empno");
 		System.out.println(empno);
 		
 		//해당 empno사원의 정보 가져오기
 		EmployeeVO evo = service.getempvo(empno);
+		
+		evo.setEmail(aes.decrypt(evo.getEmail()));
+		evo.setMobile(aes.decrypt(evo.getMobile()));
 		
 		mav.addObject("empno", empno);
 		mav.addObject("evo", evo);
@@ -85,7 +93,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/memberInfo_hr.up")
-	public ModelAndView memberInfo_hr(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	public ModelAndView memberInfo_hr(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) throws Throwable {
 
 		String empno = request.getParameter("empno");
 		if(empno == null) { // null값 들어오는 경우(장난)
@@ -96,6 +104,9 @@ public class MemberController {
 			//해당 empno사원의 정보 가져오기
 			EmployeeVO evo = service.getempvo(empno);
 			
+			evo.setEmail(aes.decrypt(evo.getEmail()));
+			evo.setMobile(aes.decrypt(evo.getMobile()));
+			
 			mav.addObject("empno", empno);
 			mav.addObject("evo", evo);
 			mav.setViewName("member/memberInfo_hr.tiles");
@@ -105,7 +116,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/memberInfo_personal.up")
-	public ModelAndView memberInfo_personal(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	public ModelAndView memberInfo_personal(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) throws Throwable {
 		String empno = request.getParameter("empno");
 		if(empno == null) { // null값 들어오는 경우(장난)
 			String loc = "javascript:history.back()";
@@ -114,6 +125,9 @@ public class MemberController {
 		} else {
 			//해당 empno사원의 정보 가져오기
 			EmployeeVO evo = service.getempvo(empno);
+			
+			evo.setEmail(aes.decrypt(evo.getEmail()));
+			evo.setMobile(aes.decrypt(evo.getMobile()));
 			
 			mav.addObject("empno", empno);
 			mav.addObject("evo", evo);
@@ -225,16 +239,20 @@ public class MemberController {
 		String employee_no = request.getParameter("employee_no");
 		
 		// 해당 사원의 오늘 근무시간 알아오기
-		int working_min = service.getWorkinghour(employee_no);
-		
-		System.out.println(working_min);
-		
+		String s_working_min = service.getWorkinghour(employee_no);
 		JSONObject jsonobj = new JSONObject();
+		
+		try {
+			
+			int working_min = Integer.parseInt(s_working_min);
 			int working_h = working_min/60;
 			int working_m = working_min%60;
-			
 			jsonobj.put("working_h", working_h);
 			jsonobj.put("working_m", working_m);
+			
+		} catch (NumberFormatException e) { // 결과값이 없는 경우
+			jsonobj.put("working_h", "");
+		}
 		return jsonobj.toString();
 		
 	}

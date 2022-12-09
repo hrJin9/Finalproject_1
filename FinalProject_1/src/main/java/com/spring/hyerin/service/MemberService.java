@@ -51,8 +51,8 @@ public class MemberService implements InterMemberService {
 
 	// 해당 사원의 오늘 근무시간 알아오기
 	@Override
-	public int getWorkinghour(String employee_no) {
-		int workingmin = dao.getWorkinghour(employee_no);
+	public String getWorkinghour(String employee_no) {
+		String workingmin = dao.getWorkinghour(employee_no);
 		return workingmin;
 	}
 	
