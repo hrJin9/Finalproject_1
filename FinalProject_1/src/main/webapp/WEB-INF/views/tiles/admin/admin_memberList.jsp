@@ -77,7 +77,7 @@
 	}
 	
 	.table>:not(:first-child) {
-	       border-top: 1.5px solid #cfcfcf;
+	       border-top: 1.5px solid #d9d9d9;
 	}
 	 
 	
@@ -87,7 +87,7 @@
 	}
 	.boardth{
 		position: relative;
-		top: -6px;
+	    bottom: 1px;
 	}
 	.table td, .table th {
 		font-size: 11pt;
@@ -269,10 +269,14 @@
 					<div class="form-group">
 						<div class="form-field">
 							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px;">
-								<option value="">전체</option>
-								<option value="">작성자</option>
-								<option value="">제목</option>
-								<option value="">제목+내용</option>
+								<option value="all">전체</option>
+								<option value="name_kr">이름</option>
+								<option value="department_name">부서</option>
+								<option value="position">직위</option>
+								<option value="email">이메일</option>
+								<option value="mobile">연락처</option>
+								<option value="authority">권한</option>
+								<option value="status">계정상태</option>
 							</select>
 						</div>
 					</div>
@@ -369,8 +373,8 @@
 					      <a class="dropdown-item" href="#">알바</a> 
 					  </div>
 	              </th>  
-	              <th class="boardth" width="16%"scope="col">이메일</th> 
-	              <th class="boardth" width="14%"scope="col">연락처</th> 
+	              <th class="boardth" width="16%"scope="col"><span>이메일</span></th> 
+	              <th class="boardth" width="14%"scope="col"><span>연락처</span></th> 
 	              <th class="boardth" width="10%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">권한<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">일반</a>

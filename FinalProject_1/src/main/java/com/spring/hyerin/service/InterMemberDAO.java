@@ -24,6 +24,6 @@ public interface InterMemberDAO {
 	String getImg(String employee_no);
 
 	// 해당 사원의 오늘 근무시간 알아오기
-	int getWorkinghour(String employee_no);
+	String getWorkinghour(String employee_no);
 
 }

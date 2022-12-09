@@ -305,10 +305,10 @@ exec pcd_tbl_team_insert('IT',100);
 
 create or replace view v_employee
 as
-select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday
+select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt
 from
     (
-    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday
+    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt
     from tbl_employee E
     left join tbl_departments D
     on fk_department_no = department_no
@@ -1146,5 +1146,33 @@ where fk_employee_no = 100006 and to_char(starttime,'yyyy-mm-dd') = to_char(sysd
 
 
 
+select nvl((endtime - starttime)*24*60,0)
+from tbl_attendance 
+where fk_employee_no = 100006 and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
 
 
+
+select * from user_constraints
+where table_name = 'TBL_EMPLOYEE'
+
+alter table tbl_employee drop constraint UQ_TBL_EMPLOYEE_EMAIL;
+
+update tbl_employee set mobile = 'tBHQxXVKc8qdSHiZy7TbVA=='
+
+commit;
+
+select * from tbl_employee
+
+
+alter table tbl_employee modify mobile varchar2(30)
+
+alter table tbl_employee modify 
+
+
+update tbl_employee set jointype = '정직원'
+where jointype = '경력'
+
+
+
+
+select * from tbl_employee

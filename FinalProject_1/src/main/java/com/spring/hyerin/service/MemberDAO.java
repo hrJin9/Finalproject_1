@@ -57,9 +57,8 @@ public class MemberDAO implements InterMemberDAO {
 
 	// 해당 사원의 오늘 근무시간 알아오기
 	@Override
-	public int getWorkinghour(String employee_no) {
-		int workingmin = sqlsession.selectOne("member.getWorkinghour",employee_no);
-		System.out.println(workingmin);
+	public String getWorkinghour(String employee_no) {
+		String workingmin = sqlsession.selectOne("member.getWorkinghour",employee_no);
 		return workingmin;
 	}
 	

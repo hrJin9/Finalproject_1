@@ -161,7 +161,7 @@ function getWorkinghour(){
 		success:function(json){
 			
 			var html = '';
-			if(json != null){
+			if(json.working_h != ""){
 				if(json.working_m != null){
 					html = json.working_h + '시간 ' + json.working_m + '분';
 				} else {
@@ -218,7 +218,16 @@ function getWorkinghour(){
 	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role">직무</span>${requestScope.evo.role}</span>
 	    	<button type="button" id="phone" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="${requestScope.evo.mobile}"><span><i class="fas fa-phone-alt" style="transform: scaleX(-1); transition: .3s; color: #666666;"></i></span></button>
 	    	<button type="button" id="message" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="메시지 보내기" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
-	    	<button type="button" id="status"><span><i class="fas fa-circle" style="color: #07B419; padding-right: 5px; font-size: 7pt;"></i>재직중</span></button>
+	    	<button type="button" id="status">
+	    		<span>
+	    			<c:if test="${requestScope.evo.status == 1}">
+	    			<i class="fas fa-circle" style="color: #07B419; padding-right: 5px; font-size: 7pt;"></i>재직중
+	    			</c:if>
+	    			<c:if test="${requestScope.evo.status == 0}">
+	    			<i class="fas fa-circle" style="color: #d0d0d0; padding-right: 5px; font-size: 7pt;"></i>퇴사예정
+	    			</c:if>
+    			</span>
+    		</button>
 		    </span>
 		</div>
 	   </div> 
@@ -462,7 +471,13 @@ function getWorkinghour(){
 		</div>
        </c:if>
 	</form>
-  
+  	
+  	
+  	<div id="alert">
+		<i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:7px; font-size:13pt;"></i>
+		<span id="alertText">${requestScope.evo.mobile}이 복사되었습니다.</span>
+	</div>
+  	
 </div>
 
 
