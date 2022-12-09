@@ -64,14 +64,14 @@
 		//** offcanvas 끝 **//
 		
 		
-		//** selectbox 최근 5년으로 기간 설정 시작 **//
+		// ** selectbox 최근 5년으로 기간 설정 시작 ** //
 		var date = new Date();
 		var selYear = date.getFullYear(); // 현재시간에 따라 지정된 날짜의 년도를 반환
 		
 		// 현재 년도 기준으로 호출
 		getYears(selYear);
 		$("#selyear").val(selYear);
-		//** selectbox 최근 5년으로 기간 설정 끝**//
+		// ** selectbox 최근 5년으로 기간 설정 끝 ** //
 		
 		
 		// 예정휴가 목록 전체개수
