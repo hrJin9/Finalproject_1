@@ -305,10 +305,10 @@ exec pcd_tbl_team_insert('IT',100);
 
 create or replace view v_employee
 as
-select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt
+select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt, employeementtype
 from
     (
-    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt
+    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt, employeementtype
     from tbl_employee E
     left join tbl_departments D
     on fk_department_no = department_no
@@ -1169,10 +1169,89 @@ alter table tbl_employee modify mobile varchar2(30)
 alter table tbl_employee modify 
 
 
-update tbl_employee set jointype = '정직원'
-where jointype = '경력'
+update tbl_employee set jointype = '대표'
+where jointype = '사장'
 
+select * from tbl_employee
+where employee_no = 1
+
+commit;
+
+select * from tbl_employee
+where fk_team_no = 1
 
 
 
 select * from tbl_employee
+
+
+select * from tbl_employee
+
+
+select position
+from tbl_employee
+where position is not null
+group by position
+
+
+select jointype
+from tbl_employee
+group by jointype
+
+
+
+select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, status, role, position, authority
+from
+(
+    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, status, role, position, authority
+    from v_employee
+    where position = '사원'
+    and name_kr like '%'||'진'||'%'
+)
+where rno between 1 and 10
+
+
+
+
+alter table tbl_employee rename column jointype to employeementtype
+
+
+alter table tbl_employee add jointype varchar2(10)
+
+
+
+update tbl_employee set jointype = '신입'
+
+commit;
+
+
+select * from tbl_employee
+
+
+update tbl_employee set jointype='경력'
+where position in ('대표','부장','과장','대리')
+
+
+commit;
+
+
+select * from tbl_employee
+where fk_team_no = 1
+
+
+update tbl_employee set jointype = '경력'
+where name_kr like '%3'
+
+commit;
+
+
+
+select ceil(count(*)/20)
+from
+(
+    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, status, role, position, authority
+    from v_employee
+    where 1 = 1
+    --and ${dropCondition} = #{dropVal}
+    --and lower(${serachCondition}) like '%'||lower(#{searchVal})||'%'
+)

@@ -25,5 +25,20 @@ public interface InterMemberDAO {
 
 	// 해당 사원의 오늘 근무시간 알아오기
 	String getWorkinghour(String employee_no);
+	
+	// 멤버리스트 가져오기
+	List<EmployeeVO> getEmpList(Map<String, String> paraMap);
+	
+	// 구성원 리스트의 총 페이지수
+	int getEmpTotal(Map<String, String> paraMap);
+	
+	// 부서목록 가져오기
+	List<DepartmentsVO> getdeptname();
+	
+	// 직위목록 가져오기
+	List<String> getposition();
+	
+	// 고용형태 가져오기
+	List<String> getjointype();
 
 }

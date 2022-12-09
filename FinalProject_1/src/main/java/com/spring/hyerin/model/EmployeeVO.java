@@ -37,6 +37,7 @@ public class EmployeeVO {
 	private String birthday;
 	private String age;
 	private String workinghour;
+	private String employeementtype;
 	
 	
 	
@@ -360,6 +361,26 @@ public class EmployeeVO {
 
 	public void setAge(String age) {
 		this.age = age;
+	}
+
+
+	public String getWorkinghour() {
+		return workinghour;
+	}
+
+
+	public void setWorkinghour(String workinghour) {
+		this.workinghour = workinghour;
+	}
+
+
+	public String getEmployeementtype() {
+		return employeementtype;
+	}
+
+
+	public void setEmployeementtype(String employeementtype) {
+		this.employeementtype = employeementtype;
 	}
 	
 	

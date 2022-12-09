@@ -123,7 +123,7 @@
 	}
 	
 	form {
-		margin-left: 155px;
+		margin-left: 5%;
 	}
 	
 	.table>:not(caption)>*>* {
@@ -136,7 +136,7 @@
 	form input, form select {
 		border: 1.5px solid #cccccc;
 	    border-radius: 3.5px;
-	    width: 60%;
+	    width: 62%;
 	    padding: 5px 24px;
 	    height: 38px;
 	    opacity: 0.85;
@@ -169,10 +169,10 @@
 	}	
 	
 	#addressBtn {
-	    background-color: #cfc9c9;
+	    background-color: #d9d9d9;
 	    color: white;
 	    height: 40px;
-        width: 108px;
+        width: 15.5%;
 	    border-style: none;
 	    border-radius: 7px;
 	}
@@ -279,11 +279,11 @@
 </script>
 
 <nav id="admin_mainList" class="margin-container">
-	<a id="memberadd" class="header-nonsub">멤버생성</a>
+	<a id="memberadd" class="header-nonsub">구성원추가</a>
 </nav>
 <hr class="HRhr" style="margin-top: 0px;"/><br>
 
-<div style="margin-right: 145px;">
+<div style="margin-right: 5%;">
 	<form name="myInfo">
 		<div class="col-md-16" style="float: left; margin-right: 70px;">
 			<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
@@ -330,7 +330,7 @@
 	 	<hr id="list" style="margin-top: 0px; margin-right: 20%; clear: both; width: 98%;"/><br>
 			
 			
-		<div class="infocontainer" style="margin-left: 100px;">
+		<div class="infocontainer" style="margin-left: 2%;">
 			<div id="hrInfo">인사 정보</div><br>
 		 	<table class="table table-borderless content" style="float: left;">
 		       <colgroup>
@@ -487,7 +487,7 @@
 		                <tr>
 		                   <td>연락처</td>   
 		                   <td>
-		                   	<select id="hp1" name="hp1" style="width: 18.5%;">
+		                   	<select id="hp1" name="hp1" style="width: 19.5%;">
 				                	<option value="010">010</option>
 					                <option value="011">011</option>
 					                <option value="016">016</option>
@@ -495,8 +495,8 @@
 					                <option value="018">018</option>
 					                <option value="019">019</option>
 			                </select>&nbsp;-&nbsp;
-			                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 18.5%;"/>&nbsp;-&nbsp;            <%-- 휴대폰 중간번호 4자리 --%>
-			                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 18.5%; margin: 7px 7px 18px 0;"/> <%-- 휴대폰 마지막번호 4자리 --%>
+			                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 19.5%;"/>&nbsp;-&nbsp;            <%-- 휴대폰 중간번호 4자리 --%>
+			                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 19.5%; margin: 7px 7px 18px 0;"/> <%-- 휴대폰 마지막번호 4자리 --%>
 		                   </td>   
 		                </tr>
 		                <tr>
@@ -571,27 +571,25 @@
 	                   <td>권한</td>   
 	                   <td>
 	                   	<div>
-		                   	<div class="condition-cell">
 		                   	 <span style="margin-right: 30px;">
-				                <input type="checkbox" id="general_employee" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
-				                <label for="general" class="js-period-type radio-label-checkbox2" data-code="unlimit">일반</label>
+				                <input type="checkbox" id="general_employee" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+				                <label for="general_employee" class="js-period-type radio-label-checkbox2" data-code="unlimit">일반</label>
 		                   	 </span>
-		                   	 <div>
 			                   	 <span style="margin-right: 10px;">
-					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
-					                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">인사이트 관리</label>
+					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <label for="admin_payroll" class="js-period-type radio-label-checkbox2" data-code="unlimit">인사이트 관리</label>
 			                   	 </span>
 			                   	 <span style="margin-right: 10px;">
-					                <input type="checkbox" id="admin_member" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
-					                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">구성원 관리</label>
+					                <input type="checkbox" id="admin_member" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <label for="admin_member" class="js-period-type radio-label-checkbox2" data-code="unlimit">구성원 관리</label>
 			                   	 </span>
 			                   	 <span style="margin-right: 10px;">
-					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
-					                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">급여 관리</label>
+					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <label for="admin_payroll" class="js-period-type radio-label-checkbox2" data-code="unlimit">급여 관리</label>
 			                   	 </span>
 			                   	 <span style="margin-right: 10px;">
-					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 5%; height: 8%;" />
-					                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">로그 관리</label>
+					                <input type="checkbox" id="admin_payroll" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <label for="admin_payroll" class="js-period-type radio-label-checkbox2" data-code="unlimit">로그 관리</label>
 			                   	 </span>
 		                   	 </div>
 							</div>

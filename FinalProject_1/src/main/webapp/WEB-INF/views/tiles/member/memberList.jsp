@@ -25,7 +25,7 @@
 
 	
 	.member_container {
-		width: 88%;
+		width: 90%;
 		margin: 0 auto;
 		overflow: hidden;
 	}
@@ -410,7 +410,7 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".big").css({'width':'72.6%','position':'relative','top':'24px'});
+	        $(".big").css({'width':'73.3%','position':'relative','top':'24px'});
 	        $(".menucontent").css({'visibility':'visible','transition':'all .2s'});
 	    }else{
 	        $(".big").css({'width':'100%','top':'0'});

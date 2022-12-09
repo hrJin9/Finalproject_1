@@ -61,6 +61,45 @@ public class MemberDAO implements InterMemberDAO {
 		String workingmin = sqlsession.selectOne("member.getWorkinghour",employee_no);
 		return workingmin;
 	}
+
+	
+	// 멤버리스트 가져오기
+	@Override
+	public List<EmployeeVO> getEmpList(Map<String, String> paraMap) {
+		List<EmployeeVO> empList = sqlsession.selectList("member.getEmpList",paraMap);
+		return empList;
+	}
+
+	
+	// 구성원 리스트의 총 페이지수
+	@Override
+	public int getEmpTotal(Map<String, String> paraMap) {
+		int emptotal = sqlsession.selectOne("member.getEmpTotal",paraMap);
+		return emptotal;
+	}
+
+	
+	// 부서목록 가져오기
+	@Override
+	public List<DepartmentsVO> getdeptname() {
+		List<DepartmentsVO> dvoList = sqlsession.selectList("member.getdeptname");
+		return dvoList;
+	}
+
+	
+	// 직위목록 가져오기
+	@Override
+	public List<String> getposition() {
+		List<String> pList = sqlsession.selectList("member.getposition");
+		return pList;
+	}
+
+	// 고용형태 가져오기
+	@Override
+	public List<String> getjointype() {
+		List<String> jtList = sqlsession.selectList("member.getjointype");
+		return jtList;
+	}
 	
 	
 	
