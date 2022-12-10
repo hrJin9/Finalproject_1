@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.hyerin.model.TeamVO;
 
 @Repository
 public class MemberDAO implements InterMemberDAO {
@@ -99,6 +100,14 @@ public class MemberDAO implements InterMemberDAO {
 	public List<String> getjointype() {
 		List<String> jtList = sqlsession.selectList("member.getjointype");
 		return jtList;
+	}
+
+	
+	// 해당 부서의 팀 가져오기
+	@Override
+	public List<TeamVO> getTeams(String deptno) {
+		List<TeamVO> tvoList = sqlsession.selectList("member.getTeams",deptno);
+		return tvoList;
 	}
 	
 	

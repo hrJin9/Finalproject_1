@@ -73,7 +73,8 @@ $(document).ready(function(){
 		frm.action = "<%=ctxPath%>/admin_memberList.up";
 		frm.submit();
 	});
-      
+    
+
 		
 
 });// end of$(document).ready(function(){})--------------------------
@@ -233,7 +234,7 @@ function allCheckBox() {
 						  </div>
 					  </th>
 		              <th class="boardth" width="10%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">고용형태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
-						  <div id="employeementtype" class="dropdown-menu">
+						  <div id="employmenttype" class="dropdown-menu">
 						  		<a id="" class="dropdown-item" href="#">전체</a>
 						  		<c:forEach var="jointype" items="${requestScope.jtList}">
 						  			<a id="${jointype}" class="dropdown-item" href="#">${jointype}</a>
@@ -278,7 +279,7 @@ function allCheckBox() {
 			              <td>${emp.name_kr}</td>
 			              <td>${emp.department_name}</td>
 			              <td>${emp.position}</td>
-			              <td>${emp.employeementtype}</td>
+			              <td>${emp.employmenttype}</td>
 			              <td>${emp.email}</td>
 			              <td>${emp.mobile}</td>
 			              <c:choose>

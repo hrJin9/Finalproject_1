@@ -37,7 +37,7 @@ public class EmployeeVO {
 	private String birthday;
 	private String age;
 	private String workinghour;
-	private String employeementtype;
+	private String employmenttype;
 	
 	
 	
@@ -374,13 +374,13 @@ public class EmployeeVO {
 	}
 
 
-	public String getEmployeementtype() {
-		return employeementtype;
+	public String getemploymenttype() {
+		return employmenttype;
 	}
 
 
-	public void setEmployeementtype(String employeementtype) {
-		this.employeementtype = employeementtype;
+	public void setemploymenttype(String employmenttype) {
+		this.employmenttype = employmenttype;
 	}
 	
 	

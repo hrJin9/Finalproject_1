@@ -305,10 +305,10 @@ exec pcd_tbl_team_insert('IT',100);
 
 create or replace view v_employee
 as
-select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt, employeementtype
+select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt, employmenttype
 from
     (
-    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt, employeementtype
+    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt, employmenttype
     from tbl_employee E
     left join tbl_departments D
     on fk_department_no = department_no
@@ -1255,3 +1255,39 @@ from
     --and ${dropCondition} = #{dropVal}
     --and lower(${serachCondition}) like '%'||lower(#{searchVal})||'%'
 )
+
+
+
+select * from user_sequences
+
+
+select * from tbl_departments
+
+create sequence seq_tbl_departments
+start with 100
+increment by 10
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+
+select team_no, team_name
+from tbl_team
+where fk_department_no = 10
+
+
+select * from tbl_employee
+
+
+
+alter table tbl_employee rename column employeementtype to employmenttype
+
+
+select * from v_employee
+
+
+select * from tbl_authority
+
+desc tbl_employee

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.hyerin.model.TeamVO;
 
 public interface InterMemberService {
 	
@@ -40,5 +41,8 @@ public interface InterMemberService {
 	
 	// 고용형태 가져오기
 	List<String> getjointype();
+	
+	// 해당 부서의 팀 가져오기
+	List<TeamVO> getTeams(String deptno);
 
 }

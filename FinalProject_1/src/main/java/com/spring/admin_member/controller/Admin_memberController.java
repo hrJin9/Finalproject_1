@@ -6,15 +6,19 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.finalproject.common.AES256;
 import com.spring.finalproject.common.MyUtil;
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.hyerin.model.TeamVO;
 import com.spring.hyerin.service.InterMemberService;
 
 @Controller
@@ -163,9 +167,48 @@ public class Admin_memberController {
 	
 	@RequestMapping(value = "/admin_memberAdd_hr.up")
 	public ModelAndView admin_memberAdd_hr(HttpServletRequest request, ModelAndView mav) {
+		
+		
+		// 부서목록 가져오기
+		List<DepartmentsVO> dvoList = service.getdeptname();
+		
+		// 직위목록 가져오기
+		List<String> pList = service.getposition();
+		
+		// 고용형태 가져오기
+		List<String> jtList = service.getjointype();
+		
+		mav.addObject("dvoList",dvoList);
+		mav.addObject("jtList",jtList);
+		
 		mav.setViewName("admin/admin_memberAdd_hr.tiles");
 		return mav;
 	} 
+	
+	@ResponseBody
+	@RequestMapping(value = "/getTeams.up")
+	public String getTeams(HttpServletRequest request) {
+		String deptno = request.getParameter("deptno");
+		
+		JSONArray jsonarr = new JSONArray();
+		
+		if(!"add".equals(deptno) && !"".equals(deptno)) {
+			// 해당 부서의 팀 가져오기
+			List<TeamVO> tvoList = service.getTeams(deptno);
+			
+			for(TeamVO tvo: tvoList) {
+				JSONObject jsonobj = new JSONObject();
+				jsonobj.put("team_no", tvo.getTeam_no());
+				jsonobj.put("team_name", tvo.getTeam_name());
+				jsonarr.put(jsonobj);
+			}//end of for
+			
+		}//end of if
+		
+		return jsonarr.toString();
+	}
+	
+	
 	
 	@RequestMapping(value = "/admin_memberAdd_personal.up")
 	public ModelAndView admin_memberAdd_personal(HttpServletRequest request, ModelAndView mav) {

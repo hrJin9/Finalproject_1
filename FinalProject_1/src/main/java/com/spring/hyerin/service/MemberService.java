@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.hyerin.model.TeamVO;
 
 @Service
 public class MemberService implements InterMemberService {
@@ -89,6 +90,13 @@ public class MemberService implements InterMemberService {
 	public List<String> getjointype() {
 		List<String> jtList = dao.getjointype();
 		return jtList;
+	}
+	
+	// 해당 부서의 팀 가져오기
+	@Override
+	public List<TeamVO> getTeams(String deptno) {
+		List<TeamVO> tvoList = dao.getTeams(deptno);
+		return tvoList;
 	}
 	
 }

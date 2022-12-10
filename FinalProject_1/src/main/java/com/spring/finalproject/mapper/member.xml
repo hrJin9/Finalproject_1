@@ -93,9 +93,9 @@
 	
 	<!-- 고용형태 가져오기 -->
 	<select id="getjointype" resultType="String">
-		select employeementtype
+		select employmenttype
 		from tbl_employee
-		group by employeementtype
+		group by employmenttype
 	</select>
 	
 	
@@ -121,10 +121,10 @@
 	
 	<!-- 페이징처리한 구성원 목록 가져오기 -->
 	<select id="getEmpList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
-		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, status, role, position, authority, employeementtype
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, status, role, position, authority, employmenttype
 		from
 		(
-		    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, status, role, position, authority,employeementtype
+		    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, status, role, position, authority,employmenttype
 		    from v_employee
 		    where 1 = 1
 		    <if test="dropCondition != '' and dropVal != ''">
@@ -136,5 +136,14 @@
 		)
 		where rno between #{startRno} and #{endRno}
 	</select>
+	
+	
+	<!-- 해당 부서의 팀 가져오기 -->
+	<select id="getTeams" parameterType="String" resultType="com.spring.hyerin.model.TeamVO">
+		select team_no, team_name
+		from tbl_team
+		where fk_department_no = #{deptno}
+	</select>
+	
 	
 </mapper>
