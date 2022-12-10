@@ -5,7 +5,7 @@ drop table tbl_message_send purge;
 drop table tbl_scrap purge;
 drop table tbl_authority purge;
 
-PURGE RECYCLEBIN;
+PURGE RECYCLEBIN;   
 
 -- tbl_message 테이블 생성
 create table tbl_message
@@ -1264,8 +1264,8 @@ select * from user_sequences
 select * from tbl_departments
 
 create sequence seq_tbl_departments
-start with 100
-increment by 10
+start with 19
+increment by 1
 nomaxvalue
 nominvalue
 nocycle
@@ -1291,3 +1291,106 @@ select * from v_employee
 select * from tbl_authority
 
 desc tbl_employee
+
+
+select * from tab;
+
+
+select * from tbl_employee
+
+
+select * from tbl_departments
+
+select * from tbl_employee
+
+insert into tbl_employee(employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, dayoff_cnt, birthday, filesize, employmenttype)
+values(10||lpad(seq_tbl_employee.nextval,4,0), #{fk_department_no}, #{fk_team_no}, #{name_kr}, #{name_en}, #{passwd}, #{jointype}, null, #{hire_date}, null, null, #{mobile}, #{postcode}, #{address}, #{detail_address}, #{extra_address}, #{email}, #{gender}, null, null, #{academic_ability}, #{major}, #{militaryservice}, #{bank}, #{accountnumber}, #{status}, #{role}, #{position}, #{authority}, 0, #{birthday}, 0, #{employmenttype})
+
+
+
+select * from tbl_team
+
+
+update tbl_employee set status = '1'
+
+commit;
+
+
+select * from tbl_employee
+
+desc tbl_employee
+
+alter table tbl_employee drop constraint SYS_
+
+C0030740
+
+
+select * from tbl_employee
+
+select * from tbl_employee
+order by hire_date desc
+
+select * from tbl_departments
+
+
+insert into tbl_team values(seq_tbl_team.nextval, 'aaa', 90,null,default)
+
+
+select * from tbl_departments
+
+select * from tbl_team
+
+select team_no
+from tbl_team
+where team_name = 'aaa'
+    rollback;
+    
+    
+    
+    select * from tbl_departments
+    
+update tbl_departm,ents set department_no = 18
+where department_no = 90
+
+
+s
+
+select * from tbl_team
+
+select * from tbl_employee
+order by hire_date desc
+
+delete tbl_team
+where team_no in (59,58,60,57)
+
+
+delete tbl_employee
+where fk_team_no = 60
+
+select * from tbl_employee
+
+commit;
+
+
+select * from tbl_departments
+
+
+commit;
+
+delete tbl_departments
+where department_no = 20
+
+
+delete tbl_team
+where fk_department_no = 20
+
+delete tbl_employee
+where fk_department_no = 20
+
+
+select * from tbl_employee
+order by hire_date desc
+
+
+
+alter table tbl_employee modify status default 1

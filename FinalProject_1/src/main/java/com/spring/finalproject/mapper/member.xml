@@ -110,8 +110,11 @@
 		    <if test="dropCondition == 'authority' and dropVal == '0'">
 		    	and authority != 1
 		    </if>
-		    <if test="dropCondition != '' and dropCondition != 'authority' and dropVal != ''">
+		    <if test="dropCondition != '' and dropCondition != 'authority' and dropVal != '' and dropVal != 'none'">
 			    and ${dropCondition} = #{dropVal}
+		    </if>
+		    <if test="dropVal == 'none'">
+		    	and ${dropCondition} is null
 		    </if>
 		    <if test="searchCondition != '' and searchVal != ''">
 			    and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
@@ -127,8 +130,14 @@
 		    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, status, role, position, authority,employmenttype
 		    from v_employee
 		    where 1 = 1
-		    <if test="dropCondition != '' and dropVal != ''">
+		    <if test="dropCondition == 'authority' and dropVal == '0'">
+		    	and authority != 1
+		    </if>
+		    <if test="dropCondition != '' and dropCondition != 'authority' and dropVal != '' and dropVal != 'none'">
 			    and ${dropCondition} = #{dropVal}
+		    </if>
+		    <if test="dropVal == 'none'">
+		    	and ${dropCondition} is null
 		    </if>
 		    <if test="searchCondition != '' and searchVal != ''">
 			    and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
@@ -144,6 +153,114 @@
 		from tbl_team
 		where fk_department_no = #{deptno}
 	</select>
+	
+	
+	<!-- 새로운 부서의 no 채번해오기 -->
+	<select id="getNewDepartment" resultType="String">
+		select seq_tbl_departments.nextval
+		from dual
+	</select>
+	
+	
+	<!-- 새로운 부서를 만들기 -->
+	<insert id="addDepartment" parameterType="HashMap">
+		insert into tbl_departments values(#{fk_department_no}, #{department_name}, null, default)
+	</insert>
+	
+	
+	<!-- 새로운 팀의 no 채번해오기 -->
+	<select id="getNewTeam" resultType="String">
+		select seq_tbl_team.nextval
+		from dual
+	</select>
+	
+	<!-- 새로운 팀을 만들기 -->
+	<insert id="addTeam" parameterType="HashMap">
+		insert into tbl_team values(#{team_no}, #{team_name}, #{fk_department_no},null,default)
+	</insert>
+	
+	
+	<!-- 사원번호 채번해오기 -->
+	<select id="getNewEmpno" parameterType="String" resultType="String">
+		select #{fk_department_no}||lpad(seq_tbl_employee.nextval,4,0)
+		from dual
+	</select>
+	
+	<!-- 사원테이블에 insert  -->
+	<insert id="addEmployee" parameterType="com.spring.hyerin.model.EmployeeVO">
+		insert into tbl_employee(employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, dayoff_cnt, birthday, filesize, employmenttype)
+		values(#{employee_no}, #{fk_department_no}, #{fk_team_no}, #{name_kr}, 
+		<if test="name_en == ''">
+			null,
+		</if>
+		<if test="name_en != ''">
+			#{name_en},
+		</if>
+		 #{passwd}, #{jointype}, null, #{hire_date}, null, null, 
+		 <if test="mobile == ''">
+		 	null,
+		 </if>
+		 <if test="mobile != ''">
+		 	#{mobile},
+		 </if>
+		 <if test="postcode == ''">
+		 	null, 
+		 </if>
+		 <if test="postcode != ''">
+		 	#{postcode},
+		 </if>
+		 <if test="address == ''">
+		 	null,
+		 </if>
+		 <if test="address != ''">
+		 	 #{address}, 
+		 </if>
+		 <if test="detail_address == ''">
+		 	null, 
+		 </if>
+		 <if test="detail_address != ''">
+		 	#{detail_address}, 
+		 </if>
+		 <if test="extra_address == ''">
+		 	null, 
+		 </if>
+		 <if test="extra_address != ''">
+		 	#{extra_address},
+		 </if>
+		  #{email}, #{gender},  null, null,
+		 <if test="academic_ability == ''">
+		 	null,
+		 </if>
+		 <if test="academic_ability != ''">
+		 	#{academic_ability},
+		 </if>
+		 <if test="major == ''">
+		 	null,
+		 </if>
+		 <if test="major != ''">
+		 	#{major},
+		 </if>
+		 <choose>
+		 	<when test="militaryservice==''">
+		 		null,
+		 	</when>
+		 	<when test="militaryservice==0">
+		 		'미필',
+		 	</when>
+		 	<when test="militaryservice==1">
+		 		'군필',
+		 	</when>
+		 </choose>
+		 <if test="bank == ''">
+		 	null, null,
+		 </if>
+		 <if test="bank != ''">
+		 	#{bank}, #{accountnumber},
+		 </if>
+		 default, #{role}, #{position}, #{authority}, 0, #{birthday}, 0, #{employmenttype})
+	</insert>
+	
+	
 	
 	
 </mapper>

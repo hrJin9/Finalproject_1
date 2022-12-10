@@ -29,6 +29,7 @@ $(document).ready(function(){
 	   local: 'ko'
 	});
        
+	/* 
 	// 출근시간 데이트피커
 	flatpickr.localize(flatpickr.l10ns.ko);
 	flatpickr($(".timeSelector2"));
@@ -38,7 +39,7 @@ $(document).ready(function(){
 	    dateFormat: "H:i",
 		local: 'ko'
 	});
-	
+	 */
 	
 	// *** 개인정보 테이블 ***
 	// 우편번호찾기 버튼 클릭시
@@ -104,7 +105,7 @@ $(document).ready(function(){
 	});
 	
 	// 부서 또는 팀값이 추가 일 때 인풋박스 보여주기
-	$("#dept, #team").change(function(){
+	$(document).on("change","#dept",function(){
 		if($(this).val() == "add"){
 			$(this).parent().next().find("input").show();
 		} else {
@@ -113,9 +114,19 @@ $(document).ready(function(){
 		}
 	}); 
 	
+	$(document).on("change","#team",function(){
+		if($(this).val() == "add"){
+			$(this).parent().next().find("input").show();
+		} else {
+			$(this).parent().next().find("input").val(""); // 값 초기화
+			$(this).parent().next().find("input").hide();
+		}
+	});
+	
+	
 	// 유효성 검사하기
 	$("input, select").blur(function(e){
-		if(!$(e.target).is("#name, #birthday, #joindate, #jointype, #dept, #team, #position, #role, #employmenttype, #email, #hp1, #hp2, #hp3")) return;
+		if(!$(e.target).is("#name, #birthday, #joindate, #jointype, #addDept, #addTeam, #position, #role, #employmenttype, #email, #hp1, #hp2, #hp3")) return;
 		var flag = testForm($(this));
 	});
 	
@@ -162,6 +173,9 @@ function getTeams(deptno){
 			}
 			
 			$("#team").html(html);
+			$("#addTeam").val("");
+			$("#addTeam").hide();
+			
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -219,6 +233,7 @@ function testForm(input){
 function goSubmit(){
 	
 	// 유효성 검사하기 
+	/* 
 	$(".alerts").each(function(index, item){
 		var prev = $(item).prev();
 		if(prev.is("#hp3")) return;
@@ -231,10 +246,44 @@ function goSubmit(){
 			$(item).text("");
 		}
 	});
+	 */
+	
+	if ($("#dept").val() == "add") {
+		if($("#addDept").val().trim() == ""){
+			setTimeout( function(){ $("#addDept").focus(); }, 1 );
+			return;
+		}
+	}
+	
+	if ($("#team").val() == "add"){
+		if($("#addTeam").val().trim() == ""){
+			setTimeout( function(){ $("#addTeam").focus(); }, 1 );
+			return;
+		}
+	}
+	
+	 
+	var mobile = "";
+	if($("#hp1").val().trim() != "" && $("#hp2").val().trim() != "" && $("#hp3").val().trim() != "" ){
+		mobile = $("#hp1").val().trim() + "-" + $("#hp2").val().trim() + "-" + $("#hp3").val().trim();
+	}
+	$("#mobile").val(mobile);
 	
 	
+	var authority = 1;
+	$("input[name='at']:checked").each(function(index, item){
+		authority = authority * $(item).val();
+	});
+	
+	$("#authority").val(authority);
 	
 	
+	const frm = document.memberAdd;
+	frm.method = "post";
+	frm.action = "<%=ctxPath%>/memAddEnd.up";
+	frm.submit();
+	
+	console.log(frm.team_name.value);	
 	
 }//end of goSubmit()
 
@@ -247,7 +296,7 @@ function goSubmit(){
 <hr class="HRhr" style="margin-top: 0px;"/><br>
 
 <div style="margin: 0 10%;">
-	<form name="myInfo">
+	<form name="memberAdd">
 		<div class="col-md-16" style="float: left;">
 			<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
 			    <span class="pic" style="height: 150px; width: 150px; font-size: 25pt; font-weight: bold; margin-right: -15px;">
@@ -311,7 +360,7 @@ function goSubmit(){
 		                 -->
 		                <tr>
 		                   <td>입사일<span class="essentials">*</span></td> 
-		                   <td><input class="dateSelector" id="joindate" name="joindate" value="" placeholder="ex) 2020-09-01" /><div class="alerts" style="color:#4285f4;"></div></td>  
+		                   <td><input class="dateSelector" id="joindate" name="hire_date" value="" placeholder="ex) 2020-09-01" /><div class="alerts" style="color:#4285f4;"></div></td>  
 		                </tr>
 		                <tr>
 		                   <td>입사유형<span class="essentials">*</span></td>  
@@ -326,7 +375,7 @@ function goSubmit(){
 		                <tr>
 		                   <td>부서<span class="essentials">*</span></td>  
 		                   <td>	
-		                   	<select class="required" id="dept" name="department_name">
+		                   	<select class="required" id="dept" name="fk_department_no">
 								<c:forEach var="dvo" items="${requestScope.dvoList}">
 									<option value="${dvo.department_no}" >${dvo.department_name}</option>
 								</c:forEach>
@@ -352,12 +401,12 @@ function goSubmit(){
 								 -->
 							</select>
 		                   </td> 
-							<td><input type="text" id="addDept" name="addDept"/></td>
+							<td><input type="text" id="addDept" name="department_name"/></td>
 		                </tr>
 		                <tr>
 		                   <td>팀<span class="essentials">*</span></td>  
 		                   <td>	
-		                   	<select class="required" id="team" name="team_name">
+		                   	<select class="required" id="team" name="fk_team_no">
 								<option value="">부서 선택...</option>
 								<!-- 
 								<option value="1">인사·총무</option>
@@ -379,25 +428,25 @@ function goSubmit(){
 								 -->
 							</select>
 		                   </td>
-		                  	<td><input type="text" id="addTeam" name="addTeam"/></td>
+		                  	<td><input type="text" id="addTeam" name="team_name"/></td>
 		                </tr>
 		                <tr>
 		                   <td>직위<span class="essentials">*</span></td>   
 		                   <td>	
 		                   	<select class="required" id="position" name="position">
-								<option>대표</option>
-								<option>부대표</option>
-								<option>이사</option>
-								<option>전무</option>
-								<option>상무</option>
-								<option>본부장</option>
-								<option>부장</option>
-								<option>차장</option>
-								<option>실장</option>
-								<option>과장</option>
-								<option>대리</option>
-								<option>주임</option>
 								<option>사원</option>
+								<option>주임</option>
+								<option>실장</option>
+								<option>대리</option>
+								<option>과장</option>
+								<option>차장</option>
+								<option>부장</option>
+								<option>본부장</option>
+								<option>상무</option>
+								<option>전무</option>
+								<option>이사</option>
+								<option>부대표</option>
+								<option>대표</option>
 								<option>연구원</option>
 								<option>수석연구원</option>
 								<option>책임연구원</option>
@@ -491,7 +540,7 @@ function goSubmit(){
 		                <tr>
 		                   <td>연락처</td>   
 		                   <td>
-		                   	<select id="hp1" name="hp1" style="width: 31.6%;">
+		                   	<select id="hp1" name="mobile1" style="width: 31.6%;">
 				                	<option value="010">010</option>
 					                <option value="011">011</option>
 					                <option value="016">016</option>
@@ -499,8 +548,8 @@ function goSubmit(){
 					                <option value="018">018</option>
 					                <option value="019">019</option>
 			                </select>&nbsp;-&nbsp;
-			                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 31.6%;"/>&nbsp;-&nbsp;            <%-- 휴대폰 중간번호 4자리 --%>
-			                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 31.6%; margin: 7px 7px 18px 0;"/> <%-- 휴대폰 마지막번호 4자리 --%>
+			                <input type="text" id="hp2" name="mobile2" maxlength="4" value="" style="width: 31.6%;"/>&nbsp;-&nbsp;            <%-- 휴대폰 중간번호 4자리 --%>
+			                <input type="text" id="hp3" name="mobile3" maxlength="4" value="" style="width: 31.6%; margin: 7px 7px 18px 0;"/> <%-- 휴대폰 마지막번호 4자리 --%>
 		                   	<div class="alerts" style="color:#4285f4;"></div>
 		                   </td>   
 		                </tr>
@@ -517,7 +566,7 @@ function goSubmit(){
 		                </tr>
 		                <tr>
 		                   <td>최종학력</td>  
-		                   <td><input type="text" class="required" id="major"  name="major" size="50" value="" placeholder="고졸/초대졸/대졸" /></td> 
+		                   <td><input type="text" class="required" id="academic_ability"  name="academic_ability" size="50" value="" placeholder="고졸/초대졸/대졸" /></td> 
 		                </tr>
 		                <tr>
 		                   <td>전공</td>  
@@ -526,7 +575,7 @@ function goSubmit(){
 		                <tr>
 		                   <td>병역사항</td>  
 		                   <td>
-		                   	<select class="required">
+		                   	<select class="required" name="militaryservice">
 		                   		<option value="">해당사항없음</option>
 		                   		<option value="0">미필</option>
 		                   		<option value="1">군필</option>
@@ -538,34 +587,34 @@ function goSubmit(){
 		                   <td>급여계좌</td>   
 		                   <td>	
 		                   	<select id="bank" name="bank" class="required" style="display: inline-block; width: 14.5%; padding: 2px 8px;">
-								<option value="1">은행 선택</option>
-								<option value="2">KEB하나은행</option>
-								<option value="3">SC제일은행</option>
-								<option value="4">경남은행</option>
-								<option value="5">광주은행</option>
-								<option value="6">국민은행</option>
-								<option value="7">기업은행</option>
-								<option value="8">농협은행</option>
-								<option value="9">대구은행</option>
-								<option value="10">부산은행</option>
-								<option value="11">상호저축은행</option>
-								<option value="12">수협은행</option>
-								<option value="13">신한은행</option>
-								<option value="14">우리은행</option>
-								<option value="15">우체국</option>
-								<option value="16">전북은행</option>
-								<option value="17">카카오뱅크</option>
-								<option value="18">케이뱅크은행</option>
-								<option value="19">토스뱅크</option>
-								<option value="20">한국산업은행</option>
-								<option value="21">한국씨티은행</option>
-								<option value="22">제주은행</option>
-								<option value="23">산림조합</option>
-								<option value="24">새마을금고</option>
-								<option value="25">신협</option>
+								<option value="">은행 선택</option>
+								<option>KEB하나은행</option>
+								<option>SC제일은행</option>
+								<option>경남은행</option>
+								<option>광주은행</option>
+								<option>국민은행</option>
+								<option>기업은행</option>
+								<option>농협은행</option>
+								<option>대구은행</option>
+								<option>부산은행</option>
+								<option>상호저축은행</option>
+								<option>수협은행</option>
+								<option>신한은행</option>
+								<option>우리은행</option>
+								<option>우체국</option>
+								<option>전북은행</option>
+								<option>카카오뱅크</option>
+								<option>케이뱅크은행</option>
+								<option>토스뱅크</option>
+								<option>한국산업은행</option>
+								<option>한국씨티은행</option>
+								<option>제주은행</option>
+								<option>산림조합</option>
+								<option>새마을금고</option>
+								<option>신협</option>
 							</select>
-							<input id=accountNumber type="text" class="required" name="accountNumber" size="20" placeholder="계좌번호" style="display: inline-block; width: 31.5%; padding: 2px 12px;"/>
-							<input id=accountHolder type="text" class="required" name="accountHolder" size="20" placeholder="예금주" style="display: inline-block; width: 13%; padding: 2px 12px;"/>
+							<input id=accountNumber type="text" class="required" name="accountnumber" size="20" placeholder="계좌번호" style="display: inline-block; width: 31.5%; padding: 2px 12px;"/>
+							<!-- <input id=accountHolder type="text" class="required" name="accountHolder" size="20" placeholder="예금주" style="display: inline-block; width: 13%; padding: 2px 12px;"/> -->
 		                   </td> 
 		                </tr>
 		          </tbody>
@@ -584,27 +633,27 @@ function goSubmit(){
 	                   <td style="font-size: 11pt;">
 	                   	<div class="authority">
 		                   	 <span style="margin-right: 30px;">
-				                <input type="checkbox" id="general_employee" name="at1" onClick="allCheckBox();" style="width: 2%; height: 8%;" checked/>
+				                <input type="checkbox" id="general_employee" name="at"  style="width: 2%; height: 8%;" value="1" checked/>
 				                <label for="general_employee" class="js-period-type radio-label-checkbox2" data-code="unlimit">일반</label>
 		                   	 </span>
 			                   	 <span style="margin-right: 30px;">
-					                <input type="checkbox" id="admin_insight" name="at2" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <input type="checkbox" id="admin_insight" name="at"  style="width: 2%; height: 8%;" value="2"/>
 					                <label for="admin_insight" class="js-period-type radio-label-checkbox2" data-code="unlimit">인사이트 관리</label>
 			                   	 </span>
 			                   	 <span style="margin-right: 30px;">
-					                <input type="checkbox" id="admin_member" name="at3" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <input type="checkbox" id="admin_member" name="at"  style="width: 2%; height: 8%;" value="3"/>
 					                <label for="admin_member" class="js-period-type radio-label-checkbox2" data-code="unlimit">구성원 관리</label>
 			                   	 </span>
 			                   	 <span style="margin-right: 30px;">
-					                <input type="checkbox" id="admin_payroll" name="at4" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <input type="checkbox" id="admin_payroll" name="at"  style="width: 2%; height: 8%;" value="4"/>
 					                <label for="admin_payroll" class="js-period-type radio-label-checkbox2" data-code="unlimit">급여 관리</label>
 			                   	 </span>
 			                   	 <span style="margin-right: 30px;">
-					                <input type="checkbox" id="admin_log" name="at5" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <input type="checkbox" id="admin_log" name="at"  style="width: 2%; height: 8%;" value="5"/>
 					                <label for="admin_log" class="js-period-type radio-label-checkbox2" data-code="unlimit">로그 관리</label>
 			                   	 </span>
 			                   	 <span style="margin-right: 30px;">
-					                <input type="checkbox" id="admin_attendance" name="at7" onClick="allCheckBox();" style="width: 2%; height: 8%;" />
+					                <input type="checkbox" id="admin_attendance" name="at"  style="width: 2%; height: 8%;" value="7"/>
 					                <label for="admin_attendance" class="js-period-type radio-label-checkbox2" data-code="unlimit">근태 관리</label>
 			                   	 </span>
 		                   	 </div>
@@ -612,23 +661,25 @@ function goSubmit(){
 	                   	</div>
 	                   </td>   
 	                </tr>
+	                <!-- 
 	                <tr>
 	                   <td>계정상태</td>
 	                   <td style="font-size: 11pt;">
 	                   	<div>
 		                   	<div class="condition-cell" style="position: relative; right: 2px;">
 		                   	 <span style="margin-right: 30px;">
-				                <input type="radio" class="custom-control-radio2" id="nomal" name="accountStatus" style="width: 15%; height: 8%;" checked>
+				                <input type="radio" class="custom-control-radio2" id="nomal" name="status" style="width: 15%; height: 8%;" value="1" checked>
 				                <label for="nomal" class="js-period-type radio-label-checkbox2" data-code="unlimit">정상</label>
 		                   	 </span>
 		                   	 <span>
-				                <input type="radio" class="custom-control-radio2" id="stop" name="accountStatus" style="width: 15%; height: 8%;">
+				                <input type="radio" class="custom-control-radio2" id="stop" name="status" style="width: 15%; height: 8%;" value="0">
 				                <label for="stop" class="js-period-type radio-label-checkbox2" data-code="unlimit">중지</label>
 		                   	 </span>
 							</div>
 	                   	</div>
 	                   </td>     
 	                </tr>
+	                 -->
 		        </tbody>
 		 	</table>
 		  </div>
@@ -638,6 +689,9 @@ function goSubmit(){
 			 <button type="button" class="workstatus-save bluebtn btn" onclick="goSubmit()">추가하기</button>
 			 <button type="reset" class="workstatus-cancel btn" style="color: #4d4f53; width: 68px;">초기화</button><br><br><br><br>
 	      </div>
+	      
+	      <input id="mobile" type="text" name="mobile"/>
+	      <input id="authority" type="text" name="authority"/>
 	      
 	</form>
 </div>

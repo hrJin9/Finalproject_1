@@ -110,6 +110,53 @@ public class MemberDAO implements InterMemberDAO {
 		return tvoList;
 	}
 	
+	// 새로운 부서를 만들어주기
+	@Override
+	public int addDepartment(Map<String, String> paraMap) {
+		int n = sqlsession.insert("member.addDepartment", paraMap);
+		return n;
+	}
+
+	
+	// 새로운 팀을 만들어주기
+	@Override
+	public int addTeam(Map<String, String> paraMap) {
+		int n = sqlsession.insert("member.addTeam",paraMap);
+		return n;
+	}
+
+	
+	// 사원테이블에 insert
+	@Override
+	public int addEmployee(EmployeeVO evo) {
+		int n = sqlsession.insert("member.addEmployee",evo);
+		return n;
+	}
+
+	
+	// 사원번호 채번해오기
+	@Override
+	public String getNewEmpno(String fk_department_no) {
+		String employee_no = sqlsession.selectOne("member.getNewEmpno",fk_department_no);
+		return employee_no;
+	}
+
+	
+	//새로운 부서의 no 채번해오기
+	@Override
+	public String getNewDepartment() {
+		String dno = sqlsession.selectOne("member.getNewDepartment");
+		return dno;
+	}
+
+	
+	//새로운 팀을 만들 번호 채번하기
+	@Override
+	public String getNewTeam() {
+		String tno = sqlsession.selectOne("member.getNewTeam");
+		return tno;
+	}
+	
 	
 	
 }

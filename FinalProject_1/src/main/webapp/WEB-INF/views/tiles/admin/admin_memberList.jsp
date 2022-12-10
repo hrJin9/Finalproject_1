@@ -9,6 +9,10 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/css/admin_memberList.css?after">
 
 <style type="text/css">
+#memberList tbody tr:hover{
+	cursor: pointer;
+	background-color: rgba(230,230,230,0.1);
+}
 </style>
 
 <script type="text/javascript">
@@ -74,7 +78,15 @@ $(document).ready(function(){
 		frm.submit();
 	});
     
-
+	
+	$("#memberList tbody tr").click(function(e){
+		if($(e.target).is("td:first-child")) return;
+		
+		var empno = $(this).attr("id");
+		
+		location.href="<%=ctxPath%>/memberInfo_hr.up?empno="+empno;
+	})
+	
 		
 
 });// end of$(document).ready(function(){})--------------------------
@@ -184,6 +196,7 @@ function allCheckBox() {
 						  		<c:forEach var="dvo" items="${requestScope.dvoList}">
 						  			<a id="${dvo.department_name}" class="dropdown-item" href="#">${dvo.department_name}</a>
 						  		</c:forEach>
+					  			<a id="none" class="dropdown-item" href="#">미지정</a>
 						  		<!-- 
 						      <a class="dropdown-item" href="#">인사·총무</a>
 						      <a class="dropdown-item" href="#">회계·재무</a>
@@ -274,10 +287,15 @@ function allCheckBox() {
 				<tbody>
 					<c:if test="${not empty requestScope.evoList }">
 					<c:forEach var="emp" items="${requestScope.evoList}" varStatus="status">
-						 <tr> 
+						 <tr id="${emp.employee_no}"> 
 			              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>
 			              <td>${emp.name_kr}</td>
-			              <td>${emp.department_name}</td>
+			              <c:if test="${not empty emp.department_name}">
+				              <td>${emp.department_name}</td>
+			              </c:if>
+			              <c:if test="${empty emp.department_name}">
+				              <td>미지정</td>
+			              </c:if>
 			              <td>${emp.position}</td>
 			              <td>${emp.employmenttype}</td>
 			              <td>${emp.email}</td>

@@ -44,5 +44,23 @@ public interface InterMemberDAO {
 	
 	// 해당 부서의 팀 가져오기
 	List<TeamVO> getTeams(String deptno);
+	
+	// 새로운 부서를 만들어주기
+	int addDepartment(Map<String, String> paraMap);
+	
+	// 새로운 팀을 만들어주기
+	int addTeam(Map<String, String> paraMap);
+	
+	// 사원테이블에 insert
+	int addEmployee(EmployeeVO evo);
+	
+	// 사원번호 채번해오기
+	String getNewEmpno(String fk_department_no);
+	
+	//새로운 부서의 no 채번해오기
+	String getNewDepartment();
+	
+	//새로운 팀을 만들 번호 채번하기
+	String getNewTeam();
 
 }

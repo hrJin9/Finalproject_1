@@ -1,8 +1,12 @@
 package com.spring.admin_member.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +15,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -208,6 +213,61 @@ public class Admin_memberController {
 		return jsonarr.toString();
 	}
 	
+	
+	@RequestMapping(value = "/memAddEnd.up", method = {RequestMethod.POST})
+	public ModelAndView memAddEnd(HttpServletRequest request, ModelAndView mav, EmployeeVO evo) throws Throwable {
+		
+		//왜 자꾸 오류뜸? 왜 이렇게 일일이 설정해주어야하는거지....
+		evo.setStatus("1");
+		
+		//랜덤으로 임시비밀번호 만들어주기
+		StringBuffer temp = new StringBuffer();
+		Random rnd = new Random();
+		for (int i = 0; i < 16; i++) {
+		    int rIndex = rnd.nextInt(3);
+		    switch (rIndex) {
+		    case 0:
+		        // a-z
+		        temp.append((char) ((int) (rnd.nextInt(26)) + 97));
+		        break;
+		    case 1:
+		        // A-Z
+		        temp.append((char) ((int) (rnd.nextInt(26)) + 65));
+		        break;
+		    case 2:
+		        // 0-9
+		        temp.append((rnd.nextInt(10)));
+		        break;
+		    }
+		}
+		
+		evo.setPasswd(aes.encrypt(temp.toString()));
+		evo.setEmail(aes.encrypt(evo.getEmail()));
+		evo.setMobile(aes.encrypt(evo.getMobile()));
+		
+		// 트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 insert) 
+		Map<String,String> resultMap = service.addEmployee(evo);
+		
+		String message = "";
+		String loc = "";
+		if("1".equals(resultMap.get("l"))) {
+			// 사원번호(아이디), 비밀번호 알려주기
+			//mav.addObject("employee_no", resultMap.get("employee_no"));
+			//mav.addObject("password",temp.toString());
+			message = "해당 사원의 아이디는 " + resultMap.get("employee_no") + "이며, 임시비밀번호는 " + temp.toString() + "입니다.";
+			loc = request.getContextPath()+"/admin_memberList.up";
+			
+			//mav.setViewName("admin/admin_memberList.tiles");
+		} else {
+			message = "구성원을 추가하는데 실패하였습니다.";
+			loc = "javascript:history.back()";
+		}
+		
+		mav.addObject("message",message);
+		mav.addObject("loc", loc);
+		mav.setViewName("msg");
+		return mav;
+	} 
 	
 	
 	@RequestMapping(value = "/admin_memberAdd_personal.up")

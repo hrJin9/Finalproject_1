@@ -1,10 +1,14 @@
 package com.spring.hyerin.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
@@ -98,5 +102,79 @@ public class MemberService implements InterMemberService {
 		List<TeamVO> tvoList = dao.getTeams(deptno);
 		return tvoList;
 	}
+	
+	
+	// 트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 insert)
+	@Override
+	@Transactional (propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = {Throwable.class })
+	public Map<String, String> addEmployee(EmployeeVO evo) throws Throwable {
+		
+		int n=0, m=0, l=0;
+		String s_department_no = "", s_team_no = ""; 
+		
+		String fk_department_no = evo.getFk_department_no();
+		if("add".equals(fk_department_no)) {
+			String department_name = evo.getDepartment_name();
+			
+			//새로운 부서의 no 채번해오기
+			s_department_no = dao.getNewDepartment(); 
+			
+			
+			Map<String,String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_department_no", s_department_no);
+			paraMap.put("department_name", department_name);
+			
+			// 새로운 부서를 만들어주기
+			n = dao.addDepartment(paraMap);
+			
+			// fk_department_no를 바꿔주기
+			evo.setFk_department_no(s_department_no);
+			
+		} else {
+			n=1;
+		}
+		
+		String fk_team_no = evo.getFk_team_no();
+		if("add".equals(fk_team_no)) {
+			//새로운 팀을 만들 번호 채번하기
+			s_team_no = dao.getNewTeam();
+			
+			// 새로운 팀을 만들어주기
+			String team_name = evo.getTeam_name();
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("team_no",s_team_no);
+			paraMap.put("team_name",team_name);
+			paraMap.put("fk_department_no",evo.getFk_department_no());
+			
+			m = dao.addTeam(paraMap);
+			
+			// fk_team_no를 바꿔주기
+			evo.setFk_team_no(s_team_no);
+			
+		} else {
+			m=1;
+		}
+		
+		System.out.println("fk_department_no" + evo.getFk_department_no());
+		System.out.println("fk_team_no" + evo.getFk_team_no());
+		
+		
+		if (n==1 && m==1) {
+			// 사원번호 채번해오기
+			String employee_no = dao.getNewEmpno(evo.getFk_department_no());
+			System.out.println("employee_no : " + employee_no);
+			
+			evo.setEmployee_no(employee_no);
+			// 사원테이블에 insert
+			l = dao.addEmployee(evo);
+			
+		}
+		
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("employee_no",evo.getEmployee_no());
+		resultMap.put("l",String.valueOf(l));
+		
+		return resultMap;
+	}//end of addEmployee
 	
 }
