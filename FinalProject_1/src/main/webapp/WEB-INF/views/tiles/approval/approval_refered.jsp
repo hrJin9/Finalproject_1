@@ -8,7 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/index.js"></script>
 <!--#include virtual="dbcon.asp"-->
 <style type="text/css">
-	.ap_type{
+.ap_type{
 		font-size: 9.5pt;
     	color: #858585;
     	font-weight: 400;
@@ -39,7 +39,7 @@
     	border-color: rgba(36, 42, 48, 0.02);
 	}
 	 tr td{
-	     background-color: transparent;
+	     background-color: transparent !important;
 	 }
 	 
 	
@@ -145,6 +145,21 @@
     	border-color: rgba(36, 42, 48, 0.02);
 	}
 	
+	/* 상태뱃지  */
+	.btn-badge{
+		color: #a8a7a7;
+	    font-weight: 400;
+	    font-size: 10pt;
+	    padding: 0.1rem 0.5rem !important;
+  	    font-size: .675rem !important;
+  	    cursor: default;
+  	    font-weight: bold !important;
+  	    /* border-radius: 1.3em; */
+  	    margin-top: 12px;
+  	    border-radius: 0.8em;
+  	    padding: 0.15rem 0.5rem;
+	}
+	
 	
 	
 	
@@ -216,37 +231,34 @@
 	
 	
 	
-	
-	
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		$(".search-period-wr").hide();
-		$("#searchbar").css("display","none");
-		$(".dropselchx").css("display","none");
 		
-		if(!$("a#send").hasClass('list_iscurrent')){// 현재 페이지가아닐경우 
-			$("a#send").removeClass('list_notcurrent');
-			$("a#send").addClass('list_iscurrent');
-			$("a#send").siblings().removeClass('list_iscurrent');
-		}
-		
-		
+		$(".mainList a").click(function(){
+			if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
+				$(this).removeClass('list_notcurrent');
+				$(this).addClass('list_iscurrent');
+				$(this).siblings().removeClass('list_iscurrent');
+			}
+		});
+		$(".subList a").click(function(){
+			if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
+				$(this).removeClass('list_notcurrent');
+				$(this).addClass('list_iscurrent');
+				$(this).siblings().removeClass('list_iscurrent');
+			}
+		});
 		//console.log($("input#searchStartday").val())
 		//console.log($("input#searchStartday").val());
 		
 		// 검색시 검색조건 및 검색어 값 유지시키기
-		 if( ${not empty requestScope.paraMap} ) {
+		/* if( ${not empty requestScope.paraMap} ) {
 			$("select#searchType").val("${requestScope.paraMap.searchType}");
 			$("input#searchWord").val("${requestScope.paraMap.searchWord}");
-		}else{
-			$("select#searchType").val("");
-			$("input#searchWord").val("");
-		}
-	
-		
+		} */
 		// 검색시 검색조건 및 검색어 값 유지시키기
 		if( ${not empty requestScope.searchStartday} ) {
 			$("input#searchStartday").val("${requestScope.searchStartday}")
@@ -255,25 +267,20 @@
 			$("input#searchEndday").val("${requestScope.searchEndday}")
 		}
 		
-		let ap_type = "";
-		/* let signynval = ""; */
+		let ap_typeval = "";
+		let signynval = "";
 		let bookmark = "";
-		let startDate = "";
-		let endDate = "";
-		let searchType = "";
-		let searchWord = "";
 		$("#ap_typemenu a").click(function(e){
-			ap_type = $(e.target).text();
-			console.log("ap_type => "+ap_type);
-			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
+			ap_typeval = $(e.target).text();
+			console.log("ap_typeval => "+ap_typeval);
+			showList(ap_typeval,signynval,bookmark);
 		})
-		/* $("#signynmenu a").click(function(e){
+		$("#signynmenu a").click(function(e){
 			signynval = $(e.target).text();
 			console.log("signynval => "+signynval);
 			showList(ap_typeval,signynval,bookmark)
-		}) */
-		
-		// 북마크만보기 체크유무 
+		})
+
 		$("input.bkList").change(function(){
 			if($(this).is(":checked")){
 				bookmark = "1";
@@ -281,29 +288,85 @@
 			else{
 				bookmark = "0";
 			}
-			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
+			
+			showList(ap_typeval,signynval,bookmark)
 		})
 		
+		/* 북마크 표시 */
+		  $('.bookmark').click(function(e) {
+			  	const $this = $(this);
+		  		const anoval = $this.next().val()
+				let yn = "";
+		  		
+		  		$this.hasClass('icon-star-empty')? yn = 'y': yn = 'n'; 
+			  	
+			  	
+			  	/* 북마크 추가하기&해제하기  find(".anoval").text()*/
+		  		$.ajax({
+					url:"<%= ctxPath%>/approval/addscrap.up",
+					type:"GET",
+					data:{"ano":anoval
+					     ,"yn":yn},
+					dataType:"json",
+					success:function(json){
+						if(json.result = 1){
+						  	if ( $this.hasClass('icon-star-empty') ) {
+						  		$this.removeClass('icon-star-empty');
+						  		$this.addClass('icon-star-full');
+						  	} else {
+						  		$this.removeClass('icon-star-full');
+						  		$this.addClass('icon-star-empty');
+						  	}
+						}
+
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				    }
+				}); 
+		});
 		
 		
 		/* 체크 모두선택, 모두해제 */ 
 		// 체크박스 개수	
 		var total = $("input[name='ap-selectchx']").length;
 	  $('.ap-selctchx-all').on('click', function() {
-		  	if ( $(this).prop('checked') ) {
+		  let anoval = '';
+		  	if ( $(this).prop('checked') ) {// 모두선택이 체크됐으면 
 			  	$("input[name='ap-selectchx']").each(function() {
 			  		$(this).prop('checked', true);
+			  		anoval += (anoval!='')? ','+$(this).parent().next().val():$(this).parent().next().val() 
 			  	})
 			  	show_checkmenu();
 				$("#check_ctn").text(total);
-		  	} else {
+				$("input#appendchx").val(anoval)
+		  	} else {// 모두선택을 해제했으면 
 		  		$("input[name='ap-selectchx']").each(function() {
 			  		$(this).prop('checked', false);
+			  		$("input#appendchx").val('');
 			  	})
 			  	show_noncheckmenu();
 		  	}
 	  });
-	  $("input[name='ap-selectchx']").change(function() {
+	  $("input[name='ap-selectchx']").change(function(e) { 
+		  const inputval = $("input#appendchx").val();
+		  const $this = $(this).parent().next().val();
+		  //console.log('inputval =>'+inputval)
+		  
+		  if($(this).prop('checked')){ // 체크됐으면 
+			  if(inputval.length == 0){
+				  $("input#appendchx").val($this);
+			  }else{
+				  $("input#appendchx").val(inputval+','+$this);
+			  }
+		  }else{ //해제했으면
+			  //console.log('$this =>'+$this);
+			  let reinputval = "";
+			  reinputval= (inputval.indexOf($this)==0)? inputval.replace($this,'') : inputval.replace(','+$this,'');
+			  //console.log('reinputval =>'+reinputval)
+			  $("input#appendchx").val(reinputval);
+		  }
+		  
 			var checked = $("input[name='ap-selectchx']:checked").length;
 			show_checkmenu();
 			
@@ -315,17 +378,18 @@
 				$(".ap-selctchx-all").prop("checked", false);
 			else
 				$(".ap-selctchx-all").prop("checked", true); 
-			
+			 
 		});
-	  
-
-	  
+	
+	  // 드롭다운 
 		$(".dropdown-toggle").click(function(){
 			$(".dropdown-menu").addClass("show");
 		})
 		
 		//툴팁 사용
 		var tooltipel = $(".tp").tooltip();
+		
+		
 		
 		
 		 // 플랫피커
@@ -374,38 +438,38 @@
 			
 		})
 		
+		$("#daysearch").click(function(){
+			showList();
+		})
 		
 		/* $("input#searchWord").keyup(function(e){
 			if(e.keyCode == 13) {
 				// 검색어에 엔터를 했을 경우
 				goSearch();
 			}
-		$("#daysearch").click(function(){
-			showList();
-		})
 		}); */
 
 		
 		
 		/* 행호버효과 */
-		$(document).on({
-			mouseenter: function(){
-				$(this).css('background-color','#fafafa');
-				$(this).siblings().css('background-color','#fafafa');
-			},
-			mouseleave: function(){
-				$(this).css('background-color','transparent');
-				$(this).siblings().css('background-color','transparent');
-			}
-		}, 'tr>td');
-
+		$("tr>td").hover(function() {
+			/* $(this).addclass('thover'); */
+			$(this).css('background-color','#fbfbfb');
+			$(this).siblings().css('background-color','#fbfbfb');
+		},function(){
+			$(this).css('background-color','#fff');
+			$(this).siblings().css('background-color','#fff');
+		});
+		
+		
+		
 		/* *** 클릭하면 문서상세정보 보여주기  */
-		$("tr td:nth-child(3)").click(function() {
-			const anoval = $(this).parent().find(".anoval").val();
+		$("tr>td:nth-child(3)~").click(function() {
+			const anoval = $(this).parent().find(".anoval").text();
 			const ap_type = $(this).parent().find(".ap_type").text();
-			console.log("anoval => "+anoval);
-			console.log("ap_type => "+ap_type);
-
+			//console.log("anoval => "+anoval);
+			//console.log("ap_type => "+ap_type);
+ 			
 			//$('#modalcontent').text($(this).data("content"));
 			$.ajax({
 				url:"<%= ctxPath%>/approval/view.up",
@@ -418,16 +482,8 @@
 					let filecontent="";
 					let doccontent="";
 					let badgecontent="";
-					
-              		if(json.final_signyn=='승인')
-              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
-              		if(json.final_signyn=='반려')
-              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #FBD8D7; color: #D2737F; ">반려</button>' 
-              		if(json.final_signyn=='진행')
-              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #17a6f21f;color: #06689c; ">진행중</button>'
-              		if(json.final_signyn=='취소')
-              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #E9E9EB;color: #747378; ">취소</button>'
-              			
+					badgecontent+='<button type="button" class="btn btn-badge statebadge" style="background-color: #FAE2D3; color: #EAA77F; ">승인 필요</button>'
+					  //<button type="button" class="Apv-button is-danger" style="color:red">반려</button><button type="button" class="Apv-button is-danger" style="color:rgb(0, 60, 255)">승인</button>
 					let writedayarr = [];
 					writedayarr = json.writeday.split('-');
 					let writeday =writedayarr[1]+'월 '+writedayarr[2].substr(0,2)+'일'+writedayarr[2].substr(2)
@@ -581,250 +637,40 @@
 			
 			
 		});
-						
-						
-						
-
 		
 		
-	    
-	    <%-- 옵션창 날짜 직접입력 --%>
-	    $("input[name='period-type']").change(function(){
-	        if($("#date_select").is(":checked")){
-			    $(".search-period-wr").show();
-	        }else{
-	        	$(".search-period-wr").hide();
-	        }
-	    });
-		
-	  
-	    
-	    <%-- 카테고리 복수 선택 인풋태그에 보이도록하기 --%>
-	    $("input[name='category']").change(function(e){
-	    	const $target = $(e.target).val()
-	   		let inputval = $("input#ctgy").val()
-
-	   		if($(this).is(":checked")){// 체크했다면 
-		    	if($("input#ctgy").val() != ""){ // 체크된게 있다면 
-		    		inputval += ","+ $target;
-		    		$("input#ctgy").val(inputval);
-		    	}
-		    	else{ // 체크된게 없다면
-			    	$("input#ctgy").val($target);
-		    	}
-	        }else{// 체크해지했다면
-	        	if($target == inputval){//하나밖에 없다면  
-	        		$("input#ctgy").val("");
-	        	}
-	        	else{// 여러개 있다면 
-		        	let arrval = [];
-		        	arrval = inputval.split(",");
-		        	for(let i=0; i<arrval.length; i++){
-		        		if(arrval[i]==$target){
-		        			arrval.splice(i,1);
-		        			break;
-		        		}
-		        	}
-		        	inputval = arrval.toString();
-		        	$("input#ctgy").val(inputval);
-	        		
-	        	}
-	        }
-	    });
-		
-		
-	    
-	    
-	 // 검색시 검색조건 및 검색어 값 유지시키기
-		if( ${not empty requestScope.paraMap} ) {
-			$("select#searchType").val("${requestScope.paraMap.searchType}");
-			$("input#searchWord").val("${requestScope.paraMap.searchWord}");
-		}
-	 
-		<%-- 검색어 입력시 자동 리스트검색  --%>
-		$("div#displayList").hide();
-		
-		$("input#searchWord").keyup(function(e){ 
-			const wordLength = $(e.target).val().trim().length;// 검색어에서 공백을 제거한 길이를 알아온다.
-			
-			if(wordLength != 0) {
-				searchType = $("select#searchType").val()
-				searchWord = $("input#searchWord").val()
-			}
-			else{
-				searchType = ""
-				searchWord = ""
-			}
-				showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);	
-		}); // end of $("input#searchWord").keyup()---------------
-	    
-		
-		/* $(document).on("click","span.result",function(e){ // 스크립트 안의 선택자를 잡기위해선 이렇게 해주도록 
-			// $(e.target).html()은 실제로 클릭한 태그를 읽어오고 => java(검색어)를 클릭하면 java만 일어옴  
-			// $(this).html()는 클릭한 태그의 클래스를 읽어옴
-			const word = $(this).text();
-			$("input#searchWord").val(word);// 검색어 입력란인 input 태그에 검색된 결과의 문자열을 입력해준다.
-			$("div#displayList").hide();
-			goSearch();
-		}); */
-		
-		
+		  
+	  // 결재하기버튼 
+	  $("button#approvebtn").click(function(){
+		  if(confirm("선택하신 문서들을 승인하시겠습니까?")){
+			  goapprove($('input#appendchx').val());
+		  };
+	  })
+	  $("button#aprdoc").click(function(){
+		  const thisano = $(this).next().val();
+		  //console.log("thisano => "+thisano);
+		  if(confirm("현재 문서를 승인하시겠습니까?")){
+			  goapprove(thisano);
+		  };
+	  })
+	  $("button#rejdoc").click(function(){
+		  const thisano = $(this).next().next().val();
+		  //console.log("thisano => "+thisano);
+		  if(confirm("현재 문서를 반려하시겠습니까?")){
+			  goreject(thisano);
+		  };
+	  })  
 	}); //end of ready	
 
-
-	// ajax 검색필터 적용 
-	function showList(ap_type,bookmark,startDate,endDate,searchType,searchWord){
-		$.ajax({
-			url:"<%= ctxPath%>/approval/apList.up",
-			type:"GET",
-			data:{"ap_type":ap_type
-				, "bookmark":bookmark
-				, "searchStartday":startDate
-				, "searchEndday":endDate
-				, "searchType":searchType
-				, "searchWord":searchWord
-				, "signyn":'0'},
-				 /* ,"searchType":$("select#searchType").val()
-				 ,"searchWord":$("input#searchWord").val()} */
-			dataType:"json",
-			success:function(json){
-				console.log(json.length);
-                let html = "";
-                let html2 = "";
-                if(json.length > 0) {
-                   $.each(json, function(index, item) {
-                	   
-                	   html+= '<tr><td><input class="anoval" hidden="hidden" value="'+item.ano+'"></td><td>'
-      	              	 	+ '<div  style="justify-content: unset;margin-top: 14px;"><label class="control control--checkbox" style="top: 1px;">'
-      	              		+ '<input type="checkbox" name="ap-selectchx" /><div class="control__indicator icon icon-checkmark" ></div>'
-      		            	+ '</label></div></td>'
-      	              		+ '<td class="title"><div id="writername">'+item.name_kr+'</div>'
-      	              		+ '<div id="writerday">'+item.writeday+'</div>'
-      		              	+ '<div id="writertitle">'+item.title+'</div></td>'
-      	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div>'
-      	              if(item.final_signyn == "승인"){
- 		              		html += '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
- 		               }
- 		               else if(item.final_signyn == "반려"){
- 		            	   html += '<button type="button" class="btn btn-badge" style="background-color: #FBD8D7; color: #D2737F; ">반려</button>'
- 		               }
- 		               else if(item.final_signyn == "진행"){
- 		            	   html +=  '<button type="button" class="btn btn-badge" style="background-color: #17a6f21f;color: #06689c; ">진행중</button>'
- 		               }
- 		               else if(item.final_signyn == "취소"){
- 		            	   html +=  '<button type="button" class="btn btn-badge" style="background-color: #E9E9EB;color: #747378; ">취소</button>'
- 		               }
-      	              	html += '</div></td><td>'
-      	              	
-      	              	if(item.bookmark == '0'){
-			   	            html += `<div style="margin-top:12px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
-		   	            }else if(item.bookmark == '1'){
-			   	            html += `<div style="margin-top: 12px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
-		   	            }
-      	              	
-                    	html+= '</td><td></td></tr>'
-                    	
-		               if(item.pageBar != "0"){
-		            	   html2 = item.pageBar;
-		               }
-                   }); 
-                   
-               }else{
-            	   html = "<td colspan='7' style='text-align: center;'><div style='margin-top: 150px;display: flex;justify-content: flex-start;flex-direction: column;'>"
-            	   		 +'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto;width: 48px; height: 48px; flex-shrink: 0;"><path d="M10.5956 3C6.40068 3 3 6.40068 3 10.5956C3 14.7906 6.40068 18.1913 10.5956 18.1913C12.3602 18.1913 13.9842 17.5896 15.2737 16.5801L19.6936 21L21 19.6936L16.5801 15.2737C17.5896 13.9842 18.1913 12.3602 18.1913 10.5956C18.1913 6.40068 14.7906 3 10.5956 3ZM4.84759 10.5956C4.84759 7.42107 7.42107 4.84759 10.5956 4.84759C13.7702 4.84759 16.3437 7.42107 16.3437 10.5956C16.3437 13.7702 13.7702 16.3437 10.5956 16.3437C7.42107 16.3437 4.84759 13.7702 4.84759 10.5956Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchWord+"에 대한 검색결과가 없어요.</div>"
-            	   		 +"<div style='font-weight: 400;font-size: 13px;line-height: 21px;color: #556372;'>다른 검색어를 입력해주세요.</div></div>"
-            	   		 +"<button onclick='emptysearchbar()'style='color: rgb(85, 99, 114);position: relative;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;font-weight: 700;outline: none;border: none;font-size: 13px;border-radius: 6px;background: transparent;box-shadow: none;padding-left: 10px;padding-right: 10px; margin-top: 15px;'><span>검색어 지우기</span></button></td>";
-            	   html2 = ""; 
-               }
-                   $("#tabledata").html(html);
-				   $("div#pageBar").html(html2);
-				   // console.log(html2);
-                     
-			},
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }
-		}); 
+	// 문서 승인하기 
+	function goapprove(ano){
+		  location.href="<%= ctxPath%>/approval/goapprove.up?ano="+ano;
 	}
 	
-	// 검색어 비우기
-	function emptysearchbar(){
-		$("input#searchWord").val('');
-		searchWord = '';
-		$("input#searchWord").focus();
-		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
+	// 문서 반려하기 
+	function goreject(ano){
+		  location.href="<%= ctxPath%>/approval/goreject.up?ano="+ano;
 	}
-	
-
-
-	// 날짜필터 => 일, 주, 월, 년 날짜 자동 입력 (오늘날짜 기준)
-	function getDate(val,e){
-		$(".dropselchx").each(function(){
-			$(this).css("display","none");
-		})
-		$(e.target).find(".dropselchx").css("display","block");
-		
-		var today = new Date();
-		//오늘 년, 월, 일
-		var day = today.getDate();
-		var month = today.getMonth();
-		var year = today.getFullYear();
-		var today = new Date().toLocaleDateString();
-		//일주일 전
-		var Aweek = new Date(new Date().setDate(day-7)).toLocaleDateString("ko-KR",{
-			year:"numeric"
-			,month:"2-digit"
-			,day:"2-digit"
-		});
-		//한달 전
-		var Amonth = new Date(new Date().setMonth(month-1)).toLocaleDateString("ko-KR",{
-			year:"numeric"
-			,month:"2-digit"
-			,day:"2-digit"
-		});
-		//세달 전
-		var Amonth = new Date(new Date().setMonth(month-3)).toLocaleDateString("ko-KR",{
-			year:"numeric"
-			,month:"2-digit"
-			,day:"2-digit"
-		});
-		//일년 전
-		var Ayear = new Date(new Date().setYear(year-1)).toLocaleDateString("ko-KR",{
-			year:"numeric"
-			,month:"2-digit"
-			,day:"2-digit"
-		});
-		startDate = "";
-		endDate = today;
-		if(val == '1') {
-			startDate = today;
-		} else if(val == '2') {
-			startDate = Aweek;
-		} else if(val == '3') {
-			startDate = Amonth;
-		} else if(val == '4') {
-			startDate = Ayear;
-		} else if(val == '5') {
-			startDate = Ayear;
-		}
-		//yyyy-mm-dd
-		let [y1,m1,d1] = startDate.split('.');
-		startDate = [y1,m1,d1].join('-');
-		let [y2,m2,d2] = endDate.split('.');
-		endDate = [y2,m2,d2].join('-');
-		
-		startDate = startDate.replaceAll(' ','');
-		endDate = endDate.replaceAll(' ','');
-		
-		//
-		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
-	}
-	
-	
-	
-	
-	
 	
 	
 	// 내가쓴 문서 결재취소하기 (첫결재단계가 아직 결재를안했을경우만 )
@@ -853,44 +699,12 @@
 	}
 	
 	
-	/* 북마크 표시 */
-	function addbookmark(anoval,e){
-	  	//const $this = $(this);
-		let yn = "";
-		$(e.target).hasClass('icon-star-empty')? yn = 'y': yn = 'n'; 
-	  	//console.log($(e.target));
-	  	
-	  	/* 북마크 추가하기&해제하기  find(".anoval").text()*/
-  		$.ajax({
-			url:"<%= ctxPath%>/approval/addscrap.up",
-			type:"GET",
-			data:{"ano":anoval
-			     ,"yn":yn},
-			dataType:"json",
-			success:function(json){
-				if(json.result = 1){
-				  	if ( $(e.target).hasClass('icon-star-empty') ) {
-				  		$(e.target).removeClass('icon-star-empty');
-				  		$(e.target).addClass('icon-star-full');
-				  	} else {
-				  		$(e.target).removeClass('icon-star-full');
-				  		$(e.target).addClass('icon-star-empty');
-				  	}
-				}
-
-			},
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }
-		}); 
-	}
 	
-	// 모달 보이기 
 	function showmodal(){
 		$('#writemodal').modal('show');
 	};
 	function modalclose(){
-		$('#onemodal').modal('hide');
+		$('#writemodal').modal('hide');
 	}
 	
 	// 체크했을 때 보이는 메뉴
@@ -907,133 +721,117 @@
 		$(".fa-check").css("visibility","hidden");
 	}
 	
-	// 검색창보이기 
-	function showsearch(){
-		if($("#searchbar").is(':visible'))
-			$("#searchbar").css("display","none");
-		else{
-			$("#searchbar").css("display","block");
-			$("input#searchWord").focus();
-			$("select#searchType option:eq(0)").prop("selected",true); // selected 되게하기
-		}
+	function showList(a,b,c){
+		$.ajax({
+			url:"<%= ctxPath%>/approval/myList.up",
+			type:"GET",
+			data:{"searchStartday":$("input#searchStartday").val()
+				, "searchEndday":$("input#searchEndday").val()
+				, "ap_type":a
+				, "signyn":b
+				, "bookmark":c},
+				 /* ,"searchType":$("select#searchType").val()
+				 ,"searchWord":$("input#searchWord").val()} */
+			dataType:"json",
+			success:function(json){
+				console.log(json.length);
+                let html = "";
+                let html2 = "";
+                if(json.length > 0) {
+                   $.each(json, function(index, item) {
+	               	   html += '<tr><td><div style="justify-content: unset;margin-top: 6px;"><label class="control control--checkbox">'
+		                 	+'<input type="checkbox" name="ap-selectchx" /><div class="control__indicator icon icon-checkmark" ></div>'
+		   	            	+'</label></div></td>'
+		                	+'<td>'
+		   	            if(item.bookmark == '0'){
+			   	            html += '<div style="margin-top: 6px;"><a class="bookmark icon icon-star-empty"></a><input hidden="hidden" type="text" value="'+item.ano+'"></div>'
+		   	            }else if(item.bookmark == '1'){
+			   	            html += '<div style="margin-top: 6px;"><a class="bookmark icon icon-star-full"></a><input hidden="hidden" type="text" value="'+item.ano+'"></div>'
+		   	            }	
+		   	            	
+	   	            	html += '</td>'
+		                 	 +'<td><div>'+item.ap_type+'</div></td>'
+		                 	 +'<td class="anoval"><div>'+item.ano+'</div></td>'
+		                 	 +'<td class="title"><div>'+item.title+'</div></td><td><div>';
+		                 	
+		               if(item.final_signyn == "승인"){
+		              		html += '<button type="button" class="btn btn-badge" style="background-color: #07B4191F; color: #034C0B; ">승인</button>'
+		               }
+		               else if(item.final_signyn == "반려"){
+		            	   html += '<button type="button" class="btn btn-badge" style="background-color: #F24B171F; color: #661400; ">반려</button>'
+		               }
+		               else if(item.final_signyn == "진행"){
+		            	   html +=  '<button type="button" class="btn btn-badge" style="background-color: #17a6f21f;color: #06689c; ">진행중</button>'
+		               }
+		               
+		               html += '</div></td><td><div>';
+		               
+		               if(item.ap_systemFileName==0){ // 파일이 없으면 
+		            	   html += 'X';
+		               }
+		               else{
+		            	   html += 'O';
+		               }
+	              	
+	               	   html += '</div></td><button type="button" class="btn btn-badge" style="cursor: default;font-weight: bold !important;border-radius: 1.2em;font-size: .675rem;padding: 0.15rem 0.5rem;background-color: #07B4191F; color: #034C0B; ">'+item.final_signyn+'</button></div></td>'
+		                 	+'<td><div>'+item.ap_systemFileName+'</div></td>'
+		                 	+'<td><div>'+item.feedbackcnt+'개</div></td>'
+		                 	+'<td><div>'+item.writeday+'</div></td></tr>';
+		               
+		               if(item.pageBar != "0"){
+		            	   html2 = item.pageBar;
+		               }
+                   });
+                   
+               }else{ 
+            	   html = "";
+            	   html2 = ""; 
+               }
+                   $("#tabledata").html(html);
+				   $("div#pageBar").html(html2);
+				   // console.log(html2);
+                     
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    }
+		}); 
 	}
 	
 	
-	
-	//
-	
 </script>
  
-<nav id="subList" class="margin-container appreqsublist">
+
+ <nav id="subList" class="margin-container appreqsublist">
 	<div style="display: contents;">
-		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up">진행중<span style="color: rgb(41 170 236);font-weight: 500;margin-left: 4px;">${requestScope.totalCount}</span></a>
-		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/processed.up" style="margin-left: 1%;">완료</a><!-- 결재예정.진행중.완 -->
+		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval/requested.up">진행중</a>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/processing.up" style="margin-left: 3%;">완료</a><!-- 결재예정.진행중.완 -->
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/refered.up" style="margin-left: 3%;">수신참조</a>
 		<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
 	</div>
 	<div class="subList_underline"></div>
-	<div style="display: inline-flex;position: relative;align-items: center;margin-top: 10px;margin-left: auto;">
-	
+	<div style="display: flex;align-items: center;position: relative;left: 100%;">
+				
 		<!-- <a id="bkList"style="cursor:pointer;color: #0775ff;;font-weight: bold;font-size: 9pt;float: right;margin-right: 15px;">북마크</a> --> <!-- 내가북마크한 문서  -->
-		<!-- **** 검색필터 **** -->
-		<!-- <div class=" mr-2">
-					<div class="form-group">
-						<div class="form-field">
-							<select name="searchType" id="searchType" style="font-size: 9pt; padding:6.7px 6px; position: relative; left: 15%;">
-								<option value="">전체</option>
-								<option value="">작성자</option>
-								<option value="">제목</option>
-								<option value="">제목+내용</option>
-							</select>
-						</div>
-					</div>
-				</div> -->
-		<form id="searchbar" name="searchFrm" style="display: flex;">
-			<div class="form-group" style="position: fixed;">
-					<div class="form-field">
-						<select name="searchType" id="searchType" style="background-color:transparent;font-weight: 500;color: rgb(85 99 114);font-size: 8pt;padding: 7px 0px;border: 0px solid #ced4da;margin-top: 1px;margin-left: 10px;color: rgb(85, 99, 114);">
-							<!-- <option value="all" selected="">전체</option> -->
-							<!-- <option selected disabled>분류</option> -->
-							<option value="title">제목</option>
-							<option value="ano">문서번호</option>
-							<option value="name_kr">작성자</option>
-							<option value="signemp_name_kr">승인자</option>
-							<option value="referemp_name_kr">참조자</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="form-field" style="padding-left:5px; margin-right: -9px;">
-						<input name="searchWord" id="searchWord"  type="text" class="form-control" placeholder="검색어 입력" style="background-color:rgba(36, 42, 48, 0.02);box-shadow:inset 0px 0px 0px 1px rgba(0, 0, 0, 0.04); border-radius: 0.4rem;width: 112%;font-size: 9pt;padding: 6px 12px 6px 70px;color:#556372"autocomplete="off" />
-					</div>
-				</div>
-	   		</form>
-		<!-- **** 검색필터 **** --> 
 		
 		
-		<a  class="headersearch icon icon-search" onclick="showsearch()"></a> <!-- 검색버튼 -->
-		<a  class="headersearch icon icon-spinner11"onclick="showList('','','','','','')"></a> <!-- 문서 새로고침 -->
+		<a  class="icon icon-spinner11" style="cursor:pointer;margin-right:10px;font-size: 10pt;position: relative;color: #d0d0d0;" onclick="showList()"></a> <!-- 문서 새로고침 -->
 		 
-		 <!-- 날짜 필터  -->
-		<a class="headersearch dropdown-link icon icon-sort-amount-asc" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>
+		
+		<a style="color:#d0d0d0;font-size: 0.9em;font-size: bold;cursor: pointer;"class="dropdown-link icon icon-circle-down" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>
 	          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="color:#d0d0d0;min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton" >
-	            <!-- <a class="dropdown-item" >업데이트 일</a>
-	            <a class="dropdown-item" >작성일</a>
-	            <div class="dropdown-divider"></div> -->
-	            <a class="dropdown-item" onclick="getDate(1,event)">오늘<span class="icon icon-checkmark dropselchx"></span></a>
-	            <a class="dropdown-item" onclick="getDate(2,event)">지난 1주일<span class="icon icon-checkmark dropselchx"></span></a>
-	            <a class="dropdown-item" onclick="getDate(3,event)">지난 1개월<span class="icon icon-checkmark dropselchx"></span></a>
-	            <a class="dropdown-item" onclick="getDate(4,event)">지난 3개월<span class="icon icon-checkmark dropselchx"></span></a>
-	            <a class="dropdown-item" onclick="getDate(5,event)">지난 1년<span class="icon icon-checkmark dropselchx"></span></a>
-	            <a class="dropdown-item">직접 입력<span class="icon icon-checkmark dropselchx"></span></a>
-	            <a class="dropdown-item">
-		            <div class="search-period-wr" >
-		                <div class="js-search-pickr-layer" data-code="unlimit">
-		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
-			                	<div class="datebox margin-container">
-									<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;"/></span>
-								</div>
-							</div>
-		                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
-		                	<div class="datebox margin-container">
-								<span><input class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;"/></span>
-							</div>
-						</div>
-					</div>
-	            </div>
-	          	</a> 
-	</div>	
+	            <a class="dropdown-item" >10개씩 보기</a>
+	            <a class="dropdown-item" >30개씩 보기</a>
+	            <a class="dropdown-item" >50개씩 보기</a>
+	          </div> 
 	</div>	
 </nav>
-
  
-
 <hr class="HRhr" style="margin-top: 0px;"/>
  <div style="width: 100%; background-color: #fdfdfd;">
 <div class="" style="max-width:100%;">
-	<div id="datenav"class="booking-form ml-3"  >
-			<!-- <div class="search-period-wr" style="text-align: center;">
-               	<div class="js-search-pickr-layer" data-code="unlimit">
-                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
-	                	<div class="datebox margin-container">
-	                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">시작일</span>
-							<span><input id="searchStartday"class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
-						</div>
-				</div>
-                   <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
-                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
-	                	<div class="datebox margin-container">
-	                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">종료일</span>
-							<span><input id="searchEndday" class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
-						</div>
-					</div>
-               	</div>
-               	<a id="daysearch"class="btn icon icon-search" style="color: rgb(46, 135, 205);background-color: transparent;font-size: 1rem;top: -34px;left: 212px;position: relative;"></a>
-            </div> -->
-			
 		
-			
-				
-		</div>
+	<div id="alllist"class="booking-form ml-3">
 	</div>
         <table class="table custom-table" >   
           <thead style="background-color: rgb(253, 253, 253);">    
@@ -1048,6 +846,9 @@
               <th class="boardth" width="60%" scope="col" style="padding-left:0;padding-bottom: 0;">
 	              	<div style="margin-bottom: 4px;display: flex;font-size: 11pt;justify-content: space-between;">
 						<div style="display: flex;align-items: center;">
+					<%-- <div class="ap-noncheckmenu">
+						<span style="color: rgba(0,0,0,0.7);">전체 <span style="font-weight: bold;">${fn:length(requestScope.approvalList)}</span></span>
+					</div>  --%>
 					<div class="ap-checkmenu" style="display: none;align-items: center;">
 						<button style="padding:0.175rem 0.75rem"id="all-read" class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="문서 다운로드"><i style="color: #959ca7;background-color: white;"class="icon icon-folder-plus"></i></button> <!-- 읽은상태로표시 -->
 						<button style="padding:0.175rem 0.75rem"class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="읽지 않음 표시"><i style="color: #959ca7;background-color: white;" class="icon icon-folder-download"></i></button> <!-- 읽지않은상태로표시 -->
@@ -1060,7 +861,7 @@
 				</div>
               </th>  
               <th class="boardth" width="7%"scope="col"><button id="ap_type_sel"type="button" data-bs-toggle="dropdown">종류<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
-              	<div id="ap_typemenu" class="dropdown-menu" style="font-size: 10pt;">
+              	<div id="ap_typemenu" class="dropdown-menu">
 				      <h5 class="dropdown-header">문서종류</h5>
 				      <a class="dropdown-item" href="#">전체</a>
 				      <a class="dropdown-item" href="#">일반</a>
@@ -1071,7 +872,7 @@
 				 </div>
 			</th>
               <th class="boardth" width="7%" scope="col"><button id="signyn_sel" type="button" data-bs-toggle="dropdown">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
-				  <div id="signynmenu" class="dropdown-menu"style="font-size: 10pt;">
+				  <div id="signynmenu" class="dropdown-menu">
 				      <h5 class="dropdown-header">진행상태</h5>
 				      <a class="dropdown-item" href="#">전체</a>
 				      <a class="dropdown-item" href="#">진행</a>
@@ -1080,6 +881,10 @@
 				      <a class="dropdown-item" href="#">취소</a>
 				  </div>
 			  </th>
+			  	
+              <!-- <th class="boardth" width="7%"scope="col"></th> 
+              <th class="boardth" width="6%"scope="col"></th> --> 
+              <!-- <th class="boardth" width="13%"scope="col">작성일</th> -->
               <th class="boardth" width="8%"scope="col">
               	<input class="bkList" type="checkbox" id="toggle" hidden>
 				 <label style="margin: 0 auto;margin-bottom: 6px;"for="toggle" class="toggleSwitch tp" data-bs-toggle="tooltip" data-bs-placement="top" title="즐겨찾기만">
@@ -1093,7 +898,7 @@
           
           	<c:forEach var="approvalvo" items="${requestScope.approvalList}" >
 	            <tr> 
-	            	<td><input class="anoval" hidden="hidden" value="${approvalvo.ano}"></td>
+	            	<td></td>
 	              <td>
 	              	<div  style="justify-content: unset;margin-top: 14px;">
 	              	<label class="control control--checkbox" style="top: 1px;">
@@ -1101,9 +906,10 @@
 		            </label>
 		            </div>
 	              </td>
-	              <td class="title"><div id="writername">${approvalvo.name_kr}</div>
-		              <div id="writerday">${approvalvo.writeday}</div>
-		              <div id="writertitle">${approvalvo.title}</div></td>
+	              <%-- <td class="anoval"><div>${approvalvo.ano}</div></td> --%>
+	              <td class="title"><div style="font-size: 15px;font-weight: 600;line-height: 1.4;display: inline-block;">김지은</div>
+	              <div style="display: inline-block;margin-left: 10px;color: #bababa;font-weight: 400;line-height: 10px;">${approvalvo.writeday}</div>
+	              <div style="margin: 0px;line-height: 10px;display: block;">${approvalvo.title}</div></td>
 	              <td class="ap_type"><div>${approvalvo.ap_type}</div></td>
 	              <td>
 	              	<div>
@@ -1121,12 +927,20 @@
 	              		</c:if>
 	              	</div>
 	              </td>
+	              <%-- <td>
+	              	<div>
+		              	<c:if test="${approvalvo.ap_systemFileName==0}">X</c:if>
+		              	<c:if test="${approvalvo.ap_systemFileName==1}">O</c:if> 
+	              	</div>
+	              </td>
+	              <td><div>${approvalvo.feedbackcnt}개</div> </td> --%>
+	              <%-- <td><div>${approvalvo.writeday}</div></td> --%>
 	              <td>
               		<c:if test="${approvalvo.bookmark=='0'}">
-	            		<div style="margin-top:12px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('${approvalvo.ano}',event)"></a></div>
+	            		<div style="margin-top:12px;"><a class="bookmark icon icon-star-empty"></a><input hidden="hidden" type="text" value="${approvalvo.ano}"></div>
               		</c:if>
               		<c:if test="${approvalvo.bookmark=='1'}">
-	            		<div style="margin-top: 12px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('${approvalvo.ano}',event)"></a></div>
+	            		<div style="margin-top: 12px;"><a class="bookmark icon icon-star-full"></a><input hidden="hidden" type="text" value="${approvalvo.ano}"></div>
               		</c:if>
               	  </td>
 	              <td></td>
@@ -1137,12 +951,12 @@
         	
         	 <div id="pageBar" align="center" style="width:70%; margin:20px auto;">${requestScope.pageBar}</div>
 	</div>
-	
- 	
- 	<input id="appendchx" type="text" hidden="hidden" value="">
- 	
+</div>
+	<input id="appendchx" type="text" hidden="hidden" value="">
  	
  	
+ 	
+ 	 
  	<%-- ****************** 결재 문서 상세보기 모달창 시작 ********************* --%>
 <div class="modal fade" id="writemodal" tabindex="-1" aria-hidden="true" style="border-radius: 0.5rem;background-color: rgba(240, 240, 240, 0.85);">
  <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable" style="    border-radius: 0.5rem;box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 4%), 0px 24px 72px rgb(36 42 48 / 30%);min-width:50% !important;max-width: 75% !important;align-items: normal !important;">
@@ -1194,7 +1008,7 @@
 					  <div class="pad-part">
 					  	<div id="fbsection"></div>
 				  	  </div>
-				  	  <!-- <div class="modal-footer" style="position: sticky;bottom: 0;background-color: white;padding: 5px 40px 20px;display: flex;align-items: center;border-top:0px;">
+				  	  <div class="modal-footer" style="position: sticky;bottom: 0;background-color: white;padding: 5px 40px 20px;display: flex;align-items: center;border-top:0px;">
 					  	  <div id="footercss">
 						  	  
 						  	  <button id="rejdoc"class="approvebtn" type="button" style="margin-right:10px;">
@@ -1208,7 +1022,7 @@
 							  	  <div style="display: inline-block;"><span>승인하기</span></div></div></div>
 							  </button>
 					  	  </div>
-				  	  </div> -->
+				  	  </div>
 			  	</div>
 			  </div>
 			  <aside style="float: right;width: 30%;background: #fafafa;height: 207%;">
@@ -1218,9 +1032,12 @@
 					  	<h2 class="ApvSection-title"style="margin: auto 0;" >승인・참조</h2>
 					  	<button class="btn tp" style="display: flex;font-size: small;"data-bs-toggle="tooltip" data-bs-placement="top" title="참조자추가"><i style="color: rgb(78 111 215);background-color: transparent;" class="icon icon-user-plus"></i></button> <!-- 삭제 -->
 					  </div>
-					  <div class="ApvSection-body">
-					  	<ol class="signol"></ol>
-						<div class="tbody" id="linebody"style="margin-top: 16px;font-size: 16px;"></div>
+					  <div class="ApvSection-body" >
+					  	<ol class="signol">
+					  		
+					  		
+					  		</ol>
+						    <div class="tbody" id="linebody"style="margin-top: 16px;font-size: 16px;"></div>
 					  </div>
 				  </div>
 			  </aside>
@@ -1230,10 +1047,24 @@
 
 </div>
 
- 	
- 	
- 	
- 	
- 	
- 	
-	
+
+
+<!-- <li class="signli">
+					  			<header class="signheader"><span class="signspan" style="color: rgb(141, 150, 161);">
+					  			<span>1 단계</span><span> 완료</span></span><div class="separator" aria-orientation="horizontal" ></div></header>
+d							  	<ul class="signul">
+							  		<li class="signli-prof">
+								  		<div class="signdiv-prof">
+								  			<div style="line-height: 1;display: inline-block;width:80%;">
+											  	<span>
+												  	<div class="profile" href="#" style="padding: 1px;">
+														<span class="pic"><span>지은</span></span>
+														<span class="my"style="top:0px;display: flex;align-items: center;"><span class="name" style="font-weight: 600;color:rgb(36, 42, 48);font-size: 11.8pt;">김지은</span></span>
+													</div>
+											  	</span>
+								  			</div>
+								  			<button type="button" class="btn btn-badge statebadge" style="margin:auto;background-color: #FAE2D3; color: #EAA77F; ">승인</button>
+								  		</div>
+			  						</li>
+		  						 </ul>
+					  		 </li>-->

@@ -1,9 +1,12 @@
 package com.spring.jieun.model;
 
+import com.spring.hyerin.model.EmployeeVO;
+
 public class ApprovalVO {
 
 	// *** 작성한 결재 태이블 *** //
 	private String ano; 				// 결재문서번호 ( d-결재신청날짜-seq => d-20221128-123 ) 
+	
 	private String fk_empno; 			// 작성사원번호
 	//작성사원직위
 	private String ap_type; 			//결재문서종류
@@ -17,12 +20,19 @@ public class ApprovalVO {
 	private String preserveperiod; 		// 보존연한 (0:영구 1:1년 3:3년 5:5년)
 	private String status;				// default 1      -- 삭제여부 (0:삭제 1:유지)
 	private String writeday; 			// default sysdate      -- 작성일자
+	
 	private String modifyday; 			// 수정일
 	private String fk_ano_refer; 		// 참고문서
 	private String bookmark; 		// 북마크 
-	
 	private String feedbackcnt; 		// 피드백갯수 
 	
+	
+	// join select용  
+	private String name_kr; // 사원이름 
+	private String department_name; // 부서이름 
+	private String team_name; // 부서이름 
+	private String position; // 직책명 
+	 
 	
 	// *** 결재할 태이블 *** //
 	private String asno; // 결재번호 seq
@@ -30,11 +40,117 @@ public class ApprovalVO {
 	private String fk_sign_empno; // 결재사원번호
 	// --,                       not null              -- 결재사원직위
 	private String signstep; // 결재순번 
+	
+	
 	private String signyn; // default 0           -- 결재결과 (0:진행중 1:승인 2:거절)
 	private String signdate; // default sysdate     -- 결재일자 
 	private String feedback; //  피드백
+	private String signemp_deptname; // 결재사원부서
+	private String signemp_position; // 결재사원직위
 	
 	
+	// *** 연차 테이블 *** //
+	private String dono;         // 연차번호
+	private int docnt;           // 연차수
+	private String docatgo;      //  연차유형
+	private String startdate;    //  연차시작일
+	private String enddate;      //  연차종료일
+
+	
+	
+	// *** 업무문서 테이블 *** //
+	private String wdno;            // 업무기안문서번호
+	private String executedate; 	// 업무시행일
+	private String deptname; 		// 협조부서
+
+	
+	
+
+	
+	public String getTeam_name() {
+		return team_name;
+	}
+	public void setTeam_name(String team_name) {
+		this.team_name = team_name;
+	}
+	public String getDepartment_name() {
+		return department_name;
+	}
+	public void setDepartment_name(String department_name) {
+		this.department_name = department_name;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	public String getName_kr() {
+		return name_kr;
+	}
+	public void setName_kr(String name_kr) {
+		this.name_kr = name_kr;
+	}
+	public String getSignemp_deptname() {
+		return signemp_deptname;
+	}
+	public void setSignemp_deptname(String signemp_deptname) {
+		this.signemp_deptname = signemp_deptname;
+	}
+	public String getSignemp_position() {
+		return signemp_position;
+	}
+	public void setSignemp_position(String signemp_position) {
+		this.signemp_position = signemp_position;
+	}
+	public String getDono() {
+		return dono;
+	}
+	public void setDono(String dono) {
+		this.dono = dono;
+	}
+	public int getDocnt() {
+		return docnt;
+	}
+	public void setDocnt(int docnt) {
+		this.docnt = docnt;
+	}
+	public String getDocatgo() {
+		return docatgo;
+	}
+	public void setDocatgo(String docatgo) {
+		this.docatgo = docatgo;
+	}
+	public String getStartdate() {
+		return startdate;
+	}
+	public void setStartdate(String startdate) {
+		this.startdate = startdate;
+	}
+	public String getEnddate() {
+		return enddate;
+	}
+	public void setEnddate(String enddate) {
+		this.enddate = enddate;
+	}
+	public String getWdno() {
+		return wdno;
+	}
+	public void setWdno(String wdno) {
+		this.wdno = wdno;
+	}
+	public String getExecutedate() {
+		return executedate;
+	}
+	public void setExecutedate(String executedate) {
+		this.executedate = executedate;
+	}
+	public String getDeptname() {
+		return deptname;
+	}
+	public void setDeptname(String deptname) {
+		this.deptname = deptname;
+	}
 	public String getBookmark() {
 		return bookmark;
 	}
@@ -110,6 +226,20 @@ public class ApprovalVO {
 		this.filesize = filesize;
 	}
 	public String getPreserveperiod() {
+		switch (this.preserveperiod) {
+		case "0":
+			preserveperiod = "영구";
+			break;
+		case "1":
+			preserveperiod = "1년";
+			break;
+		case "3":
+			preserveperiod = "3년";
+			break;
+		case "5":
+			preserveperiod = "5년";
+			break;
+		}
 		return preserveperiod;
 	}
 	public void setPreserveperiod(String preserveperiod) {
@@ -126,12 +256,6 @@ public class ApprovalVO {
 	}
 	public void setWriteday(String writeday) {
 		this.writeday = writeday;
-	}
-	public String getModifydate() {
-		return modifyday;
-	}
-	public void setModifydate(String modifyday) {
-		this.modifyday = modifyday;
 	}
 	public String getFk_ano_refer() {
 		return fk_ano_refer;
@@ -164,6 +288,17 @@ public class ApprovalVO {
 		this.signstep = signstep;
 	}
 	public String getSignyn() {
+		switch (this.signyn) {
+		case "0":
+			signyn = "진행중";
+			break;
+		case "1":
+			signyn = "승인";
+			break;
+		case "2":
+			signyn = "반려";
+			break;
+		}
 		return signyn;
 	}
 	public void setSignyn(String signyn) {

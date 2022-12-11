@@ -145,6 +145,21 @@
     	border-color: rgba(36, 42, 48, 0.02);
 	}
 	
+	/* 상태뱃지  */
+	.btn-badge{
+		color: #a8a7a7;
+	    font-weight: 400;
+	    font-size: 10pt;
+	    padding: 0.1rem 0.5rem !important;
+  	    font-size: .675rem !important;
+  	    cursor: default;
+  	    font-weight: bold !important;
+  	    /* border-radius: 1.3em; */
+  	    margin-top: 12px;
+  	    border-radius: 0.8em;
+  	    padding: 0.15rem 0.5rem;
+	}
+	
 	
 	
 	
@@ -222,6 +237,14 @@
 
 <script type="text/javascript">
 
+	let ap_type = "";
+	let signyn = "";
+	let bookmark = "";
+	let startDate = "";
+	let endDate = "";
+	let searchType = "";
+	let searchWord = "";
+
 	$(document).ready(function(){
 		$(".search-period-wr").hide();
 		$("#searchbar").css("display","none");
@@ -255,23 +278,17 @@
 			$("input#searchEndday").val("${requestScope.searchEndday}")
 		}
 		
-		let ap_type = "";
-		/* let signynval = ""; */
-		let bookmark = "";
-		let startDate = "";
-		let endDate = "";
-		let searchType = "";
-		let searchWord = "";
+		
 		$("#ap_typemenu a").click(function(e){
 			ap_type = $(e.target).text();
-			console.log("ap_type => "+ap_type);
-			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
+			//console.log("ap_type => "+ap_type);
+			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);
 		})
-		/* $("#signynmenu a").click(function(e){
-			signynval = $(e.target).text();
-			console.log("signynval => "+signynval);
-			showList(ap_typeval,signynval,bookmark)
-		}) */
+		$("#signynmenu a").click(function(e){
+			signyn = $(e.target).text();
+			//console.log("signynval => "+signyn);
+			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);
+		})
 		
 		// 북마크만보기 체크유무 
 		$("input.bkList").change(function(){
@@ -281,7 +298,7 @@
 			else{
 				bookmark = "0";
 			}
-			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
+			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);
 		})
 		
 		
@@ -317,7 +334,6 @@
 				$(".ap-selctchx-all").prop("checked", true); 
 			
 		});
-	  
 
 	  
 		$(".dropdown-toggle").click(function(){
@@ -374,19 +390,7 @@
 			
 		})
 		
-		
-		/* $("input#searchWord").keyup(function(e){
-			if(e.keyCode == 13) {
-				// 검색어에 엔터를 했을 경우
-				goSearch();
-			}
-		$("#daysearch").click(function(){
-			showList();
-		})
-		}); */
 
-		
-		
 		/* 행호버효과 */
 		$(document).on({
 			mouseenter: function(){
@@ -398,7 +402,9 @@
 				$(this).siblings().css('background-color','transparent');
 			}
 		}, 'tr>td');
-
+		
+		
+		
 		/* *** 클릭하면 문서상세정보 보여주기  */
 		$("tr td:nth-child(3)").click(function() {
 			const anoval = $(this).parent().find(".anoval").val();
@@ -583,97 +589,38 @@
 		});
 						
 						
-						
 
-		
-		
-	    
-	    <%-- 옵션창 날짜 직접입력 --%>
-	    $("input[name='period-type']").change(function(){
-	        if($("#date_select").is(":checked")){
-			    $(".search-period-wr").show();
-	        }else{
-	        	$(".search-period-wr").hide();
-	        }
-	    });
-		
-	  
-	    
-	    <%-- 카테고리 복수 선택 인풋태그에 보이도록하기 --%>
-	    $("input[name='category']").change(function(e){
-	    	const $target = $(e.target).val()
-	   		let inputval = $("input#ctgy").val()
-
-	   		if($(this).is(":checked")){// 체크했다면 
-		    	if($("input#ctgy").val() != ""){ // 체크된게 있다면 
-		    		inputval += ","+ $target;
-		    		$("input#ctgy").val(inputval);
-		    	}
-		    	else{ // 체크된게 없다면
-			    	$("input#ctgy").val($target);
-		    	}
-	        }else{// 체크해지했다면
-	        	if($target == inputval){//하나밖에 없다면  
-	        		$("input#ctgy").val("");
-	        	}
-	        	else{// 여러개 있다면 
-		        	let arrval = [];
-		        	arrval = inputval.split(",");
-		        	for(let i=0; i<arrval.length; i++){
-		        		if(arrval[i]==$target){
-		        			arrval.splice(i,1);
-		        			break;
-		        		}
-		        	}
-		        	inputval = arrval.toString();
-		        	$("input#ctgy").val(inputval);
-	        		
-	        	}
-	        }
-	    });
-		
-		
 	    
 	    
-	 // 검색시 검색조건 및 검색어 값 유지시키기
-		if( ${not empty requestScope.paraMap} ) {
-			$("select#searchType").val("${requestScope.paraMap.searchType}");
-			$("input#searchWord").val("${requestScope.paraMap.searchWord}");
-		}
-	 
-		<%-- 검색어 입력시 자동 리스트검색  --%>
-		$("div#displayList").hide();
-		
-		$("input#searchWord").keyup(function(e){ 
-			const wordLength = $(e.target).val().trim().length;// 검색어에서 공백을 제거한 길이를 알아온다.
-			
-			if(wordLength != 0) {
-				searchType = $("select#searchType").val()
-				searchWord = $("input#searchWord").val()
+		 // 검색시 검색조건 및 검색어 값 유지시키기
+			if( ${not empty requestScope.paraMap} ) {
+				$("select#searchType").val("${requestScope.paraMap.searchType}");
+				$("input#searchWord").val("${requestScope.paraMap.searchWord}");
 			}
-			else{
-				searchType = ""
-				searchWord = ""
-			}
-				showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);	
-		}); // end of $("input#searchWord").keyup()---------------
-	    
-		
-		/* $(document).on("click","span.result",function(e){ // 스크립트 안의 선택자를 잡기위해선 이렇게 해주도록 
-			// $(e.target).html()은 실제로 클릭한 태그를 읽어오고 => java(검색어)를 클릭하면 java만 일어옴  
-			// $(this).html()는 클릭한 태그의 클래스를 읽어옴
-			const word = $(this).text();
-			$("input#searchWord").val(word);// 검색어 입력란인 input 태그에 검색된 결과의 문자열을 입력해준다.
+		 
+			<%-- 검색어 입력시 자동 리스트검색  --%>
 			$("div#displayList").hide();
-			goSearch();
-		}); */
-		
+			
+			$("input#searchWord").keyup(function(e){ 
+				const wordLength = $(e.target).val().trim().length;// 검색어에서 공백을 제거한 길이를 알아온다.
+				
+				if(wordLength != 0) {
+					searchType = $("select#searchType").val()
+					searchWord = $("input#searchWord").val()
+				}
+				else{
+					searchType = ""
+					searchWord = ""
+				}
+				showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);	
+			}); // end of $("input#searchWord").keyup()---------------
+		    
 		
 	}); //end of ready	
 
 
 	// ajax 검색필터 적용 
-	function showList(ap_type,bookmark,startDate,endDate,searchType,searchWord){
+	function showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn){
 		$.ajax({
 			url:"<%= ctxPath%>/approval/apList.up",
 			type:"GET",
@@ -683,7 +630,7 @@
 				, "searchEndday":endDate
 				, "searchType":searchType
 				, "searchWord":searchWord
-				, "signyn":'0'},
+				, "signyn":signyn},
 				 /* ,"searchType":$("select#searchType").val()
 				 ,"searchWord":$("input#searchWord").val()} */
 			dataType:"json",
@@ -753,7 +700,7 @@
 		$("input#searchWord").val('');
 		searchWord = '';
 		$("input#searchWord").focus();
-		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
+		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);	
 	}
 	
 
@@ -818,7 +765,7 @@
 		endDate = endDate.replaceAll(' ','');
 		
 		//
-		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
+		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);
 	}
 	
 	
@@ -920,34 +867,20 @@
 	
 	
 	
-	//
 	
 </script>
  
 <nav id="subList" class="margin-container appreqsublist">
 	<div style="display: contents;">
-		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up">진행중<span style="color: rgb(41 170 236);font-weight: 500;margin-left: 4px;">${requestScope.totalCount}</span></a>
-		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/processed.up" style="margin-left: 1%;">완료</a><!-- 결재예정.진행중.완 -->
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval.up">진행중<span style="margin-left: 4px;">${requestScope.pocessingCnt}</span></a>
+		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval/processed.up" style="margin-left: 1%;width: 5%;">완료</a><!-- 결재예정.진행중.완 -->
 		<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
 	</div>
-	<div class="subList_underline"></div>
+	<div class="subList_underline"style="width: 3.5%;left: 8.5%;"></div>
 	<div style="display: inline-flex;position: relative;align-items: center;margin-top: 10px;margin-left: auto;">
-	
-		<!-- <a id="bkList"style="cursor:pointer;color: #0775ff;;font-weight: bold;font-size: 9pt;float: right;margin-right: 15px;">북마크</a> --> <!-- 내가북마크한 문서  -->
-		<!-- **** 검색필터 **** -->
-		<!-- <div class=" mr-2">
-					<div class="form-group">
-						<div class="form-field">
-							<select name="searchType" id="searchType" style="font-size: 9pt; padding:6.7px 6px; position: relative; left: 15%;">
-								<option value="">전체</option>
-								<option value="">작성자</option>
-								<option value="">제목</option>
-								<option value="">제목+내용</option>
-							</select>
-						</div>
-					</div>
-				</div> -->
-		<form id="searchbar" name="searchFrm" style="display: flex;">
+		
+		<!-- **** 검색필터 **** --> 
+			<form id="searchbar" name="searchFrm" style="display: flex;">
 			<div class="form-group" style="position: fixed;">
 					<div class="form-field">
 						<select name="searchType" id="searchType" style="background-color:transparent;font-weight: 500;color: rgb(85 99 114);font-size: 8pt;padding: 7px 0px;border: 0px solid #ced4da;margin-top: 1px;margin-left: 10px;color: rgb(85, 99, 114);">
@@ -971,14 +904,11 @@
 		
 		
 		<a  class="headersearch icon icon-search" onclick="showsearch()"></a> <!-- 검색버튼 -->
-		<a  class="headersearch icon icon-spinner11"onclick="showList('','','','','','')"></a> <!-- 문서 새로고침 -->
-		 
-		 <!-- 날짜 필터  -->
+		<a  class="headersearch icon icon-spinner11"onclick="showList('','','','','','','')"></a> <!-- 문서 새로고침 -->
+		
+		<!-- 날짜 필터  -->		 
 		<a class="headersearch dropdown-link icon icon-sort-amount-asc" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>
 	          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="color:#d0d0d0;min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton" >
-	            <!-- <a class="dropdown-item" >업데이트 일</a>
-	            <a class="dropdown-item" >작성일</a>
-	            <div class="dropdown-divider"></div> -->
 	            <a class="dropdown-item" onclick="getDate(1,event)">오늘<span class="icon icon-checkmark dropselchx"></span></a>
 	            <a class="dropdown-item" onclick="getDate(2,event)">지난 1주일<span class="icon icon-checkmark dropselchx"></span></a>
 	            <a class="dropdown-item" onclick="getDate(3,event)">지난 1개월<span class="icon icon-checkmark dropselchx"></span></a>
@@ -1011,31 +941,9 @@
  <div style="width: 100%; background-color: #fdfdfd;">
 <div class="" style="max-width:100%;">
 	<div id="datenav"class="booking-form ml-3"  >
-			<!-- <div class="search-period-wr" style="text-align: center;">
-               	<div class="js-search-pickr-layer" data-code="unlimit">
-                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
-	                	<div class="datebox margin-container">
-	                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">시작일</span>
-							<span><input id="searchStartday"class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
-						</div>
-				</div>
-                   <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
-                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
-	                	<div class="datebox margin-container">
-	                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">종료일</span>
-							<span><input id="searchEndday" class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
-						</div>
-					</div>
-               	</div>
-               	<a id="daysearch"class="btn icon icon-search" style="color: rgb(46, 135, 205);background-color: transparent;font-size: 1rem;top: -34px;left: 212px;position: relative;"></a>
-            </div> -->
-			
-		
-			
-				
 		</div>
 	</div>
-        <table class="table custom-table" >   
+       <table class="table custom-table" >   
           <thead style="background-color: rgb(253, 253, 253);">    
             <tr style="line-height: 2.2;">
               <th class="boardth" width="5%" scope="col" style=""></th>
@@ -1193,23 +1101,9 @@
 					  <!-- 문서의견  -->
 					  <div class="pad-part">
 					  	<div id="fbsection"></div>
+					  	
 				  	  </div>
-				  	  <!-- <div class="modal-footer" style="position: sticky;bottom: 0;background-color: white;padding: 5px 40px 20px;display: flex;align-items: center;border-top:0px;">
-					  	  <div id="footercss">
-						  	  
-						  	  <button id="rejdoc"class="approvebtn" type="button" style="margin-right:10px;">
-						  	  	<div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-knmidH-justify-space-between c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css" style="width: 100%;"><div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-bICGYT-justify-center c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css c-fGHEql c-fGHEql-jVpCez-align-center">
-						  	  	<div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M12 13.2728L17.0205 18.2933L18.2932 17.0205L13.2728 12L18.2932 6.97954L17.0205 5.70675L12 10.7272L6.97954 5.70675L5.70675 6.97954L10.7272 12L5.70675 17.0205L6.97954 18.2932L12 13.2728Z" fill="currentColor"></path></svg></div>
-						  	  	<div style="display: inline-block;"><span>반려</span></div></div></div>
-						  	  </button>
-						  	  <button id="aprdoc"class="approvebtn"type="button" style="background-color: rgb(19 133 255 / 86%);color:white;">
-							  	  <div class="" style="width: 100%;"><div class="">
-							  	  <div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M10.0425 14.6397L17.8067 6.35059L19.1934 7.64946L10.0975 17.3603L4.83347 12.1769L6.16656 10.8231L10.0425 14.6397Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div>
-							  	  <div style="display: inline-block;"><span>승인하기</span></div></div></div>
-							  </button>
-					  	  </div>
-				  	  </div> -->
-			  	</div>
+			  	  </div>
 			  </div>
 			  <aside style="float: right;width: 30%;background: #fafafa;height: 207%;">
 				  <!-- 문서 결재라인 --> 
@@ -1218,7 +1112,7 @@
 					  	<h2 class="ApvSection-title"style="margin: auto 0;" >승인・참조</h2>
 					  	<button class="btn tp" style="display: flex;font-size: small;"data-bs-toggle="tooltip" data-bs-placement="top" title="참조자추가"><i style="color: rgb(78 111 215);background-color: transparent;" class="icon icon-user-plus"></i></button> <!-- 삭제 -->
 					  </div>
-					  <div class="ApvSection-body">
+					  <div class="ApvSection-body" >
 					  	<ol class="signol"></ol>
 						<div class="tbody" id="linebody"style="margin-top: 16px;font-size: 16px;"></div>
 					  </div>

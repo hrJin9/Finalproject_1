@@ -12,7 +12,7 @@
 <style type="text/css">
 	
 	#mainList a:hover{
-		color: #000000;
+		color: #000000 !important;
 		cursor: pointer;
 	}
 	#subList a:hover{
@@ -25,17 +25,18 @@
 		position: relative;
 	    display: flex;
 	    width: 640px;
+	    margin-bottom: -42px;
 	    font-size: 18pt;
 	}
-	
+	/* 
 	.header-main {
 	    font-weight: 800 !important;
 	    padding: 0.9em 0 0.3em 0 !important;
 	    font-size: 18pt !important;
-	}
+	} */
 	#mainList a {
 		display: block;
-    	width: 17%;
+    	width: 12%;
     	text-align: center;
 		text-decoration: none;
 		margin-right: 4%;
@@ -45,21 +46,22 @@
 		color: #4d4f53;
 	}
 	.list_notcurrent{
-		color: #D2D6D9;
+		color: #8d96a1;
 	}
 	
 	#subList{
 		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 11pt;
-		font-weight: bold;
-		/* margin: 4px 0 0 60px; */
+	    display: flex;
+	    width: 87%;
+	    font-size: 11pt;
+	    font-weight: bold;
+	    align-items: center;
+	    justify-content: flex-start;
 	}
 	
-	#subList a {
+	.header-sub{
 		display: block;
-		width: 14%;
+		width: 7%;
 		padding: .9em 0;
 		/* color: #333; */
 		text-align: center;
@@ -70,20 +72,13 @@
 	
 	.subList_underline {
 	    position: absolute;
-	    left: 2%;
+	    left: 0.5%; 
 	    bottom: -1px;
-	    width: 14%;
+	    width: 6%;
 	    height: 2px;
 	    background: #333;
 	    transition: all .3s ease-in-out;
 	    margin-right: 5%;
-	}
-	#subList {
-	    position: relative;
-	    display: flex;
-	    width: 640px;
-	    font-size: 11pt;
-	    font-weight: bold;
 	}
 	#subList a:nth-child(1).iscurrent ~ .subList_underline {
 		left: 0%;
@@ -164,9 +159,8 @@
 	a, a:hover {
     	text-decoration: none !important;
 	}
-	.title:hover{
+	#tabledata tr td:hover{
 		cursor: pointer; 
-		text-decoration: underline;
 	}
 	img.approvalprofile{
 		border: 0px;
@@ -249,17 +243,21 @@
 	    vertical-align: top;
 	}
 	#writebtn{
-		font-size: 10pt;
-    	padding: 0px 21px 1px 9px;
-    	font-weight: 600;
-		color: white;
-    	border-radius: 11px;
-    	border-width: 0px;
-   	    display: flex;
-   	    align-items: center;
+	font-size: 12pt;
+    padding: 0px 30px 1px 24px;
+    font-weight: 600;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    color: rgb(7 122 180);
+    background-color: white;
+    /* background-image: linear-gradient(96.77deg, rgb(0 128 204) -0.96%, rgb(18, 194, 205) 100%); */
+    box-shadow: rgb(0 0 0 / 2%) 0px 2px 6px, rgb(0 0 0 / 6%) 0px -1px 0px inset, rgb(0 0 0 / 8%) 0px 0px 0px 1px inset;
 		/* border-color: rgb(176 176 176); */
 	}
-	
+	#writebtn:hover{
+		background-color: #fafafa;
+	}
 	
 	
 	.flatpickr-month
@@ -269,9 +267,9 @@
 		background: #ffffff !important;
 		color: #3a3a3a !important;
 	}
-	.toggleSwitch {
-	width: 35px;
-  height: 20px;
+.toggleSwitch {
+  width: 30px;
+  height: 15px;
   display: block;
   position: relative;
   border-radius: 30px;
@@ -282,8 +280,8 @@
 }
 
 .toggleSwitch .toggleButton {
-  width: 13px;
-  height: 13px;
+  width: 10px;
+  height: 10px;
   position: absolute;
   top: 50%;
   left: 4px;
@@ -297,40 +295,451 @@
 }
 
 #toggle:checked ~ .toggleSwitch .toggleButton {
-  left: calc(100% - 19px);
+  left: calc(100% - 14px);
   background: #fff;
 }
 
 .toggleSwitch, .toggleButton {
   transition: all 0.2s ease-in;
 }
+
+
+.pad-part {
+    padding: 40px;
+    color: rgb(17, 17, 17);
+}
+.ApvHeader-title {
+    font-size: 28px;
+    font-weight: 700;
+    color:#3c4651;
+}
+.StyledApv {
+    margin-top: 15px;
+}
+.ApvDl-item {
+    display: flex;
+    padding: 3px 0px;
+    color:rgb(85, 99, 114);
+    font-weight: 350;
+}
+.ApvDl-dt {
+    display: inline-block;
+    min-width: calc(var(--max-length-title) * 1em);
+    padding-right: 10px;
+}
+.ft-16 {
+    font-size: 14px;
+}
+.ApvDl-dd {
+    max-width: calc((100 - var(--max-length-title)) * 1%);
+    white-space: pre-line;
+}
+
+.ApvHeader-footer {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+.ApvSection-header {
+    /* position: sticky; */
+    top: 76px;
+    z-index: 1;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: transparent;
+}
+.ApvSection-body {
+    margin-top: 14px;
+}
+.ApvSection-title {
+        font-size: 15px;
+    font-weight: 500;
+    color: #787878;
+}
+.cstQxy {
+   padding: 10px 40px 20px 40px;
+   /* background-color: rgb(244, 245, 246); */
+   color: rgb(17, 17, 17);
+}
+  .head-btnsection{
+       padding: 20px 40px 0px;
+   background-color: white;
+   color: rgb(17, 17, 17);
+   position: sticky;
+   top: 0px;
+   z-index: 2;
+  }
+  .Apv-button.is-neutral {
+    border-color: rgb(153, 153, 153);
+}
+.Apv-button {
+    color: inherit;
+    background: none;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 36px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid;
+    font-size: 13px;
+    cursor: pointer;
+}
+.statebadge{
+	margin-top: 3px;
+	cursor: default;
+	font-weight: bold !important;
+	border-radius: 1.2em;
+	font-size: .675rem;
+	padding: 0.15rem 0.5rem;
+}
+.approvebtn{
+outline: none;border: none;
+border-radius: 8px;
+font-size: 14px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-weight: 700;
+padding-left: 14px;
+padding-right: 14px;
+height: 48px;
+background-color: rgba(85, 99, 114, 0.07);
+position: relative;
+cursor: pointer;
+width: 100%;
+color: rgb(60, 70, 81);
+
+}
+.signol{
+align-items: flex-start;
+list-style: none;
+padding-inline-start: 0px;
+display: flex;
+flex-wrap: nowrap;
+justify-content: flex-start;
+flex-direction: column;
+}
+.signli{
+align-items: flex-start;
+display: flex;
+position: relative;
+width: 100%;
+padding-top: 4px;
+flex-direction: column;
+}
+.signli-prof{
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: stretch;
+}
+.signdiv-prof{
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 8px;
+padding: 6px;
+}
+.signul{
+padding: 0;
+justify-content: flex-start;
+flex-direction: column;
+align-items: flex-start;
+display: flex;
+width: 100%;
+margin-top: 10px;
+}
+.signheader{
+height: 26px;
+display: flex;
+align-items: center;
+width: 100%;
+padding-left: 8px;
+padding-right: 8px;
+}
+.signspan{
+flex-shrink: 0;
+margin-right: 10px;
+font-size: 14px;
+font-weight: 600;
+}
+.separator{
+border-style: solid;
+border-width: 0px;
+width: 100%;
+border-top-width: 1px;
+border-color: rgba(36, 42, 48, 0.04);"
+}
+/* #writemodal{
+	top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: var(--shadows-modal);
+    display: flex;
+    z-index: var(--zIndices-LINEAR_MODAL);
+    position: fixed;
+    left: 50%;
+} */
+#footercss{
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: row;
+	align-items: center;
+	width:100%
+}
+#btnsection button{
+	padding: .175rem .45rem !important;
+}
+
+/* ===  옵션창  === */
+div.option {
+    border: 0px solid #b0b0b0d9;
+    padding: 20px;
+    margin-bottom: 22px;
+    width: 600px;  
+    height: auto; 
+    border-radius: 10px;
+    background-color: white;
+    display: inline-block;
+    font-size: 18pt;
+    box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
+    position: absolute;
+    top: 28.5%;
+    left: 55.5%;
+    z-index: 2;
+    overflow:hidden;
+ } 
+.detail-search-conditions {
+  margin: 10px 20px 0 30px;
+}
+.condition-cell.title {
+    width: 100px;
+    height: 43px;
+    /* padding-top: 14px; */
+    border: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    box-sizing: border-box;
+}
+.condition-cell {
+    display: table-cell;
+}
+.js-register-name-search-filter .condition-cell:last-child {
+    width: 80%;
+}
+.target-select-group {
+    margin: 16px 18px 12px 10px;
+    font-size: 10px;
+    color: #555;
+}
+.target-select-group li {
+    float: left;
+    min-width: 122px;
+    height: 28px;
+}
+/* 검색기간 라디오 체크*/
+.radio-label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: -23px;
+}
+.label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: 4px;
+    font-size: 11.5px;
+    top:-1px
+}
+.target-select-group .radio-label-checkbox::before {
+    margin-right: 12px;
+}
+.radio-label-checkbox::before {
+    display: inline-block;
+    content: "";
+    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
+    background-size: 560px auto;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+ul{
+	padding-left: 0;
+	list-style: none;
+	margin-bottom: 3rem;
+}
+/* 검색기간 라디오 라벨*/
+.custom-control-radio {
+    position: relative;
+    left: -5px;
+    top: 3px;
+    z-index: -1;
+ }
+ .radio-label-checkbox::before {
+    display: inline-block;
+    content: "";
+    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
+    background-size: 560px auto;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+ li{
+ 	font-size: 10pt;
+ }
+  
+ /* 날짜 옵션 */
+.search-period-wr .filter-input-box {
+    overflow: hidden;
+    display: inline-block;
+    margin: 10px 0 0 0;
+    /* padding: 7px 44px 0 10px; */
+    height: 32px;
+    width: auto;
+}
+.filter-input-box {
+    position: relative;
+    height: 40px;
+    margin-top: 10px;
+    padding: 10px 15px 10px 15px;
+    background: #fff;
+    /* border: 1px solid #ddd; */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    /* border-radius: 4px; */
+    width: 100%;
+    font-size: 13px;
+}
+div.datebox > span > input {
+    bottom: 3px !important;
+    top: -10px !important;
+}    
+.attendance-dateSelector {
+    height: 30px;
+    display: inline-block;
+    border: solid 1px rgba(0, 0, 0, .1);
+    margin: 0;
+    width: 120px !important;
+    padding: 7px 20px 7px 20px;
+	border-radius: 7px;
+}
+
+.search-period-wr .filter-date-label {
+    right: 10px;
+}
+.filter-date-label {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
+} 
+
+/* 카테고리박스 */
+#categorydiv{
+	position:absolute;
+	visibility:hidden;
+	font-size:12px;
+	background-color: white;
+	width:25%;
+	z-index: 2;
+	border: 1px solid gainsboro;
+    padding: 12px;
+    border-radius: 5px;
+}
+#option {
+	visibility:hidden;
+}
+hr {
+    margin: 0 !important;
+}
+td.title #writername{
+	font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    display: inline-block;
+    color: rgb(36, 42, 48);
+}
+td.title #writerday{
+	display: inline-block;
+    margin-left: 10px;
+    color: #bababa;
+    font-weight: 400;
+    line-height: 10px;
+}
+td.title #writertitle{
+	margin: 0px;
+    line-height: 10px;
+    display: block;
+    margin-bottom: 10px;
+    color: rgb(85, 99, 114);
+    margin-top: -5px;
+    font-weight: 400;
+}
+.headersearch{
+	height: 32px;
+    margin-right: 5px;
+	color: rgb(85, 99, 114);
+    cursor: pointer;
+    width: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 6px;
+}
+.dropdown-divider{
+	height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border-top: 1px solid #e9ecef;
+}
+
+.dropdown-item {
+	font-weight: 500 !important;
+}
+.dropselchx{
+    color: rgb(41 170 236) !important;
+    font-size: 9pt;
+    float: right;
+    margin-top: 2px;
+}
+#mainList .list_notcurrent{
+	color: #D2D6D9 !important;
+}
+
+
+/* 상태뱃지  */
+.btn-badge{
+	color: #a8a7a7;
+    font-weight: 400;
+    font-size: 10pt;
+    padding: 0.1rem 0.2rem !important;
+    font-size: .675rem !important;
+    cursor: default;
+    font-weight: bold !important;
+    /* border-radius: 1.3em; */
+    margin-top: 12px !important;
+    border-radius: 0.8em;
+}
+
 </style>
-<script>
-	$(document).ready(function(){
-		
-		$("a.mainlist").click(function(){
-			if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
-				$(this).removeClass('list_notcurrent');
-				$(this).addClass('list_iscurrent');
-				$(this).siblings().removeClass('list_iscurrent');
-			}
-		});
-	});
-</script>
 <nav id="mainList" class="margin-container header-nav">
-	<a class="header-main list_iscurrent" id="notice" href="<%= request.getContextPath()%>/approval.up">전자결재홈</a>
+	<a class="header-main list_iscurrent" id="send" href="<%= request.getContextPath()%>/approval.up">상신함</a>
+	<a class="header-main list_notcurrent" id="requested" href="<%= request.getContextPath()%>/approval/requested.up">수신함</a>
 </nav>
 
- <div style="display: inline-block;position: relative;float: right;right: 90px;top: -49px;">
-  	<a href="<%= request.getContextPath()%>/approval/writing.up" id="writebtn"class="btn gradientbtn"><span style="margin-top: -7px;font-weight: 100;margin-right: 5px;font-size: 24pt;display: flex;align-items: center;">+</span>작성하기</a>
+ <div style="display: inline-block;position: relative;float: right;right: 90px;top: -10px;">
+  	<a href="<%= request.getContextPath()%>/approval/writing.up" id="writebtn"class="btn"><span style="margin-top: -7px;font-weight: 100;margin-right: 5px;font-size: 24pt;display: flex;align-items: center;">+</span>작성하기</a>
 </div>
-
- 
-<nav id="subList" class="margin-container">
-	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up" style="margin-left: 2%;">내가올린결재</a>
-	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/tome.up" style="margin-left: 3%;">수신함</a>
-	<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
-	<div class="subList_underline"></div>
-</nav>
-
-<hr class="HRhr" style="margin-top: 0px;"/>

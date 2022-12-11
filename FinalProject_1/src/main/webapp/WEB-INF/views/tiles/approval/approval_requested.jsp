@@ -8,7 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/index.js"></script>
 <!--#include virtual="dbcon.asp"-->
 <style type="text/css">
-	.ap_type{
+.ap_type{
 		font-size: 9.5pt;
     	color: #858585;
     	font-weight: 400;
@@ -217,93 +217,116 @@
 	
 	
 	
-	
 </style>
 
 <script type="text/javascript">
 
-	$(document).ready(function(){
-		$(".search-period-wr").hide();
-		$("#searchbar").css("display","none");
-		$(".dropselchx").css("display","none");
-		
-		if(!$("a#send").hasClass('list_iscurrent')){// 현재 페이지가아닐경우 
-			$("a#send").removeClass('list_notcurrent');
-			$("a#send").addClass('list_iscurrent');
-			$("a#send").siblings().removeClass('list_iscurrent');
-		}
-		
-		
-		//console.log($("input#searchStartday").val())
-		//console.log($("input#searchStartday").val());
-		
-		// 검색시 검색조건 및 검색어 값 유지시키기
-		 if( ${not empty requestScope.paraMap} ) {
-			$("select#searchType").val("${requestScope.paraMap.searchType}");
-			$("input#searchWord").val("${requestScope.paraMap.searchWord}");
-		}else{
-			$("select#searchType").val("");
-			$("input#searchWord").val("");
-		}
+let ap_type = "";
+let signyn = "";
+let bookmark = "";
+let startDate = "";
+let endDate = "";
+let searchType = "";
+let searchWord = "";
+
+$(document).ready(function(){
+	$(".search-period-wr").hide();
+	$("#searchbar").css("display","none");
+	$(".dropselchx").css("display","none");
 	
-		
-		// 검색시 검색조건 및 검색어 값 유지시키기
-		if( ${not empty requestScope.searchStartday} ) {
-			$("input#searchStartday").val("${requestScope.searchStartday}")
+	if(!$("a#send").hasClass('list_iscurrent')){// 현재 페이지가아닐경우 
+		$("a#send").removeClass('list_notcurrent');
+		$("a#send").addClass('list_iscurrent');
+		$("a#send").siblings().removeClass('list_iscurrent');
+	}
+	
+	
+	//console.log($("input#searchStartday").val())
+	//console.log($("input#searchStartday").val());
+	
+	// 검색시 검색조건 및 검색어 값 유지시키기
+	 if( ${not empty requestScope.paraMap} ) {
+		$("select#searchType").val("${requestScope.paraMap.searchType}");
+		$("input#searchWord").val("${requestScope.paraMap.searchWord}");
+	}else{
+		$("select#searchType").val("");
+		$("input#searchWord").val("");
+	}
+
+	
+	// 검색시 검색조건 및 검색어 값 유지시키기
+	if( ${not empty requestScope.searchStartday} ) {
+		$("input#searchStartday").val("${requestScope.searchStartday}")
+	}
+	if( ${not empty requestScope.searchEndday} ) {
+		$("input#searchEndday").val("${requestScope.searchEndday}")
+	}
+	
+	
+	$("#ap_typemenu a").click(function(e){
+		ap_type = $(e.target).text();
+		//console.log("ap_type => "+ap_type);
+		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);
+	})
+	$("#signynmenu a").click(function(e){
+		signyn = $(e.target).text();
+		//console.log("signynval => "+signyn);
+		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);
+	})
+	
+	// 북마크만보기 체크유무 
+	$("input.bkList").change(function(){
+		if($(this).is(":checked")){
+			bookmark = "1";
 		}
-		if( ${not empty requestScope.searchEndday} ) {
-			$("input#searchEndday").val("${requestScope.searchEndday}")
+		else{
+			bookmark = "0";
 		}
-		
-		let ap_type = "";
-		/* let signynval = ""; */
-		let bookmark = "";
-		let startDate = "";
-		let endDate = "";
-		let searchType = "";
-		let searchWord = "";
-		$("#ap_typemenu a").click(function(e){
-			ap_type = $(e.target).text();
-			console.log("ap_type => "+ap_type);
-			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
-		})
-		/* $("#signynmenu a").click(function(e){
-			signynval = $(e.target).text();
-			console.log("signynval => "+signynval);
-			showList(ap_typeval,signynval,bookmark)
-		}) */
-		
-		// 북마크만보기 체크유무 
-		$("input.bkList").change(function(){
-			if($(this).is(":checked")){
-				bookmark = "1";
-			}
-			else{
-				bookmark = "0";
-			}
-			showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);
-		})
-		
-		
+		showList(ap_type,bookmark,startDate,endDate,searchType,searchWord,signyn);
+	})
+	
+	
 		
 		/* 체크 모두선택, 모두해제 */ 
 		// 체크박스 개수	
 		var total = $("input[name='ap-selectchx']").length;
 	  $('.ap-selctchx-all').on('click', function() {
-		  	if ( $(this).prop('checked') ) {
+		  let anoval = '';
+		  	if ( $(this).prop('checked') ) {// 모두선택이 체크됐으면 
 			  	$("input[name='ap-selectchx']").each(function() {
 			  		$(this).prop('checked', true);
+			  		anoval += (anoval!='')? ','+$(this).parent().next().val():$(this).parent().next().val() 
 			  	})
 			  	show_checkmenu();
 				$("#check_ctn").text(total);
-		  	} else {
+				$("input#appendchx").val(anoval)
+		  	} else {// 모두선택을 해제했으면 
 		  		$("input[name='ap-selectchx']").each(function() {
 			  		$(this).prop('checked', false);
+			  		$("input#appendchx").val('');
 			  	})
 			  	show_noncheckmenu();
 		  	}
 	  });
-	  $("input[name='ap-selectchx']").change(function() {
+	  $("input[name='ap-selectchx']").change(function(e) { 
+		  const inputval = $("input#appendchx").val();
+		  const $this = $(this).parent().next().val();
+		  //console.log('inputval =>'+inputval)
+		  
+		  if($(this).prop('checked')){ // 체크됐으면 
+			  if(inputval.length == 0){
+				  $("input#appendchx").val($this);
+			  }else{
+				  $("input#appendchx").val(inputval+','+$this);
+			  }
+		  }else{ //해제했으면
+			  //console.log('$this =>'+$this);
+			  let reinputval = "";
+			  reinputval= (inputval.indexOf($this)==0)? inputval.replace($this,'') : inputval.replace(','+$this,'');
+			  //console.log('reinputval =>'+reinputval)
+			  $("input#appendchx").val(reinputval);
+		  }
+		  
 			var checked = $("input[name='ap-selectchx']:checked").length;
 			show_checkmenu();
 			
@@ -315,17 +338,20 @@
 				$(".ap-selctchx-all").prop("checked", false);
 			else
 				$(".ap-selctchx-all").prop("checked", true); 
-			
+			 
 		});
+	
 	  
-
 	  
+	  // 드롭다운 
 		$(".dropdown-toggle").click(function(){
 			$(".dropdown-menu").addClass("show");
 		})
 		
 		//툴팁 사용
 		var tooltipel = $(".tp").tooltip();
+		
+		
 		
 		
 		 // 플랫피커
@@ -374,18 +400,14 @@
 			
 		})
 		
-		
 		/* $("input#searchWord").keyup(function(e){
 			if(e.keyCode == 13) {
 				// 검색어에 엔터를 했을 경우
 				goSearch();
 			}
-		$("#daysearch").click(function(){
-			showList();
-		})
 		}); */
 
-		
+
 		
 		/* 행호버효과 */
 		$(document).on({
@@ -399,13 +421,14 @@
 			}
 		}, 'tr>td');
 
+		
 		/* *** 클릭하면 문서상세정보 보여주기  */
-		$("tr td:nth-child(3)").click(function() {
+		$("tr>td:nth-child(3)~").click(function() {
 			const anoval = $(this).parent().find(".anoval").val();
 			const ap_type = $(this).parent().find(".ap_type").text();
-			console.log("anoval => "+anoval);
-			console.log("ap_type => "+ap_type);
-
+			//console.log("anoval => "+anoval);
+			//console.log("ap_type => "+ap_type);
+ 			
 			//$('#modalcontent').text($(this).data("content"));
 			$.ajax({
 				url:"<%= ctxPath%>/approval/view.up",
@@ -418,16 +441,8 @@
 					let filecontent="";
 					let doccontent="";
 					let badgecontent="";
-					
-              		if(json.final_signyn=='승인')
-              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
-              		if(json.final_signyn=='반려')
-              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #FBD8D7; color: #D2737F; ">반려</button>' 
-              		if(json.final_signyn=='진행')
-              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #17a6f21f;color: #06689c; ">진행중</button>'
-              		if(json.final_signyn=='취소')
-              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #E9E9EB;color: #747378; ">취소</button>'
-              			
+					badgecontent+='<button type="button" class="btn btn-badge statebadge" style="background-color: #FAE2D3; color: #EAA77F; ">승인 필요</button>'
+					  //<button type="button" class="Apv-button is-danger" style="color:red">반려</button><button type="button" class="Apv-button is-danger" style="color:rgb(0, 60, 255)">승인</button>
 					let writedayarr = [];
 					writedayarr = json.writeday.split('-');
 					let writeday =writedayarr[1]+'월 '+writedayarr[2].substr(0,2)+'일'+writedayarr[2].substr(2)
@@ -581,60 +596,12 @@
 			
 			
 		});
-						
+		
+		
 						
 						
 
-		
-		
-	    
-	    <%-- 옵션창 날짜 직접입력 --%>
-	    $("input[name='period-type']").change(function(){
-	        if($("#date_select").is(":checked")){
-			    $(".search-period-wr").show();
-	        }else{
-	        	$(".search-period-wr").hide();
-	        }
-	    });
-		
-	  
-	    
-	    <%-- 카테고리 복수 선택 인풋태그에 보이도록하기 --%>
-	    $("input[name='category']").change(function(e){
-	    	const $target = $(e.target).val()
-	   		let inputval = $("input#ctgy").val()
-
-	   		if($(this).is(":checked")){// 체크했다면 
-		    	if($("input#ctgy").val() != ""){ // 체크된게 있다면 
-		    		inputval += ","+ $target;
-		    		$("input#ctgy").val(inputval);
-		    	}
-		    	else{ // 체크된게 없다면
-			    	$("input#ctgy").val($target);
-		    	}
-	        }else{// 체크해지했다면
-	        	if($target == inputval){//하나밖에 없다면  
-	        		$("input#ctgy").val("");
-	        	}
-	        	else{// 여러개 있다면 
-		        	let arrval = [];
-		        	arrval = inputval.split(",");
-		        	for(let i=0; i<arrval.length; i++){
-		        		if(arrval[i]==$target){
-		        			arrval.splice(i,1);
-		        			break;
-		        		}
-		        	}
-		        	inputval = arrval.toString();
-		        	$("input#ctgy").val(inputval);
-	        		
-	        	}
-	        }
-	    });
-		
-		
-	    
-	    
+    
 	 // 검색시 검색조건 및 검색어 값 유지시키기
 		if( ${not empty requestScope.paraMap} ) {
 			$("select#searchType").val("${requestScope.paraMap.searchType}");
@@ -657,22 +624,35 @@
 			}
 				showList(ap_type,bookmark,startDate,endDate,searchType,searchWord);	
 		}); // end of $("input#searchWord").keyup()---------------
-	    
-		
-		/* $(document).on("click","span.result",function(e){ // 스크립트 안의 선택자를 잡기위해선 이렇게 해주도록 
-			// $(e.target).html()은 실제로 클릭한 태그를 읽어오고 => java(검색어)를 클릭하면 java만 일어옴  
-			// $(this).html()는 클릭한 태그의 클래스를 읽어옴
-			const word = $(this).text();
-			$("input#searchWord").val(word);// 검색어 입력란인 input 태그에 검색된 결과의 문자열을 입력해준다.
-			$("div#displayList").hide();
-			goSearch();
-		}); */
-		
-		
-	}); //end of ready	
+	    				
+						
+		  
+	  // 결재하기버튼 
+	  $("button#approvebtn").click(function(){
+		  if(confirm("선택하신 문서들을 승인하시겠습니까?")){
+			  goapprove($('input#appendchx').val());
+		  };
+	  })
+	  $("button#aprdoc").click(function(){
+		  const thisano = $(this).next().val();
+		  //console.log("thisano => "+thisano);
+		  if(confirm("현재 문서를 승인하시겠습니까?")){
+			  goapprove(thisano);
+		  };
+	  })
+	  $("button#rejdoc").click(function(){
+		  const thisano = $(this).next().next().val();
+		  //console.log("thisano => "+thisano);
+		  if(confirm("현재 문서를 반려하시겠습니까?")){
+			  goreject(thisano);
+		  };
+	  })  
+	  
+	  
+	  
+	}); //end of ready ------------------------------------------
 
-
-	// ajax 검색필터 적용 
+	// ajax 검색필터 적용  // 내게 온요청문서 
 	function showList(ap_type,bookmark,startDate,endDate,searchType,searchWord){
 		$.ajax({
 			url:"<%= ctxPath%>/approval/apList.up",
@@ -918,35 +898,30 @@
 		}
 	}
 	
+	// 문서 승인하기 
+	function goapprove(ano){
+		  location.href="<%= ctxPath%>/approval/goapprove.up?ano="+ano;
+	}
 	
+	// 문서 반려하기 
+	function goreject(ano){
+		  location.href="<%= ctxPath%>/approval/goreject.up?ano="+ano;
+	}
 	
-	//
 	
 </script>
  
+ 
 <nav id="subList" class="margin-container appreqsublist">
 	<div style="display: contents;">
-		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up">진행중<span style="color: rgb(41 170 236);font-weight: 500;margin-left: 4px;">${requestScope.totalCount}</span></a>
-		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/processed.up" style="margin-left: 1%;">완료</a><!-- 결재예정.진행중.완 -->
-		<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
+		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval/requested.up">결재대기<span style="color: rgb(41 170 236);font-weight: 500;margin-left: 4px;">${requestScope.totalCount}</span></a>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/will.up" style="margin-left: 1%;">결재예정</a>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/processing.up" style="margin-left: 1%;">결재진행중</a>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/refered.up" style="margin-left: 1%;">참조문서</a>
 	</div>
 	<div class="subList_underline"></div>
 	<div style="display: inline-flex;position: relative;align-items: center;margin-top: 10px;margin-left: auto;">
-	
-		<!-- <a id="bkList"style="cursor:pointer;color: #0775ff;;font-weight: bold;font-size: 9pt;float: right;margin-right: 15px;">북마크</a> --> <!-- 내가북마크한 문서  -->
-		<!-- **** 검색필터 **** -->
-		<!-- <div class=" mr-2">
-					<div class="form-group">
-						<div class="form-field">
-							<select name="searchType" id="searchType" style="font-size: 9pt; padding:6.7px 6px; position: relative; left: 15%;">
-								<option value="">전체</option>
-								<option value="">작성자</option>
-								<option value="">제목</option>
-								<option value="">제목+내용</option>
-							</select>
-						</div>
-					</div>
-				</div> -->
+	<!-- **** 검색필터 **** --> 
 		<form id="searchbar" name="searchFrm" style="display: flex;">
 			<div class="form-group" style="position: fixed;">
 					<div class="form-field">
@@ -1011,26 +986,6 @@
  <div style="width: 100%; background-color: #fdfdfd;">
 <div class="" style="max-width:100%;">
 	<div id="datenav"class="booking-form ml-3"  >
-			<!-- <div class="search-period-wr" style="text-align: center;">
-               	<div class="js-search-pickr-layer" data-code="unlimit">
-                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box"style="display: inline-block;">
-	                	<div class="datebox margin-container">
-	                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">시작일</span>
-							<span><input id="searchStartday"class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
-						</div>
-				</div>
-                   <span class="dash-swung" style="position: relative;bottom: 10px;right: 2px;">~</span>
-                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" style="display: inline-block;">
-	                	<div class="datebox margin-container">
-	                		<span class="control-label"style="display: block; margin-bottom: 4px;font-size: 9px;line-height: 1.43;color:#9e9e9e;right: 65px;">종료일</span>
-							<span><input id="searchEndday" class="dateSelector attendance-dateSelector" style="padding: 0 20px 1px 20px;width: 200px !important;font-size: 29px !important;background-color: white !important;border: 0px !important;"/></span>
-						</div>
-					</div>
-               	</div>
-               	<a id="daysearch"class="btn icon icon-search" style="color: rgb(46, 135, 205);background-color: transparent;font-size: 1rem;top: -34px;left: 212px;position: relative;"></a>
-            </div> -->
-			
-		
 			
 				
 		</div>
@@ -1194,21 +1149,6 @@
 					  <div class="pad-part">
 					  	<div id="fbsection"></div>
 				  	  </div>
-				  	  <!-- <div class="modal-footer" style="position: sticky;bottom: 0;background-color: white;padding: 5px 40px 20px;display: flex;align-items: center;border-top:0px;">
-					  	  <div id="footercss">
-						  	  
-						  	  <button id="rejdoc"class="approvebtn" type="button" style="margin-right:10px;">
-						  	  	<div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-knmidH-justify-space-between c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css" style="width: 100%;"><div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-bICGYT-justify-center c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css c-fGHEql c-fGHEql-jVpCez-align-center">
-						  	  	<div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M12 13.2728L17.0205 18.2933L18.2932 17.0205L13.2728 12L18.2932 6.97954L17.0205 5.70675L12 10.7272L6.97954 5.70675L5.70675 6.97954L10.7272 12L5.70675 17.0205L6.97954 18.2932L12 13.2728Z" fill="currentColor"></path></svg></div>
-						  	  	<div style="display: inline-block;"><span>반려</span></div></div></div>
-						  	  </button>
-						  	  <button id="aprdoc"class="approvebtn"type="button" style="background-color: rgb(19 133 255 / 86%);color:white;">
-							  	  <div class="" style="width: 100%;"><div class="">
-							  	  <div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M10.0425 14.6397L17.8067 6.35059L19.1934 7.64946L10.0975 17.3603L4.83347 12.1769L6.16656 10.8231L10.0425 14.6397Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div>
-							  	  <div style="display: inline-block;"><span>승인하기</span></div></div></div>
-							  </button>
-					  	  </div>
-				  	  </div> -->
 			  	</div>
 			  </div>
 			  <aside style="float: right;width: 30%;background: #fafafa;height: 207%;">
@@ -1229,11 +1169,3 @@
   </div>
 
 </div>
-
- 	
- 	
- 	
- 	
- 	
- 	
-	
