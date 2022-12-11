@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.hyerin.model.EmployeeVO;
 import com.spring.yeeun.model.AttendanceVO;
 import com.spring.yeeun.model.DayoffVO;
 import com.spring.yeeun.model.InterAttendanceDAO;
@@ -23,15 +24,6 @@ public class AttendanceService implements InterAttendanceService {
 		int n = dao.addAttendance(paraMap);
 		return n;
 	}
-
-	// 총 근무시간 조회하기
-	/*
-	@Override
-	public Map<String, String> getTotalTime(Map<String, String> paraMap) {
-		Map<String,String> totalTime = dao.getTotalTime(paraMap);
-		return totalTime;
-	}
-	*/
 	
 	// 저장한 근무상태 조회하기
 	@Override
@@ -61,6 +53,27 @@ public class AttendanceService implements InterAttendanceService {
 		return workTimeList;
 	}	
 	
+	// 하루치 총 근무시간 구하기
+	/*
+	@Override
+	public Map<String, String> getTotalTime(Map<String, String> paraMap) {
+		Map<String,String> totalTime = dao.getTotalTime(paraMap);
+		return totalTime;
+	} */
+	@Override
+	public List<AttendanceVO> getTotalworkTimebyDay(Map<String, String> paraMap) {
+		List<AttendanceVO> totalworkTimeList = dao.getTotalworkTimebyDay(paraMap);
+		return totalworkTimeList;
+	}
+	
+	// 일주일치 총 근무시간 구하기
+	@Override
+	public List<AttendanceVO> getTotalworkTimebyWeek(Map<String, String> paraMap) {
+		List<AttendanceVO> totalworkTimeList = dao.getTotalworkTimebyWeek(paraMap);
+		return totalworkTimeList;
+	}
+	
+	
 	
 	
 	
@@ -71,6 +84,14 @@ public class AttendanceService implements InterAttendanceService {
 		List<DayoffVO> dayoffList = dao.dayoffListView(fk_employee_no);
 		return dayoffList;
 	}
+	
+	// 잔여연차 구하기
+	@Override
+	public EmployeeVO getempvo(String fk_employee_no) {
+		EmployeeVO evo = dao.getempvo(fk_employee_no);
+		return evo;
+	}	
+	
 
 	// 년도별 휴가 내용 보여주기
 	@Override
@@ -85,6 +106,12 @@ public class AttendanceService implements InterAttendanceService {
 		List<DayoffVO> dayoffAdd = dao.dayoffAddScheduler(dayoffvo);
 		return dayoffAdd;
 	}
+
+
+
+	
+
+	
 
 
 

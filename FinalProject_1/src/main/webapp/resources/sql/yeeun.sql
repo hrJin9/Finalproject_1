@@ -309,8 +309,66 @@ from
  from tbl_attendance) v)
 select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin, total
 from B
-where fk_employee_no = 100016 and seldate = '2022-12-06'
+where fk_employee_no = 100016 and seldate = '2022-12-09'
 order by startTime asc
+
+
+---- 수정중
+to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi') , 'yyyy-mm-dd hh24:mi')
+to_date(to_char(enddate,'yyyy-mm-dd hh24:mi') , 'yyyy-mm-dd hh24:mi')
+
+
+with B as
+(select
+     adno, fk_employee_no, adcatgo,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+     GREATEST(endTime) AS endTime
+     --substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+     --substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+     --ROUND((enddate-startdate)*24*60) AS total,
+     --trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+     --trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
+from 
+(select adno, fk_employee_no, adcatgo, startTime, GREATEST(endTime, endTime) AS endTime,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+ from tbl_attendance
+ where fk_employee_no = 100016  and to_char(startTime, 'yyyy-mm-dd') = '2022-12-09'
+ ) v)
+select adno, fk_employee_no, adcatgo, seldate, endTime
+from B
+-- where fk_employee_no = 100016 and seldate = '2022-12-09'
+order by startTime asc
+
+
+select adno, fk_employee_no, adcatgo, startTime, endTime,
+       to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+       to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+from tbl_attendance
+where fk_employee_no = 100016  and to_char(startTime, 'yyyy-mm-dd') = '2022-12-06'
+
+
+
+
+
+
+
+
+
+
+SELECT  GREATEST( 1, 2, 3, 4, 5 )
+      , LEAST( SYSDATE, TO_DATE('2021-12-08', 'YYYYMMDD') )
+DAUL
+
+SELECT GREATEST(COL1, COL2, COL3) FROM TABLENAME;
+
+
+
+
+
+
+
+
 
 
 -- 총근무시간 조회하기
@@ -332,13 +390,13 @@ from
 group by seldate)
 select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin, total
 from B
-where fk_employee_no = 100016 and seldate = '2022-12-06'
+where fk_employee_no = 100016 and seldate = '2022-12-10'
 
 order by startTime asc
 
 
 
--- 총근무시간 조회하기(최종본)
+-- 하루치 총 근무시간 조회하기(최종본)
 select NVL(MAX(seldate), '0') AS seldate,
        NVL(MAX(trim(trunc(total / 60))), '0') AS workTime,
        NVL(MAX(trim(trunc(mod(abs(total), 60)))), '0') AS workMin
@@ -352,8 +410,8 @@ from
             substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
             substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
             ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS total
-      from tbl_attendance
-      where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-09'
+      from tbl_attendance 
+      where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-10'
     ) V
     group by seldate 
 )b
@@ -378,6 +436,28 @@ from
     group by seldate 
 )b
 where seldate = '2022-12-06'
+
+
+
+-- 하루치 총 근무시간 조회하기(최최종본)  --> 시/분 쪼개기는 자바(Controller)에서 처리해줄 것임.
+select NVL(MAX(seldate), '0') AS seldate,
+       NVL(MAX(totalTime), '0') AS totalTime
+from 
+(
+    select seldate, sum(total) AS totalTime
+    from
+    (
+      select adno, fk_employee_no, adcatgo,
+            substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+            substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+            substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+            ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS total
+      from tbl_attendance 
+      where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-10'
+    ) V
+    group by seldate 
+)b
+
 
 
 
@@ -460,8 +540,6 @@ where fk_employee_no = 100016 and seldate = '2022-12-09'
 order by startTime asc
 
 
-
-
 -- 최종1 수정본
 with B as
 (select
@@ -490,8 +568,30 @@ where fk_employee_no = 100016 and seldate = '2022-12-09'
 order by startTime asc
 
 
-select (300%60)
-from dual;
+-- 일주일치 총 근무시간 구하기
+with B as
+(select
+     fk_employee_no,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+     totalTime
+from 
+(select adno, fk_employee_no, startTime, endTime,
+        ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS totalTime
+ from tbl_attendance) v)
+select fk_employee_no, seldate, totalTime
+from B
+where fk_employee_no = 100016 and seldate = '2022-12-09'
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -514,10 +614,13 @@ WHEN NOT MATCHED THEN
 
 
 
+select *
+from tbl_employee
+where employee_no = '100016';
 
-
-
-
+update tbl_employee set dayoff_cnt = 3  -- leess 계정의 로그인날짜를 21/08/19 로 변경함. -- add_months()의 숫자 단위는 개월수이다.
+where employee_no = '100016';
+commit;
 
 delete from tbl_attendance
 where adno = 57

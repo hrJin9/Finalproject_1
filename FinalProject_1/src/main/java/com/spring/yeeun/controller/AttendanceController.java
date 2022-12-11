@@ -108,42 +108,6 @@ public class AttendanceController {
 	}
 	
 	
-	// 총 근무시간 조회하기
-	/*
-	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
-	@RequestMapping(value="/getTotalTime.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
-	public String getTotalTime(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
-		
-		String seldate = request.getParameter("seldate"); // 선택한 날짜
-		
-		// 로그인된 유저의 employee_no 알아오기
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
-		String fk_employee_no = loginuser.getEmployee_no();
-		
-		String year = seldate.substring(0,4);
-		String month = seldate.substring(6,8);
-		String day = seldate.substring(10,12);
-		String selectdate = year+'-'+month+'-'+day;
-		
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("fk_employee_no", fk_employee_no);
-		paraMap.put("selectdate", selectdate);
-		
-		Map<String,String> totalTime = service.getTotalTime(paraMap);
-		
-		JSONObject jsonobj = new JSONObject();
-		jsonobj.put("seldate", totalTime.get("seldate"));
-		jsonobj.put("workTime", totalTime.get("workTime"));
-		jsonobj.put("workMin", totalTime.get("workMin"));
-		//System.out.println("seldate : "+ totalTime.get("seldate"));
-		//System.out.println("workTime : "+ totalTime.get("workTime"));
-		//System.out.println("workMin : "  + totalTime.get("workMin"));
-		
-		return jsonobj.toString();
-	}		
-	*/
-	
 	
 	// 저장한 근무상태 조회하기
 	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
@@ -260,7 +224,7 @@ public class AttendanceController {
 	public String getworkTimebyDay(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
 		
 		String[] thisWeekDate = request.getParameterValues("thisWeekDate"); // 이번주 날짜
-		//System.out.println("thisWeekDate >> "+thisWeekDate);
+		//System.out.println("thisWeekDate.length >> "+thisWeekDate.length);
 		
 		// 로그인된 유저의 employee_no 알아오기
 		HttpSession session = request.getSession();
@@ -269,50 +233,34 @@ public class AttendanceController {
 		
 		JSONArray jsonArr = new JSONArray();  // []
 		
-        int n = 0;
 		for (int i = 0; i < thisWeekDate.length; i++) {
 			Map<String, String> paraMap = new HashMap<String, String>();
 			String year = thisWeekDate[i].substring(0, 4);
 			String month = thisWeekDate[i].substring(6, 8);
 			String day = thisWeekDate[i].substring(10, 12);
-			
 			String thisWeekDay = year+'-'+month+'-'+day;
-			//System.out.println("thisWeekDay >>> "+thisWeekDay);
 			
 			paraMap.put("fk_employee_no", fk_employee_no);  
 	        paraMap.put("thisWeekDay", thisWeekDay); 
 	        
 	        List<AttendanceVO> workTimeList = service.getworkTimebyDay(paraMap);
 	        
-        	if(workTimeList != null) {
-        		int realtotal = 0;
-        							//9일에는 리스트사이즈가 5
+        	if(!workTimeList.isEmpty()) {
+        							
         		for (int j = 0; j < workTimeList.size(); j++) {
-        			
         			JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
         			jsonObj.put("adno", workTimeList.get(j).getAdno());
         			jsonObj.put("fk_employee_no", workTimeList.get(j).getFk_employee_no());
+        			jsonObj.put("adcatgo", workTimeList.get(j).getAdcatgo());
         			jsonObj.put("seldate", workTimeList.get(j).getSeldate());
         			jsonObj.put("startTime", workTimeList.get(j).getStartTime());
         			jsonObj.put("endTime", workTimeList.get(j).getEndTime());
-        			//jsonObj.put("workTime", workTimeList.get(j).getWorkTime());
-        			//jsonObj.put("workMin", workTimeList.get(j).getWorkMin());
-					jsonArr.put(jsonObj);
-					realtotal += Integer.parseInt(workTimeList.get(j).getTotalTime());
-					//System.out.println("seldate :" +workTimeList.get(j).getSeldate());
-					System.out.println("realtotal :" +realtotal);
-					
-					if(workTimeList.size()-1 == j) {
-						int workTime = realtotal / 60;  // 몫
-						int workMin = realtotal % 60;   // 나머지
-						//System.out.println("workTime :" +workTime);
-						//System.out.println("workMin :" +workMin);
-						//System.out.println("realtotal :" +realtotal);
-						
-						jsonObj.put("workTime", workTime);
-						jsonObj.put("workMin", workMin);
-						jsonObj.put("totalTime", realtotal);
-					}
+        			jsonObj.put("workTime", workTimeList.get(j).getWorkTime());
+        			jsonObj.put("workMin", workTimeList.get(j).getWorkMin());
+        			jsonObj.put("totalTime", workTimeList.get(j).getTotalTime());
+        			
+        			
+        			jsonArr.put(jsonObj);
 				}
         		
         	} else {
@@ -329,7 +277,121 @@ public class AttendanceController {
 			
 		}
 		
+		
 		return jsonArr.toString();
+	}		
+
+	
+	
+	// 하루치 총 근무시간 구하기
+	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
+	@RequestMapping(value="/totalTimebyDay.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
+	public String totalTimebyDay(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+		
+		String[] thisWeekDate = request.getParameterValues("thisWeekDate"); // 이번주 날짜
+		
+		// 로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		JSONArray jsonArr = new JSONArray();  // []
+		
+		for (int i = 0; i < thisWeekDate.length; i++) {
+			Map<String, String> paraMap = new HashMap<String, String>();
+			String year = thisWeekDate[i].substring(0, 4);
+			String month = thisWeekDate[i].substring(6, 8);
+			String day = thisWeekDate[i].substring(10, 12);
+			String thisWeekDay = year+'-'+month+'-'+day;
+			
+			paraMap.put("fk_employee_no", fk_employee_no);  
+			paraMap.put("thisWeekDay", thisWeekDay); 
+			System.out.println("여기에요 thisWeekDay >>>>>>>>> "+thisWeekDay);
+
+			List<AttendanceVO> totalworkTimeList = service.getTotalworkTimebyDay(paraMap);
+				
+			int realtotal = 0;
+			for (int j = 0; j < totalworkTimeList.size(); j++) {
+				JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+    			jsonObj.put("seldate", totalworkTimeList.get(j).getSeldate());
+				//System.out.println("seldate :" +totalworkTimeList.get(j).getSeldate());
+				//System.out.println("totalTime :" +totalworkTimeList.get(j).getTotalTime());
+    			if(Integer.parseInt(totalworkTimeList.get(j).getTotalTime()) <= 240) { // 반차 근무
+    				realtotal = Integer.parseInt(totalworkTimeList.get(j).getTotalTime());
+    			} else {
+    				realtotal = Integer.parseInt(totalworkTimeList.get(j).getTotalTime()) - 60;
+    			}
+    			
+				int workTime = realtotal / 60;  // 몫
+    			int workMin = realtotal % 60;   // 나머지
+    			//System.out.println("realtotal :" +realtotal);
+    			//System.out.println("workTime :" +workTime);
+    			//System.out.println("workMin :" +workMin);
+    			jsonObj.put("workTime", workTime);
+    			jsonObj.put("workMin", workMin);
+				jsonArr.put(jsonObj);
+			} 
+		}
+		
+		return jsonArr.toString();
+	}
+	
+	
+	// 일주일치 총 근무시간 구하기
+	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
+	@RequestMapping(value="/totalTimebyWeek.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
+	public String totalTimebyWeek(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+		
+		String[] thisWeekDate = request.getParameterValues("thisWeekDate"); // 이번주 날짜
+		//System.out.println("thisWeekDate >>> "+thisWeekDate);
+		
+		// 로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+		
+		float realtotal = 0;
+		int size = 0;
+		int workTimeList_length = 0;
+		for (int i = 0; i < thisWeekDate.length; i++) {
+			Map<String, String> paraMap = new HashMap<String, String>();
+			String year = thisWeekDate[i].substring(0, 4);
+			String month = thisWeekDate[i].substring(6, 8);
+			String day = thisWeekDate[i].substring(10, 12);
+			String thisWeekDay = year+'-'+month+'-'+day;
+			//System.out.println("thisWeekDay >>>>>>>>>>> "+thisWeekDay);
+			
+			paraMap.put("fk_employee_no", fk_employee_no);  
+			paraMap.put("thisWeekDay", thisWeekDay); 
+			
+			List<AttendanceVO> totalworkTimeList = service.getTotalworkTimebyWeek(paraMap);
+			
+			for (int j = 0; j < totalworkTimeList.size(); j++) {
+				realtotal += Integer.parseInt(totalworkTimeList.get(j).getTotalTime());
+				System.out.println("realtotal >>>>>>>" +realtotal);
+			}
+			size = totalworkTimeList.size();
+			workTimeList_length += size;
+			//System.out.println("size : "+size);
+		}
+		//System.out.println("workTimeList_length : "+workTimeList_length);
+		
+		// 근무한 날짜 개수만큼 근무시간 빼줘야함 .!!!
+		realtotal = realtotal - (workTimeList_length*60);
+		int workTime = (int)(realtotal / 60);  // 몫
+		int workMin = (int)(realtotal % 60);   // 나머지
+		
+		int realtotal_per = Math.round((realtotal/3120)*100);
+		//System.out.println("realtotal_per : " +realtotal_per);
+		
+		jsonObj.put("workTime", workTime);
+		jsonObj.put("workMin", workMin);
+		jsonObj.put("realtotal_per", realtotal_per);
+		
+		//jsonObj.put("workTimeList_length", workTimeList_length);
+		return jsonObj.toString();
 	}		
 
 	
@@ -343,7 +405,6 @@ public class AttendanceController {
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	
 	// 휴가 개요 보여주기
 	@RequestMapping(value = "/dayoff/index.up")
 	public ModelAndView dayoff_index(HttpServletRequest request, ModelAndView mav) throws ParseException {
@@ -379,6 +440,12 @@ public class AttendanceController {
 				lastdayoff.add(list);
 			}
 		}
+		
+		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
+		EmployeeVO evo = service.getempvo(fk_employee_no);
+		//System.out.println(evo.getDayoff_cnt());
+		
+		mav.addObject("evo", evo);
 		
 	    //mav.addObject("dayoffList", dayoffList); // 구해온 값이 null이 아니라면 dayoffList를 dayoff_index.jsp 에 넘긴다.
 	    mav.addObject("comedayoff", comedayoff); // 구해온 값이 null이 아니라면 dayoffList를 dayoff_index.jsp 에 넘긴다.
@@ -430,6 +497,10 @@ public class AttendanceController {
 		
 		return jsonArr.toString();
 	}	
+	
+	
+	
+	
 	
 	
 	// ** 연차상세 ** //

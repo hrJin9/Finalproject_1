@@ -172,7 +172,7 @@
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="25px"/>
 				<div>
 					<div>연차 신청</div>
-					<div><span>1</span>일 / <span>15</span>일</div>
+					<div><span>${requestScope.evo.dayoff_cnt}</span>일 / <span>20</span>일</div>
 				</div>			
 			</div>
 			<div class="dayoff-box sick" onclick="javascript:location.href='<%=ctxPath%>/approval/writing.up?type=sick'">
