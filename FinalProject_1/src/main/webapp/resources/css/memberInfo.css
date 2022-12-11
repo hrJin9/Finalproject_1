@@ -291,16 +291,16 @@ input:focus, select:focus{
 
 
 div#alert {
-	width: 200px; 
-	height: 35px; 
-	background-color: #4d4d4d; 
-	color: white; 
-	font-weight: bold; 
-	font-size:10pt; 
-	border-radius: 2em; 
-	padding-left: 32px;
-	position: fixed; 
-	top: 15px;
-	right: 40%;
-	box-shadow: 1px 1px 1px 1.3px rgba(0, 0, 0, 0.2);
+    display: none;
+    height: 35px;
+    background-color: #4d4d4d;
+    color: white;
+    font-weight: bold;
+    font-size: 10pt;
+    border-radius: 2em;
+    padding: 0 32px;
+    position: fixed;
+    top: 15px;
+    right: 38%;
+    box-shadow: 1px 1px 1px 1.3px rgb(0 0 0 / 20%);
 }

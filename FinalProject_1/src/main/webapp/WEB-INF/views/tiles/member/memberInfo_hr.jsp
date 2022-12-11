@@ -37,7 +37,10 @@ $(document).ready(function(){
 	$("#phone").click(function(){
 		var mobile = "${requestScope.evo.mobile}";
 		window.navigator.clipboard.writeText(mobile);
-		alert("복사성공");
+		$("#alert").fadeIn("fast");
+		setTimeout(function(){
+			$("#alert").fadeOut("fast");
+		}, 1500);
 	});
 	
 	// 메시지 버튼 클릭시 메시지 보내기로 이동
@@ -214,7 +217,21 @@ function getWorkinghour(){
 		</c:if>
 	    <span class="myInfo">
 	    	<span style="font-size: 20pt; font-weight: 700;">${requestScope.evo.name_kr}</span><br>
-	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -8px;"><span id="team">소속</span>${requestScope.evo.department_name}/${requestScope.evo.team_name}</span>
+	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -8px;"><span id="team" style="padding-right: 10px;">소속</span>
+	    		<c:if test="${not empty requestScope.evo.department_name}">
+	    			${requestScope.evo.department_name}
+	    		</c:if>
+	    		<c:if test="${empty requestScope.evo.department_name}">
+	    			미지정
+	    		</c:if>
+	    		/
+	    		<c:if test="${not empty requestScope.evo.team_name}">
+	    			${requestScope.evo.team_name}
+	    		</c:if>
+	    		<c:if test="${empty requestScope.evo.team_name}">
+	    			미지정
+	    		</c:if>
+    		</span>
 	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role">직무</span>${requestScope.evo.role}</span>
 	    	<button type="button" id="phone" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="${requestScope.evo.mobile}"><span><i class="fas fa-phone-alt" style="transform: scaleX(-1); transition: .3s; color: #666666;"></i></span></button>
 	    	<button type="button" id="message" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="메시지 보내기" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
@@ -267,12 +284,26 @@ function getWorkinghour(){
 						</tr>
 		                <tr>
 		                   <td>고용형태</td>   
-		                   <td>정직원</td>   
+		                   <td>${requestScope.evo.employmenttype}</td>   
 		                </tr>
 			        </c:if>
 		                <tr>
 		                   <td>소속</td>   
-		                   <td>${requestScope.evo.department_name}/${requestScope.evo.team_name}</td>   
+		                   <td>
+		                   <c:if test="${not empty requestScope.evo.department_name}">
+				    			${requestScope.evo.department_name}
+				    		</c:if>
+				    		<c:if test="${empty requestScope.evo.department_name}">
+				    			미지정
+				    		</c:if>
+		                   /
+		                   <c:if test="${not empty requestScope.evo.team_name}">
+				    			${requestScope.evo.team_name}
+				    		</c:if>
+				    		<c:if test="${empty requestScope.evo.team_name}">
+				    			미지정
+				    		</c:if>
+		                   </td>   
 		                </tr>
 		                <tr>
 		                   <td>직위</td>   
@@ -472,12 +503,10 @@ function getWorkinghour(){
        </c:if>
 	</form>
   	
-  	
   	<div id="alert">
-		<i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:7px; font-size:13pt;"></i>
-		<span id="alertText">${requestScope.evo.mobile}이 복사되었습니다.</span>
-	</div>
-  	
+         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+         <span id="alertText" style="position: relative; bottom: 2px;">${requestScope.evo.mobile}이 복사되었습니다.</span>
+    </div>
 </div>
 
 

@@ -6,7 +6,7 @@
 	<select id="getLoginMember" resultType="com.spring.hyerin.model.EmployeeVO" parameterType="HashMap">
 		select employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, role, position, authority,birthday
 		from tbl_employee
-		where status = 1 and employee_no = #{userid} 
+		where delete_status = 1 and employee_no = #{userid} 
 	</select>
 	
 	<!-- 부서정보 가져오기 -->
@@ -47,7 +47,7 @@
 	
 	
 	<select id="getempvo" parameterType="String" resultType="com.spring.hyerin.model.EmployeeVO">
-		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, to_char(hire_date,'yyyy. mm. dd') as hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, to_char(birthday,'yyyy-mm-dd') as birthday, dayoff_cnt
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, to_char(hire_date,'yyyy. mm. dd') as hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, delete_status, role, position, authority, to_char(birthday,'yyyy-mm-dd') as birthday, dayoff_cnt, employmenttype
 		from v_employee
 		where employee_no = #{empno}
 	</select>
@@ -74,5 +74,289 @@
 		from tbl_attendance 
 		where fk_employee_no = #{employee_no} and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
 	</select>
+	
+	
+	
+	<!-- 부서목록 가져오기 -->
+	<select id="getdeptname" resultType="com.spring.hyerin.model.DepartmentsVO">
+		select department_no, department_name
+		from tbl_departments 
+	</select>
+	
+	<!-- 직위 가져오기 -->
+	<select id="getposition" resultType="String">
+		select position
+		from tbl_employee
+		where position is not null
+		group by position
+	</select>
+	
+	<!-- 고용형태 가져오기 -->
+	<select id="getjointype" resultType="String">
+		select employmenttype
+		from tbl_employee
+		group by employmenttype
+	</select>
+	
+	
+	<!-- 페이징 처리한 구성원 총 페이지수 알아오기 -->
+	<select id="getEmpTotal" parameterType="HashMap" resultType="int">
+		select count(*)
+		from
+		(
+		    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, delete_status, role, position, authority
+		    from v_employee
+		    where 1 = 1
+		    <if test="dropCondition == 'authority' and dropVal == '0'">
+		    	and authority != 1
+		    </if>
+		    <if test="dropCondition != '' and dropCondition != 'authority' and dropVal != '' and dropVal != 'none'">
+			    and ${dropCondition} = #{dropVal}
+		    </if>
+		    <if test="dropVal == 'none'">
+		    	and ${dropCondition} is null
+		    </if>
+		    <if test="searchCondition != '' and searchVal != ''">
+			    and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+		    </if>
+		)
+	</select>
+	
+	<!-- 페이징처리한 구성원 목록 가져오기 -->
+	<select id="getEmpList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, delete_status, role, position, authority, employmenttype
+		from
+		(
+		    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, delete_status, role, position, authority,employmenttype
+		    from v_employee
+		    where 1 = 1
+		    <if test="dropCondition == 'authority' and dropVal == '0'">
+		    	and authority != 1
+		    </if>
+		    <if test="dropCondition != '' and dropCondition != 'authority' and dropVal != '' and dropVal != 'none'">
+			    and ${dropCondition} = #{dropVal}
+		    </if>
+		    <if test="dropVal == 'none'">
+		    	and ${dropCondition} is null
+		    </if>
+		    <if test="searchCondition != '' and searchVal != ''">
+			    and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+		    </if>
+		)
+		where rno between #{startRno} and #{endRno}
+	</select>
+	
+	
+	<!-- 해당 부서의 팀 가져오기 -->
+	<select id="getTeams" parameterType="String" resultType="com.spring.hyerin.model.TeamVO">
+		select team_no, team_name
+		from tbl_team
+		where fk_department_no = #{deptno}
+	</select>
+	
+	
+	<!-- 새로운 부서의 no 채번해오기 -->
+	<select id="getNewDepartment" resultType="String">
+		select seq_tbl_departments.nextval
+		from dual
+	</select>
+	
+	
+	<!-- 새로운 부서를 만들기 -->
+	<insert id="addDepartment" parameterType="HashMap">
+		insert into tbl_departments values(#{fk_department_no}, #{department_name}, null, default)
+	</insert>
+	
+	
+	<!-- 새로운 팀의 no 채번해오기 -->
+	<select id="getNewTeam" resultType="String">
+		select seq_tbl_team.nextval
+		from dual
+	</select>
+	
+	<!-- 새로운 팀을 만들기 -->
+	<insert id="addTeam" parameterType="HashMap">
+		insert into tbl_team values(#{team_no}, #{team_name}, #{fk_department_no},null,default)
+	</insert>
+	
+	
+	<!-- 사원번호 채번해오기 -->
+	<select id="getNewEmpno" parameterType="String" resultType="String">
+		select #{fk_department_no}||lpad(seq_tbl_employee.nextval,4,0)
+		from dual
+	</select>
+	
+	<!-- 사원테이블에 insert  -->
+	<insert id="addEmployee" parameterType="com.spring.hyerin.model.EmployeeVO">
+		insert into tbl_employee(employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, delete_status, role, position, authority, dayoff_cnt, birthday, filesize, employmenttype)
+		values(#{employee_no}, #{fk_department_no}, #{fk_team_no}, #{name_kr}, 
+		<if test="name_en == ''">
+			null,
+		</if>
+		<if test="name_en != ''">
+			#{name_en},
+		</if>
+		 #{passwd}, #{jointype}, null, #{hire_date}, null, null, 
+		 <if test="mobile == ''">
+		 	null,
+		 </if>
+		 <if test="mobile != ''">
+		 	#{mobile},
+		 </if>
+		 <if test="postcode == ''">
+		 	null, 
+		 </if>
+		 <if test="postcode != ''">
+		 	#{postcode},
+		 </if>
+		 <if test="address == ''">
+		 	null,
+		 </if>
+		 <if test="address != ''">
+		 	 #{address}, 
+		 </if>
+		 <if test="detail_address == ''">
+		 	null, 
+		 </if>
+		 <if test="detail_address != ''">
+		 	#{detail_address}, 
+		 </if>
+		 <if test="extra_address == ''">
+		 	null, 
+		 </if>
+		 <if test="extra_address != ''">
+		 	#{extra_address},
+		 </if>
+		  #{email}, #{gender},  null, null,
+		 <if test="academic_ability == ''">
+		 	null,
+		 </if>
+		 <if test="academic_ability != ''">
+		 	#{academic_ability},
+		 </if>
+		 <if test="major == ''">
+		 	null,
+		 </if>
+		 <if test="major != ''">
+		 	#{major},
+		 </if>
+		 <choose>
+		 	<when test="militaryservice==''">
+		 		null,
+		 	</when>
+		 	<when test="militaryservice==0">
+		 		'미필',
+		 	</when>
+		 	<when test="militaryservice==1">
+		 		'군필',
+		 	</when>
+		 </choose>
+		 <if test="bank == ''">
+		 	null, null,
+		 </if>
+		 <if test="bank != ''">
+		 	#{bank}, #{accountnumber},
+		 </if>
+		 default, #{role}, #{position}, #{authority}, 0, #{birthday}, 0, #{employmenttype})
+	</insert>
+	
+	
+	<!-- 해당 사원들의 status를 0으로 바꿔주기 -->
+	<update id="goDeleteEmp" parameterType="HashMap">
+		update tbl_employee set delete_status = 0
+		where employee_no in
+		<foreach collection="empnoArr" index="i" open="(" separator="," close=")">
+			'${empnoArr[i]}'
+		</foreach>
+	</update>
+	
+	
+	
+	<!-- 사원테이블 한 사원 수정  -->
+	<update id="updateEmployee" parameterType="com.spring.hyerin.model.EmployeeVO">
+		update tbl_employee set fk_department_no = #{fk_department_no}, fk_team_no = #{fk_team_no}, name_kr = #{name_kr},
+		<if test="name_en == ''">
+			name_en = null,
+		</if>
+		<if test="name_en != ''">
+			name_en = #{name_en},
+		</if>
+		jointype = #{jointype}, manager_no = null, hire_date = #{hire_date}, 
+		 <if test="salary == ''">
+		 	salary = null,
+		 </if>
+		 <if test="salary != ''">
+		 	salary = #{salary},
+		 </if>
+		 <if test="commission_pct == ''">
+		 	commission_pct = null,
+		 </if>
+		 <if test="commission_pct != ''">
+		 	commission_pct = #{commission_pct},
+		 </if>
+		 <if test="mobile == ''">
+		 	mobile = null,
+		 </if>
+		 <if test="mobile != ''">
+		 	mobile = #{mobile},
+		 </if>
+		 <if test="postcode == ''">
+		 	postcode = null, 
+		 </if>
+		 <if test="postcode != ''">
+		 	postcode = #{postcode},
+		 </if>
+		 <if test="address == ''">
+		 	address = null,
+		 </if>
+		 <if test="address != ''">
+		 	 address = #{address}, 
+		 </if>
+		 <if test="detail_address == ''">
+		 	detail_address = null, 
+		 </if>
+		 <if test="detail_address != ''">
+		 	detail_address = #{detail_address}, 
+		 </if>
+		 <if test="extra_address == ''">
+		 	extra_address = null, 
+		 </if>
+		 <if test="extra_address != ''">
+		 	extra_address = #{extra_address},
+		 </if>
+		 email = #{email}, gender = #{gender},
+		 <if test="academic_ability == ''">
+		 	academic_ability = null,
+		 </if>
+		 <if test="academic_ability != ''">
+		 	academic_ability = #{academic_ability},
+		 </if>
+		 <if test="major == ''">
+		 	major = null,
+		 </if>
+		 <if test="major != ''">
+		 	major = #{major},
+		 </if>
+		 <choose>
+		 	<when test="militaryservice==''">
+		 		militaryservice = null,
+		 	</when>
+		 	<when test="militaryservice==0">
+		 		militaryservice = '미필',
+		 	</when>
+		 	<when test="militaryservice==1">
+		 		militaryservice = '군필',
+		 	</when>
+		 </choose>
+		 <if test="bank == ''">
+		 	bank = null, accountnumber = null,
+		 </if>
+		 <if test="bank != ''">
+		 	bank = #{bank}, accountnumber = #{accountnumber},
+		 </if>
+		 delete_status = default, role = #{role}, position = #{position}, authority = #{authority}, birthday = #{birthday}, employmenttype = #{employmenttype}, delete_status = #{delete_status}
+		 where employee_no = #{employee_no}
+	</update>
+	
 	
 </mapper>
