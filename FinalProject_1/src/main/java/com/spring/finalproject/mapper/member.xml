@@ -32,9 +32,9 @@
 		    (
 		        select team_no, team_name, count(employee_no) as total
 		        from tbl_team
-		        left outer join tbl_employee
+		        left outer join tbl_employee E
 		        on fk_team_no = team_no
-		        where delete_status = 1
+		        where E.delete_status = 1
 		        group by (team_no, team_name)
 		    ) TC
 		    join tbl_team T

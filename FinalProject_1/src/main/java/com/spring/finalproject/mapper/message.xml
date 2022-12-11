@@ -243,9 +243,9 @@
 		    (
 		        select team_no, team_name, count(employee_no) as total
 		        from tbl_team
-		        left outer join tbl_employee
+		        left outer join tbl_employee E
 		        on fk_team_no = team_no
-		        where delete_status = 1
+		        where E.delete_status = 1
 		        group by (team_no, team_name)
 		    ) TC
 		    join tbl_team T
@@ -261,7 +261,7 @@
 	<select id="getEmpList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
 		select nvl(fk_department_no,0) as fk_department_no, nvl(department_name,0) as department_name, nvl(fk_team_no,0) as fk_team_no, nvl(team_name,0) as team_name, employee_no, name_kr, role, position, profile_systemfilename
 		from v_employee
-		where status = 1 and employee_no != 99
+		where delete_status = 1 and employee_no != 99
 		<if test="searchVal != '' and teamVal == ''">
 			and ${searchCondition} like '%'||#{searchVal}||'%'
 		</if>
