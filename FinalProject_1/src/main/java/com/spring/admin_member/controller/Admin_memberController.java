@@ -316,33 +316,56 @@ public class Admin_memberController {
 	
 	
 	
-	@RequestMapping(value = "/memUpdateEnd.up")
+	@RequestMapping(value = "/memUpdateEnd.up", method = {RequestMethod.POST})
 	public ModelAndView memUpdateEnd(HttpServletRequest request, ModelAndView mav, EmployeeVO evo) throws Throwable {
 		
 		
-		System.out.println("employee_no" + evo.getEmployee_no());
+		evo.setEmail(aes.encrypt(evo.getEmail()));
+		evo.setMobile(aes.encrypt(evo.getMobile()));
 		
+		 //트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 update) 
+		int n = service.updateEmployee(evo);
 		
-//		evo.setEmail(aes.encrypt(evo.getEmail()));
-//		evo.setMobile(aes.encrypt(evo.getMobile()));
-//		
-//		 //트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 update) 
-//		int n = service.updateEmployee(evo);
-//		
-//		String message = "";
-//		String loc = "";
-//		if(n == 1) {
-//			loc = request.getContextPath()+"/admin_memberList.up";
-//		} else {
-//			message = "구성원을 추가하는데 실패하였습니다.";
-//			loc = "javascript:history.back()";
-//		}
-//		mav.addObject("message",message);
-//		mav.addObject("loc",loc);
-//		
+		String message = "";
+		String loc = "";
+		if(n == 1) {
+			loc = request.getContextPath()+"/admin_memberList.up";
+		} else {
+			message = "구성원을 추가하는데 실패하였습니다.";
+			loc = "javascript:history.back()";
+		}
+		mav.addObject("message",message);
+		mav.addObject("loc",loc);
+		
 		mav.setViewName("msg");
 		return mav;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/updateMyInfo.up")
+	public String getTeams(HttpServletRequest request, EmployeeVO evo) throws Throwable {
+		
+		
+//		System.out.println("Postcode : " + evo.getPostcode());
+//		System.out.println("Address : " + evo.getAddress());
+//		System.out.println("Detail_address : " + evo.getDetail_address());
+//		System.out.println("Extra_address : " + evo.getExtra_address());
+//		System.out.println("Bank : " + evo.getBank());
+//		System.out.println("Accountnumber : " + evo.getAccountnumber());
+		
+		evo.setEmail(aes.encrypt(evo.getEmail()));
+		evo.setMobile(aes.encrypt(evo.getMobile()));
+		
+		// 해당 사원의 정보를 변경해주기
+		int n = service.updateMyInfo(evo);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("n", n);
+		
+		return jsonobj.toString();
+	}
+	
 	
 	
 }

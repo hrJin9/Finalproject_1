@@ -238,12 +238,39 @@ public class MemberService implements InterMemberService {
 		
 		if (n==1 && m==1) {
 			
+//			System.out.println("Fk_department_no : " + evo.getFk_department_no());
+//			System.out.println("Fk_team_no : " + evo.getFk_team_no());
+//			System.out.println("Name_kr : " + evo.getName_kr());
+//			System.out.println("Name_en : " + evo.getName_en());
+//			System.out.println("Hire_date : " + evo.getHire_date());
+//			System.out.println("Salary : " + evo.getSalary());
+//			System.out.println("Mobile : " + evo.getMobile());
+//			System.out.println("Postcode : " + evo.getPostcode());
+//			System.out.println("Email : " + evo.getEmail());
+//			System.out.println("Gender : " + evo.getGender());
+//			System.out.println("Academic_ability : " + evo.getAcademic_ability());
+//			System.out.println("Major : " + evo.getMajor());
+//			System.out.println("Delete_status : " + evo.getDelete_status());
+//			System.out.println("Role : " + evo.getRole());
+//			System.out.println("Position : " + evo.getPosition());
+//			System.out.println("Authority : " + evo.getAuthority());
+//			System.out.println("Birthday : " + evo.getBirthday());
+//			System.out.println("employmenttype : " + evo.getemploymenttype());
+//			System.out.println("employee_no : " + evo.getEmployee_no());
+			
 			// 사원테이블에 update
 			l = dao.updateEmployee(evo);
 			
 		}
 		
 		return l;
+	}
+	
+	// 해당 사원의 정보를 변경해주기
+	@Override
+	public int updateMyInfo(EmployeeVO evo) {
+		int n = dao.updateMyInfo(evo);
+		return n;
 	}
 	
 }

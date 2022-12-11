@@ -67,5 +67,8 @@ public interface InterMemberDAO {
 	int goDeleteEmp(Map<String, String[]> paraMap);
 
 	int updateEmployee(EmployeeVO evo);
+	
+	// 해당 사원의 정보를 변경해주기
+	int updateMyInfo(EmployeeVO evo);
 
 }

@@ -172,6 +172,14 @@ public class MemberDAO implements InterMemberDAO {
 		int n = sqlsession.update("member.updateEmployee",evo);
 		return n;
 	}
+
+	
+	// 해당 사원의 정보를 변경해주기
+	@Override
+	public int updateMyInfo(EmployeeVO evo) {
+		int n = sqlsession.update("member.updateMyInfo", evo);
+		return n;
+	}
 	
 	
 	

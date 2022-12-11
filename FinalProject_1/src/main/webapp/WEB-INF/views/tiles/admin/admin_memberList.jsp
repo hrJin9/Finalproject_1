@@ -393,10 +393,10 @@ function goUpdate(){
 			              		<td>관리</td>
 			              	</c:otherwise>
 			              </c:choose>
-			              <c:if test="${emp.status == 1}">
+			              <c:if test="${emp.delete_status == 1}">
 				              <td>정상</td>
 			              </c:if>
-			              <c:if test="${emp.status == 0}">
+			              <c:if test="${emp.delete_status == 0}">
 				              <td>중지</td>
 			              </c:if>
 			            </tr> 

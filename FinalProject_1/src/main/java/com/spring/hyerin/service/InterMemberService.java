@@ -53,5 +53,8 @@ public interface InterMemberService {
 	
 	//트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 update)
 	int updateEmployee(EmployeeVO evo);
+	
+	// 해당 사원의 정보를 변경해주기
+	int updateMyInfo(EmployeeVO evo);
 
 }
