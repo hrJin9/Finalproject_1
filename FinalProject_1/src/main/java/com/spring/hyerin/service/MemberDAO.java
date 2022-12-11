@@ -156,6 +156,14 @@ public class MemberDAO implements InterMemberDAO {
 		String tno = sqlsession.selectOne("member.getNewTeam");
 		return tno;
 	}
+
+	
+	// 해당 사원들의 status를 0으로 바꿔주기
+	@Override
+	public int goDeleteEmp(Map<String, String[]> paraMap) {
+		int n = sqlsession.update("member.goDeleteEmp",paraMap);
+		return n;
+	}
 	
 	
 	

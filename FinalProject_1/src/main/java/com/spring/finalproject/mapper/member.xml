@@ -47,7 +47,7 @@
 	
 	
 	<select id="getempvo" parameterType="String" resultType="com.spring.hyerin.model.EmployeeVO">
-		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, to_char(hire_date,'yyyy. mm. dd') as hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, to_char(birthday,'yyyy-mm-dd') as birthday, dayoff_cnt
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, to_char(hire_date,'yyyy. mm. dd') as hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, to_char(birthday,'yyyy-mm-dd') as birthday, dayoff_cnt, employmenttype
 		from v_employee
 		where employee_no = #{empno}
 	</select>
@@ -261,6 +261,113 @@
 	</insert>
 	
 	
+	<!-- 해당 사원들의 status를 0으로 바꿔주기 -->
+	<update id="goDeleteEmp" parameterType="HashMap">
+		update tbl_employee set status = 0
+		where employee_no in
+		<foreach collection="empnoArr" index="i" open="(" separator="," close=")">
+			'${empnoArr[i]}'
+		</foreach>
+	</update>
+	
+	
+	
+	<!-- 사원테이블 한 사원 수정  -->
+	<insert id="updateEmployee" parameterType="com.spring.hyerin.model.EmployeeVO">
+		update tbl_employee set fk_department_no = #{fk_department_no}, fk_team_no = #{fk_team_no}, name_kr = #{name_kr},
+		name_en = 
+		<if test="name_en == ''">
+			null,
+		</if>
+		<if test="name_en != ''">
+			#{name_en},
+		</if>
+		jointype = #{jointype}, manager_no = null, hire_date = #{hire_date}, 
+		salary = 
+		 <if test="salary == ''">
+		 	null,
+		 </if>
+		 <if test="salary != ''">
+		 	#{salary},
+		 </if>
+		 commission_pct = 
+		 <if test="commission_pct == ''">
+		 	null,
+		 </if>
+		 <if test="commission_pct != ''">
+		 	#{commission_pct},
+		 </if>
+		  mobile =
+		 <if test="mobile == ''">
+		 	null,
+		 </if>
+		 <if test="mobile != ''">
+		 	#{mobile},
+		 </if>
+		 postcode =
+		 <if test="postcode == ''">
+		 	null, 
+		 </if>
+		 <if test="postcode != ''">
+		 	#{postcode},
+		 </if>
+		 address =
+		 <if test="address == ''">
+		 	null,
+		 </if>
+		 <if test="address != ''">
+		 	 #{address}, 
+		 </if>
+		 detail_address =
+		 <if test="detail_address == ''">
+		 	null, 
+		 </if>
+		 <if test="detail_address != ''">
+		 	#{detail_address}, 
+		 </if>
+		 extra_address =
+		 <if test="extra_address == ''">
+		 	null, 
+		 </if>
+		 <if test="extra_address != ''">
+		 	#{extra_address},
+		 </if>
+		 email = #{email}, gender = #{gender},
+		 academic_ability =
+		 <if test="academic_ability == ''">
+		 	null,
+		 </if>
+		 <if test="academic_ability != ''">
+		 	#{academic_ability},
+		 </if>
+		 major =
+		 <if test="major == ''">
+		 	null,
+		 </if>
+		 <if test="major != ''">
+		 	#{major},
+		 </if>
+		 militaryservice =
+		 <choose>
+		 	<when test="militaryservice==''">
+		 		null,
+		 	</when>
+		 	<when test="militaryservice==0">
+		 		'미필',
+		 	</when>
+		 	<when test="militaryservice==1">
+		 		'군필',
+		 	</when>
+		 </choose>
+		 bank = 
+		 <if test="bank == ''">
+		 	null, accountnumber = null,
+		 </if>
+		 <if test="bank != ''">
+		 	#{bank}, accountnumber = #{accountnumber},
+		 </if>
+		 status = default, role = #{role}, position = #{position}, authority = #{authority}, birthday = #{birthday}, employmenttype = #{employmenttype}
+	</insert>
 	
 	
 </mapper>

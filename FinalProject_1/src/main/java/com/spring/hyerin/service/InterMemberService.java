@@ -47,5 +47,8 @@ public interface InterMemberService {
 	
 	// 트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 insert)
 	Map<String, String> addEmployee(EmployeeVO evo) throws Throwable;
+	
+	// 해당 사원들의 status를 0으로 바꿔주기
+	int goDeleteEmp(Map<String, String[]> paraMap);
 
 }

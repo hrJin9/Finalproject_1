@@ -13,6 +13,20 @@
 	cursor: pointer;
 	background-color: rgba(230,230,230,0.1);
 }
+div#alert {
+    display: none;
+    height: 35px;
+    background-color: #4d4d4d;
+    color: white;
+    font-weight: bold;
+    font-size: 10pt;
+    border-radius: 2em;
+    padding: 0 32px;
+    position: fixed;
+    top: 15px;
+    right: 38%;
+    box-shadow: 1px 1px 1px 1.3px rgb(0 0 0 / 20%);
+}
 </style>
 
 <script type="text/javascript">
@@ -80,12 +94,22 @@ $(document).ready(function(){
     
 	
 	$("#memberList tbody tr").click(function(e){
-		if($(e.target).is("td:first-child")) return;
+		if($(e.target).is("td:first-child, td:first-child *")) return;
 		
 		var empno = $(this).attr("id");
 		
 		location.href="<%=ctxPath%>/memberInfo_hr.up?empno="+empno;
 	})
+	
+	//구성원 삭제버튼 클릭 이벤트
+	$("#memberdelete").click(function(){
+		goDelete();
+	})
+	
+	
+	$("#memberupdate").click(function(){
+		goUpdate();
+	});
 	
 		
 
@@ -102,6 +126,67 @@ function allCheckBox() {
 }// end of function allCheckBox()-------------------------
 
 
+// 구성원삭제 클릭시
+function goDelete(){
+	
+	var chxArr = $("input[name='pnum']:checked");
+	var empnoArr = new Array();
+	chxArr.each(function(index, item){
+		empnoArr.push($(item).parent().parent().attr("id"));
+	});
+	
+	if(empnoArr.length < 1){
+		$(".deleteAlert").fadeIn("fast");
+		setTimeout(function(){
+			$(".deleteAlert").fadeOut("fast");
+		}, 1500);
+		return;
+	}
+	
+	$.ajax({	 
+		url: "<%= ctxPath%>/goDeleteEmp.up",
+		traditional: true,
+		data: {"empnoArr":empnoArr},
+		dataType:"json",
+		success:function(json){
+			
+			console.log(JSON.stringify(json));
+			
+			if(json.n < 1){
+				$(".deleteFail").fadeIn("fast");
+				setTimeout(function(){
+					$(".deleteFail").fadeOut("fast");
+				}, 1500);
+			} else {
+				location.reload();
+				alert("해당 구성원의 계정이 중지되었습니다. 일주일 후 해당 구성원의 정보가 모두 삭제됩니다.");
+			}
+			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});//end of ajax
+	
+}//end of goDelete()
+
+
+function goUpdate(){
+	
+	var chxArr = $("input[name='pnum']:checked");
+	if(chxArr.length != 1) {
+		$(".updateFail").fadeIn("fast");
+		setTimeout(function(){
+			$(".updateFail").fadeOut("fast");
+		}, 1500);
+		return;
+	}
+	
+	var empno = $("input[name='pnum']:checked").parent().parent().attr("id");
+	location.href="<%=ctxPath%>/admin_memberUpdate.up?empno="+empno;
+	
+	
+}//end of goUpdate();
 
 
 </script>
@@ -118,25 +203,25 @@ function allCheckBox() {
 	<div class="contentsmargin" style="clear: both;">
 		<div style="float:left;">
 			<div style="display: inline-block;">
-			    <a href="<%= request.getContextPath()%>/admin_memberAdd_hr.up" id="memberadd" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
+			    <a href="<%= request.getContextPath()%>/admin_memberAdd.up" id="memberadd" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
 			       	<span><i class="fas fa-plus"></i></span>
 			       	<span>구성원추가</span>
 		       	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a href="#" id="memberdelete" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
+	      	 	<a id="memberdelete" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
 			       	<span><i class="fas fa-times"></i></span>
-			       	<span>구성원삭제</span>
+			       	<span>계정중지</span>
 	      	 	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a href="#" id="memberupdate" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
+	      	 	<a id="memberupdate" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
 			       	<span><i class="fas fa-pencil-alt"></i></span>
-			       	<span>멤버수정</span>
+			       	<span>정보수정</span>
 	      	 	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a href="#" id="listdownload" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #d9d9d9; border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
+	      	 	<a id="listdownload" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #d9d9d9; border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
 			       	<span><i class="fa-solid fa-download"></i></span>
 			       	<span>목록 다운로드</span>
 	      	 	</a>
@@ -332,5 +417,20 @@ function allCheckBox() {
 		<input id="dc" type="text" name="dc" value=""/>
 		<input id="dv" type="text" name="dv" value=""/>
 		</form>
+		<div id="alert" class="deleteAlert">
+	         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+	         <span id="alertText" style="position: relative; bottom: 2px;">삭제할 구성원을 선택해주세요.</span>
+	    </div>
+	    
+	    <div id="alert" class="deleteFail">
+	         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+	         <span id="alertText" style="position: relative; bottom: 2px;">이미 계정중지된 구성원입니다.</span>
+	    </div>
+	    
+	    <div id="alert" class="updateFail">
+	         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+	         <span id="alertText" style="position: relative; bottom: 2px;">수정할 구성원을 한 명만 선택해주세요.</span>
+	    </div>
+	    
 	</div>
 </div>

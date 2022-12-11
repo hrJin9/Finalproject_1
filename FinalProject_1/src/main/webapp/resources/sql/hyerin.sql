@@ -1387,10 +1387,29 @@ where fk_department_no = 20
 delete tbl_employee
 where fk_department_no = 20
 
+sele
+
 
 select * from tbl_employee
 order by hire_date desc
 
+update tbl_employee set militaryservice = null
+where militaryservice = '해당사항없음'
 
+
+update tbl_employee set fk_department_no = null
+where employee_no = 170255
+
+commit;
+
+where 
 
 alter table tbl_employee modify status default 1
+
+
+
+select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, status, role, position, authority
+    from v_employee
+    where 1 = 1
+    and department_name is null
+    

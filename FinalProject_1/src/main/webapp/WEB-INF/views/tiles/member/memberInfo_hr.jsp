@@ -37,7 +37,10 @@ $(document).ready(function(){
 	$("#phone").click(function(){
 		var mobile = "${requestScope.evo.mobile}";
 		window.navigator.clipboard.writeText(mobile);
-		alert("복사성공");
+		$("#alert").fadeIn("fast");
+		setTimeout(function(){
+			$("#alert").fadeOut("fast");
+		}, 1500);
 	});
 	
 	// 메시지 버튼 클릭시 메시지 보내기로 이동
@@ -281,7 +284,7 @@ function getWorkinghour(){
 						</tr>
 		                <tr>
 		                   <td>고용형태</td>   
-		                   <td>정직원</td>   
+		                   <td>${requestScope.evo.employmenttype}</td>   
 		                </tr>
 			        </c:if>
 		                <tr>
@@ -500,12 +503,10 @@ function getWorkinghour(){
        </c:if>
 	</form>
   	
-  	
   	<div id="alert">
-		<i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:7px; font-size:13pt;"></i>
-		<span id="alertText">${requestScope.evo.mobile}이 복사되었습니다.</span>
-	</div>
-  	
+         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+         <span id="alertText" style="position: relative; bottom: 2px;">${requestScope.evo.mobile}이 복사되었습니다.</span>
+    </div>
 </div>
 
 

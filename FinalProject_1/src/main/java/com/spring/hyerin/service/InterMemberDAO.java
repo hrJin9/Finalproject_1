@@ -62,5 +62,8 @@ public interface InterMemberDAO {
 	
 	//새로운 팀을 만들 번호 채번하기
 	String getNewTeam();
+	
+	// 해당 사원들의 status를 0으로 바꿔주기
+	int goDeleteEmp(Map<String, String[]> paraMap);
 
 }

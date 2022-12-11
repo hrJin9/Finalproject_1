@@ -177,4 +177,12 @@ public class MemberService implements InterMemberService {
 		return resultMap;
 	}//end of addEmployee
 	
+	
+	// 해당 사원들의 status를 0으로 바꿔주기
+	@Override
+	public int goDeleteEmp(Map<String, String[]> paraMap) {
+		int n = dao.goDeleteEmp(paraMap);
+		return n;
+	}
+	
 }

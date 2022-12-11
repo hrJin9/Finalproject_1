@@ -170,7 +170,27 @@ public class Admin_memberController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/admin_memberAdd_hr.up")
+	@ResponseBody
+	@RequestMapping(value = "/goDeleteEmp.up")
+	public String goDeleteEmp(HttpServletRequest request) {
+		String[] empnoArr = request.getParameterValues("empnoArr");
+		
+		Map<String,String[]> paraMap = new HashMap<String, String[]>();
+		paraMap.put("empnoArr",empnoArr);
+		
+		// 해당 사원들의 status를 0으로 바꿔주기
+		int n = service.goDeleteEmp(paraMap); 
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("n", n);
+		
+		return jsonobj.toString();
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/admin_memberAdd.up")
 	public ModelAndView admin_memberAdd_hr(HttpServletRequest request, ModelAndView mav) {
 		
 		
@@ -270,23 +290,36 @@ public class Admin_memberController {
 	} 
 	
 	
-	@RequestMapping(value = "/admin_memberAdd_personal.up")
-	public ModelAndView admin_memberAdd_personal(HttpServletRequest request, ModelAndView mav) {
-		mav.setViewName("admin/admin_memberAdd_personal.tiles");
-		return mav;
-	} 
 	
-	@RequestMapping(value = "/admin_memberView_hr.up")
-	public ModelAndView admin_memberView_hr(HttpServletRequest request, ModelAndView mav) {
-		mav.setViewName("admin/admin_memberView_hr.tiles");
+	@RequestMapping(value = "/admin_memberUpdate.up")
+	public ModelAndView admin_memberUpdate(HttpServletRequest request, ModelAndView mav) throws Throwable {
+		
+		String empno = request.getParameter("empno");
+		
+		//해당 사원의 정보 알아오기
+		EmployeeVO evo = service.getempvo(empno);
+		
+		// 부서목록 가져오기
+		List<DepartmentsVO> dvoList = service.getdeptname();
+		
+		// 직위목록 가져오기
+		List<String> pList = service.getposition();
+		
+		// 고용형태 가져오기
+		List<String> jtList = service.getjointype();
+		
+		evo.setEmail(aes.decrypt(evo.getEmail()));
+		evo.setMobile(aes.decrypt(evo.getMobile()));
+		
+		mav.addObject("evo", evo);
+		mav.addObject("dvoList", dvoList);
+		mav.addObject("pList", pList);
+		mav.addObject("jtList", jtList);
+		mav.setViewName("admin/admin_memberUpdate.tiles");
+		
 		return mav;
-	} 
+	}
 	
-	@RequestMapping(value = "/admin_memberView_personal.up")
-	public ModelAndView admin_memberView_personal(HttpServletRequest request, ModelAndView mav) {
-		mav.setViewName("admin/admin_memberView_personal.tiles");
-		return mav;
-	} 
 	
 	
 }
