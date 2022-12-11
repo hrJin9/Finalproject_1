@@ -733,11 +733,11 @@ function goSubmit(){
 	                   	<div>
 		                   	<div class="condition-cell" style="position: relative; right: 2px;">
 		                   	 <span style="margin-right: 30px;">
-				                <input type="radio" class="custom-control-radio2" id="nomal" name="status" style="width: 15%; height: 8%;" value="1" checked>
+				                <input type="radio" class="custom-control-radio2" id="nomal" name="delete_status" style="width: 15%; height: 8%;" value="1" checked>
 				                <label for="nomal" class="js-period-type radio-label-checkbox2" data-code="unlimit">정상</label>
 		                   	 </span>
 		                   	 <span>
-				                <input type="radio" class="custom-control-radio2" id="stop" name="status" style="width: 15%; height: 8%;" value="0">
+				                <input type="radio" class="custom-control-radio2" id="stop" name="delete_status" style="width: 15%; height: 8%;" value="0">
 				                <label for="stop" class="js-period-type radio-label-checkbox2" data-code="unlimit">중지</label>
 		                   	 </span>
 							</div>

@@ -319,11 +319,14 @@ public class Admin_memberController {
 	@RequestMapping(value = "/memUpdateEnd.up")
 	public ModelAndView memUpdateEnd(HttpServletRequest request, ModelAndView mav, EmployeeVO evo) throws Throwable {
 		
-		//왜 자꾸 오류뜸? 왜 이렇게 일일이 설정해주어야하는거지....
-		evo.setEmail(aes.encrypt(evo.getEmail()));
-		evo.setMobile(aes.encrypt(evo.getMobile()));
 		
-		// 트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 update) 
+		System.out.println("employee_no" + evo.getEmployee_no());
+		
+		
+//		evo.setEmail(aes.encrypt(evo.getEmail()));
+//		evo.setMobile(aes.encrypt(evo.getMobile()));
+//		
+//		 //트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 update) 
 //		int n = service.updateEmployee(evo);
 //		
 //		String message = "";
@@ -337,7 +340,7 @@ public class Admin_memberController {
 //		mav.addObject("message",message);
 //		mav.addObject("loc",loc);
 //		
-//		mav.setViewName("msg");
+		mav.setViewName("msg");
 		return mav;
 	}
 	
