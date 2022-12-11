@@ -633,7 +633,7 @@ function goSubmit(){
 	                   <td style="font-size: 11pt;">
 	                   	<div class="authority">
 		                   	 <span style="margin-right: 30px;">
-				                <input type="checkbox" id="general_employee" name="at"  style="width: 2%; height: 8%;" value="1" checked/>
+				                <input type="checkbox" id="general_employee" name="at"  style="width: 2%; height: 8%;" value="1"/>
 				                <label for="general_employee" class="js-period-type radio-label-checkbox2" data-code="unlimit">일반</label>
 		                   	 </span>
 			                   	 <span style="margin-right: 30px;">

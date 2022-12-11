@@ -288,7 +288,7 @@ function goSubmit(){
 </script>
 
 <nav id="admin_mainList" class="margin-container">
-	<a id="memberadd" class="header-nonsub">구성원 추가</a>
+	<a id="memberadd" class="header-nonsub">구성원 정보 수정</a>
 </nav>
 <hr class="HRhr" style="margin-top: 0px;"/><br>
 

@@ -1413,3 +1413,19 @@ select row_number() over(order by employee_no desc) as rno, employee_no, fk_depa
     where 1 = 1
     and department_name is null
     
+select * from tbl_departments
+    
+    
+    
+update tbl_employee set status = 1
+where status = 0
+
+commit;
+
+update tbl_employee set mobile = 'NgS6R/8WzwTcrW8Yq2H54g=='
+where name_kr !=  '팜하니'
+
+commit;
+
+select * from tbl_employee
+order by hire_date desc
