@@ -1,14 +1,14 @@
 package com.spring.yeeun.model;
 
-public class AttendanceCatgo {
+public class AttendanceCatgoVO {
 
 	public int adcatgono;   // 근태종류번호
 	public String adcatgo;  // 근태종류
 	
 	
-	public AttendanceCatgo() {}
+	public AttendanceCatgoVO() {}
 
-	public AttendanceCatgo(int adcatgono, String adcatgo) {
+	public AttendanceCatgoVO(int adcatgono, String adcatgo) {
 		super();
 		this.adcatgono = adcatgono;
 		this.adcatgo = adcatgo;

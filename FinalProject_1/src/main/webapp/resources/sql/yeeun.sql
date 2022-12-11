@@ -213,18 +213,24 @@ nocycle
 nocache;
 -- Sequence SEQ_DAYOFF_NO이(가) 생성되었습니다.
 
+alter table tbl_attendance rename column startdate to startTime;
+alter table tbl_attendance rename column enddate to endTime;
+commit;
 
 -- 근태
 create table tbl_attendance
 (adno           varchar2(50)    not null   -- 근태번호
 ,fk_employee_no number(6)       not null   -- 사원번호
-,adcatgo        varchar2(50)               -- 근태종류
-,startdate      date                       -- 시작시간
-,enddate        date                       -- 종료시간
+,adcatgo        varchar2(50)               -- 근태유형
+,startTime      date                       -- 시작시간
+,endTime        date                       -- 종료시간
 ,constraint pk_tbl_attendance_adno primary key(adno)
 ,constraint fk_tbl_attendance_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
 );
 -- Table TBL_ATTENDANCE이(가) 생성되었습니다.
+
+ALTER TABLE tbl_attendance ADD adImg varchar2(100);
+desc tbl_attendance
 
 -- 근태번호
 create sequence seq_attendance_no
@@ -235,6 +241,323 @@ nominvalue
 nocycle
 nocache;
 -- Sequence SEQ_ATTENDANCE_NO이(가) 생성되었습니다.
+
+select adno, fk_employee_no, adcatgo, 
+       to_char(startTime, 'yyyy-mm-dd hh24:mi') AS startTime, to_char(endTime, 'yyyy-mm-dd hh24:mi') AS endTime,
+       (to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') - to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 AS totalTime
+from tbl_attendance
+
+
+
+SELECT 
+     TRUNC(((endTime - startTime) - TRUNC(endTime - startTime)) * 24) as "시간", 
+     FLOOR(((((endTime - startTime) -TRUNC(endTime - startTime)) * 24) 
+     - TRUNC(((endTime - startTime)-TRUNC(endTime - startTime)) * 24)) * 60) as "분"
+FROM (              
+    SELECT to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startTime,  -- 시작일
+           to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as endTime    -- 종료일
+    from tbl_attendance
+    )
+
+with B as
+(select
+     adno, fk_employee_no, adcatgo, adImg,
+     to_char(startTime, 'yyyy-mm-dd hh24:mi') AS startTime, to_char(endTime, 'yyyy-mm-dd hh24:mi') AS endTime,
+     TRUNC(((enddate - startdate) - TRUNC(enddate - startdate)) * 24) as workTime, 
+     FLOOR(((((enddate - startdate) -TRUNC(enddate - startdate)) * 24) 
+     - TRUNC(((enddate - startdate)-TRUNC(enddate - startdate)) * 24)) * 60) as workMin
+from 
+(select adno, fk_employee_no, adcatgo, adImg, startTime, endTime,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+ from tbl_attendance) v)
+select workTime, workMin, adno, fk_employee_no, adcatgo, startTime, endTime
+from B
+
+-- 특정날짜 근무내역보기
+select
+     adno, fk_employee_no, adcatgo,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate, 
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+     TRUNC(((enddate - startdate) - TRUNC(enddate - startdate)) * 24) as workTime, 
+     FLOOR(((((enddate - startdate) -TRUNC(enddate - startdate)) * 24) 
+     - TRUNC(((enddate - startdate)-TRUNC(enddate - startdate)) * 24)) * 60) as workMin
+from 
+(select adno, fk_employee_no, adcatgo, startTime, endTime,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+ from tbl_attendance) v
+where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-06'
+order by startTime asc
+
+
+-- 특정날짜 근무내역보기(최종본)
+with B as
+(select
+     adno, fk_employee_no, adcatgo,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+     ROUND((enddate-startdate)*24*60) AS total,
+     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
+from 
+(select adno, fk_employee_no, adcatgo, startTime, endTime,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+ from tbl_attendance) v)
+select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin, total
+from B
+where fk_employee_no = 100016 and seldate = '2022-12-06'
+order by startTime asc
+
+
+-- 총근무시간 조회하기
+with B as
+(select
+     adno, fk_employee_no, adcatgo,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+     ROUND((enddate-startdate)*24*60) AS total,
+     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
+from 
+(select adno, fk_employee_no, adcatgo, startTime, endTime,
+    substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+ from tbl_attendance
+) v
+group by seldate)
+select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin, total
+from B
+where fk_employee_no = 100016 and seldate = '2022-12-06'
+
+order by startTime asc
+
+
+
+-- 총근무시간 조회하기(최종본)
+select NVL(MAX(seldate), '0') AS seldate,
+       NVL(MAX(trim(trunc(total / 60))), '0') AS workTime,
+       NVL(MAX(trim(trunc(mod(abs(total), 60)))), '0') AS workMin
+from 
+(
+    select seldate, sum(total) AS total
+    from
+    (
+      select adno, fk_employee_no, adcatgo,
+            substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+            substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+            substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+            ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS total
+      from tbl_attendance
+      where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-09'
+    ) V
+    group by seldate 
+)b
+
+-- 또는
+select NVL(MAX(seldate), '0') AS seldate,
+       NVL(MAX(trim(trunc(total / 60))), '0') AS workTime,
+       NVL(MAX(trim(trunc(mod(abs(total), 60)))), '0') AS workMin
+from 
+(
+    select seldate, sum(total) AS total
+    from
+    (
+      select adno, fk_employee_no, adcatgo,
+            substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+            substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+            substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+            ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS total
+      from tbl_attendance
+      where fk_employee_no = 100016
+    ) V
+    group by seldate 
+)b
+where seldate = '2022-12-06'
+
+
+
+-- 문법
+WITH c AS 
+(SELECT 492 AS MINUTES 
+ FROM DUAL)
+SELECT trim(to_char(trunc(MINUTES / 60), '09')) || ':' ||
+       trim(to_char(trunc(mod(abs(MINUTES), 60)), '09')) AS HHMM
+FROM c;	
+
+NVL(MAX(seldate), '0') AS seldate,
+
+
+-- 전체 근무목록 보여주기
+with B as
+(select
+     adno, fk_employee_no, adcatgo,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+     ROUND((enddate-startdate)*24*60) AS total,
+     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
+from 
+(select adno, fk_employee_no, adcatgo, startTime, endTime,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+ from tbl_attendance) v)
+select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin, total
+from B
+where fk_employee_no = 100016 and seldate = '2022-12-05'
+order by startTime desc
+
+
+-- 전체 근무목록 보여주기(최종본)
+with B as
+(select
+     adno, fk_employee_no, adcatgo,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
+from 
+(select adno, fk_employee_no, adcatgo, startTime, endTime,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+ from tbl_attendance) v)
+select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin
+from B
+where fk_employee_no = 100016 and seldate = '2022-12-09'
+order by startTime asc
+
+
+
+-- 최종1
+with B as
+(select
+     adno, fk_employee_no, adcatgo,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+     startTime_t + startTime_m  AS startTime,
+     endTime_t + endTime_m  AS endTime,
+     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
+from 
+(select adno, fk_employee_no, adcatgo, startTime, endTime,
+        substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS start_Time,
+        to_number(substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12, 2)) AS startTime_t,
+        to_number(round(substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 15)/60, 1)) AS startTime_m,
+        substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS end_Time,
+        to_number(substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12, 2)) AS endTime_t,
+        to_number(round(substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 15)/60, 1)) AS endTime_m,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+ from tbl_attendance) v)
+select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin
+from B
+where fk_employee_no = 100016 and seldate = '2022-12-09'
+order by startTime asc
+
+
+
+
+-- 최종1 수정본
+with B as
+(select
+     adno, fk_employee_no, adcatgo,
+     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+     startTime_t + startTime_m  AS startTime,
+     endTime_t + endTime_m  AS endTime,
+     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin,
+     totalTime
+from 
+(select adno, fk_employee_no, adcatgo, startTime, endTime,
+        substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS start_Time,
+        to_number(substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12, 2)) AS startTime_t,
+        to_number(round(substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 15)/60, 1)) AS startTime_m,
+        substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS end_Time,
+        to_number(substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12, 2)) AS endTime_t,
+        to_number(round(substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 15)/60, 1)) AS endTime_m,
+        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate,
+        ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS totalTime
+ from tbl_attendance) v)
+select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin, totalTime
+from B
+where fk_employee_no = 100016 and seldate = '2022-12-09'
+order by startTime asc
+
+
+select (300%60)
+from dual;
+
+
+
+
+
+and ROWNUM = 1 -- 한행만 추출
+
+
+
+
+
+
+
+MERGE INTO tbl_attendance -- 삽입/수정의 대상이 될 테이블
+USING DUAL -- 원본 데이터가 있는 테이블
+   ON (adno == '' or adno == null)
+WHEN NOT MATCHED THEN
+    insert into tbl_attendance(adno, fk_employee_no, adcatgo, startTime, endTime)
+    values(seq_attendance_no.nextval, 100016, '근무', to_date('2022-11-01 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-11-01 18:00', 'yyyy-mm-dd hh24:mi'))
+
+
+
+
+
+
+
+
+delete from tbl_attendance
+where adno = 57
+
+delete from tbl_attendance
+where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-06'
+
+rollback;
+commit;
+
+insert into tbl_attendance(adno, fk_employee_no, adcatgo, adImg, startTime, endTime)
+values(seq_attendance_no.nextval, #{fk_employee_no}, #{adcatgo}, #{adImg}, to_date(#{startTime}, 'yyyy-mm-dd hh24:mi'), to_date(#{endTime}, 'yyyy-mm-dd hh24:mi'))
+
+update tbl_attendance set logindate = add_months(logindate, -13)  -- leess 계정의 로그인날짜를 21/08/19 로 변경함. -- add_months()의 숫자 단위는 개월수이다.
+where fk_userid = 'leess';
+
+delete from tbl_attendance
+where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+
+
+MERGE INTO tbl_attendance
+USING DUAL
+   ON (adno = 'ad-51')
+WHEN NOT MATCHED THEN  -- 동일한 시퀀스가 없다면
+    insert into tbl_attendance(adno, fk_employee_no, adcatgo, adImg, startTime, endTime)
+    values(seq_attendance_no.nextval, 100016, '근무', d, to_date('2022-12-07 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-07 18:00', 'yyyy-mm-dd hh24:mi'))
+
+
+-- 문법
+MERGE 
+ INTO tbl_attendance
+USING dual
+   ON (adno = 'ad-51')
+ WHEN NOT MATCHED THEN
+    insert into tbl_attendance(adno, fk_employee_no, adcatgo, startTime, endTime)
+    values('ad-51', 100016, '근무', to_date('2022-12-07 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-07 18:00', 'yyyy-mm-dd hh24:mi'))
+
+    
+
+
 
 
 -- 근태종류
@@ -273,12 +596,12 @@ from tbl_attendance
 
 select fk_employee_no
      , adcatgo
-     , to_char(startdate, 'yyyy-mm-dd hh24:mi')
-     , to_char(enddate, 'yyyy-mm-dd hh24:mi')   
+     , to_char(startTime, 'yyyy-mm-dd hh24:mi')
+     , to_char(endTime, 'yyyy-mm-dd hh24:mi')   
 from tbl_attendance
 
 
-insert into tbl_attendance(adno, fk_employee_no, adcatgo, startdate, enddate)
+insert into tbl_attendance(adno, fk_employee_no, adcatgo, startTime, endTime)
 values('ad-'||seq_attendance_no.nextval, 100016, '근무', to_date('2022-11-01 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-11-01 18:00', 'yyyy-mm-dd hh24:mi'))
 
 commit;
@@ -287,14 +610,14 @@ commit;
 delete from tbl_attendance
 where adno = 1;
 
-insert into tbl_attendance(adno, fk_employee_no, adcatgo, startdate, enddate)
+insert into tbl_attendance(adno, fk_employee_no, adcatgo, startTime, endTime)
 values('ad-'||seq_attendance_no.nextval, 100016,'근무', to_date('2022-12-02 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-02 18:00', 'yyyy-mm-dd hh24:mi'))
 
-insert into tbl_attendance(adno, fk_employee_no, adcatgo, startdate, enddate)
-values('ad-'||seq_attendance_no.nextval, #{fk_employee_no}, #{adcatgo}, to_date(#{startdate}, 'yyyy-mm-dd hh24:mi'), to_date(#{enddate}, 'yyyy-mm-dd hh24:mi'))
+insert into tbl_attendance(adno, fk_employee_no, adcatgo, startTime, endTime)
+values('ad-'||seq_attendance_no.nextval, #{fk_employee_no}, #{adcatgo}, to_date(#{startTime}, 'yyyy-mm-dd hh24:mi'), to_date(#{endTime}, 'yyyy-mm-dd hh24:mi'))
 
-to_date(#{startdate}, 'yyyy-mm-dd hh24:mi')
-to_date(#{enddate}, 'yyyy-mm-dd hh24:mi')
+to_date(#{startTime}, 'yyyy-mm-dd hh24:mi')
+to_date(#{endTime}, 'yyyy-mm-dd hh24:mi')
 
 -- 연차조회
 select dono, fk_employee_no, fk_ano, halfoff, docatgo, 
@@ -452,17 +775,7 @@ from dual;
 -- 목
 
 
-create table tbl_dayoff
-(dono           varchar2(50)   not null -- 연차번호
-,fk_employee_no number(6)      not null -- 사원번호
-,fk_ano         varchar2(50)   not null -- 결재문서번호  --> 결재문서 insert할때 채번해서 한번에 넣기
-,docnt          number(10)              -- 연차수
-,docatgo        varchar2(50)            -- 연차유형
-,startdate      date                    -- 연차시작일
-,enddate        date                    -- 연차종료일
-,constraint pk_tbl_dayoff_dono primary key(dono)
-,constraint fk_tbl_dayoff_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
-);
+
 
 
 
