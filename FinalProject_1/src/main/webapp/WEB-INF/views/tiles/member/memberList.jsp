@@ -25,7 +25,7 @@
 
 	
 	.member_container {
-		width: 88%;
+		width: 90%;
 		margin: 0 auto;
 		overflow: hidden;
 	}
@@ -337,6 +337,10 @@
 	    top: 1.3px;
 	    left: 194px;
    }
+   
+   .expand{
+   	cursor: pointer;
+   }
 	
 </style>
 
@@ -406,7 +410,7 @@ $(document).ready(function(){
 	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
 	$("input#burger-check").change(function(){
 	    if($("#burger-check").is(":checked")){
-	        $(".big").css({'width':'72.6%','position':'relative','top':'24px'});
+	        $(".big").css({'width':'73.3%','position':'relative','top':'24px'});
 	        $(".menucontent").css({'visibility':'visible','transition':'all .2s'});
 	    }else{
 	        $(".big").css({'width':'100%','top':'0'});
@@ -469,11 +473,6 @@ function check_one(){
 	var total = $("input[name='memberChx']").length;
 	var checked = $("input[name='memberChx']:checked").length;
 
-	if(checked<=0) {
-		$("#memberAll").prop("checked", false);
-		show_noncheckmenu();
-	}
-	
 	if(total != checked){
 		$("#memberAll").prop("checked", false);
 		show_checkmenu();
@@ -483,6 +482,11 @@ function check_one(){
 		$("#memberAll").prop("checked", true); 
 		show_checkmenu();
 		$("#check_ctn").text(checked);
+	}
+	
+	if(checked<=0) {
+		$("#memberAll").prop("checked", false);
+		show_noncheckmenu();
 	}
 	
 }//end of check_one
@@ -597,14 +601,16 @@ function showEmpList(teamVal){
 			</div>
 			<div class="align-items-end mt-1 mr-4">
 				<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-					<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 11.5%;"></a>
+					<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 8.5%; top:134px;"></a>
 				</div>
 			</div>
+			<!-- 
 			<div>
 				<span class="arrayIcon">
 					<span><ion-icon name="swap-vertical-outline" style="position: absolute; left: 7px; bottom:7px; font-size: 12pt;"></ion-icon></span>
 	            </span>
 			</div>
+			 -->
 			<div>
 				<span class="groupIcon">
 					<input class="burger-check" type="checkbox" id="burger-check" />
@@ -613,8 +619,8 @@ function showEmpList(teamVal){
 						<div class="menucontent" style="width: 340px; visibility: hidden; padding: 27px 0px 10px 38px; height: 500px; overflow-y: auto;">
 							<div style="font-size: 12pt; font-weight: bold; color: #4C4E54; padding-bottom: 27px;">
 								<span style="padding-right: 190px;">조직도</span>
-								<span><i class="fas fa-expand-alt unfold"></i></span>
-								<span class="unfoldAlert">모든 조직 펼치기</span> <%-- 호버 이벤트시 jQuery 효과주기 --%>
+								<span class="expand tp" data-bs-toggle="tooltip" data-bs-placement="top" title="모든 조직 펼치기"><i class="fas fa-expand-alt unfold"></i></span>
+								<!-- <span class="unfoldAlert">모든 조직 펼치기</span> --> <%-- 호버 이벤트시 jQuery 효과주기 --%>
 							</div>
 							<div style="width:250px;">
 								<div id="" class="orgmenu" style="font-size: 11pt;font-weight: 700; color: #4C4E54; margin-bottom: 5px;">전체</div>

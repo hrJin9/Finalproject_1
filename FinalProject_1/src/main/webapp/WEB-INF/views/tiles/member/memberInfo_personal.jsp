@@ -66,7 +66,10 @@ $(document).ready(function(){
 	$("#phone").click(function(){
 		var mobile = "${requestScope.evo.mobile}";
 		window.navigator.clipboard.writeText(mobile);
-		alert("복사성공");
+		$("#alert").fadeIn("fast");
+		setTimeout(function(){
+			$("#alert").fadeOut("fast");
+		}, 1500);
 	});
 	
 	// 메시지 버튼 클릭시 메시지 보내기로 이동
@@ -262,7 +265,7 @@ function getWorkinghour(){
 		dataType:"json",
 		success:function(json){
 			var html = '';
-			if(json != null){
+			if(json.working_h != ""){
 				if(json.working_m != null){
 					html = json.working_h + '시간 ' + json.working_m + '분';
 				} else {
@@ -330,7 +333,8 @@ function getWorkinghour(){
 		<div class="">
 			<%-- <div id="personalInfo">개인 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
 			<div id="personalInfo">개인 정보
-				<c:if test="${sessionScope.loginuser.employee_no == requestScope.empno}">
+				<c:set var="logat" value="${sessionScope.loginuser.authority}"/>
+          		 <c:if test="${logat==3 || logat==6 || logat==12 || logat==15 || logat==21 || logat==24 || logat==30 || logat==42 || logat==60 || logat==84 || logat==105 || logat==120 || logat==210 || logat==420 || logat==840 || logat==99}">
 				<span><i class="fas fa-pen update"></i></span>
 				</c:if>
 			</div><br>
@@ -363,8 +367,8 @@ function getWorkinghour(){
 						<tr>
 						  <td>생년월일</td>   
 						  <td style="float:left; margin-right:0;">
-						  		${requestScope.evo.birthday}&nbsp;<span style="padding-left: 10px;">/</span>
-							  <span style="padding-left: 10px;">
+						  		${requestScope.evo.birthday}&nbsp;<span style="padding-left: 5px;">/</span>
+							  <span style="padding-left: 5px;">
 								  <c:if test="${requestScope.evo.gender == 1}">
 								  	남성
 								  </c:if>
@@ -455,19 +459,19 @@ function getWorkinghour(){
 				<form name="updateFrm">
 					<div style="float: left; width: 45.5%;">
 						<div>이름</div>
-						<input id="name" type="text" class="required" name="name" size="20" placeholder="이름 입력" />
+						<input id="name" type="text" class="required" name="name" size="20" placeholder="이름 입력" value="${requestScope.evo.name_kr}"/>
 					</div>
 						
 					<div style="float: left; width: 52%; margin-left: 16px;">
 						<div>영문이름</div>
-						<input id="Egname" type="text" class="required" name="name" size="20" placeholder="영문이름 입력" />
+						<input id="Egname" type="text" class="required" name="name" size="20" placeholder="영문이름 입력" value="${requestScope.evo.name_en}" />
 					</div>
 					
 					<div style="clear: both;">생년월일</div>
-					<input id="birthday" name="birthday" class="dateSelector" placeholder="ex) 2020-09-01" />
+					<input id="birthday" name="birthday" class="dateSelector" placeholder="ex) 2020-09-01" value="${requestScope.evo.birthday}"/>
 					
 					<div style="vertical-align: middle;">이메일</div>
-					<input id="email" type="text" class="required" name="email" placeholder="이메일 입력"/>
+					<input id="email" type="text" class="required" name="email" placeholder="이메일 입력" value="${requestScope.evo.email}"/>
 					<%--<button type="button" id="emailCheck">인증하기</button>
 					<span id="spinner" class="spinner-border text-success"></span>
 					<span id="emailCheckResult"></span>
@@ -489,8 +493,8 @@ function getWorkinghour(){
 			                <option value="018">018</option>
 			                <option value="019">019</option>
 	                </select>&nbsp;-&nbsp;
-	                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 18%;"/>&nbsp;-&nbsp;            <%-- 휴대폰 중간번호 4자리 --%>
-	                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 18%; margin: 7px 7px 18px 0;"/> <%-- 휴대폰 마지막번호 4자리 --%>
+	                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 18%;"/>&nbsp;-&nbsp;            
+	                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 18%; margin: 7px 7px 18px 0;"/>
 		            <button type="button" id="mobileCheckBtn" style="cursor: pointer;">인증하기</button>
 		            <%--
 		            <span id="spinner" class="spinner-border text-success"></span>
@@ -546,7 +550,7 @@ function getWorkinghour(){
 					<input id=accountHolder type="text" class="required" name="accountHolder" size="20" placeholder="예금주  입력" style="display: inline-block; width: 24.7%;"/>
 				
 					<div class="workstatus-buttoncontainer" style="margin-bottom: 60px;">
-			  			<button type="button" class="workstatus-save gradientbtn">저장하기</button>
+			  			<button type="button" class="workstatus-save bluebtn">저장하기</button>
 			  			<button type="reset" class="workstatus-cancel">취소</button>
 		  			</div>
 				
@@ -554,8 +558,11 @@ function getWorkinghour(){
 			</div> 
 		</div>
 	</div>
-        
-        
 	</form>
+	
+  	<div id="alert">
+         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+         <span id="alertText" style="position: relative; bottom: 2px;">${requestScope.evo.mobile}이 복사되었습니다.</span>
+    </div>
 </div>
 

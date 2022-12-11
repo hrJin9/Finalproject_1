@@ -300,7 +300,7 @@ function goSend(){
 				</tr>
 				<tr>
 					<td id="subjecttd">제목<span class="essential">*</span></td>
-					<td colspan="2"><input id="mw-subject" name="subject" type="text" placeholder="제목을 입력하세요"/></td> <!-- 답장하기의 경우 RE: 하고 제목 가져오기. 총 20자까지 -->
+					<td colspan="2"><input id="mw-subject" name="subject" type="text" placeholder="제목을 입력하세요" maxlength="20"/></td> <!-- 답장하기의 경우 RE: 하고 제목 가져오기. 총 20자까지 -->
 				</tr>
 				<tr>
 					<td id="filetd">파일첨부</td>

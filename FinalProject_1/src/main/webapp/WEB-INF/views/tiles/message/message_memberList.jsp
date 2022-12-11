@@ -178,12 +178,6 @@ function check_one(){
 	var total = $("input[name='memberChx']").length;
 	var checked = $("input[name='memberChx']:checked").length;
 
-	if(checked<=0) {
-		$("#memberAll").prop("checked", false);
-		show_noncheckmenu();
-		goSubmit();
-	}
-	
 	if(total != checked){
 		$("#memberAll").prop("checked", false); 
 		show_checkmenu();
@@ -192,6 +186,12 @@ function check_one(){
 		$("#memberAll").prop("checked", true); 
 		show_checkmenu();
 		$("#check_ctn").text(checked);
+	}
+	
+	if(checked<=0) {
+		$("#memberAll").prop("checked", false);
+		show_noncheckmenu();
+		goSubmit();
 	}
 	
 }//end of check_one
