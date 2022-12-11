@@ -164,6 +164,14 @@ public class MemberDAO implements InterMemberDAO {
 		int n = sqlsession.update("member.goDeleteEmp",paraMap);
 		return n;
 	}
+
+	
+	// 사원테이블에 update
+	@Override
+	public int updateEmployee(EmployeeVO evo) {
+		int n = sqlsession.update("member.updateEmployee",evo);
+		return n;
+	}
 	
 	
 	

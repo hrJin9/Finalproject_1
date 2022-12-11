@@ -1,8 +1,5 @@
 package com.spring.admin_member.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -237,9 +234,6 @@ public class Admin_memberController {
 	@RequestMapping(value = "/memAddEnd.up", method = {RequestMethod.POST})
 	public ModelAndView memAddEnd(HttpServletRequest request, ModelAndView mav, EmployeeVO evo) throws Throwable {
 		
-		//왜 자꾸 오류뜸? 왜 이렇게 일일이 설정해주어야하는거지....
-		evo.setStatus("1");
-		
 		//랜덤으로 임시비밀번호 만들어주기
 		StringBuffer temp = new StringBuffer();
 		Random rnd = new Random();
@@ -320,6 +314,32 @@ public class Admin_memberController {
 		return mav;
 	}
 	
+	
+	
+	@RequestMapping(value = "/memUpdateEnd.up")
+	public ModelAndView memUpdateEnd(HttpServletRequest request, ModelAndView mav, EmployeeVO evo) throws Throwable {
+		
+		//왜 자꾸 오류뜸? 왜 이렇게 일일이 설정해주어야하는거지....
+		evo.setEmail(aes.encrypt(evo.getEmail()));
+		evo.setMobile(aes.encrypt(evo.getMobile()));
+		
+		// 트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 update) 
+//		int n = service.updateEmployee(evo);
+//		
+//		String message = "";
+//		String loc = "";
+//		if(n == 1) {
+//			loc = request.getContextPath()+"/admin_memberList.up";
+//		} else {
+//			message = "구성원을 추가하는데 실패하였습니다.";
+//			loc = "javascript:history.back()";
+//		}
+//		mav.addObject("message",message);
+//		mav.addObject("loc",loc);
+//		
+//		mav.setViewName("msg");
+		return mav;
+	}
 	
 	
 }

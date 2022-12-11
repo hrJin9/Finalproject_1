@@ -13,7 +13,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	// 추가입력 input 숨기기
+	
 	$("#dept, #team").parent().next().find("input").hide();
 	
 	// 플랫피커
@@ -276,7 +276,7 @@ function goSubmit(){
 	$("#authority").val(authority);
 	
 	
-	const frm = document.memberAdd;
+	const frm = document.memberUpdate;
 	frm.method = "post";
 	frm.action = "<%=ctxPath%>/memUpdateEnd.up";
 	frm.submit();
@@ -288,12 +288,12 @@ function goSubmit(){
 </script>
 
 <nav id="admin_mainList" class="margin-container">
-	<a id="memberadd" class="header-nonsub">구성원 정보 수정</a>
+	<a id="memberadd" class="header-nonsub">구성원 수정</a>
 </nav>
 <hr class="HRhr" style="margin-top: 0px;"/><br>
 
 <div style="margin: 0 10%;">
-	<form name="memberAdd">
+	<form name="memberUpdate">
 		<div class="col-md-16" style="float: left;">
 			<div class="profile" href="#" style="margin-top: 22px; margin-bottom:30px;">
 			    <c:if test="${empty requestScope.evo.profile_systemfilename}">
@@ -485,11 +485,11 @@ function goSubmit(){
 		                </tr>
 		                 <tr>
 		                   <td>연봉<span class="essentials">*</span></td> 
-		                   <td><input class="dateSelector" id="salary" name="salary" value="${requestScope.evo.salary}" placeholder="ex) 2020-09-01" /><div class="alerts" style="color:#4285f4;"></div></td>  
+		                   <td><input id="salary" type="text" name="salary" value="${requestScope.evo.salary}"/><div class="alerts" style="color:#4285f4;"></div></td>  
 		                </tr>
 		                 <tr>
-		                   <td>입사일<span class="essentials">*</span></td> 
-		                   <td><input class="dateSelector" id="commission_pct" name="commission_pct" value="${requestScope.evo.commission_pct}" placeholder="ex) 2020-09-01" /><div class="alerts" style="color:#4285f4;"></div></td>  
+		                   <td>인센티브퍼센트<span class="essentials">*</span></td> 
+		                   <td><input id="commission_pct" type="text" name="commission_pct" value="${requestScope.evo.commission_pct}"/><div class="alerts" style="color:#4285f4;"></div></td>  
 		                </tr>
 		          </tbody>
 		 	</table>
@@ -727,7 +727,6 @@ function goSubmit(){
 	                   	</div>
 	                   </td>   
 	                </tr>
-	                <!-- 
 	                <tr>
 	                   <td>계정상태</td>
 	                   <td style="font-size: 11pt;">
@@ -745,7 +744,6 @@ function goSubmit(){
 	                   	</div>
 	                   </td>     
 	                </tr>
-	                 -->
 		        </tbody>
 		 	</table>
 		  </div>
@@ -758,7 +756,7 @@ function goSubmit(){
 	      
 	      <input id="mobile" type="text" name="mobile"/>
 	      <input id="authority" type="text" name="authority"/>
-	      
+	      <input id="employee_no" name="employee_no" type="text" value="${requestScope.evo.employee_no}"/>
 	</form>
 </div>
 

@@ -66,4 +66,6 @@ public interface InterMemberDAO {
 	// 해당 사원들의 status를 0으로 바꿔주기
 	int goDeleteEmp(Map<String, String[]> paraMap);
 
+	int updateEmployee(EmployeeVO evo);
+
 }

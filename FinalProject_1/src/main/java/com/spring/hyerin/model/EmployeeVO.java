@@ -29,7 +29,7 @@ public class EmployeeVO {
 	private String militaryservice;
 	private String bank;
 	private String accountnumber;
-	private String status;
+	private String delete_status;
 	private String role;
 	private String position;
 	private String authority;
@@ -49,7 +49,7 @@ public class EmployeeVO {
 			String salary, String commission_pct, String mobile, String postcode, String address, String detail_address,
 			String extra_address, String email, String gender, String profile_systemfilename,
 			String profile_orginfilename, String academic_ability, String major, String militaryservice, String bank,
-			String accountnumber, String status, String role, String position, String authority, String dayoff_cnt, String age) {
+			String accountnumber, String delete_status, String role, String position, String authority, String dayoff_cnt, String age) {
 		this.employee_no = employee_no;
 		this.fk_department_no = fk_department_no;
 		this.department_name = department_name;
@@ -76,7 +76,7 @@ public class EmployeeVO {
 		this.militaryservice = militaryservice;
 		this.bank = bank;
 		this.accountnumber = accountnumber;
-		this.status = status;
+		this.delete_status = delete_status;
 		this.role = role;
 		this.position = position;
 		this.authority = authority;
@@ -277,12 +277,12 @@ public class EmployeeVO {
 		this.accountnumber = accountnumber;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getDelete_status() {
+		return delete_status;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setDelete_status(String delete_status) {
+		this.delete_status = delete_status;
 	}
 
 	public String getRole() {
