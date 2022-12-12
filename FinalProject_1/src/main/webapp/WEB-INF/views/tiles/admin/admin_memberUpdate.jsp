@@ -275,7 +275,6 @@ function goSubmit(){
 	
 	$("#authority").val(authority);
 	
-	
 	const frm = document.memberUpdate;
 	frm.method = "post";
 	frm.action = "<%=ctxPath%>/memUpdateEnd.up";
@@ -648,10 +647,10 @@ function goSubmit(){
 		                   		<c:set var="at" value="${requestScope.evo.authority}"/>
 		                   	 	<c:choose>
 		                   	 		<c:when test="${at == 1}">
-						                <input type="checkbox" class="custom-control-radio2" id="general" name="authority" value="1" checked/>
+						                <input type="checkbox" class="custom-control-radio2" id="general" name="at" value="1" checked/>
 		                   	 		</c:when>
 			                   	 	<c:otherwise>
-						                <input type="checkbox" class="custom-control-radio2" id="general" name="authority" value="1"/>
+						                <input type="checkbox" class="custom-control-radio2" id="general" name="at" value="1"/>
 			                   	 	</c:otherwise>
 		                   	 	</c:choose>
 				                <label for="general" class="js-period-type radio-label-checkbox2" data-code="unlimit">일반</label>
@@ -659,10 +658,10 @@ function goSubmit(){
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
 		                   	 		<c:when test="${at==2 || at==6 || at==8 || at==10 || at==14 || at==24 || at==30 ||  at==40 || at==42 || at==56 || at==70 || at==120 || at==210 || at==280 || at==840}">
-				                		<input type="checkbox" class="custom-control-radio2" id="insight" name="authority" value="2" checked>
+				                		<input type="checkbox" class="custom-control-radio2" id="insight" name="at" value="2" checked>
 				                	</c:when>
 				                	<c:otherwise>
-				                		<input type="checkbox" class="custom-control-radio2" id="insight" name="authority" value="2">
+				                		<input type="checkbox" class="custom-control-radio2" id="insight" name="at" value="2">
 				                	</c:otherwise>
 				                </c:choose>
 				                <label for="insight" class="js-period-type radio-label-checkbox2" data-code="unlimit">인사이트</label>
@@ -670,10 +669,10 @@ function goSubmit(){
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
 		                   	 		<c:when test="${at==3 || at==6 || at==12 || at==15 || at==21 || at==24 || at==30 || at==42 || at==60 || at==84 || at==105 || at==120 || at==210 || at==420 || at==840}">
-					               		<input type="checkbox" class="custom-control-radio2" id="member" name="authority" value="3" checked>
+					               		<input type="checkbox" class="custom-control-radio2" id="member" name="at" value="3" checked>
 					                </c:when>
 				                	<c:otherwise>
-					               		<input type="checkbox" class="custom-control-radio2" id="member" name="authority" value="3">
+					               		<input type="checkbox" class="custom-control-radio2" id="member" name="at" value="3">
 				                	</c:otherwise>
 				                </c:choose>
 				                <label for="member" class="js-period-type radio-label-checkbox2" data-code="unlimit">구성원</label>
@@ -681,10 +680,10 @@ function goSubmit(){
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
 		                   	 		<c:when test="${at==4 || at==8 || at==12 || at==20 || at==24 || at==28 || at==40 || at==56 || at==60 || at==84 || at==120 || at==140 || at==280 || at==420 || at==840}">
-					               		<input type="checkbox" class="custom-control-radio2" id="payroll" name="authority" value="4" checked>
+					               		<input type="checkbox" class="custom-control-radio2" id="payroll" name="at" value="4" checked>
 					                </c:when>
 				                	<c:otherwise>
-					               		<input type="checkbox" class="custom-control-radio2" id="payroll" name="authority" value="4">
+					               		<input type="checkbox" class="custom-control-radio2" id="payroll" name="at" value="4">
 				                	</c:otherwise>
 				                </c:choose>
 				                <label for="payroll" class="js-period-type radio-label-checkbox2" data-code="unlimit">급여</label>
@@ -692,10 +691,10 @@ function goSubmit(){
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
 		                   	 		<c:when test="${at==5 || at==10 || at==15 || at==30 || at==35 || at==40 || at==60 || at==70 || at==105 || at==120 || at==140 || at==210 || at==280 || at==420 || at==840}">
-					               		<input type="checkbox" class="custom-control-radio2" id="log" name="authority" value="5" checked>
+					               		<input type="checkbox" class="custom-control-radio2" id="log" name="at" value="5" checked>
 					                </c:when>
 				                	<c:otherwise>
-					               		<input type="checkbox" class="custom-control-radio2" id="log" name="authority" value="5">
+					               		<input type="checkbox" class="custom-control-radio2" id="log" name="at" value="5">
 				                	</c:otherwise>
 				                </c:choose>
 				                <label for="log" class="js-period-type radio-label-checkbox2" data-code="unlimit">로그</label>
@@ -703,10 +702,10 @@ function goSubmit(){
 		                   	 <span style="margin-right: 30px;">
 		                   	 	<c:choose>
 		                   	 		<c:when test="${at==7 || at==14 || at==20 || at==21 || at==28 || at==35 || at==42 || at==56 || at==70 || at==84 || at==105 || at==140 || at==210 || at==280 || at==420 || at==840}">
-					               		<input type="checkbox" class="custom-control-radio2" id="attendance" name="authority" value="7" checked>
+					               		<input type="checkbox" class="custom-control-radio2" id="attendance" name="at" value="7" checked>
 					                </c:when>
 				                	<c:otherwise>
-					               		<input type="checkbox" class="custom-control-radio2" id="attendance" name="authority" value="7">
+					               		<input type="checkbox" class="custom-control-radio2" id="attendance" name="at" value="7">
 				                	</c:otherwise>
 				                </c:choose>
 				                <label for="attendance" class="js-period-type radio-label-checkbox2" data-code="unlimit">근태</label>
@@ -714,10 +713,10 @@ function goSubmit(){
 		                   	 <span>
 		                   	 	<c:choose>
 		                   	 		<c:when test="${at==99}">
-					               		<input type="checkbox" class="custom-control-radio2" id="admin" name="authority" value="99" checked>
+					               		<input type="checkbox" class="custom-control-radio2" id="admin" name="at" value="99" checked>
 					                </c:when>
 				                	<c:otherwise>
-					               		<input type="checkbox" class="custom-control-radio2" id="admin" name="authority" value="99">
+					               		<input type="checkbox" class="custom-control-radio2" id="admin" name="at" value="99">
 				                	</c:otherwise>
 				                </c:choose>
 				                <label for="admin" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리</label>

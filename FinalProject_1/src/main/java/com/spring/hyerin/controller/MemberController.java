@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.finalproject.common.AES256;
 import com.spring.finalproject.common.FileManager;
+import com.spring.finalproject.common.MailSendService;
+import com.spring.finalproject.common.Sha256;
 import com.spring.finalproject.service.InterFinalprojectService;
 import com.spring.hyerin.model.DepartmentsVO;
 import com.spring.hyerin.model.EmployeeVO;
@@ -43,23 +46,32 @@ public class MemberController {
 	@Autowired
 	private AES256 aes;
 	
+	@Autowired
+	private MailSendService mailService;
+	
 	
 	@RequestMapping(value = "/memberRegister.up")
-	public String memberRegister(HttpServletRequest request) {
-		return "member/memberRegister";
+	public ModelAndView memberRegister(HttpServletRequest request, ModelAndView mav) {
+		//부서정보 가져오기
+		List<DepartmentsVO> deptvoList = service.getdept();
+		
+		mav.addObject("deptvoList", deptvoList);
+		mav.setViewName("member/memberRegister");
+		return mav;
 	}
 	
 	@RequestMapping(value = "/myInfo_hr.up")
 	public ModelAndView rl_myInfo_hr(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) throws Throwable {
 		
 		String empno = request.getParameter("empno");
-		System.out.println(empno);
 		
 		//해당 empno사원의 정보 가져오기
 		EmployeeVO evo = service.getempvo(empno);
 		
 		evo.setEmail(aes.decrypt(evo.getEmail()));
-		evo.setMobile(aes.decrypt(evo.getMobile()));
+		try {
+			evo.setMobile(aes.decrypt(evo.getMobile()));
+		} catch (Exception e) {	}
 		
 		mav.addObject("empno", empno);
 		mav.addObject("evo", evo);
@@ -105,7 +117,9 @@ public class MemberController {
 			EmployeeVO evo = service.getempvo(empno);
 			
 			evo.setEmail(aes.decrypt(evo.getEmail()));
-			evo.setMobile(aes.decrypt(evo.getMobile()));
+			try {
+				evo.setMobile(aes.decrypt(evo.getMobile()));
+			} catch (Exception e) {	}
 			
 			mav.addObject("empno", empno);
 			mav.addObject("evo", evo);
@@ -127,7 +141,9 @@ public class MemberController {
 			EmployeeVO evo = service.getempvo(empno);
 			
 			evo.setEmail(aes.decrypt(evo.getEmail()));
-			evo.setMobile(aes.decrypt(evo.getMobile()));
+			try {
+				evo.setMobile(aes.decrypt(evo.getMobile()));
+			} catch (Exception e) {} 
 			
 			mav.addObject("empno", empno);
 			mav.addObject("evo", evo);
@@ -255,6 +271,43 @@ public class MemberController {
 		}
 		return jsonobj.toString();
 		
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/mailCheck.up")
+	public String mailCheck(String email) {
+		return mailService.joinEmail(email);
+	}//end of mailCheck
+	
+	@RequestMapping(value="/memberRegisterEnd.up", method= {RequestMethod.POST})
+	public ModelAndView memberRegisterEnd(HttpServletRequest request, ModelAndView mav, EmployeeVO evo) throws Throwable {
+		
+		evo.setEmail(aes.encrypt(evo.getEmail()));
+		evo.setPasswd(Sha256.encrypt(evo.getPasswd()));
+		
+		// 사원번호 채번해오기
+		String employee_no = service.getNewEmpno(evo.getFk_department_no());
+		evo.setEmployee_no(employee_no);
+		
+		// 해당 정보로 사원테이블에 insert 해주기
+		int n = service.memberRegister(evo);
+		
+		String message = "";
+		String loc = "";
+		
+		if(n==1) {
+			message = "회원가입해주셔서 감사합니다. 귀하의 아이디는 " + employee_no + "입니다.";
+			loc = request.getContextPath() + "/login.up";
+		} else {
+			message = "회원가입이 실패하였습니다.";
+			loc = "history.back()";
+		}
+		
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		mav.setViewName("msg");
+		return mav;
 	}
 	
 	

@@ -267,7 +267,7 @@ input:focus, select:focus{
 } 
 
 #addressBtn {
-    background-color: #cfc9c9;
+    background-color: #d9d9d9;
     color: white;
     height: 40px;
     width: 100px;
@@ -304,3 +304,8 @@ div#alert {
     right: 38%;
     box-shadow: 1px 1px 1px 1.3px rgb(0 0 0 / 20%);
 }
+
+#postcode, #address, #extra_address {
+	cursor: pointer;
+}
+

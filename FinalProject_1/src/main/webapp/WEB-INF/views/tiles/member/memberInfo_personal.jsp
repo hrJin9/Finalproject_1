@@ -9,6 +9,13 @@
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/memberInfo.css?after">
 <style type="text/css">
+#confirmEmail{
+	color: #666666;
+    background-color: white;
+    border: solid 1px #cccccc;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
 </style>   
 
 <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>  <!-- src 경로는 daum에서 준 우편번호찾기 사이트이다. -->
@@ -16,33 +23,16 @@
 //"우편번호찾기" 를 클릭했는지 클릭을 안했는지 여부를 알아오기 위한 용도.
 let b_flag_addressBtn_click = false;
 
-// 휴대전화 변경했는지 알아오기 위한 용도
-let b_flag_mobile_update = false;
-
-// "휴대전화 인증하기" 을 클릭했는지 클릭을 안했는지 여부를 알아오기 위한 용도.
-let b_flag_mobileCheckBtn_click = false;
-
-// "휴대전화 인증코드확인" 을 확인 했는지 알아오기 위한 용도.
-let b_flag_mobileVerifyCode_click = false;
-
-// 이베일 변경했는지 알아오기 위한 용도
-let b_flag_email_update = false;
-
-// "이메일 인증하기" 을 클릭했는지 클릭을 안했는지 여부를 알아오기 위한 용도.
-let b_flag_emailCheckBtn_click = false;
-
-// "이메일 인증코드확인" 을 확인 했는지 알아오기 위한 용도.
-let b_flag_emailVerifyCode_click = false;
-
-// 휴대폰 인증번호
-let smsCertificationCode = "";
-
-// 이메일 인증번호
-let certificationCode = "";
+var code = ""; // 이메일인증용
+var b_emailSendCheck = false;
+var b_emailCheck = false;
 
 $(document).ready(function(){
 	//툴팁 사용
 	var tooltipel = $(".tp").tooltip();
+	
+	$(".sendAlert").hide();
+	$(".emailAlert").hide();
 	
 	var empno = "${requestScope.empno}";
 	if(empno == "") { //내프로필 조회시
@@ -51,6 +41,13 @@ $(document).ready(function(){
 	
 	// 첫페이지 로딩시 근무시간 읽어오기
 	getWorkinghour();
+	
+	// 첫페이지 로딩시 핸드폰번호값 알아오기
+	var mobile = "${requestScope.evo.mobile}";
+	var mobileArr = mobile.split("-");
+	$.each(mobileArr,function(index,item){
+		$("#hp"+(index+1)).val(item);
+	});
 	
 	
 	// nav바에서 인사정보 클릭시 인사정보 페이지로 이동
@@ -78,7 +75,7 @@ $(document).ready(function(){
 	});
 	
 	// 개인정보수정- offcanvas
- 	$(".update").click(function(e){
+ 	$("#updateInfo_my").click(function(e){
  		$('.offcanvas').offcanvas('show');
  		$("#offcanvasScrollingLabel").text("개인 정보 수정");
 		
@@ -93,7 +90,6 @@ $(document).ready(function(){
 			
 		// 우편번호찾기 버튼 클릭시
 		$("button#addressBtn").click(function(){
-			
 			new daum.Postcode({   // 다음사이트에서 제공하는 "우편번호찾기" 코드
 	            oncomplete: function(data) {
 	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -144,11 +140,16 @@ $(document).ready(function(){
 			
 		// 우편번호, 주소, 추가주소 입력란 클릭시 알림메시지 띄우기
         $("input#postcode, input#address, input#extra_address").bind("click", function() {
-   	        alert("우편번호찾기를 클릭하셔서 주소를 입력하세요.");
+   	       $("#addressBtn").trigger("click");
         });
 		
  	});// $(".update").click(function(e){});---------------------------
 	
+ 	
+ 	// 수정버튼 클릭시 관리자 정보수정페이지로 이동
+	$("#updateInfo").click(function(){
+		location.href="<%= ctxPath%>/admin_memberUpdate.up?empno="+"${requestScope.empno}";
+	})
 	
 	
 });// end of $(document).ready(function(){})-------------------------------
@@ -284,10 +285,111 @@ function getWorkinghour(){
 	
 }//end of getWorkinghour
 
+//이메일 인증
+function goEmailCheck(){
+	
+	const emailReg = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+	const email = $("#email").val().trim();
+	if(!emailReg.test(email)){
+		$("#email").focus();
+		$(".emailAlert").show();
+		return;
+	} else {
+		$(".emailAlert").hide();
+	}
+	
+	//$("#emailCheck").text("");
+	//$("#emailCheck").css("padding","20px 45px");
+	//$("#spinner").show();
+	
+	$.ajax({
+		url:"<%= ctxPath%>/mailCheck.up?email="+email,
+		type:"get",
+		success:function(data){
+			console.log("data:" + data);
+			code = data;
+			$(".sendAlert").show();
+			b_emailSendCheck = true;
+		}
+	});//end ajax
+	
+}//end of goEmailCheck
+
+//이메일 인증번호 비교
+function checkEmailCode(){
+	const inputval = $("#emailCheckbtn").val();
+	console.log(code);
+	console.log(inputval);
+	
+	if(code != inputval){
+		$(".sendAlert").text("인증번호가 일치하지 않습니다.");
+		$(".sendAlert").show();
+		return;
+	} else {
+		$(".sendAlert").text("인증이 성공되었습니다.");
+		$(".sendAlert").show();
+		b_emailCheck = true;
+	}
+	
+}//end checkEmailCode
+
+
+
+// 본인의 개인정보를 수정
+function updateMyInfo(){
+	
+	var mobile = $("#hp1").val() + "-" + $("#hp2").val() + "-" + $("#hp3").val();
+	$("#mobile").val(mobile);
+	
+	//이메일 유효성검사
+	const emailReg = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+	const email = $("#email").val();
+	if(!emailReg.test(email)){
+		$("#email").focus();
+		$(".emailAlert").show();
+		return;
+	} else {
+		$(".emailAlert").hide();
+	}
+	
+	if(!b_emailSendCheck){
+		$(".emailAlert").text("이메일 인증을 해주세요.");
+		$(".emailAlert").show();
+		$("#emailCheck").focus();
+		return;
+	}
+	
+	if(!b_emailCheck){
+		$(".emailAlert").text("인증번호를 확인해주세요.");
+		$(".emailAlert").show();
+		$("#confirmEmail").focus();
+		return;
+	}
+	
+	
+	$.ajax({
+		url: "<%= ctxPath%>/updateMyInfo.up",
+		data: $("#updateFrm").serialize(),
+		type: "post",
+		dataType:"json",
+		success:function(json){
+			if(json.n == 1){
+				location.reload();
+			}
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});
+	
+}//end of updateMyInfo
+
+
+
+
 </script>
 
 <div class="member_container">
-	<form name="myInfo">
 	
 	<div class="col-md-16">
 	<div style="padding: 30px 0; font-size: 11pt; font-weight: bold;">
@@ -312,12 +414,44 @@ function getWorkinghour(){
 	    	<span style="margin-right: 31px;"></span>
 		</c:if>
 	    <span class="myInfo">
-	    	<span style="font-size: 20pt; font-weight: 700;">${requestScope.evo.name_kr}</span><br>
-	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -8px;"><span id="team">소속</span>${requestScope.evo.department_name}/${requestScope.evo.team_name}</span>
+	    	<span style="font-size: 20pt; font-weight: 700;">${requestScope.evo.name_kr}</span>
+	    	<c:set var="logat" value="${sessionScope.loginuser.authority}"/>
+	    	<c:if test="${logat==3 || logat==6 || logat==12 || logat==15 || logat==21 || logat==24 || logat==30 || logat==42 || logat==60 || logat==84 || logat==105 || logat==120 || logat==210 || logat==420 || logat==840 || logat==99}">
+	    		<span id="updateInfo"><i class="fas fa-pen update tp" data-bs-toggle="tooltip" data-bs-placement="top" title="정보 수정"></i></span>
+	    	</c:if>
+	    	<c:if test="${sessionScope.loginuser.employee_no == requestScope.empno && !(logat==3 || logat==6 || logat==12 || logat==15 || logat==21 || logat==24 || logat==30 || logat==42 || logat==60 || logat==84 || logat==105 || logat==120 || logat==210 || logat==420 || logat==840 || logat==99)}">
+	    		<span id="updateInfo_my"><i class="fas fa-pen update tp" data-bs-toggle="tooltip" data-bs-placement="top" title="개인정보 수정"></i></span>
+	    	</c:if>
+	    	<br>
+	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -8px;"><span id="team">소속</span>
+	    		<c:if test="${not empty requestScope.evo.department_name}">
+    				${requestScope.evo.department_name}
+	    		</c:if>
+	    		<c:if test="${empty requestScope.evo.department_name}">
+	    			미지정
+	    		</c:if>
+	    		/
+	    		<c:if test="${not empty requestScope.evo.team_name}">
+	    			${requestScope.evo.team_name}
+	    		</c:if>
+	    		<c:if test="${empty requestScope.evo.team_name}">
+	    			미지정
+	    		</c:if>
+	    	
+	    	</span>
 	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role">직무</span>${requestScope.evo.role}</span>
 	    	<button type="button" id="phone" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="${requestScope.evo.mobile}"><span><i class="fas fa-phone-alt" style="transform: scaleX(-1); transition: .3s; color: #666666;"></i></span></button>
 	    	<button type="button" id="message" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="메시지 보내기" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
-	    	<button type="button" id="status"><span><i class="fas fa-circle" style="color: #07B419; padding-right: 5px; font-size: 7pt;"></i>재직중</span></button>
+	    	<button type="button" id="status">
+	    		<span>
+		    		<c:if test="${requestScope.evo.delete_status == 1}">
+		    			<i class="fas fa-circle" style="color: #07B419; padding-right: 5px; font-size: 7pt;"></i>재직중
+	    			</c:if>
+	    			<c:if test="${requestScope.evo.delete_status == 0}">
+		    			<i class="fas fa-circle" style="color: #d0d0d0; padding-right: 5px; font-size: 7pt;"></i>퇴사예정
+	    			</c:if>
+	    		</span>
+    		</button>
 		    </span>
 		</div>
 	   </div>  
@@ -333,10 +467,12 @@ function getWorkinghour(){
 		<div class="">
 			<%-- <div id="personalInfo">개인 정보<span><i class="fas fa-list-ul menubar"></i><i class="fas fa-pen update"></i></span></div><br> --%>
 			<div id="personalInfo">개인 정보
-				<c:set var="logat" value="${sessionScope.loginuser.authority}"/>
+          		 <%-- 
           		 <c:if test="${logat==3 || logat==6 || logat==12 || logat==15 || logat==21 || logat==24 || logat==30 || logat==42 || logat==60 || logat==84 || logat==105 || logat==120 || logat==210 || logat==420 || logat==840 || logat==99}">
+          		  --%>
+          		<!-- 
 				<span><i class="fas fa-pen update"></i></span>
-				</c:if>
+				 -->
 			</div><br>
 		 	<table class="table table-borderless content" style="float: left;">
 		       <colgroup>
@@ -380,8 +516,8 @@ function getWorkinghour(){
 						</tr>
 		                <tr>
 		                   <td style="padding-bottom: 22px;">주소</td>   
-		                   <td>${requestScope.evo.address}${requestScope.evo.detail_address}(${requestScope.evo.postcode})<br>
-		                   	   ${requestScope.evo.extra_address}<%-- 상세주소 --%>
+		                   <td>${requestScope.evo.address}${requestScope.evo.extra_address}(${requestScope.evo.postcode})<br>
+		                   	   ${requestScope.evo.detail_address}<%-- 상세주소 --%>
 		                   </td>   
 		                </tr>
 		                <tr>
@@ -456,22 +592,27 @@ function getWorkinghour(){
 		<hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 		<div class="offcanvas-body">
 			<div class="collapse show">
-				<form name="updateFrm">
+				<form id="updateFrm" name="updateFrm" style="font-size: 11pt;">
+					<input type="hidden" name="employee_no" value="${requestScope.empno}"/>
 					<div style="float: left; width: 45.5%;">
 						<div>이름</div>
-						<input id="name" type="text" class="required" name="name" size="20" placeholder="이름 입력" value="${requestScope.evo.name_kr}"/>
+						<input id="name" type="text" class="required" name="name_kr" size="20" placeholder="이름 입력" value="${requestScope.evo.name_kr}"/>
 					</div>
 						
 					<div style="float: left; width: 52%; margin-left: 16px;">
 						<div>영문이름</div>
-						<input id="Egname" type="text" class="required" name="name" size="20" placeholder="영문이름 입력" value="${requestScope.evo.name_en}" />
+						<input id="Egname" type="text" class="required" name="name_en" size="20" placeholder="영문이름 입력" value="${requestScope.evo.name_en}" />
 					</div>
 					
 					<div style="clear: both;">생년월일</div>
 					<input id="birthday" name="birthday" class="dateSelector" placeholder="ex) 2020-09-01" value="${requestScope.evo.birthday}"/>
 					
-					<div style="vertical-align: middle;">이메일</div>
-					<input id="email" type="text" class="required" name="email" placeholder="이메일 입력" value="${requestScope.evo.email}"/>
+					<div style="vertical-align: middle;">이메일<span class="error emailAlert" style="font-size: 9pt; margin-left: 20px; color: #4285f4;">이메일 형식에 맞지 않습니다.</span></div>
+					<input id="email" type="text" class="required" name="email" placeholder="이메일 입력" value="${requestScope.evo.email}" style="width: 84%"/>
+					<button type="button" id="emailCheck" class="btn" onclick="goEmailCheck()">인증하기</button>
+					<input id="emailCheckbtn" type="text" placeholder="인증번호 입력" style="width: 80.5%; margin-bottom: 0;"/>
+					<button id="confirmEmail" type="button" onclick="checkEmailCode()" >인증번호 확인</button>			
+					<div class="sendAlert" style="font-size: 9pt; margin-bottom: 20px; color: #4285f4;">인증번호가 전송되었습니다.</div>
 					<%--<button type="button" id="emailCheck">인증하기</button>
 					<span id="spinner" class="spinner-border text-success"></span>
 					<span id="emailCheckResult"></span>
@@ -485,7 +626,7 @@ function getWorkinghour(){
 					<div id="emailVerifyConfirm">이메일 인증이 확인되었습니다.</div> --%>
 					
 					<div style="vertical-align: middle;">연락처</div>
-					<select id="hp1" name="hp1" style="width: 18%;">
+					<select id="hp1" name="hp1" style="width: 31%;">
 		                	<option value="010">010</option>
 			                <option value="011">011</option>
 			                <option value="016">016</option>
@@ -493,9 +634,10 @@ function getWorkinghour(){
 			                <option value="018">018</option>
 			                <option value="019">019</option>
 	                </select>&nbsp;-&nbsp;
-	                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 18%;"/>&nbsp;-&nbsp;            
-	                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 18%; margin: 7px 7px 18px 0;"/>
-		            <button type="button" id="mobileCheckBtn" style="cursor: pointer;">인증하기</button>
+	                <input type="text" id="hp2" name="hp2" maxlength="4" value="" style="width: 31%;"/>&nbsp;-&nbsp;            
+	                <input type="text" id="hp3" name="hp3" maxlength="4" value="" style="width: 31%; margin: 7px 7px 18px 0;"/>
+		            <!-- <button type="button" id="mobileCheckBtn" style="cursor: pointer;">인증하기</button> -->
+		            <input type="hidden" id="mobile" name="mobile"/>
 		            <%--
 		            <span id="spinner" class="spinner-border text-success"></span>
 		            <span class="error" style="color: red">휴대폰 형식이 아닙니다.</span><br>
@@ -510,47 +652,46 @@ function getWorkinghour(){
 		            --%>
 					
 					<div style="vertical-align: middle;">주소</div>
-					<span style="display: block; margin-bottom: 7px;"><input class="addressInput mt-2" type="text" id="postcode" name="postcode" value="" size="20" maxlength="5" style="width: 45.5%; margin: 7px 7px 0 0;" placeholder="우편번호" readonly />
+					<span style="display: block; margin-bottom: 7px;"><input class="addressInput mt-2" type="text" id="postcode" name="postcode" value="${requestScope.evo.postcode}" size="20" maxlength="5" style="width: 45.5%; margin: 7px 7px 0 0;" placeholder="우편번호" readonly />
 					<button type="button" id="addressBtn">우편번호찾기</button></span>
 					<%-- <span class="error" style="color: red">우편번호 형식이 아닙니다.</span><br> --%>
-					<input class="addressInput mt-2" type="text" id="address" name="address" value="" size="50" style="display: block; margin-bottom: 7px;" placeholder="주소" readonly  />
-	                <input class="addressInput mt-2" type="text" id="extra_address" name="extra_address" value="" size="50" style="display: block; margin-bottom: 7px;" placeholder="추가주소" readonly />
-	                <input class="addressInput mt-2" type="text" id="detail_address" name="detail_address" value="" size="50" style="display: block; margin-bottom: 18px;" placeholder="상세주소 입력" />
+					<input class="addressInput mt-2" type="text" id="address" name="address" value="${requestScope.evo.address}" size="50" style="display: block; margin-bottom: 7px;" placeholder="주소" readonly  />
+	                <input class="addressInput mt-2" type="text" id="extra_address" name="extra_address" value="${requestScope.evo.extra_address}" size="50" style="display: block; margin-bottom: 7px;" placeholder="추가주소" readonly />
+	                <input class="addressInput mt-2" type="text" id="detail_address" name="detail_address" value="${requestScope.evo.detail_address}" size="50" style="display: block; margin-bottom: 18px;" placeholder="상세주소 입력" />
 					<%-- <span class="error" style="color: red">주소를 입력하세요.</span> --%>
 				
 					<div style="vertical-align: middle;">급여계좌</div>
 					<select id="bank" name="bank" class="required" style="display: inline-block; width: 22%;">
-						<option value="1">은행 선택</option>
-						<option value="2">KEB하나은행</option>
-						<option value="3">SC제일은행</option>
-						<option value="4">경남은행</option>
-						<option value="5">광주은행</option>
-						<option value="6">국민은행</option>
-						<option value="7">기업은행</option>
-						<option value="8">농협은행</option>
-						<option value="9">대구은행</option>
-						<option value="10">부산은행</option>
-						<option value="11">상호저축은행</option>
-						<option value="12">수협은행</option>
-						<option value="13">신한은행</option>
-						<option value="14">우리은행</option>
-						<option value="15">우체국</option>
-						<option value="16">전북은행</option>
-						<option value="17">카카오뱅크</option>
-						<option value="18">케이뱅크은행</option>
-						<option value="19">토스뱅크</option>
-						<option value="20">한국산업은행</option>
-						<option value="21">한국씨티은행</option>
-						<option value="22">제주은행</option>
-						<option value="23">산림조합</option>
-						<option value="24">새마을금고</option>
-						<option value="25">신협</option>
+						<option>은행 선택</option>
+						<option>KEB하나은행</option>
+						<option>SC제일은행</option>
+						<option>경남은행</option>
+						<option>광주은행</option>
+						<option>국민은행</option>
+						<option>기업은행</option>
+						<option>농협은행</option>
+						<option>대구은행</option>
+						<option>부산은행</option>
+						<option>상호저축은행</option>
+						<option>수협은행</option>
+						<option>신한은행</option>
+						<option>우리은행</option>
+						<option>우체국</option>
+						<option>전북은행</option>
+						<option>카카오뱅크</option>
+						<option>케이뱅크은행</option>
+						<option>토스뱅크</option>
+						<option>한국산업은행</option>
+						<option>한국씨티은행</option>
+						<option>제주은행</option>
+						<option>산림조합</option>
+						<option>새마을금고</option>
+						<option>신협</option>
 					</select>
-					<input id=accountNumber type="text" class="required" name="accountNumber" size="20" placeholder="계좌번호  입력" style="display: inline-block; width: 52%;"/>
-					<input id=accountHolder type="text" class="required" name="accountHolder" size="20" placeholder="예금주  입력" style="display: inline-block; width: 24.7%;"/>
+					<input id=accountNumber type="text" class="required" name="accountnumber" size="20" placeholder="계좌번호  입력" value="${requestScope.evo.accountnumber }"style="display: inline-block; width: 77%;"/>
 				
 					<div class="workstatus-buttoncontainer" style="margin-bottom: 60px;">
-			  			<button type="button" class="workstatus-save bluebtn">저장하기</button>
+			  			<button type="button" class="workstatus-save bluebtn" onclick="updateMyInfo()">저장하기</button>
 			  			<button type="reset" class="workstatus-cancel">취소</button>
 		  			</div>
 				
@@ -558,7 +699,6 @@ function getWorkinghour(){
 			</div> 
 		</div>
 	</div>
-	</form>
 	
   	<div id="alert">
          <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>

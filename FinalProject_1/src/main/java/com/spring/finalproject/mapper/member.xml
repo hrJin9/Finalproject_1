@@ -182,7 +182,12 @@
 	
 	<!-- 사원번호 채번해오기 -->
 	<select id="getNewEmpno" parameterType="String" resultType="String">
-		select #{fk_department_no}||lpad(seq_tbl_employee.nextval,4,0)
+		<if test="fk_department_no != ''">
+			select #{fk_department_no}||lpad(seq_tbl_employee.nextval,4,0)
+		</if>
+		<if test="fk_department_no == ''">
+			select rpad(seq_tbl_employee.nextval,6,0)
+		</if>
 		from dual
 	</select>
 	
@@ -281,7 +286,7 @@
 		<if test="name_en != ''">
 			name_en = #{name_en},
 		</if>
-		jointype = #{jointype}, manager_no = null, hire_date = #{hire_date}, 
+		jointype = #{jointype}, manager_no = null, hire_date = to_date(#{hire_date}), 
 		 <if test="salary == ''">
 		 	salary = null,
 		 </if>
@@ -324,7 +329,7 @@
 		 <if test="extra_address != ''">
 		 	extra_address = #{extra_address},
 		 </if>
-		 email = #{email}, gender = #{gender},
+		 	email = #{email}, gender = #{gender},
 		 <if test="academic_ability == ''">
 		 	academic_ability = null,
 		 </if>
@@ -354,9 +359,86 @@
 		 <if test="bank != ''">
 		 	bank = #{bank}, accountnumber = #{accountnumber},
 		 </if>
-		 delete_status = default, role = #{role}, position = #{position}, authority = #{authority}, birthday = #{birthday}, employmenttype = #{employmenttype}, delete_status = #{delete_status}
+		 delete_status = #{delete_status}, role = #{role}, position = #{position}, authority = #{authority}, birthday = to_date(#{birthday}), employmenttype = #{employmenttype}
 		 where employee_no = #{employee_no}
 	</update>
+	
+	<update id="updateMyInfo" parameterType="com.spring.hyerin.model.EmployeeVO">
+		update tbl_employee set name_kr = #{name_kr},
+		<if test="name_en == ''">
+			name_en = null,
+		</if>
+		<if test="name_en != ''">
+			name_en = #{name_en},
+		</if>
+		birthday = #{birthday}, email = #{email},
+		<if test="mobile == ''">
+			mobile = null,
+		</if>
+		<if test="mobile != ''">
+			mobile = #{mobile},
+		</if>
+		 <if test="postcode == ''">
+		 	postcode = null, 
+		 </if>
+		 <if test="postcode != ''">
+		 	postcode = #{postcode},
+		 </if>
+		 <if test="address == ''">
+		 	address = null,
+		 </if>
+		 <if test="address != ''">
+		 	 address = #{address}, 
+		 </if>
+		 <if test="detail_address == ''">
+		 	detail_address = null, 
+		 </if>
+		 <if test="detail_address != ''">
+		 	detail_address = #{detail_address}, 
+		 </if>
+		 <if test="extra_address == ''">
+		 	extra_address = null, 
+		 </if>
+		 <if test="extra_address != ''">
+		 	extra_address = #{extra_address},
+		 </if>
+		<if test="bank == ''">
+		 	bank = null, accountnumber = null
+		 </if>
+		 <if test="bank != ''">
+		 	bank = #{bank}, accountnumber = #{accountnumber}
+		 </if>
+		where employee_no = #{employee_no}
+	</update>
+	
+	
+	<select id="empList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, delete_status, role, position, authority, employmenttype, to_char(hire_date,'yyyy-mm-dd') as hire_date
+		from v_employee
+		where employee_no in
+		<foreach collection="empnoArr" index="i" open="(" separator="," close=")">
+			'${empnoArr[i]}'
+		</foreach>
+	</select>
+	
+	
+	<select id="empListAll" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, delete_status, role, position, authority, employmenttype, to_char(hire_date,'yyyy-mm-dd') as hire_date
+		from v_employee
+	</select>
+	
+	
+	<!-- 해당 정보로 사원테이블에 insert 해주기 -->
+	<insert id="memberRegister" parameterType="com.spring.hyerin.model.EmployeeVO">
+		insert into tbl_employee(employee_no, name_kr, passwd, fk_department_no, email)
+		<if test="fk_department_no != ''">
+			values(#{employee_no}, #{name_kr}, #{passwd}, #{fk_department_no}, #{email})
+		</if>
+		<if test="fk_department_no == ''">
+			values(#{employee_no}, #{name_kr}, #{passwd}, null, #{email})
+		</if>
+	
+	</insert>
 	
 	
 </mapper>
