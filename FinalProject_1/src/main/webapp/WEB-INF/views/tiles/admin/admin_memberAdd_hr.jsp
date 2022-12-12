@@ -233,7 +233,6 @@ function testForm(input){
 function goSubmit(){
 	
 	// 유효성 검사하기 
-	/* 
 	$(".alerts").each(function(index, item){
 		var prev = $(item).prev();
 		if(prev.is("#hp3")) return;
@@ -246,7 +245,6 @@ function goSubmit(){
 			$(item).text("");
 		}
 	});
-	 */
 	
 	if ($("#dept").val() == "add") {
 		if($("#addDept").val().trim() == ""){

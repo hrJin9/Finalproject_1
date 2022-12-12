@@ -2,15 +2,30 @@ package com.spring.admin_member.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -316,33 +331,249 @@ public class Admin_memberController {
 	
 	
 	
-	@RequestMapping(value = "/memUpdateEnd.up")
+	@RequestMapping(value = "/memUpdateEnd.up", method = {RequestMethod.POST})
 	public ModelAndView memUpdateEnd(HttpServletRequest request, ModelAndView mav, EmployeeVO evo) throws Throwable {
 		
 		
-		System.out.println("employee_no" + evo.getEmployee_no());
+		evo.setEmail(aes.encrypt(evo.getEmail()));
+		evo.setMobile(aes.encrypt(evo.getMobile()));
 		
+		 //트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 update) 
+		int n = service.updateEmployee(evo);
 		
-//		evo.setEmail(aes.encrypt(evo.getEmail()));
-//		evo.setMobile(aes.encrypt(evo.getMobile()));
-//		
-//		 //트랜잭션 처리 (fk_department_no나 fk_team_no가 add라면 먼저 insert해준 뒤 사원정보 update) 
-//		int n = service.updateEmployee(evo);
-//		
-//		String message = "";
-//		String loc = "";
-//		if(n == 1) {
-//			loc = request.getContextPath()+"/admin_memberList.up";
-//		} else {
-//			message = "구성원을 추가하는데 실패하였습니다.";
-//			loc = "javascript:history.back()";
-//		}
-//		mav.addObject("message",message);
-//		mav.addObject("loc",loc);
-//		
+		String message = "";
+		String loc = "";
+		if(n == 1) {
+			loc = request.getContextPath()+"/admin_memberList.up";
+		} else {
+			message = "구성원을 추가하는데 실패하였습니다.";
+			loc = "javascript:history.back()";
+		}
+		mav.addObject("message",message);
+		mav.addObject("loc",loc);
+		
 		mav.setViewName("msg");
 		return mav;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/updateMyInfo.up")
+	public String getTeams(HttpServletRequest request, EmployeeVO evo) throws Throwable {
+		
+		
+//		System.out.println("Postcode : " + evo.getPostcode());
+//		System.out.println("Address : " + evo.getAddress());
+//		System.out.println("Detail_address : " + evo.getDetail_address());
+//		System.out.println("Extra_address : " + evo.getExtra_address());
+//		System.out.println("Bank : " + evo.getBank());
+//		System.out.println("Accountnumber : " + evo.getAccountnumber());
+		
+		evo.setEmail(aes.encrypt(evo.getEmail()));
+		evo.setMobile(aes.encrypt(evo.getMobile()));
+		
+		// 해당 사원의 정보를 변경해주기
+		int n = service.updateMyInfo(evo);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("n", n);
+		
+		return jsonobj.toString();
+	}
+	
+	
+	@RequestMapping(value = "/getExcelEmp.up", method = { RequestMethod.POST })
+	public String getExcelEmp(HttpServletRequest request, Model model) throws Throwable {
+		//String[] empnoArr = request.getParameterValues("empnoArr"); 
+		
+		String str_empnoArr = request.getParameter("str_empnoArr");
+		
+		
+		List<EmployeeVO> empList;
+		if("".equals(str_empnoArr)) {
+			//모든 사원의 정보를 알아오기
+			empList = service.empListAll();
+			
+		} else {
+			String[] empnoArr = str_empnoArr.split("\\,");
+			
+			Map<String, String[]> paraMap = new HashMap<String, String[]>();
+			paraMap.put("empnoArr", empnoArr);
+			
+			// 해당 사원들의 정보 알아오기
+			empList = service.empList(paraMap);
+		}
+		
+		
+		SXSSFWorkbook workbook = new SXSSFWorkbook();
+		// 시트생성
+		SXSSFSheet sheet = workbook.createSheet("구성원정보");
+		
+		// 시트열너비 설정
+		sheet.setColumnWidth(0, 2000);
+		sheet.setColumnWidth(1, 4000);
+		sheet.setColumnWidth(2, 2000);
+		sheet.setColumnWidth(3, 4000);
+		sheet.setColumnWidth(4, 3000);
+		sheet.setColumnWidth(5, 2000);
+		sheet.setColumnWidth(6, 4000);
+		sheet.setColumnWidth(7, 4000);
+		sheet.setColumnWidth(8, 1500);
+		sheet.setColumnWidth(9, 3000);
+		
+		// 행의 위치를 나타내는 변수
+		int rowLocation = 0;
+		CellStyle mergeRowStyle = workbook.createCellStyle();
+		mergeRowStyle.setAlignment(HorizontalAlignment.CENTER);
+		mergeRowStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		
+		CellStyle headerStyle = workbook.createCellStyle();
+		headerStyle.setAlignment(HorizontalAlignment.CENTER);
+		headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		
+		mergeRowStyle.setFillForegroundColor(IndexedColors.DARK_BLUE.getIndex()); // IndexedColors.DARK_BLUE.getIndex()
+		mergeRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		headerStyle.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex()); // IndexedColors.LIGHT_YELLOW.getIndex()
+		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		
+		// CellStyle 천단위 쉼표, 금액
+		CellStyle moneyStyle = workbook.createCellStyle();
+		moneyStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0"));
+		
+		Font mergeRowFont = workbook.createFont(); // import org.apache.poi.ss.usermodel.Font; 으로 한다.
+		mergeRowFont.setFontName("나눔고딕");
+		mergeRowFont.setFontHeight((short) 500);
+		mergeRowFont.setColor(IndexedColors.WHITE.getIndex());
+		mergeRowFont.setBold(true);
+		
+		mergeRowStyle.setFont(mergeRowFont);
+		
+		headerStyle.setBorderTop(BorderStyle.THICK);
+		headerStyle.setBorderBottom(BorderStyle.THICK);
+		headerStyle.setBorderLeft(BorderStyle.THIN);
+		headerStyle.setBorderRight(BorderStyle.THIN);
+		
+		// 병합할 행 만들기
+		Row mergeRow = sheet.createRow(rowLocation);
+		
+		// 병합할 행에 "우리회사 사원정보" 로 셀을 만들어 셀에 스타일을 주기
+		for (int i = 0; i < 10; i++) {
+			Cell cell = mergeRow.createCell(i);
+			cell.setCellStyle(mergeRowStyle);
+			cell.setCellValue("회사 사원정보");
+		} // end of for-------------------------
+		
+		// 셀 병합하기
+		sheet.addMergedRegion(new CellRangeAddress(rowLocation, rowLocation, 0, 9));
+		// 시작 행, 끝 행, 시작 열, 끝 열
+		
+		// 헤더 행 생성
+		Row headerRow = sheet.createRow(++rowLocation);
+		
+		// 해당 행의 첫번째 열 셀 생성
+		Cell headerCell = headerRow.createCell(0); // 엑셀에서 열의 시작은 0 부터 시작한다.
+		headerCell.setCellValue("사원번호");
+		headerCell.setCellStyle(headerStyle);
+		
+		// 해당 행의 두번째 열 셀 생성
+		headerCell = headerRow.createCell(1);
+		headerCell.setCellValue("사원명");
+		headerCell.setCellStyle(headerStyle);
+		
+		// 해당 행의 세번째 열 셀 생성
+		headerCell = headerRow.createCell(2);
+		headerCell.setCellValue("부서번호");
+		headerCell.setCellStyle(headerStyle);
+
+		// 해당 행의 네번째 열 셀 생성
+		headerCell = headerRow.createCell(3);
+		headerCell.setCellValue("부서명");
+		headerCell.setCellStyle(headerStyle);
+
+		// 해당 행의 다섯번째 열 셀 생성
+		headerCell = headerRow.createCell(4);
+		headerCell.setCellValue("직위");
+		headerCell.setCellStyle(headerStyle);
+
+		// 해당 행의 여섯번째 열 셀 생성
+		headerCell = headerRow.createCell(5);
+		headerCell.setCellValue("고용형태");
+		headerCell.setCellStyle(headerStyle);
+
+		// 해당 행의 일곱번째 열 셀 생성
+		headerCell = headerRow.createCell(6);
+		headerCell.setCellValue("이메일");
+		headerCell.setCellStyle(headerStyle);
+
+		// 해당 행의 여덟번째 열 셀 생성
+		headerCell = headerRow.createCell(7);
+		headerCell.setCellValue("연락처");
+		headerCell.setCellStyle(headerStyle);
+		
+		headerCell = headerRow.createCell(8);
+		headerCell.setCellValue("연봉");
+		headerCell.setCellStyle(headerStyle);
+		
+		headerCell = headerRow.createCell(9);
+		headerCell.setCellValue("입사일자");
+		headerCell.setCellStyle(headerStyle);
+		
+		Row bodyRow = null;
+		Cell bodyCell = null;
+		
+		for (int i = 0; i < empList.size(); i++) {
+			EmployeeVO empvo = empList.get(i);
+			// 행생성
+			bodyRow = sheet.createRow(i + (rowLocation + 1));
+			
+			
+			bodyCell = bodyRow.createCell(0);
+			bodyCell.setCellValue(empvo.getEmployee_no());
+
+			bodyCell = bodyRow.createCell(1);
+			bodyCell.setCellValue(empvo.getName_kr());
+
+			bodyCell = bodyRow.createCell(2);
+			bodyCell.setCellValue(empvo.getFk_department_no());
+
+			bodyCell = bodyRow.createCell(3);
+			bodyCell.setCellValue(empvo.getDepartment_name());
+
+			bodyCell = bodyRow.createCell(4);
+			bodyCell.setCellValue(empvo.getPosition());
+
+			bodyCell = bodyRow.createCell(5);
+			bodyCell.setCellValue(empvo.getemploymenttype());
+			bodyCell.setCellStyle(moneyStyle); // 천단위 쉼표, 금액
+
+			bodyCell = bodyRow.createCell(6);
+			bodyCell.setCellValue(aes.decrypt(empvo.getEmail()));
+
+			bodyCell = bodyRow.createCell(7);
+			bodyCell.setCellValue(aes.decrypt(empvo.getMobile()));
+			
+			int salary = 0;
+			try {
+				salary = Integer.parseInt(empvo.getSalary());
+			} catch(Exception e) {
+			}
+			
+			bodyCell = bodyRow.createCell(8);
+			bodyCell.setCellValue(salary);
+			
+			bodyCell = bodyRow.createCell(9);
+			bodyCell.setCellValue(empvo.getHire_date());
+			
+		}//end of for
+		
+		model.addAttribute("locale", Locale.KOREA);
+		model.addAttribute("workbook", workbook);
+		model.addAttribute("workbookName", "구성원정보");
+		
+		return "excelDownloadView";
+	}
+	
 	
 	
 }
