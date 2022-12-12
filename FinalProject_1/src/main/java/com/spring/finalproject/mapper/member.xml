@@ -182,7 +182,12 @@
 	
 	<!-- 사원번호 채번해오기 -->
 	<select id="getNewEmpno" parameterType="String" resultType="String">
-		select #{fk_department_no}||lpad(seq_tbl_employee.nextval,4,0)
+		<if test="fk_department_no != ''">
+			select #{fk_department_no}||lpad(seq_tbl_employee.nextval,4,0)
+		</if>
+		<if test="fk_department_no == ''">
+			select rpad(seq_tbl_employee.nextval,6,0)
+		</if>
 		from dual
 	</select>
 	
@@ -405,6 +410,35 @@
 		 </if>
 		where employee_no = #{employee_no}
 	</update>
+	
+	
+	<select id="empList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, delete_status, role, position, authority, employmenttype, to_char(hire_date,'yyyy-mm-dd') as hire_date
+		from v_employee
+		where employee_no in
+		<foreach collection="empnoArr" index="i" open="(" separator="," close=")">
+			'${empnoArr[i]}'
+		</foreach>
+	</select>
+	
+	
+	<select id="empListAll" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, delete_status, role, position, authority, employmenttype, to_char(hire_date,'yyyy-mm-dd') as hire_date
+		from v_employee
+	</select>
+	
+	
+	<!-- 해당 정보로 사원테이블에 insert 해주기 -->
+	<insert id="memberRegister" parameterType="com.spring.hyerin.model.EmployeeVO">
+		insert into tbl_employee(employee_no, name_kr, passwd, fk_department_no, email)
+		<if test="fk_department_no != ''">
+			values(#{employee_no}, #{name_kr}, #{passwd}, #{fk_department_no}, #{email})
+		</if>
+		<if test="fk_department_no == ''">
+			values(#{employee_no}, #{name_kr}, #{passwd}, null, #{email})
+		</if>
+	
+	</insert>
 	
 	
 </mapper>

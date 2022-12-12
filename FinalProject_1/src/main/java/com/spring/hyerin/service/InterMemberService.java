@@ -56,5 +56,17 @@ public interface InterMemberService {
 	
 	// 해당 사원의 정보를 변경해주기
 	int updateMyInfo(EmployeeVO evo);
+	
+	// 해당 사원들의 정보 알아오기
+	List<EmployeeVO> empList(Map<String, String[]> paraMap);
+	
+	//모든 사원의 정보를 알아오기
+	List<EmployeeVO> empListAll();
+	
+	// 해당 정보로 사원테이블에 insert 해주기
+	int memberRegister(EmployeeVO evo);
+	
+	// 사원번호 채번해오기
+	String getNewEmpno(String fk_department_no);
 
 }

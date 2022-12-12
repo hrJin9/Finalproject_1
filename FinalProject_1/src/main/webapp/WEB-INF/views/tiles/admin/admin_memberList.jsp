@@ -111,6 +111,14 @@ $(document).ready(function(){
 		goUpdate();
 	});
 	
+	$("#listdownload").click(function(){
+		getExcelEmp("chx");
+	})
+	
+	$("#listdownloadAll").click(function(){
+		getExcelEmp();
+	})
+	
 		
 
 });// end of$(document).ready(function(){})--------------------------
@@ -189,6 +197,57 @@ function goUpdate(){
 }//end of goUpdate();
 
 
+
+// 엑셀 다운로드
+function getExcelEmp(status){
+	
+	if(status == "chx"){
+		var chxArr = $("input[name='pnum']:checked");
+		if(chxArr.length < 1) {
+			$(".excelFail").fadeIn("fast");
+			setTimeout(function(){
+				$(".excelFail").fadeOut("fast");
+			}, 1500);
+			return;
+		}
+		
+		
+		var str_empnoArr = "";
+		chxArr.each(function(index, item){
+			var empno = $(item).parent().parent().attr("id");
+			if(index == 0) str_empnoArr += empno;
+			else str_empnoArr += "," + empno;
+		});
+		$("#str_empnoArr").val(str_empnoArr);
+	}
+	
+	const frm = document.memform;
+	frm.method = "post";
+	frm.action = "<%= ctxPath%>/getExcelEmp.up";
+	frm.submit();
+	
+	$("#str_empnoArr").val("");
+	<%-- 
+	$.ajax({
+		url: "<%= ctxPath%>/getExcelEmp.up",
+		traditional: true,
+		data: {"empnoArr":empnoArr},
+		dataType:"json",
+		success:function(json){
+			
+			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+		
+		
+	});	
+	 --%>
+	
+}//end of getExcelEmp
+
+
 </script>
 
 <nav id="admin_mainList" class="margin-container">
@@ -223,7 +282,13 @@ function goUpdate(){
 			<div style="display: inline-block;">
 	      	 	<a id="listdownload" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #d9d9d9; border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
 			       	<span><i class="fa-solid fa-download"></i></span>
-			       	<span>목록 다운로드</span>
+			       	<span>선택 다운로드</span>
+	      	 	</a>
+	      	 </div>
+			<div style="display: inline-block;">
+	      	 	<a id="listdownloadAll" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #d9d9d9; border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
+			       	<span><i class="fa-solid fa-download"></i></span>
+			       	<span>모두 다운로드</span>
 	      	 	</a>
 	      	 </div>
 		</div>
@@ -409,13 +474,14 @@ function goUpdate(){
 					</c:if>
 		    	</tbody>        
 			</table>
-			<div>
+			<div style="text-align: center;">
 				${requestScope.pageBar}
 			</div>
 		</div>
 		
-		<input id="dc" type="text" name="dc" value=""/>
-		<input id="dv" type="text" name="dv" value=""/>
+		<input id="dc" type="hidden" name="dc" value=""/>
+		<input id="dv" type="hidden" name="dv" value=""/>
+		<input id="str_empnoArr" type="hidden" name="str_empnoArr"/>
 		</form>
 		<div id="alert" class="deleteAlert">
 	         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
@@ -430,6 +496,11 @@ function goUpdate(){
 	    <div id="alert" class="updateFail">
 	         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
 	         <span id="alertText" style="position: relative; bottom: 2px;">수정할 구성원을 한 명만 선택해주세요.</span>
+	    </div>
+	    
+	    <div id="alert" class="excelFail">
+	         <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+	         <span id="alertText" style="position: relative; bottom: 2px;">구성원을 선택해주세요.</span>
 	    </div>
 	    
 	</div>

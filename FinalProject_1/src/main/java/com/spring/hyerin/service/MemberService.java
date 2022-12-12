@@ -273,4 +273,32 @@ public class MemberService implements InterMemberService {
 		return n;
 	}
 	
+	// 해당 사원들의 정보 알아오기
+	@Override
+	public List<EmployeeVO> empList(Map<String, String[]> paraMap) {
+		List<EmployeeVO> empList = dao.empList(paraMap);
+		return empList;
+	}
+	
+	// 모든 사원의 정보 알아오기
+	@Override
+	public List<EmployeeVO> empListAll() {
+		List<EmployeeVO> empList = dao.empListAll();
+		return empList;
+	}
+	
+	// 해당 정보로 사원테이블에 insert 해주기
+	@Override
+	public int memberRegister(EmployeeVO evo) {
+		int n = dao.memberRegister(evo);
+		return n;
+	}
+	
+	// 사원번호 채번해오기
+	@Override
+	public String getNewEmpno(String fk_department_no) {
+		String employee_no = dao.getNewEmpno(fk_department_no);
+		return employee_no;
+	}
+	
 }

@@ -57,10 +57,14 @@ public class LoginController {
 			mav.setViewName("msg");
 		} else { // 로그인성공시
 			loginuser.setEmail(aes.decrypt(loginuser.getEmail()) );
-			loginuser.setMobile(aes.decrypt(loginuser.getMobile()));
+			try {
+				loginuser.setMobile(aes.decrypt(loginuser.getMobile()));
+			} catch (Exception e) {
+			}
 			// 세션에 로그인유저 정보 저장하기
 			HttpSession session = request.getSession();
 			session.setAttribute("loginuser", loginuser);
+			session.setAttribute("dayoff_cnt", loginuser.getDayoff_cnt());
 			
 			// 로그인하지 않고 접근한 경우
 			String goBackURL = (String) session.getAttribute("goBackURL");
