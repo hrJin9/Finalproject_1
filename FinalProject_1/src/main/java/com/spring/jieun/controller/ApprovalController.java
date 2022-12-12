@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -1380,12 +1381,47 @@ public class ApprovalController {
 		List<ApprovalVO> lineList = service.loadsavedline(paraMap);
 		JSONArray jsonarr = new JSONArray(); // []
 		
+		if(lineList  != null) {
+			for(ApprovalVO apvo: lineList) {
+				JSONObject jsonobj = new JSONObject();
+				jsonobj.put("signpath_no", apvo.getSignpath_no());
+				jsonobj.put("signpath_name", apvo.getSignpath_name());
+				jsonobj.put("fk_empno", apvo.getFk_empno());
+				jsonobj.put("sign_empno", apvo.getSign_empno());
+				jsonobj.put("name_kr", apvo.getName_kr());
+				jsonobj.put("role", apvo.getRole());
+				jsonobj.put("step", apvo.getStep());
+				jsonobj.put("department_name", apvo.getDepartment_name());
+				jsonobj.put("team_name", apvo.getTeam_name());
+				jsonobj.put("position", apvo.getPosition());
+				jsonarr.put(jsonobj);
+			}
+		}
 		
+		return jsonarr.toString(); // "[]" 또는 "[{},{},{}]"
+	}
+	
+	// 저장한 내 결재라인 가져오기 (Ajax)
+	@ResponseBody
+	@RequestMapping(value="/approval/getmyline.up", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
+	public String getmyline( HttpServletRequest request) {
+		String signpath_no = request.getParameter("signpath_no");
+		Map<String,String> paraMap = new HashMap<>();
+		paraMap.put("signpath_no", signpath_no);
+		
+		List<ApprovalVO> lineList = service.getmyline(paraMap);
+		JSONArray jsonarr = new JSONArray(); // []
 		
 		if(lineList  != null) {
-			for(ApprovalVO line: lineList) {
+			for(ApprovalVO apvo: lineList) {
 				JSONObject jsonobj = new JSONObject();
-				//jsonobj.put("word", word);
+				jsonobj.put("sign_empno", apvo.getSign_empno());
+				jsonobj.put("name_kr", apvo.getName_kr());
+				jsonobj.put("role", apvo.getRole());
+				jsonobj.put("step", apvo.getStep());
+				jsonobj.put("department_name", apvo.getDepartment_name());
+				jsonobj.put("team_name", apvo.getTeam_name());
+				jsonobj.put("position", apvo.getPosition());
 				jsonarr.put(jsonobj);
 			}
 		}
@@ -1440,32 +1476,175 @@ public class ApprovalController {
 		return jsonobj.toString(); // "[]" 또는 "[{},{},{}]"
 	}
 	
-	// 검색어 입력시 자동글 완성하기 (Ajax)
-//	@ResponseBody
-//	@RequestMapping(value="/approval/wordSearchShow.up", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
-//	public String wordSearchShow( HttpServletRequest request) {
-//		
-//		String searchType = request.getParameter("searchType");
-//		String searchWord = request.getParameter("searchWord");
-//		
-//		Map<String,String> paraMap = new HashMap<>();
-//		paraMap.put("searchType", searchType);
-//		paraMap.put("searchWord", searchWord);
-//		
-//		List<String> wordList = service.wordSearchShow(paraMap);
-//		JSONArray jsonarr = new JSONArray(); // []
-//		
-//		if(wordList  != null) {
-//			for(String word: wordList) {
-//				JSONObject jsonobj = new JSONObject();
-//				jsonobj.put("word", word);
-//				jsonarr.put(jsonobj);
-//			}
-//		}
-//		
-//		return jsonarr.toString(); // "[]" 또는 "[{},{},{}]"
-//	}
 		
+	
+	@RequestMapping(value = "/approval/add.up")
+	public ModelAndView add(Map<String,String> paraMap, HttpServletRequest request, HttpServletResponse response, ModelAndView mav, ApprovalVO approvalvo, MultipartHttpServletRequest mrequest) {
+	/*
+    form 태그의 name 명과  BoardVO 의 필드명이 같다라면 
+    request.getParameter("form 태그의 name명"); 을 사용하지 않더라도
+    자동적으로 BoardVO boardvo 에 set 되어진다.
+	 */
+//		=== #153. !!! 첨부파일이 있는 경우 작업 시작 !!! === //
+		MultipartFile attach = approvalvo.getAttach();
+		if( !attach.isEmpty() ) {
+			// attach(첨부파일)가 비어 있지 않으면(즉, 첨부파일이 있는 경우라면)
+			/*
+	            1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
+	            >>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기
+                    우리는 WAS의 webapp/resources/files 라는 폴더로 지정해준다.
+                    조심할 것은  Package Explorer 에서  files 라는 폴더를 만드는 것이 아니다.       
+			*/
+			// WAS 의 webapp의 절대경로를 알아와야 한다. 
+			HttpSession session = mrequest.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			
+//			System.out.println("~~~~ 확인용 webapp의 절대경로 => "+root);
+//			~~~~ 확인용 webapp의 절대경로 => /Users/gimjieun/NCS/workspace(spring)/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Board/
+			
+			String path = root+"resources" + File.separator + "files";
+			/* 
+				File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
+		        운영체제가 Windows 이라면 File.separator 는  "\" 이고,
+		        운영체제가 UNIX, Linux, 매킨토시(맥) 이라면  File.separator 는 "/" 이다. 
+			 */
+			
+			// path 가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다. 
+///			System.out.println("~~~~ 확인용 path 의 절대경로 => "+path );
+//			~~~~ 확인용 path 의 절대경로 => /Users/gimjieun/NCS/workspace(spring)/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Board/resources/files
+			
+			/*
+			  	2. 파일첨부를 위한 변수의 설정 및 값을 초기화 한 후 파일 올리기 
+			*/
+			String newFileName = "";
+			// WAS(톰캣)의 디스크에 저장될 파일명
+			
+			byte[] bytes = null;
+			// 첨부파일의 내용물을 담는 것
+			
+			long fileSize = 0;
+			// 첨부파일의 크기 
+			
+			try {
+				bytes = attach.getBytes();
+				// 첨부파일의 내용물을 읽어와서 저장시켜둔다 
+				
+				String originalFilename = attach.getOriginalFilename();
+				// attach.getOriginalFilename() 이 첨부파일명의 파일명(예: 강아지.png) 이다.
+//				System.out.println("~~~ 확인용 originalFilename => "+originalFilename);
+
+
+				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+						   // 첨부되어진 파일을 업로드 하도록 하는 것이다.
+//				System.out.println(">>> 확인용 newFileName => "+newFileName );
+//				>>> 확인용 newFileName => 2022102815213550332738939830.jpg
+				
+				/*
+				  	3. Boardvo approvalvo 에 fileName 값과 orgFilename 값과 fileSize 값을 넣어주기 
+				 */
+				approvalvo.setAp_systemFileName(newFileName);
+				// WAS(톰캣)에 저장된 파일명 (2022102815213550332738939830.jpg)
+				
+				approvalvo.setAp_originFileName(originalFilename);
+				// 게시판 페이지에서 첨부된 파일(강아지.png)을 보여줄 때 사용.
+	            // 또한 사용자가 파일을 다운로드 할때 사용되어지는 파일명으로 사용.
+				
+				fileSize = attach.getSize();// 첨부파일의 크기(단위는 byte임)
+				approvalvo.setFilesize(String.valueOf(fileSize));
+			} catch (Exception e) { // 파일이 깨졌을까봐 
+				e.printStackTrace();
+			} 
+		}
+		
+		// ===  !!! 첨부파일이 있는 경우 작업 끝 !!! === //
+		
+		approvalvo.setContent(MyUtil.secureCode(approvalvo.getContent())); // 시큐어코드 
+		
+		
+		int n = 0;
+		int n1 = 0;
+		int n2 = 0;
+		
+		// 채번하기 
+		String ano = service.getano();
+		approvalvo.setAno(ano);
+		
+		// tbl_approval
+		if( attach.isEmpty() ) {
+			n = service.add(approvalvo); // <== 파일첨부가 없는 글쓰기 
+		}
+		else {
+			n = service.add_withFile(approvalvo); // <== 파일첨부가 있는 글쓰기
+		}
+		
+		// tbl_approval_sign 결재라인 사원들 넣어주기 
+		if(n==1) {
+			String approvalline = (String) mrequest.getAttribute("approvalline");
+			String approvalline_name = (String) mrequest.getAttribute("approvalline_name");
+			String referline = (String) mrequest.getAttribute("referline");
+			String referline_name = (String) mrequest.getAttribute("referline_name");
+			
+			// 결재라인 넣어주기 
+			String[] approvallinearr = approvalline.split("/");
+			String[] approvalline_namearr = approvalline_name.split("/");
+			
+			for(int i=0; i<approvallinearr.length; i++) {
+				int num = 1;
+				String[] linearr = approvallinearr[i].split(",");
+				String[] namearr = approvalline_namearr[i].split(",");
+				for(int j=0; j<linearr.length; j++) {
+					System.out.println(num+"단계 signemp ->"+linearr[j]);
+					approvalvo.setFk_sign_empno(linearr[j]);
+					approvalvo.setName_kr(namearr[j]);
+					
+					approvalvo.setSignstep(String.valueOf(num));
+					
+					n1 = service.addsignline(approvalvo);
+				}
+				++num;
+			}
+			 
+			// 참조사원 넣어주기 
+			String[] referlinearr = referline.split(",");
+			String[] referline_namearr = referline_name.split(",");
+			for(int i=0; i<referlinearr.length; i++) {
+				System.out.println("referemp -> "+referlinearr[i]);
+				System.out.println("referemp_name -> "+referline_namearr[i]);
+				approvalvo.setFk_refer_empno(referlinearr[i]);
+				approvalvo.setName_kr(referline_namearr[i]);
+				
+				n1 = service.addrefer(approvalvo);
+			}
+			
+		}
+		
+		// 각 템플릿에 맞게 양식 넣어두기 
+		if("연차".equals(approvalvo.getAp_type())) {
+			n2 = service.addworkdoc(approvalvo);
+		}else if("업무기안서".equals(approvalvo.getAp_type())) {
+			n2 = service.adddayoff(approvalvo);
+		}
+		
+		
+
+		String message = "";
+		String loc ="";
+		loc = request.getContextPath()+"/approval/writing.up";
+		if(n*n1*n2==1) {
+			//mav.setViewName("redirect:/approval/writing.up");
+			message = "신청이 완료되었습니다!";
+		}
+		else {
+			message = "신청이 실패되었습니다!";
+		}
+				
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		mav.setViewName("msg");
+		
+		return mav;
+	}
+	
 		
 	//////////////////////////////////////////////////////////////////////////////////////
 	public String getCurrentURL(HttpServletRequest request) {

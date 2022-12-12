@@ -65,4 +65,17 @@ public interface InterApprovalDAO {
 	int insertsignpath(Map<String, String> paraMap);
 	int insertdetailsignpath(Map<String, String> paraMap);
 
+	List<ApprovalVO> getmyline(Map<String, String> paraMap);
+
+	
+//	결재문서 인서트 
+	String getano();
+	int add(ApprovalVO approvalvo);
+	int add_withFile(ApprovalVO approvalvo);
+	int addsignline(ApprovalVO approvalvo);
+	int addrefer(ApprovalVO approvalvo);
+	int addworkdoc(ApprovalVO approvalvo);
+	int adddayoff(ApprovalVO approvalvo);
+	int minusempdayoff(ApprovalVO approvalvo);
+
 }

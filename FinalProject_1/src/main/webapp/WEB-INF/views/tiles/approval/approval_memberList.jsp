@@ -230,7 +230,7 @@ function showEmpList(teamVal){
 					if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
 						
 					} else { // 프로필사진이 없는 경우
-						html += '<span class="pic"><span>지은</span></span>';
+						html += '<span class="pic"><span>'+item.name_kr.substr(1)+'</span></span>';
 					}
 										
 					html +=	'<span class="my">'+

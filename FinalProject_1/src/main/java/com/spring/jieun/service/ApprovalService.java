@@ -194,5 +194,57 @@ public class ApprovalService implements InterApprovalService {
 	}
 
 
+	@Override
+	public List<ApprovalVO> getmyline(Map<String, String> paraMap) {
+		List<ApprovalVO> list = dao.getmyline(paraMap); 
+		return list;
+	}
+
+	
+	
+	
+//	결재문서 인서트 
+	@Override
+	public String getano() {
+		String ano = dao.getano();
+		return ano;
+	}
+	@Override
+	public int add(ApprovalVO approvalvo) {
+		int n = dao.add(approvalvo);
+		return n;
+	}
+	@Override
+	public int add_withFile(ApprovalVO approvalvo) {
+		int n = dao.add_withFile(approvalvo);
+		return n;
+	}
+	@Override
+	public int addsignline(ApprovalVO approvalvo) {
+		int n = dao.addsignline(approvalvo);
+		return n;
+	}
+	@Override
+	public int addrefer(ApprovalVO approvalvo) {
+		int n = dao.addrefer(approvalvo);
+		return n;
+	}
+	@Override
+	public int addworkdoc(ApprovalVO approvalvo) {
+		int n = dao.addworkdoc(approvalvo);
+		return n;
+	}
+	@Override
+	public int adddayoff(ApprovalVO approvalvo) {
+		int n = dao.adddayoff(approvalvo);
+		int result=0;
+		if(n==1) {
+			result = dao.minusempdayoff(approvalvo); 
+		}
+		return result;
+	}
+
+
+
 
 }

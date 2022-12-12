@@ -178,5 +178,58 @@ public class ApprovalDAO implements InterApprovalDAO{
 		int n = sqlsession.insert("approval.insertdetailsignpath", paraMap);
 		return n;
 	}
+
+	@Override
+	public List<ApprovalVO> getmyline(Map<String, String> paraMap) {
+		List<ApprovalVO> list = sqlsession.selectList("approval.getmyline", paraMap);
+		return list;
+	}
+
+	@Override
+	public String getano() {
+		String ano = sqlsession.selectOne("approval.getano");
+		return ano;
+	}
+
+	@Override
+	public int add(ApprovalVO approvalvo) {
+		int n = sqlsession.insert("approval.add", approvalvo);
+		return n;
+	}
+
+	@Override
+	public int add_withFile(ApprovalVO approvalvo) {
+		int n = sqlsession.insert("approval.add_withFile", approvalvo);
+		return n;	
+	}
+
+	@Override
+	public int addsignline(ApprovalVO approvalvo) {
+		int n = sqlsession.insert("approval.addsignline",approvalvo); 
+		return n;
+	}
+
+	@Override
+	public int addrefer(ApprovalVO approvalvo) {
+		int n = sqlsession.insert("approval.addrefer",approvalvo); 
+		return n;
+	}
+
+	@Override
+	public int addworkdoc(ApprovalVO approvalvo) {
+		int n = sqlsession.insert("approval.addworkdoc",approvalvo); 
+		return n;
+	}
+	@Override
+	public int adddayoff(ApprovalVO approvalvo) {
+		int n = sqlsession.insert("approval.adddayoff",approvalvo); 
+		return n;
+	}
+
+	@Override
+	public int minusempdayoff(ApprovalVO approvalvo) {
+		int n = sqlsession.update("approval.minusempdayoff",approvalvo); 
+		return n;
+	}
 	
 }

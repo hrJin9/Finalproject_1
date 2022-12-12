@@ -888,6 +888,44 @@ div#dayoff-temp{
 				</div>
 				<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 				
+				
+				
+				
+				<div id="dayoffopt"style="display:none;position: fixed; left: 0px; top: 0px; transform: translate3d(348px, 272px, 0px); min-width: max-content; z-index: 1002; --radix-popper-transform-origin:0% 0px;">
+						  					<div data-side="bottom" data-align="start" role="listbox" aria-orientation="vertical" data-state="open" dir="ltr" id="radix-:rap:" aria-labelledby="radix-:rao:" class="c-bWOuWO c-bWOuWO-ieTlZXA-css" tabindex="-1" data-orientation="vertical" style="outline: none; pointer-events: auto; --radix-dropdown-menu-content-transform-origin:0% 0px;">
+						  					<div data-role="select-content-root">
+						  					<div class="c-fkvKyD c-kvgLFJ" style="overflow: hidden scroll; max-height: 293.846px;">
+						  					<div style="min-width: 100%; display: table;">
+						  					<div role="group">
+						  					<div class="c-fUKQMF">
+						  					<div role="option" aria-checked="false" data-radix-collection-item="" class="c-gpCuAp c-hJlXvB" data-state="unchecked" tabindex="-1" data-orientation="vertical">
+						  					<div style="width: 100%;">
+						  					<div class="c-jYnSkl">결혼</div></div></div>
+						  					<div role="option" aria-checked="false" data-radix-collection-item="" class="c-gpCuAp c-hJlXvB" data-state="unchecked" tabindex="-1" data-orientation="vertical">
+						  					<div style="width: 100%;">
+						  					<div class="c-jYnSkl">상병</div></div></div>
+						  					<div role="option" aria-checked="false" data-radix-collection-item="" class="c-gpCuAp c-hJlXvB" data-state="unchecked" tabindex="-1" data-orientation="vertical">
+						  					<div style="width: 100%;">
+						  					<div class="c-jYnSkl">기타</div></div></div>
+						  					</div></div></div></div></div></div></div>
+						  					
+				<div style="display: flex;min-height: 32px;">
+						  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
+						  				<span style="font-weight: 500;line-height: 18px;display: -webkit-box;overflow: hidden;text-overflow: ellipsis;word-break: break-all;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">부서</span>
+						  				<div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div>
+						  			</div>
+						  			<div style="width: 100%;">
+						  				<div>
+						  					<!-- <button onclick="$('#dayoffopt').css('display','block')" type="button" id="radix-:rao:" aria-haspopup="menu" data-state="open" aria-disabled="false" class="buttonipt" aria-expanded="true" aria-controls="radix-:rap:">
+						  						<div style="display: flex;align-items: center;padding: 0px;font-size: 14px;line-height: 1.5;width: 100%;">
+						  							<span style="color:#8d96a1;font-weight: 500;">옵션을 선택해주세요.</span>
+						  						</div>
+						  					</button> -->
+						  					
+						  					
+						  				</div>
+						  			</div>
+						  		</div> 		  					
 				<!-- 템플릿따라 다른 내용넣기    -->
 
 				<div id="bytemp"></div>

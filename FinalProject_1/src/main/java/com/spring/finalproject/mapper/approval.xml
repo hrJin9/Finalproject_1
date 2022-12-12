@@ -310,13 +310,13 @@
     
     <!-- 한문서에 대해 결재라인리스트 가져오기 -->
    <select id="getapprovalLine" resultType="com.spring.jieun.model.ApprovalVO" parameterType="String">
-		select name_kr, fk_ano,asno, fk_sign_empno, signstep, signyn, signdate, feedback, signemp_deptname, signemp_position
+		select name_kr, fk_ano,asno, fk_sign_empno, signstep, signyn, signdate, feedback, department_name, position
 		from
-		(select fk_ano,asno, fk_sign_empno, signstep, signyn, signdate, feedback, signemp_deptname, signemp_position
+		(select fk_ano,asno, fk_sign_empno, signstep, signyn, signdate, feedback
 		from tbl_approval_sign 
 		where fk_ano = #{ano}
 		)V
-		left join tbl_employee E
+		left join V_employee E
 		on v.fk_sign_empno = e.employee_no
 		order by signstep asc
     </select>
@@ -389,14 +389,23 @@
 	
 	
 	<select id="loadsavedline" parameterType="HashMap" resultType="com.spring.jieun.model.ApprovalVO" >
-		with V as (select * from tbl_signpath where fk_empno =  = #{employee_no})
-		select signpath_no, signpath_name, fk_empno, sign_empno, name_kr, role, step, adddate
+		with V as (select * from tbl_signpath where fk_empno = #{employee_no})
+		select signpath_no, signpath_name, fk_empno, sign_empno, name_kr, role, step,department_name, team_name,position,adddate
 		from v
 		RIGHT JOIN tbl_signpath_detail D
 		on v.signpath_no = d.fk_signpath_no
 		LEFT JOIN V_employee E
 		on d.sign_empno = e.employee_no
-		order by adddate, step, name_kr
+		order by adddate desc, step, name_kr
+	</select>
+	
+	<select id="getmyline" parameterType="HashMap" resultType="com.spring.jieun.model.ApprovalVO" >
+		select sign_empno, name_kr, role, step,department_name, team_name,position
+		from tbl_signpath_detail D
+		LEFT JOIN V_employee E
+		on d.sign_empno = e.employee_no
+		where d.fk_signpath_no = #{signpath_no}
+		order by step, name_kr
 	</select>
 	
 	<!-- 결재라인 저장하기 -->
@@ -411,4 +420,31 @@
 		insert into tbl_signpath_detail(signstep_no, fk_signpath_no, sign_empno, step)
 		values(seq_tbl_signpath_detail_signstep_no.nextval, #{signpath_no}, #{sign_empno}, #{signstep})
 	</insert>
+	
+	
+	
+	<!-- 결재문서 인서트  -->
+	<select id="getano" resultType="String">
+		select seq_tbl_approval_ano.nextval from dual
+	</select>
+	<insert id="add" parameterType="com.spring.jieun.model.ApprovalVO">
+		insert into tbl_approval(ano, fk_empno, name_kr, ap_type, title, content, preserveperiod)
+		values(#{ano}, #{fk_empno}, #{name_kr}, #{ap_type}, #{title}, #{content}, #{preserveperiod})
+	</insert>
+	<insert id="add_withFile" parameterType="com.spring.jieun.model.ApprovalVO">
+		insert into tbl_approval(ano, fk_empno, name_kr, ap_type, title, content, ap_systemFileName, ap_originFileName, filesize, preserveperiod)
+		values(#{ano}, #{fk_empno}, #{name_kr}, #{ap_type}, #{title}, #{content}, #{ap_systemFileName}, #{ap_originFileName}, #{filesize}, #{preserveperiod})
+	</insert>
+	<insert id="addsignline" parameterType="com.spring.jieun.model.ApprovalVO">
+		insert into tbl_approval_sign(asno, fk_ano, fk_sign_empno, signstep, name_kr)
+		values(seq_tbl_approval_sign_asno.nextval, #{ano}, #{sign_empno}, #{signstep},#{name_kr})
+	</insert>
+	<insert id="addrefer" parameterType="com.spring.jieun.model.ApprovalVO">
+		insert into tbl_approval_refer(referno,fk_ano,fk_refer_empno,signemp_name_kr)
+		values(seq_tbl_approval_refer_referno.nextval, #{ano}, #{fk_refer_empno}, #{name_kr})
+	</insert>
+	<update id="minusempdayoff" parameterType="com.spring.jieun.model.ApprovalVO">
+		update tbl_employee set dayoff_cnt = dayoff_cnt-1 where employee_no  = #{employee_no};
+	</update>
+	
 </mapper>

@@ -61,6 +61,18 @@ public interface InterApprovalService {
 
 	String getspno();
 	int savemyline(Map<String, String> paraMap);
+
+	List<ApprovalVO> getmyline(Map<String, String> paraMap);
+
+	
+	// 결재문서 인서트 
+	int add(ApprovalVO approvalvo);
+	int add_withFile(ApprovalVO approvalvo);
+	String getano();
+	int addsignline(ApprovalVO approvalvo);
+	int addrefer(ApprovalVO approvalvo);
+	int addworkdoc(ApprovalVO approvalvo);
+	int adddayoff(ApprovalVO approvalvo);
 	
 //	int cancelmyapproval(String ano);
 

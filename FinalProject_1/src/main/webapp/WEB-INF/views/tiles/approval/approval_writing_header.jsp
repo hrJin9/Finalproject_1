@@ -324,6 +324,7 @@
     font-weight: 700;
     color:#3c4651;
     border: none;
+    width:80%;
 }
 .StyledApv {
     margin-top: 15px;
@@ -379,7 +380,7 @@
    color: rgb(17, 17, 17);
 }
   .head-btnsection{
-       padding: 20px 40px 0px;
+   padding: 20px 40px;
    background-color: white;
    color: rgb(17, 17, 17);
    position: sticky;
@@ -417,7 +418,7 @@ font-size: 14px;
 display: inline-flex;
 align-items: center;
 justify-content: center;
-font-weight: 700;
+font-weight: 600;
 padding-left: 14px;
 padding-right: 14px;
 height: 48px;
@@ -662,13 +663,32 @@ div.datebox > span > input {
 .attendance-dateSelector {
     height: 30px;
     display: inline-block;
-    border: solid 1px rgba(0, 0, 0, .1);
+    border: solid 0px rgba(0, 0, 0, .1);
     margin: 0;
-    width: 120px !important;
     padding: 7px 20px 7px 20px;
 	border-radius: 7px;
 }
-
+.plusstepbox {
+	width:100%;
+    height: 40px;
+    display: inline-block;
+    border: solid 1px rgba(0, 0, 0, .1);
+    margin: 0;
+    padding: 7px 20px 7px 20px;
+	border-radius: 7px;
+	font-weight: 500;
+}
+.iptlabel{
+	color:rgba(36, 42, 48, 0.64);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 18px;
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	margin-left: 10px;
+}
 .search-period-wr .filter-date-label {
     right: 10px;
 }
@@ -758,37 +778,100 @@ td.title #writertitle{
 
 /* 상태뱃지  */
 .btn-badge{
-	color: #a8a7a7;
-    font-weight: 400;
+    font-weight: 500 !important;
     font-size: 10pt;
-    padding: 0.1rem 0.2rem !important;
+    padding: 0.2rem 0.7rem !important;
     font-size: .675rem !important;
-    cursor: default;
-    font-weight: bold !important;
+    cursor: default !important;
     /* border-radius: 1.3em; */
-    margin-top: 12px !important;
-    border-radius: 0.8em;
+    margin-top: 12px;
+    background-image: linear-gradient(96.77deg, rgb(157, 60, 255) -0.96%, rgb(96, 102, 255) 100%);
+    color: white;
+    border-radius: 1em;
 }
 
 
 
 .write-textarea{
-	width: 100%;
+	width: 80%;
     min-height: 32px;
     display: flex;
     align-items: center;
     background: white;
     box-shadow: none;
-    padding: 5.5px 12px;
+    padding:5.5px 15px;
     font-weight: 500;
     line-height: 21px;
-    font-size: 14px;
+    font-size: 13px;
     border-radius: 6px;
     white-space: pre-line;
     resize: none;
     color: #242a30;
     border: none;
     margin: 0px;
+}
+.buttonipt{
+	width: 100%;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    background: white;
+    box-shadow: none;
+    position: relative;
+    cursor: pointer;
+    padding-left: 12px;
+    padding-right: 12px;
+    border: none;
+    text-align: initial;
+}
+.buttonipt::before{
+	content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgb(36, 42, 48);
+    border-radius: inherit;
+    opacity: 0;
+    transition: all 0.15s ease 0s;
+    pointer-events: none;
+}
+.c-gpCuAp {
+    display: flex;
+    align-items: flex-start;
+    color: #3c4651;
+    padding: 0px 8px;
+    margin: 0px 6px;
+    position: relative;
+    user-select: none;
+}
+.c-jYnSkl {
+    color: inherit;
+    font-weight: 600;
+    height: 32px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.c-gpCuAp::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgb(36, 42, 48);
+    border-radius: inherit;
+    opacity: 0;
+    transition: all 0.15s ease 0s;
+    pointer-events: none;
+}
+.c-gpCuAp {
+    font-size: 14px;
+    border-radius: 6px;
+    position: relative;
+    cursor: pointer;
 }
 
 .selmembtn{

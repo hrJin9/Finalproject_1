@@ -1,5 +1,7 @@
 package com.spring.jieun.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.spring.hyerin.model.EmployeeVO;
 
 public class ApprovalVO {
@@ -14,9 +16,6 @@ public class ApprovalVO {
 	private String content; 			//내용
 	private String final_signyn; 		// default 0         -- 최종승인여부 (0:진행중 1:승인 2:반려)
 	
-	private String ap_systemFileName; 	// 파일서버에 업로드되어지는 실제 제품설명서 파일명 (파일명이 중복되는 것을 피하기 위해서 중복된 파일명이 있으면 파일명뒤에 숫자가 자동적으로 붙어 생성됨)
-	private String ap_originFileName; 	// 웹클라이언트의 웹브라우저에서 파일을 업로드 할때 올리는 제품설명서 파일명 
-	private String filesize; 			// 파일크기
 	private String preserveperiod; 		// 보존연한 (0:영구 1:1년 3:3년 5:5년)
 	private String status;				// default 1      -- 삭제여부 (0:삭제 1:유지)
 	private String writeday; 			// default sysdate      -- 작성일자
@@ -25,6 +24,40 @@ public class ApprovalVO {
 	private String fk_ano_refer; 		// 참고문서
 	private String bookmark; 		// 북마크 
 	private String feedbackcnt; 		// 피드백갯수 
+
+	
+	
+	// 결재문서작성할때 필요한
+//	private String approvalline; 		// 결재사원 라인( 0000,0000/0000 ...) 
+//	private String referline; 		// 피드백갯수 
+	private String usedayoffcnt; 		// 피드백갯수 
+//	private String leftdayoffcnt; 		// 피드백갯수 
+	
+	
+	
+	
+	 private MultipartFile attach;
+	 
+	 private String ap_systemFileName; 	// 파일서버에 업로드되어지는 실제 제품설명서 파일명 (파일명이 중복되는 것을 피하기 위해서 중복된 파일명이 있으면 파일명뒤에 숫자가 자동적으로 붙어 생성됨)
+	 private String ap_originFileName; 	// 웹클라이언트의 웹브라우저에서 파일을 업로드 할때 올리는 제품설명서 파일명 
+	 private String filesize; 			// 파일크기
+		   
+	
+	
+	
+	 // *** 참조사원 테이블 ***
+	 private String referno;        // 시퀀스 
+	 private String fk_refer_empno; // 참조 사원번호 
+	 
+	 
+	 
+	// *** 저장결재라인 테이블 ***
+	private String signpath_no; 		// 결재라인번호  
+	private String signpath_name; 		// 결재라인명 
+	private String sign_empno; 		// 결재사원번호 
+	private String role; 		
+	private String step; 		// 결재단계 
+	
 	
 	
 	// join select용  
@@ -38,7 +71,6 @@ public class ApprovalVO {
 	private String asno; // 결재번호 seq
 	private String fk_ano; // 결재문서번호 ( d-결재신청날짜-seq => d-20221128-123 ) 
 	private String fk_sign_empno; // 결재사원번호
-	// --,                       not null              -- 결재사원직위
 	private String signstep; // 결재순번 
 	
 	
@@ -65,8 +97,61 @@ public class ApprovalVO {
 
 	
 	
-
 	
+	public String getReferno() {
+		return referno;
+	}
+	public void setReferno(String referno) {
+		this.referno = referno;
+	}
+	public String getFk_refer_empno() {
+		return fk_refer_empno;
+	}
+	public void setFk_refer_empno(String fk_refer_empno) {
+		this.fk_refer_empno = fk_refer_empno;
+	}
+	public String getUsedayoffcnt() {
+		return usedayoffcnt;
+	}
+	public void setUsedayoffcnt(String usedayoffcnt) {
+		this.usedayoffcnt = usedayoffcnt;
+	}
+	public MultipartFile getAttach() {
+		return attach;
+	}
+	public void setAttach(MultipartFile attach) {
+		this.attach = attach;
+	}
+	public String getSignpath_no() {
+		return signpath_no;
+	}
+	public void setSignpath_no(String signpath_no) {
+		this.signpath_no = signpath_no;
+	}
+	public String getSignpath_name() {
+		return signpath_name;
+	}
+	public void setSignpath_name(String signpath_name) {
+		this.signpath_name = signpath_name;
+	}
+	public String getSign_empno() {
+		return sign_empno;
+	}
+	public void setSign_empno(String sign_empno) {
+		this.sign_empno = sign_empno;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public String getStep() {
+		return step;
+	}
+	public void setStep(String step) {
+		this.step = step;
+	}
 	public String getTeam_name() {
 		return team_name;
 	}
