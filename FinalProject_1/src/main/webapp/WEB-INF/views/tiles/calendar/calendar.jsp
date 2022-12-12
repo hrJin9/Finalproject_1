@@ -4,10 +4,15 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
     
 <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script> -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  
+
    
 <%@ include file="calendar_header.jsp"%>   
+
    
 <style type="text/css">  
   
@@ -229,13 +234,52 @@ $(document).ready(function(){
 		
 		}); 
 		
+		 
 		
-		// === 내 캘린더에 내캘린더 소분류 보여주기 ===
+		// === 내일정에 내일정 소분류 보여주기 ===
 		showmyCal();
- 	
+		 
+		// === 내캘린더 에 속한 특정 체크박스를 클릭할 경우 === 
+		$(document).on("click","input:checkbox[name=my_smcatgono]",function(){	
+			var bool = $(this).prop("checked");
+			
+			if(bool){ // 체크박스에 클릭한 것이 체크된 것이라면 
+				
+				var flag=false;
+				
+				$("input:checkbox[name=my_smcatgono]").each(function(index, item){
+					var bChecked = $(item).prop("checked");
+					
+					if(!bChecked){    // 체크되지 않았다면 
+						flag=true;    // flag 를 true 로 변경
+						return false; // 반복을 빠져 나옴.
+					}
+				}); // end of $("input:checkbox[name=my_smcatgono]").each(function(index, item){})---------
+
+				if(!flag){	// 내캘린더 에 속한 서브캘린더의 체크박스가 모두 체크가 되어진 경우라면 	
+	                $("input#allMyCal").prop("checked",true); // 내캘린더 체크박스에 체크를 한다.
+				}
+				
+				var my_smcatgonoArr = document.querySelectorAll("input.my_smcatgono");
+			      
+				my_smcatgonoArr.forEach(function(item) {
+					item.addEventListener("change", function() {   // "change" 대신에 "click" 을 해도 무방함.
+					 // console.log(item); 
+						calendar.refetchEvents();  // 모든 소스의 이벤트를 다시 가져와 화면에 다시 표시합니다.
+			        });
+			    });// end of my_smcatgonoArr.forEach(function(item) {})---------------------
+
+			}
+			
+			else {
+				   $("input#allMyCal").prop("checked",false);
+			}
+			
+		});// end of $(document).on("click","input:checkbox[name=my_smcatgono]",function(){})--------		
+ 
 		
 		
-		
+		 
 		
 }); //end of ready
  
@@ -289,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
  --%>
-
+  
 
  document.addEventListener('DOMContentLoaded', function() {
  	
@@ -330,10 +374,10 @@ document.addEventListener('DOMContentLoaded', function () {
            if (confirm('일정을 삭제하시겠습니까?')) {
                arg.event.remove()  
            } 
-       }
+       } 
   */
  //===================== DB 와 연동하는 법 시작 ===================== // 
- 	events:function(info, successCallback, failureCallback) {
+ 	events:function(info, successCallback, failureCallback) { 
     
   	 $.ajax({ 
            url: '<%= ctxPath%>/calendar.up',
@@ -364,8 +408,8 @@ document.addEventListener('DOMContentLoaded', function () {
  			                                	            id: item.calno, 
  			                                                title: item.subject,
  			                                                start: startdate, 
- 			                                                end: enddate,
- 			                                        	    url: "<%= ctxPath%>/calendar/calendar.up?calno="+item.calno,
+ 			                                                end: enddate, 
+ 			                                        	    url: "<%= ctxPath%>/calendar.up?calno="+item.calno,
  			                                                cid: item.fk_smcatgono  // 사내캘린더 내의 서브캘린더 체크박스의 value값과 일치하도록 만들어야 한다. 그래야만 서브캘린더의 체크박스와 cid 값이 연결되어 체크시 풀캘린더에서 일정이 보여지고 체크해제시 풀캘린더에서 일정이 숨겨져 안보이게 된다. 
  			                                   }); // end of events.push({})---------
  		                                   }
@@ -389,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
   }, // end of events:function(info, successCallback, failureCallback) {}---------
   // ===================== DB 와 연동하는 법 끝 ===================== //
-       
+        
        
      });
 
@@ -400,16 +444,47 @@ document.addEventListener('DOMContentLoaded', function () {
     
   }); 
    
-  
-	 
-  
-	
+    
+	   
+   
+
+//=== 내 캘린더에서 내캘린더 소분류 보여주기  === //
+function showmyCal(){
+	$.ajax({
+		 url:"<%= ctxPath%>/calendar.up",
+		 type:"get", 
+		 data:{"fk_employee_no":"fk_employee_no"},
+		 dataType:"json",
+		 success:function(json){
+			 var html = "";
+			 if(json.length > 0){
+				 html += "<table style='width:80%;'>";	 
+				 
+				 $.each(json, function(index, item){
+					 html += "<tr style='font-size: 11pt;'>";
+					 html += "<td style='width:60%; padding: 3px 0px;'><input type='checkbox' name='my_smcatgono' class='calendar_checkbox my_smcatgono' style='margin-right: 3px;' value='"+item.smcatgono+"' checked id='my_smcatgono_"+index+"' checked/><label for='my_smcatgono_"+index+"'>"+item.smcatgoname+"</label></td>";   
+					 html += "<td style='width:20%; padding: 3px 0px;'><button class='btn_edit editCal' data-target='editCal' onclick='editMyCalendar("+item.smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-edit'></i></button></td>"; 
+					 html += "<td style='width:20%; padding: 3px 0px;'><button class='btn_edit delCal' onclick='delCalendar("+item.smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-trash'></i></button></td>";
+				     html += "</tr>";
+				 });
+				 
+				 html += "</table>";
+			 }
+			 
+			 $("div#myCal").html(html); 
+		 },
+		 error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	     }	 	
+	});
+
+}// end of function showmyCal()---------------------		
 	     
 	 
    
       
 </script>  
-      
+       
        
 <div id='calendar' style="margin-bottom: 5%;"></div>   
 
@@ -420,16 +495,24 @@ document.addEventListener('DOMContentLoaded', function () {
         
 <div style="float: right;margin-right: 5%;">  
 	<div class="calendar-side">         
-  			                        
+  			                         
   			<div style="">           
 	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
 				</div>
 	  			<button type="button" class="btn collapsed" data-toggle="collapse" data-target="#demo" style="width: 88%; text-align: inherit; margin-left: 18px;">내일정     
 	  			<i class="fa-solid fa-user" style=""></i> </button>   
 	  			  
-	  			<div id="demo" class="accordion-collapse collapse show">       
+	  			<div id="myCal" class="accordion-collapse collapse show">       
 	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   
 		  			<p>   
+		  			<div style="margin-bottom: 2%;">   
+		  				<input type="checkbox" />      
+				   		<label><span></span>개인 프로젝트</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+		  			</div>  
+		  			<div style="margin-bottom: 2%;">   
+		  				<input type="checkbox" />      
+				   		<label><span></span>개인 프로젝트</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
+		  			</div>  
 		  			<div style="margin-bottom: 2%;">   
 		  				<input type="checkbox" />      
 				   		<label><span></span>개인 프로젝트</label><span class="button-ab"><button type="button" class="edit">수정</button> <button type="button" class="delete">삭제</button></span>
@@ -438,14 +521,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		  	   </div>	 
 		  	 </div>    
   			</div>       
-	</div>  
+	</div>   
 	<div class="calendar-side" style="top: 390px;">          
   			                       
   			<div style="margin-top: 10px;">         
-	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">   
+	  			<div class="form-group seachIcon" style="font-size: 10pt;margin-right: 13%;margin-top: 3px;">    
 				</div>
-	  			<button type="button" class="btn collapsed" data-toggle="collapse" data-target="#demo2" style="width: 88%; text-align: inherit; margin-left: 18px;">팀일정     
-	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 28px;"></i> </button>  
+	  			<a type="button" class="btn collapsed" data-toggle="collapse" data-target="#demo2" style="width: 88%; text-align: inherit; margin-left: 18px;">팀일정     
+	  			<i class="fa-solid fa-user" style="position: absolute;left: 11px; top: 28px;"></i> </a>  
 	  			 
 	  			<div id="demo2" class="accordion-collapse collapse">       
 	  			<div style="margin-left: 20px; margin-top: 10px;font-size: 10pt;">	   

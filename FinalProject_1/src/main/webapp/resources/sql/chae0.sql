@@ -11,15 +11,13 @@ create table tbl_calendar_large_category
 insert into tbl_calendar_large_category(lgcatgono, lgcatgoname)
 values(1, '나의 캘린더');
 
-insert into tbl_calendar_large_category(lgcatgono, lgcatgoname)
-values(2, '사내캘린더');
 
 commit;
 -- 커밋 완료.
 
 select * 
-from tbl_calendar_large_category;
-
+from tbl_calendar_large_category
+order by lgcatgono desc;
 
 -- *** 캘린더 소분류 *** 
 -- (예: 내캘린더중 점심약속, 내캘린더중 저녁약속, 내캘린더중 운동, 내캘린더중 휴가, 내캘린더중 여행, 내캘린더중 출장 등등) 
@@ -46,6 +44,10 @@ nocycle
 nocache;
 -- Sequence SEQ_SMCATGONO이(가) 생성되었습니다.
 
+insert into tbl_calendar_small_category(smcatgono, fk_lgcatgono, smcatgoname,fk_employee_no)
+values(seq_smcatgono.nextval, 1, '하이', '100011');
+
+
 select *
 from tbl_calendar_small_category
 order by smcatgono desc;
@@ -58,9 +60,9 @@ create table tbl_calendar_schedule
 ,content          varchar2(4000)         -- 내용
 ,place            varchar2(200)          -- 장소
 ,color            varchar2(50)           -- 반복주기
-,joinuser         varchar2(4000)         -- 공유자		
+,joinuser         varchar2(4000)         -- 공유자		 
 ,fk_smcatgono     number(8)              -- 캘린더 소분류 번호
-,fk_lgcatgono     number(3)              -- 캘린더 대분류 번호
+,fk_lgcatgono     number(10)             -- 캘린더 대분류 번호
 ,fk_employee_no   number(6) not null     -- 캘린더 일정 작성자 유저아이디(사원번호)
 ,c_authority      number(6)	             -- 권한
 ,constraint PK_schedule_calno primary key(calno)
@@ -71,6 +73,7 @@ create table tbl_calendar_schedule
 ,constraint FK_schedule_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no) 
 );
 -- Table TBL_CALENDAR_SCHEDULE이(가) 생성되었습니다.
+
 
 create sequence seq_scheduleno
 start with 1
@@ -144,3 +147,29 @@ nominvalue
 nocycle
 nocache;
 
+
+
+select smcatgono, fk_lgcatgono, smcatgoname
+from tbl_calendar_small_category
+where fk_lgcatgono = #{fk_lgcatgono} and fk_employee_no= #{fk_employee_no}
+order by smcatgono ascselect smcatgono, fk_lgcatgono, smcatgoname
+from tbl_calendar_small_category
+where fk_lgcatgono = #{fk_lgcatgono} and fk_employee_no= #{fk_employee_no}
+order by smcatgono asc
+
+
+
+
+
+select calno, startdate, enddate, subject, place, joinuser, content, fk_smcatgono, fk_lgcatgono, fk_employee_no 
+from tbl_calendar_schedule
+where fk_employee_no = 100011 OR 
+fk_lgcatgono = 2 OR
+(fk_lgcatgono != 2 AND lower(joinuser) like '%'|| lower(100011) ||'%') 
+order by calno asc
+
+
+select smcatgono, fk_lgcatgono, smcatgoname
+from tbl_calendar_small_category
+where fk_lgcatgono = 1 and fk_employee_no= 100011
+order by smcatgono asc
