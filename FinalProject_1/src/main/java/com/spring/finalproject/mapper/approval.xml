@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="approval">
+	
+	<select id="getMyApprovalTotalCount" resultType="int" parameterType="HashMap">
+		select count(*)
+		from tbl_approval
+		where fk_empno = #{employee_no} and status = 1
+		<if test='searchStartday != "" and searchEndday != ""'>
+			and to_char(writeday,'yyyy-mm-dd') between #{searchStartday} and #{searchEndday}
+		</if> 
+		<if test='final_signyn != "" '>
+			and final_signyn = #{final_signyn}
+	    </if>
+	    <if test='ap_type != "" '>
+		    and ap_type = #{ap_type}
+	    </if>
+	    <if test='bookmark != "" '>
+			and bookmark = 1
+		</if>
+	</select>
+	
+	
+	<select id="approvalListSearchWithPaging" resultType="com.spring.jieun.model.ApprovalVO" parameterType="HashMap">
+		select rno, ano, fk_empno, ap_type, title, content, final_signyn, ap_systemFileName, writeday, modifyday
+		     ,nvl(feedbackcnt,0) as feedbackcnt, bookmark
+		from
+		(
+		  select row_number() over (order by ano desc) as rno, ano, fk_empno, bookmark
+		       , ap_type, title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려') as final_signyn
+		       , nvl2(ap_systemFileName,1,0) as ap_systemFileName
+		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
+		  from tbl_approval
+		  where status = 1 and fk_empno = #{employee_no}
+		  <if test='searchStartday != "" and searchEndday != ""'>
+			and to_char(writeday,'yyyy-mm-dd') between #{searchStartday} and #{searchEndday}
+		  </if>
+		  <if test='final_signyn != ""  '>
+			and final_signyn = #{final_signyn}
+		  </if>
+		  <if test='ap_type != "" '>
+			and ap_type = #{ap_type}
+		  </if>
+		  <if test='bookmark != "" '>
+			and bookmark = 1
+		  </if>
+		  order by rno desc
+		) V 
+		left join 
+		(
+		  select count(feedback) as feedbackcnt, fk_ano 
+		  from tbl_approval_sign
+		  group by fk_ano 
+		)
+		S
+		on v.ano = s.fk_ano 
+		where rno between #{startRno} and #{endRno}
+		order by rno asc
+	</select>
+	
+	<update id="updateaddbookmark" parameterType="HashMap">
+		update tbl_approval set bookmark=1
+		where fk_empno=#{employee_no} and ano=#{ano}
+	</update>
+	
+	<update id="updatedeletebookmark" parameterType="HashMap">
+		update tbl_approval set bookmark=0
+		where fk_empno=#{employee_no} and ano=#{ano}
+	</update>
+	
+	<select id="seldayoffcnt" resultType="int" parameterType="HashMap">
+		select dayoff_cnt
+		from TBL_EMPLOYEE
+		where employee_no = #{employee_no} 
+	</select>
+</mapper>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attendance">
+
+	<!-- 근무상태 저장하기  --> 
+	<insert id="addAttendance" parameterType="HashMap">
+		insert into tbl_attendance(adno, fk_employee_no, adcatgo, startTime, endTime)
+		values(seq_attendance_no.nextval, #{fk_employee_no}, #{adcatgo}, to_date(#{startTime}, 'yyyy-mm-dd hh24:mi'), to_date(#{endTime}, 'yyyy-mm-dd hh24:mi'))
+	</insert>
+
+	<!-- 총 근무시간 조회하기 -->
+	<!-- <resultMap type="HashMap" id="getTotalTime_Map">
+		<result property="seldate" column="seldate" javaType="String"/>
+		<result property="workTime" column="workTime" javaType="String"/>
+		<result property="workMin" column="workMin" javaType="String"/>
+	</resultMap>
+	
+	<select id="getTotalTime" parameterType="HashMap" resultMap="getTotalTime_Map">
+		select NVL(MAX(seldate), '0') AS seldate,
+		       NVL(MAX(trim(trunc(total / 60))), '0') AS workTime,
+		       NVL(MAX(trim(trunc(mod(abs(total), 60)))), '0') AS workMin
+		from 
+		(
+		    select seldate, sum(total) AS total
+		    from
+		    (
+		      select adno, fk_employee_no, adcatgo,
+		             substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+		             substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+		             substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+		             ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS total
+		      from tbl_attendance
+		      where fk_employee_no = #{fk_employee_no} and to_char(startTime, 'yyyy-mm-dd') = #{selectdate}
+		    ) V
+		    group by seldate 
+		)b	
+	</select> -->
+	
+	
+	<!-- 저장한 근무상태 조회하기 -->
+	<select id="atdetailView" parameterType="HashMap" resultType="com.spring.yeeun.model.AttendanceVO">
+		<!-- select
+		     adno, fk_employee_no, adcatgo,
+		     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+		     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+		     TRUNC(((enddate - startdate) - TRUNC(enddate - startdate)) * 24) as workTime, 
+		     FLOOR(((((enddate - startdate) -TRUNC(enddate - startdate)) * 24) 
+		     - TRUNC(((enddate - startdate)-TRUNC(enddate - startdate)) * 24)) * 60) as workMin
+		from 
+		(select adno, fk_employee_no, adcatgo, startTime, endTime,
+		        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+		        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+		 from tbl_attendance) v
+		where fk_employee_no = #{fk_employee_no} and to_char(startTime, 'yyyy-mm-dd') = #{selectdate}
+		order by startTime asc -->
+		with B as
+		(select
+		     adno, fk_employee_no, adcatgo,
+		     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+		     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+		     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+		     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+		     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
+		     
+		from 
+		(select adno, fk_employee_no, adcatgo, startTime, endTime,
+		        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+		        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+		 from tbl_attendance) v)
+		select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin
+		from B
+		where fk_employee_no = #{fk_employee_no} and seldate = #{selectdate}
+		order by startTime asc
+	</select>
+
+
+	<!-- 저장한 근무상태 한개 삭제하기 -->
+	<delete id="atdetailDel" parameterType="String">
+		delete from tbl_attendance
+		where adno = #{adno}
+	</delete>
+
+
+	<!-- 근무상태 전부  삭제하기 -->
+	<delete id="atdetailAllDel" parameterType="HashMap">
+		delete from tbl_attendance
+		where fk_employee_no = #{fk_employee_no} and to_char(startTime, 'yyyy-mm-dd') = #{selectdate}
+	</delete>
+
+
+	<!-- 전체 근무목록 보여주기 -->
+	<select id="getworkTimebyDay" parameterType="HashMap" resultType="com.spring.yeeun.model.AttendanceVO">
+		<!-- with B as
+		(select
+		     adno, fk_employee_no, adcatgo,
+		     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+		     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
+		     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
+		     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+		     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
+		     
+		from 
+		(select adno, fk_employee_no, adcatgo, startTime, endTime,
+		        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+		        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
+		 from tbl_attendance) v)
+		select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin
+		from B
+		where fk_employee_no = #{fk_employee_no} and seldate = #{thisWeekDay}
+		order by startTime asc -->
+		with B as
+		(select
+		     adno, fk_employee_no, adcatgo,
+		     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
+		     startTime_t + startTime_m  AS startTime,
+		     endTime_t + endTime_m  AS endTime,
+		     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
+		     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin,
+		     totalTime
+		from 
+		(select adno, fk_employee_no, adcatgo, startTime, endTime,
+		        substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS start_Time,
+		        to_number(substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12, 2)) AS startTime_t,
+		        to_number(round(substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 15)/60, 1)) AS startTime_m,
+		        substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS end_Time,
+		        to_number(substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12, 2)) AS endTime_t,
+		        to_number(round(substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 15)/60, 1)) AS endTime_m,
+		        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
+		        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate,
+		        ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS totalTime
+		 from tbl_attendance) v)
+		select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin, totalTime
+		from B
+		where fk_employee_no = #{fk_employee_no} and seldate = #{thisWeekDay}
+		order by startTime asc
+	</select>
+
+
+
+
+
+
+	<!-- 휴가 개요 보여주기 -->
+	<select id="dayoffListView" resultType="com.spring.yeeun.model.DayoffVO">
+		<![CDATA[
+		with 
+		A as 
+		(select dono, fk_employee_no, fk_ano, docatgo, 
+		 to_char(startdate, 'yyyy. mm. dd') AS startdate, to_char(startdate, 'dy') AS startday,
+		 to_char(enddate, 'yyyy. mm. dd') AS enddate, to_char(enddate, 'dy') AS endday
+		 from tbl_dayoff
+		),
+		B as
+		(select dono, startdate, enddate, round(cnt,0)as n, 
+		        case when round(cnt,1)-trunc(cnt,0) > 0 and round(cnt,1)-trunc(cnt,0) < 0.3 then 0.5 
+		             when round(cnt,1)-trunc(cnt,0) > 0.3 and round(cnt,1)-trunc(cnt,0) < 0.5 then 1
+		             else 0 end as r 
+		from 
+		(select dono, to_char(startdate,'yyyy-mm-dd hh24:mi') as startdate, to_char(enddate,'yyyy-mm-dd hh24:mi') as enddate,
+		       to_date(to_char(enddate,'yyyy-mm-dd hh24:mi') , 'yyyy-mm-dd hh24:mi') - to_date(to_char(startdate,'yyyy-mm-dd hh24:mi'),'yyyy-mm-dd hh24:mi') as cnt
+		from tbl_dayoff) v)
+		select A.dono, A.fk_employee_no, A.fk_ano, A.docatgo, A.startdate, A.startday, A.enddate, A.endday,
+		       n+r as usedays
+		FROM A JOIN B
+		ON A.dono = B.dono
+		where fk_employee_no = #{fk_employee_no} and substr(A.startdate, 0,4) = to_char(sysdate,'yyyy')  
+		order by startdate desc
+		]]>  <!-- 현재년도 기준  바뀜 -->
+	</select>
+	
+	<select id="dayoffListViewByYear" parameterType="HashMap" resultType="com.spring.yeeun.model.DayoffVO">
+		<![CDATA[
+		with 
+		A as 
+		(select dono, fk_employee_no, fk_ano, docatgo, 
+		 to_char(startdate, 'yyyy.mm.dd') AS startdate, to_char(startdate, 'dy') AS startday,
+		 to_char(enddate, 'yyyy.mm.dd') AS enddate, to_char(enddate, 'dy') AS endday
+		 from tbl_dayoff
+		),
+		B as
+		(select dono, startdate, enddate, round(cnt,0)as n, 
+		        case when round(cnt,1)-trunc(cnt,0) > 0 and round(cnt,1)-trunc(cnt,0) < 0.3 then 0.5 
+		             when round(cnt,1)-trunc(cnt,0) > 0.3 and round(cnt,1)-trunc(cnt,0) < 0.5 then 1
+		             else 0 end as r 
+		from 
+		(select dono, to_char(startdate,'yyyy-mm-dd hh24:mi') as startdate, to_char(enddate,'yyyy-mm-dd hh24:mi') as enddate,
+		       to_date(to_char(enddate,'yyyy-mm-dd hh24:mi') , 'yyyy-mm-dd hh24:mi') - to_date(to_char(startdate,'yyyy-mm-dd hh24:mi'),'yyyy-mm-dd hh24:mi') as cnt
+		from tbl_dayoff) v)
+		select A.dono, A.fk_employee_no, A.fk_ano, A.docatgo, A.startdate, A.startday, A.enddate, A.endday,
+		       n+r as usedays
+		FROM A JOIN B
+		ON A.dono = B.dono
+		where fk_employee_no = #{fk_employee_no} and substr(A.startdate, 0,4) = #{year}
+			  and to_date(A.startdate,'yyyy-mm-dd') <= to_date(to_char(sysdate, 'yyyy-mm-dd'), 'yyyy-mm-dd')
+		order by startdate desc
+		]]>
+	</select>
+
+
+
+
+
+
+
+</mapper>

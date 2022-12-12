@@ -5,6 +5,7 @@ drop table tbl_message_send purge;
 drop table tbl_scrap purge;
 drop table tbl_authority purge;
 
+PURGE RECYCLEBIN;   
 
 -- tbl_message 테이블 생성
 create table tbl_message
@@ -38,7 +39,27 @@ nominvalue
 nocycle
 nocache;
 
+-- tbl_message_file 테이블  생성
+create table tbl_message_file
+(mfno   varchar2(50)    not null --메시지파일번호
+,fk_mno varchar2(50)    not null --메시지번호
+,m_systemfilename    varchar2(200)  -- 오리지널파일명
+,m_originfilename  varchar2(200)    -- 파일명
+,file_size   number                 -- 파일크기
 
+,constraint PK_tbl_message_file_mfno primary key(mfno)
+,constraint FK_tbl_message_file_fk_mno foreign key(fk_mno) references tbl_message(mno) on delete cascade
+);
+
+
+-- tbl_message_file 시퀀스 생성
+create sequence seq_tbl_message_file
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
 
 -- tbl_message_send 테이블 생성
 create table tbl_message_send
@@ -98,7 +119,41 @@ create table tbl_authority
 
 
 
-select * from tbl_employee
+-- tbl_dayoff 테이블 생성
+create table tbl_dayoff
+(dono   varchar2(50)    not null -- 연차번호
+,fk_employee_no number(6)    not null -- 사원번호
+,docnt  number(10) --연차수
+,docatgo    varchar2(50)
+,startdate  date
+,enddate    date
+
+,constraint PK_tbl_dayoff_dono primary key(dono)
+,constraint fk_tbl_dayoff_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
+);
+
+
+-- tbl_attendance 테이블 생성
+create table tbl_attendance
+(adno   varchar2(50)    not null -- 근태번호
+,fk_employee_no number(6)    not null -- 사원번호
+,adcatgo    varchar2(50)
+,startdate  date
+,enddate    date
+
+,constraint PK_tbl_dayoff_adno primary key(adno)
+,constraint fk_tbl_attendance_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
+);
+
+-- tbl_attendance_catgo 테이블 생성
+create table tbl_attendance_catgo
+(adcatgono  number    not null -- 근태종류번호
+,adcatgo    varchar2(50)
+
+,constraint PK_tbl_dayoff_adcatgono primary key(adcatgono)
+);
+
+
 
 -------------------------------------------------------------------------------
 -- tbl_message에 데이터 넣기
@@ -246,65 +301,14 @@ exec pcd_tbl_team_insert('제조',90);
 exec pcd_tbl_team_insert('IT',100);
 
 ---------------------------------------------------------------------------------
-
-
--- 메시지 select
-
-select * from tbl_employee
-
--- 한 사람의 메시지목록을 보여주는 select
-select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
-from
-(
-    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
-    from
-    (
-        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
-        from tbl_message M
-        join tbl_message_send MS
-        on M.mno = MS.fk_mno
-        where receiver = '100006' and status = 1 and ms_checktime is null
-    )
-    left join v_employee E
-    on E.employee_no = writer
-    order by ms_sendtime desc
-)
-left join v_employee
-on employee_no = receiver
-
--- 한 사람의 스크랩한 메시지
-select writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime
-from
-(
-    select writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime
-    from
-    (
-        select mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
-        from tbl_message M
-        join tbl_message_send MS
-        on M.mno = MS.fk_mno
-        where receiver = '10006' and status = 1 and ms_checktime is null
-    )
-    left join v_employee E
-    on E.employee_no = writer
-    order by ms_sendtime desc
-)
-left join v_employee
-on employee_no = receiver
-
-
-
-
-
---------------------------------------------------------------------------------
 -- 사원 관련 테이블 조인한 뷰
 
 create or replace view v_employee
 as
-select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
+select employee_no, A.fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt, employmenttype
 from
     (
-    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
+    select employee_no, fk_department_no, department_name, fk_team_no, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, birthday, dayoff_cnt, employmenttype
     from tbl_employee E
     left join tbl_departments D
     on fk_department_no = department_no
@@ -312,12 +316,7 @@ from
 left join tbl_team
 on fk_team_no = team_no;
 
-select * from tbl_employee
-where employee_no = 100006
 
-select * from tbl_employee
-
-select name_kr
 
 
 
@@ -417,75 +416,1016 @@ exec pcd_tbl_employee_insert(90, 45, '서영학','Younghak Seo', 'qwer1234$', 33
 commit;
 
 
+
+
+
+
+
+
 --------------------------------------------------------------------------------
-
--- tbl_message에 클릭한 메시지 내용 한개 읽어오기
-select mno, mgroup, reno, writer, name_kr, department_name, subject, content, m_systemfilename, m_originfilename, file_size
-from tbl_message M
-join v_employee E
-on writer = employee_no
-where mno = 'm-16' and M.status = 1
+---------------------------------------------------------------------------------
 
 
--- tbl_message에 수신자 불러오기
-select receiver, name_kr, department_name, ms_sendtime, ms_checktime
+
+
+
+
+
+
+
+-- 스크랩한거 보여주는거
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status, filecnt
 from
 (
-    select * from tbl_message_send
-    where fk_mno = 'm-16'
+    select mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content,ms_sendtime, ms_checktime, TM.status
+    from
+    (
+        select mno, writer, receiver, mgroup, reno, subject, content, status, ms_sendtime, ms_checktime
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+    order by ms_sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+left join
+(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
+on mno = fk_mno
+where receiver = '100006' and TMM.status = 1
+
+select * from tbl_message_file
+
+-- 메시지목록 전체개수 구하기
+select ceil(count(*)/10)
+from
+(
+    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, ms_sendtime, ms_checktime, TM.status
+    from
+    (
+        select row_number() over(order by ms_sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, m_systemfilename, m_originfilename, file_size, status, ms_sendtime, ms_checktime
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+          join tbl_scrap S
+        on S.tno = mno
+        where receiver = 100006 and status = 1
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+    order by ms_sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+
+100006
+-------------------------------------------------------------------------------
+
+-- tbl_message 에서 해당 메시지 하나 내용을 알아오기
+select mno, reno, writer, name_kr as w_name, department_name as w_dept, subject, content
+from tbl_message join v_employee on employee_no = writer
+
+select * from tbl_message
+
+select * from v_employee
+-- 받는사람 정보
+
+select fk_mno, receiver, name_kr as r_name, department_name as r_dept,
+from tbl_message_send join v_employee on receiver = employee_no
+where fk_mno = 'm-12'
+
+
+select distinct to_char(ms_sendtime, 'yyyy. mm. dd AM hh:mi') as ms_sendtime
+from tbl_message_send
+where fk_mno = 'm-12'
+
+select * from tbl_message_send
+
+
+-----------------------------------
+
+-- 파일 불러오기
+
+select *
+from tbl_message_file
+
+
+---------------------------------------------------------------
+-- message_write
+
+-- 부서, 팀 알아오기
+select department_no, department_name, listagg(team_no, ',') within group (order by team_no) as togroup,listagg(team_name, ',') within group (order by team_name) as tngroup, listagg(total,',') within group (order by team_no) as tcnt
+from
+(
+    select department_no, department_name, team_no, team_name, total
+    from
+    (
+        select T.fk_department_no, TC.team_no, TC.team_name, TC.total
+        from
+        (
+            select team_no, team_name, count(employee_no) as total
+            from tbl_team
+            left outer join tbl_employee
+            on fk_team_no = team_no
+            where delete_status = 1
+            group by (team_no, team_name)
+        ) TC
+        join tbl_team T
+        on TC.team_no = T.team_no
+    ) T
+    join tbl_departments D
+    on D.department_no = T.fk_department_no
+    where delete_status = 1
 )
-join v_employee
-on receiver = employee_no
+group by (department_no,department_name)
 
 
-select employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, role, position, authority
-from tbl_employee
-where status = 1 and employee_no = 
+select department_no, department_name
+from tbl_departments
 
 
 
-commit;
+
+-- 팀의 구성원수 구하기
+select department_no, department_name, team_no, team_name, total
+from
+(
+    select T.fk_department_no, TC.team_no, TC.team_name, TC.total
+    from
+    (
+        select team_no, team_name, count(employee_no) as total
+        from tbl_team
+        left outer join tbl_employee
+        on fk_team_no = team_no
+        where delete_status = 1
+        group by (team_no, team_name)
+    ) TC
+    join tbl_team T
+    on TC.team_no = T.team_no
+) T
+join tbl_departments D
+on D.department_no = T.fk_department_no
+where delete_status = 1
 
 select * from v_employee
 
 
-alter table tbl_employee add dayoff_cnt number default 0;
+-- 구성원목록 가져오기
+select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
+from v_employee
+where status = 1
+and name_kr like '%'||'강'||'%'
+
+
+select fk_department_no, department_name, fk_team_no, team_name, employee_no, name_kr, role, position, profile_systemfilename
+from v_employee
+where status = 1
+and name_kr like '%' || '강' || '%'
 
 select * from tbl_employee
 
+select * from tbl_message
+
+delete from tbl_message where mno = 'm-21'
+
+
+commit;
+------------------------------------------------
+
+-- 메시지 insert하기
+insert into tbl_message (mno, writer, mgroup, reno, subject, content, status)
+values(#{mno}, #{writer}, #{mgroup}, #{reno}, #{subject}, #{content}, default)
+
+select * from tbl_message_file
+
+-- 메시지 파일에 insert하기
+insert into tbl_message_file (mfno, fk_mno, m_systemfilename, m_originfilename, file_size)
+values('mf-'||seq_tbl_message_file.nextval, #{fk_mno}, #{m_systemfilename}, #{m_originfilename}, #{file_size})
+
+select * from tbl_message_send
+
+-- tbl_message_send 메시지 수신자에 insert하기
+insert into tbl_message_send (msno, fk_mno, receiver, ms_sendtime, ms_checktime, scrapstatus)
+values('ms-'||seq_tbl_message_send.nextval, #{fk_mno}, #{receiver}, #{ms_sendtime}, null, default)
+
+
 -------------------------------------------------------------------------------
--- tbl_dayoff 테이블 생성
-create table tbl_dayoff
-(dono   varchar2(50)    not null -- 연차번호
-,fk_employee_no number(6)    not null -- 사원번호
-,docnt  number(10) --연차수
-,docatgo    varchar2(50)
-,startdate  date
-,enddate    date
 
-,constraint PK_tbl_dayoff_dono primary key(dono)
-,constraint fk_tbl_dayoff_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
-);
+select * from tbl_message
+where mno = 'm-58'
+
+select * from tbl_message_send
+where fk_mno = 'm-58'
 
 
--- tbl_attendance 테이블 생성
-create table tbl_attendance
-(adno   varchar2(50)    not null -- 근태번호
-,fk_employee_no number(6)    not null -- 사원번호
-,adcatgo    varchar2(50)
-,startdate  date
-,enddate    date
+select * from tbl_message_send
 
-,constraint PK_tbl_dayoff_adno primary key(adno)
-,constraint fk_tbl_attendance_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
-);
-
--- tbl_attendance_catgo 테이블 생성
-create table tbl_attendance_catgo
-(adcatgono  number    not null -- 근태종류번호
-,adcatgo    varchar2(50)
-
-,constraint PK_tbl_dayoff_adcatgono primary key(adcatgono)
-);
+select * from tbl_message_file
 
 
+--  메시지파일 읽어오기
+select mfno, fk_mno, m_systemfilename, m_originfilename, file_size
+from tbl_message_file
+where fk_mno = #{fk_mno}
+
+
+
+
+select * from tbl_message_send 
+
+select * from tbl_message
+
+-- 관련메시지 현재것과 관련된 이전, 다음글 3개만 가져오기 
+select mno, mgroup,name_kr, department_name, subject, to_char(ms_sendtime,'yy. mm. dd') as ms_sendtime, receiverstatus
+from
+    (select row_number() over(order by ms_sendtime desc) as rno, mno, mgroup, name_kr, department_name, subject, ms_sendtime, receiverstatus
+    from
+        (
+        select distinct mno, mgroup, name_kr, department_name, subject, ms_sendtime ,receiverstatus
+        from tbl_message
+        left join tbl_message_send
+        on mno = fk_mno
+        left join v_employee
+        on writer = employee_no
+        where mgroup = (select mgroup from tbl_message where mno = 'm-12') 
+        and mno in (
+        select n_mno, mno, b_mno
+            from (
+                   select LAG(mno) OVER (ORDER BY to_number(substr(mno,3))) as n_mno,
+                   mno,
+                   LEAD(mno) OVER (ORDER BY to_number(substr(mno,3))) as b_mno
+                   from tbl_message
+                   where mgroup = (select mgroup from tbl_message where mno = 'm-12')
+                 )
+            where mno = 'm-12'        
+        )        
+        order by to_number(substr(mno,3))
+        )
+    )
+
+
+
+-- 관련메시지 3개 읽어오기...ㅜ
+select n_mno, n_writer, n_subject,n_sendtime, mno, writer, subject, sendtime, b_mno, name_kr||'·'||department_name as b_writer, b_subject, b_sendtime
+from
+(
+    select n_mno, n_writer, n_subject, n_sendtime, MF.mno, MF.writer, MF.subject, MF.sendtime, b_mno, B.writer as b_writer, B.subject as b_subject, B.sendtime as b_sendtime
+    from
+    (
+        select n_mno, name_kr||'·'||department_name as n_writer, n_subject,n_sendtime, mno, writer, subject, sendtime,b_mno
+        from
+        (
+        select n_mno, N.writer as n_writer, N.subject as n_subject, N.sendtime as n_sendtime, M.mno, M.writer, M.sendtime, M.subject, M.b_mno
+        from
+        (
+           select mgroup, LAG(mno) OVER (ORDER BY to_number(substr(mno,3))) as n_mno, mno, subject, name_kr||'·'||department_name as writer, sendtime, LEAD(mno) OVER (ORDER BY to_number(substr(mno,3))) as b_mno
+           from tbl_message
+           join v_employee on writer = employee_no
+           where mgroup = (select mgroup from tbl_message where mno = 'm-16')
+        ) M
+        left join tbl_message N
+        on N.mno = M.n_mno
+        ) 
+        left join v_employee on employee_no = n_writer
+    ) MF
+    left join tbl_message B
+    on MF.b_mno = B.mno
+)
+left join v_employee on employee_no = b_writer
+where mno = 'm-16'
+
+
+select * from tbl_message_send whe
+
+select * from tbl_departments
+
+alter table tbl_message_send add delete_status number default 1
+
+select * from tbl_message_send
+
+
+alter table tbl_message_send drop column receiverstatus;
+
+
+-- 메시지 전체 목록 읽어오기
+select count(*) from tbl_message_send
+where receiver = 100006
+
+--안읽었을때
+select count(*) from tbl_message_send
+where receiver = 100006
+and ms_checktime is null
+
+
+
+
+-------------------------------------
+
+select * from tbl_message_send
+
+update tbl_message_send set ms_checktime = null
+
+update tbl_message_send set ms_checktime = sysdate --모두 읽음 표시
+
+update tbl_message_send set ms_checktime = null -- 모두 안읽음 표시
+
+update tbl_message_send set scrapstatus = 1 -- 스크랩표시
+
+commit;
+
+
+
+select mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.status, depthno, filecnt, scapstatus, delete_status
+from
+(
+    select rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.status, depthno,  scapstatus, delete_status
+    from
+    (
+        select row_number() over(order by sendtime desc) as rno, mno, writer, receiver, mgroup, reno, subject, content, status, sendtime, ms_checktime, depthno, scrapstatus, delete_status
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+        where receiver = 100006 and delete_status = 1
+       
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+
+    order by sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+left join
+(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
+on mno = fk_mno
+where rno between #{startRno} and #{endRno}
+
+
+select mno, mgroup,reno, writer, w_name, w_dept, subject, content, sendtime, profile_orginfilename, depthno, scrapstatus
+from (
+    select mno, mgroup,reno, writer, name_kr as w_name, department_name as w_dept, subject, content, to_char(sendtime, 'yyyy. mm. dd AM hh:mi') as sendtime, profile_orginfilename, depthno
+    from tbl_message join v_employee on employee_no = writer
+    where mno = 'm-67'
+)
+join tbl_message_send
+on mno = fk_mno
+where receiver = 100006
+
+select * from tbl_message_file
+
+
+
+select mfno, fk_mno, m_systemfilename, m_originfilename, file_size
+from tbl_message_file
+
+select * from tbl_message
+order by sendtime desc
+
+select * from tbl_employee
+
+
+select * from tbl_employee
+where fk_team_no = 1
+
+
+update tbl_employee set position = '부장'
+where position = '경력'
+
+
+
+update tbl_employee set position = '부장' 
+where fk_team_no = 1
+
+
+update tbl_employee set position = '부장'
+where fk_team_no = 41 and position = '과장'
+
+
+update tbl_employee set position = '사원'
+where name_kr like '%2'
+
+
+
+update tbl_employee set position = '대리'
+where name_kr like '%2'
+
+commit;
+
+
+
+update tbl_employee set manager_no = (select employee_no from tbl_employee where fk_team_no = 3 and position = '대리')
+where fk_team_no = 3 and position = '사원'
+
+
+create or replace procedure pcd_update_manager_no
+(p_mp IN varchar2
+,p_ep IN varchar2
+)
+is
+begin
+for i in 1..45 loop
+update tbl_employee set manager_no = (select employee_no from tbl_employee where fk_department_no = 10 and position = p_mp)
+where fk_department_no = 10 and position = p_ep
+end loop;
+end pcd_update_manager_no;
+
+
+exec pcd_update_manager_no('부장','과장');
+
+select * from tbl_employee
+
+
+select employee_no, name_kr, manager_no, position from tbl_employee
+where fk_team_no = 1
+
+
+select employee_no from tbl_employee where fk_team_no = 1 and position = '대리'
+
+
+
+update tbl_employee set manager_no = (select employee_no from tbl_employee where fk_team_no = i and position = p_mp)
+where fk_team_no = i and position = p_ep;
+
+
+update tbl_employee set manager_no = (select employee_no from tbl_employee where fk_department_no = 10 and position = '부장')
+where fk_department_no = 90 and position = '대리'
+
+
+select * from tbl_employee
+
+desc tbl_employee
+
+update tbl_employee set jointype = '경력'
+where name_kr like '%3'
+
+
+-- 사장 넣기
+
+insert into tbl_employee
+values(1, null, null, '서영학', 'Younghak seo','9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', '사장', null, sysdate-365, 10000,null, '010-2341-1231', '21105', null, null, null, 'younghak121@naver.com', 1, null, null, '대졸', '경영학과', null, null, null, 1, 'CEO' , '대표', 1, 0 )
+
+
+-- 관리자 넣기
+insert into tbl_employee
+values(99, null, null, '관리자', 'Admin','9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382', '관리자계정', null, sysdate, null,null, null, null, null, null, null, 'younghak121@naver.com', 1, null, null, null, null, null, null, null, 99, null , null, 99, 0, null)
+
+desc tbl_employee
+
+update tbl_employee set jointype = '경력'
+where position in ('과장','부장','사장','대리')
+
+commit;
+
+
+
+----------------------------------------------------------------------------------
+-- 보낸 메시지함 
+
+
+select rno, writer, mno, mgroup, reno, subject, status, sendtime, depthno, writer_scrapstatus, receiver_name, filecnt
+from 
+(
+    select row_number() over(order by sendtime desc) as rno, writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus, receiver_name, filecnt
+    from
+    (
+        select writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus, 
+        --name_kr as receiver_name, 
+        LISTAGG(name_kr,',') WITHIN GROUP (ORDER BY name_kr) AS receiver_name
+        from tbl_message M
+        left join tbl_message_send MS
+        on mno = fk_mno
+        left join v_employee
+        on receiver = employee_no
+        group by (writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus)
+    ) M
+    left join v_employee E
+    on E.employee_no = writer
+    left join ( select fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno ) F
+    on F.fk_mno = mno
+    where writer = 100006 and M.status = 1
+    --and receiver_name like '%'||'강'||'%'
+    --and writer_scrapstatus = 1
+)
+where rno between 1 and 10
+
+
+select * from tbl_message
+
+select * from tbl_message_send
+
+select * from tbl_message_file
+
+( select fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno )
+
+
+
+-- 총 개수
+select ceil(count(*)/10)
+from 
+(
+    select row_number() over(order by sendtime desc) as rno, writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus, receiver_name
+    from
+    (
+        select writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus, 
+        --name_kr as receiver_name, 
+        LISTAGG(name_kr,',') WITHIN GROUP (ORDER BY name_kr) AS receiver_name
+        from tbl_message M
+        left join tbl_message_send MS
+        on mno = fk_mno
+        left join v_employee
+        on receiver = employee_no
+        group by (writer, mno, mgroup, reno, subject, M.status, sendtime, depthno, writer_scrapstatus)
+    ) M
+    left join v_employee E
+    on E.employee_no = writer
+    where writer = 100006 and M.status = 1
+    --and receiver_name like '%'||'강'||'%'
+    --and writer_scrapstatus = 1
+)
+
+
+
+
+-- 보낸  메시지 개수 알아오기
+select count(*) from tbl_message_send
+where receiver = #{receiver} and delete_status = 1
+
+
+alter table tbl_message rename column status to delete_status
+
+
+alter table tbl_message_send rename column scrapstatus to scrap_status
+
+
+select * from tbl_message
+select rno, mno, writer, w_name, w_deptname, receiver, name_kr as r_name, department_name as r_deptname, mgroup, reno, subject, content, to_char(sendtime,'yy. mm. dd AM hh24:mi') as sendtime, to_char(ms_checktime,'yy. mm. dd') as ms_checktime, TMM.delete_status, depthno, filecnt, scrap_status, delete_status
+from
+(
+    select row_number() over(order by sendtime desc) as rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.delete_status, depthno,  scrap_status, delete_status
+    from
+    (
+        select mno, writer, receiver, mgroup, reno, subject, content, M.delete_status, sendtime, ms_checktime, depthno, MS.scrap_status, MS.delete_status
+        from tbl_message M
+        join tbl_message_send MS
+        on M.mno = MS.fk_mno
+        where receiver = 100006 and MS.delete_status = 1 and sendtime <= sysdate
+        <if test="tab == 'unread'">
+            and ms_checktime is null
+        </if>
+        <if test="tab == 'scrap'">
+            and MS.scrap_status = 1
+        </if>
+        <if test="searchCondition != 'writer' and searchVal != ''">
+            and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+        </if>
+    ) TM
+    left join v_employee E
+    on E.employee_no = writer
+    <if test="searchCondition == 'writer' and serachVal != ''">
+        where lower(name_kr) like '%'||lower(#{searchVal})||'%'
+    </if>
+    order by sendtime desc
+) TMM
+left join v_employee
+on employee_no = receiver
+left join
+(select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno)
+on mno = fk_mno
+where rno between #{startRno} and #{endRno}
+
+
+select * from tbl_employee
+
+desc tbl_employee
+
+
+select * from tbl_message_send
+
+select fk_mno, receiver from tbl_message_send
+where delete_status = 1 and receiver = 100006
+group by (fk_mno, receiver)
+
+
+select * from tbl_message_send
+
+
+
+
+ select n_mno, N.writer as n_writer, N.subject as n_subject, N.sendtime as n_sendtime, M.mno, M.writer, M.sendtime, M.subject, M.b_mno
+from
+(
+select LAG(mno) OVER (ORDER BY to_number(substr(mno,3))) as n_mno, 
+      mno, subject, name_kr||'·'||department_name as writer, sendtime,
+      LEAD(mno) OVER (ORDER BY to_number(substr(mno,3))) as b_mno
+from tbl_message
+join v_employee on writer = employee_no
+where mgroup = (select mgroup from tbl_message where mno = 'm-12')
+
+
+
+
+select * from tbl_message
+where writer = 100006
+
+
+select * from tbl_message_send
+where fk_mno = 'm-93' and receiver = 100006
+
+select nvl(fk_department_no, 0)
+from v_employee
+
+select * from v_employee
+
+select nvl(fk_department_no,) as fk_department_no, nvl(department_name,'없음') as department_name, nvl(fk_team_no,'없음') as fk_team_no, nvl(team_name,'없음') as team_name, employee_no, name_kr, role, position, profile_systemfilename
+		from v_employee
+		where status = 1
+
+    select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, name_en, passwd, jointype, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority
+    from v_employee
+    where employee_no = 600139
+
+
+select * from tbl_authority
+
+
+권한 => 인사팀한테는 급여, 로그, 구성원 정보 볼수 있게 해야될거같고..
+
+인사이트 => 대리부터 다 볼수있게 해보자..
+
+
+select * from tbl_departments
+
+update tbl_employee set authority = 2
+where position in ('대리','과장','부장')
+
+update tbl_employee set authority = 24
+where fk_department_no = 40
+and position in ('과장','대리','부장')
+
+
+
+update tbl_employee set authority = 120
+where fk_department_no = 40 and position in ('과장','대리','부장')
+
+
+select * from tbl_employee
+where fk_department_no = 40
+
+select * from tbl_employee
+where employee_no =600139
+
+alter table tbl_employee add birthday date;
+
+
+update tbl_employee set birthday = to_date('1970/01/21')
+where name_kr like '%서영학%'
+
+select * from tbl_employee
+
+select * from tbl_authority
+
+
+insert into tbl_authority
+values(6, '근태')
+
+update tbl_authority set atno = 7
+where atno = 6
+
+commit;
+
+
+
+select * from tbl_team
+
+update tbl_team set team_name = '전산1팀'
+where team_no = 38
+
+update tbl_team set team_name = '전산2팀'
+where team_no = 39
+
+
+-- 부서/팀마다 권한주기
+인사부서 => 인사이트, 구성원, 근태 : 42 : 부서 40
+재무부서 => 인사이트, 급여 : 8 : 부서 70
+IT부서 전산팀 => 로그 : 5 : 팀 38, 39
+
+update tbl_employee set authority = 5
+where fk_team_no in (38, 39)
+
+commit;
+
+
+update tbl_employee set authority = 99
+where employee_no = 99 or employee_no = 1
+
+
+
+select * from tbl_attendance
+
+--근무시간 넣어주기
+insert into tbl_attendance
+values(seq_attendance_no.nextval, 100006, '근무', to_date('2022/12/08 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022/12/08 17:30', 'yyyy-mm-dd hh24:mi'))
+
+commit;
+
+desc tbl_attendance
+
+
+
+
+select * from tbl_attendance
+
+
+
+-- 오늘 근무시간 구하기
+select (endtime - starttime)*24*60 as working_min
+from tbl_attendance 
+where fk_employee_no = 100006 and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
+
+
+
+select nvl((endtime - starttime)*24*60,0)
+from tbl_attendance 
+where fk_employee_no = 100006 and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
+
+
+
+select * from user_constraints
+where table_name = 'TBL_EMPLOYEE'
+
+alter table tbl_employee drop constraint UQ_TBL_EMPLOYEE_EMAIL;
+
+update tbl_employee set mobile = 'tBHQxXVKc8qdSHiZy7TbVA=='
+
+commit;
+
+select * from tbl_employee
+
+
+alter table tbl_employee modify mobile varchar2(30)
+
+alter table tbl_employee modify 
+
+
+update tbl_employee set jointype = '대표'
+where jointype = '사장'
+
+select * from tbl_employee
+where employee_no = 1
+
+commit;
+
+select * from tbl_employee
+where fk_team_no = 1
+
+
+
+select * from tbl_employee
+
+
+select * from tbl_employee
+
+
+select position
+from tbl_employee
+where position is not null
+group by position
+
+
+select jointype
+from tbl_employee
+group by jointype
+
+
+
+select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, status, role, position, authority
+from
+(
+    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, status, role, position, authority
+    from v_employee
+    where position = '사원'
+    and name_kr like '%'||'진'||'%'
+)
+where rno between 1 and 10
+
+
+
+
+alter table tbl_employee rename column jointype to employeementtype
+
+
+alter table tbl_employee add jointype varchar2(10)
+
+
+
+update tbl_employee set jointype = '신입'
+
+commit;
+
+
+select * from tbl_employee
+
+
+update tbl_employee set jointype='경력'
+where position in ('대표','부장','과장','대리')
+
+
+commit;
+
+
+select * from tbl_employee
+where fk_team_no = 1
+
+
+update tbl_employee set jointype = '경력'
+where name_kr like '%3'
+
+commit;
+
+
+
+select ceil(count(*)/20)
+from
+(
+    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, status, role, position, authority
+    from v_employee
+    where 1 = 1
+    --and ${dropCondition} = #{dropVal}
+    --and lower(${serachCondition}) like '%'||lower(#{searchVal})||'%'
+)
+
+
+
+select * from user_sequences
+
+
+select * from tbl_departments
+
+create sequence seq_tbl_departments
+start with 19
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+
+select team_no, team_name
+from tbl_team
+where fk_department_no = 10
+
+
+select * from tbl_employee
+
+
+
+alter table tbl_employee rename column employeementtype to employmenttype
+
+
+select * from v_employee
+
+
+select * from tbl_authority
+
+desc tbl_employee
+
+
+select * from tab;
+
+
+select * from tbl_employee
+
+
+select * from tbl_departments
+
+select * from tbl_employee
+
+insert into tbl_employee(employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, status, role, position, authority, dayoff_cnt, birthday, filesize, employmenttype)
+values(10||lpad(seq_tbl_employee.nextval,4,0), #{fk_department_no}, #{fk_team_no}, #{name_kr}, #{name_en}, #{passwd}, #{jointype}, null, #{hire_date}, null, null, #{mobile}, #{postcode}, #{address}, #{detail_address}, #{extra_address}, #{email}, #{gender}, null, null, #{academic_ability}, #{major}, #{militaryservice}, #{bank}, #{accountnumber}, #{status}, #{role}, #{position}, #{authority}, 0, #{birthday}, 0, #{employmenttype})
+
+
+
+select * from tbl_team
+
+
+update tbl_employee set status = '1'
+
+commit;
+
+
+select * from tbl_employee
+
+desc tbl_employee
+
+alter table tbl_employee drop constraint SYS_
+
+C0030740
+
+
+select * from tbl_employee
+
+select * from tbl_employee
+order by hire_date desc
+
+select * from tbl_departments
+
+
+insert into tbl_team values(seq_tbl_team.nextval, 'aaa', 90,null,default)
+
+
+select * from tbl_departments
+
+select * from tbl_team
+
+select team_no
+from tbl_team
+where team_name = 'aaa'
+    rollback;
+    
+    
+    
+    select * from tbl_departments
+    
+update tbl_departm,ents set department_no = 18
+where department_no = 90
+
+
+s
+
+select * from tbl_team
+
+select * from tbl_employee
+order by hire_date desc
+
+delete tbl_team
+where team_no in (59,58,60,57)
+
+
+delete tbl_employee
+where fk_team_no = 60
+
+select * from tbl_employee
+
+commit;
+
+
+select * from tbl_departments
+
+
+commit;
+
+delete tbl_departments
+where department_no = 20
+
+
+delete tbl_team
+where fk_department_no = 20
+
+delete tbl_employee
+where fk_department_no = 20
+
+sele
+
+
+select * from tbl_employee
+order by hire_date desc
+
+update tbl_employee set militaryservice = null
+where militaryservice = '해당사항없음'
+
+
+update tbl_employee set fk_department_no = null
+where employee_no = 170255
+
+commit;
+
+where 
+
+alter table tbl_employee modify status default 1
+
+
+
+select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, mobile, status, role, position, authority
+    from v_employee
+    where 1 = 1
+    and department_name is null
+    
+select * from tbl_departments
+    
+    
+    
+update tbl_employee set status = 1
+where status = 0
+
+commit;
+
+update tbl_employee set mobile = 'NgS6R/8WzwTcrW8Yq2H54g=='
+where name_kr !=  '팜하니'
+
+commit;
+
+select * from tbl_employee
+order by hire_date desc

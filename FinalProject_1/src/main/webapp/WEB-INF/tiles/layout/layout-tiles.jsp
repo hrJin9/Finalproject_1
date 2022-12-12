@@ -59,7 +59,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css" />
 
 <!-- 텍스트에디터 시작-->
-<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
+<!-- <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script> -->
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css" />
 <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
@@ -83,7 +83,8 @@
 	/* 서브메뉴 있는 헤더 */
 	.header-main{font-weight: 800 !important; padding: 0.9em 0 0.3em 0 !important; font-size: 18pt !important; }
 	.header-sub{font-weight: 700 !important;  padding: 0.9em 0 !important; font-size: 12pt !important;}
-	.gradientbtn{background-image:linear-gradient(57deg,#003fe9 28.04%,#59d0ffd6 100%);}
+	.gradientbtn{background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%) !important;}
+	.bluebtn{background-color:rgb(0 101 204);} 
 </style>
 
 </head>

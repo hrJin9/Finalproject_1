@@ -9,8 +9,23 @@
 
 <style type="text/css">
 	/* 페이지 전체 레이아웃 */
+	.big::-webkit-scrollbar {
+	    width: 8px;  /* 스크롤바의 너비 */
+	}
+	
+	.big::-webkit-scrollbar-thumb {
+	    height: 30%; /* 스크롤바의 길이 */
+		background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+	    border-radius: 10px;
+	}
+	
+	.big::-webkit-scrollbar-track {
+		background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+	}
+
+	
 	.member_container {
-		width: 88%;
+		width: 90%;
 		margin: 0 auto;
 		overflow: hidden;
 	}
@@ -131,14 +146,26 @@
 	
 	#message {
 	    border: 0.3px solid #d9d9d9;
-	    margin-top: 15px;
-	    margin-right: 84px;
-	    margin-left: 11px;
+	    margin-right: 10px;
+	    margin-left: 10px;
 	    padding: 3.5px 6.5px 3.5px 6.5px;
 	    background-color: white;
 	    border-radius: 3px;
 	    font-size: 10pt;
-	}	
+	}
+	#ml-cancel{
+		height: 27px;
+        width: 40px;
+	    color: #4d4f53;
+	    font-size: 10pt;
+	    padding: 2px;
+	    font-weight: 600;
+	    border: solid 1px #d9d9d9;
+	}
+	
+	.ml-checkmenu{
+		margin: 0px 12px 0px 23px;
+	}
 	
 	/* 	.table td{
 		font-size: 10pt;
@@ -310,73 +337,238 @@
 	    top: 1.3px;
 	    left: 194px;
    }
+   
+   .expand{
+   	cursor: pointer;
+   }
 	
 </style>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		
-		// 모든 체크박스가 체크가 되었다가 그 중 하나만 이라도 체크를 해제하면 전체선택 체크박스에도 체크를 해제하도록 한다.
-		$(".chkboxpnum").click(function(){
-		      
-		   var bFlag = false;
-		   $(".chkboxpnum").each(function(){
-		      var bChecked = $(this).prop("checked"); // 체크된 체크박스
-		      if(!bChecked) { // 체크된 것이 아니라면
-		         $("#memberAll").prop("checked",false);
-		         bFlag = true;
-		         return false;
-		      }
-		   });
-		   
-		   if(!bFlag) {
-		      $("#memberAll").prop("checked",true);
-		   }
-		   
-		});
-	      
-		// 찜목록 전체개수 값
-		const allCnt = $("input:checkbox[name='pnum']").length;  // 체크여부 상관없는 모든 체크박스개수
-		document.getElementById("memberCnt").textContent = allCnt;
-	      
-		// 프로필 클릭시 구성원 상세정보 보기로 이동
-		$(".detailview").click(function(){
-			location.href= "<%= ctxPath%>/memberInfo_hr.up";
-		});
-		
-		// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
-		$("input#burger-check").change(function(){
-		    if($("#burger-check").is(":checked")){
-		        $(".big").css({'width':'86.2%'});
-		        $(".menucontent").css({'visibility':'visible'});
-		    }else{
-		        $(".big").css({'width':'100%'});
-		        $(".menucontent").css({'visibility':'hidden'});
-		    }
-		});  
-		
-		// 모든 조직 펼치기
-		$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
-			$(".summary").click();      // 모든 조직의 summary 클릭
-		});
-		
-	});// end of$(document).ready(function(){})--------------------------
-	   
-	      
-	   // Function declaration
-	   // 전체선택 체크박스 클릭시
-	   function allCheckBox() {
-	   
-	      var bool = $("#memberAll").is(":checked");
-	      /*
-	         $("#memberAll").is(":checked"); 은
-	           선택자 $("#memberAll") 이 체크되어지면 true를 나타내고,
-	           선택자 $("#memberAll") 이 체크가 해제되어지면 false를 나타내어주는 것이다.
-	      */
-	      
-	      $(".chkboxpnum").prop("checked", bool);  // 전체선택 체크박스 체크여부에 따라 개별 선택박스 모두 체크 or 모두 해제
-	   }// end of function allCheckBox()-------------------------
 
+//체크박스 개수
+var total = $("input[name='memberChx']").length;
+
+$(document).ready(function(){
+	//툴팁 사용
+	var tooltipel = $(".tp").tooltip();
+	
+	// 구성원 정보 불러오기
+	showEmpList();
+	
+	//검색어 입력할때마다 구성원정보 가져오기
+	$(document).on('keyup',"#searchVal",function(e){
+		$("#memberAll").prop("checked",false);
+		$("input:checkbox[name='memberChx']").prop("checked",false);
+		show_noncheckmenu();
+		showEmpList();
+	});//end of keyup
+	
+	
+	//팀이름 클릭시 해당 팀 사람 불러오기
+	$(document).on('click','.orgmenu',function(e){
+		//체크박스 해제시키기
+		$("#memberAll").prop("checked",false);
+		$("input:checkbox[name='memberChx']").prop("checked",false);
+		show_noncheckmenu();
+		
+		let teamVal = $(e.target).attr("id");
+		$("#searchVal").val("");
+		showEmpList(teamVal);
+	});
+	
+	// 전체개수 값
+	const allCnt = $("input:checkbox[name='memberChx']").length;  // 체크여부 상관없는 모든 체크박스개수
+	document.getElementById("memberCnt").textContent = allCnt;
+	
+	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
+	$(document).on('change',"#memberAll",function(){
+		if($("#memberAll").is(":checked")){
+			var total = $("input[name='memberChx']").length;
+			$("input[name='memberChx']").prop("checked",true);
+			show_checkmenu();
+			$("#check_ctn").text(total);
+		} else {
+			$("input[name='memberChx']").prop("checked",false);
+			show_noncheckmenu();
+		}
+	});
+	
+	$(document).on('change',"input[name='memberChx']",function() {
+		//체크박스 선택
+		check_one(); 
+	});
+	
+	// 취소 버튼 누를시 선택 모두 해제, 값 삭제하기
+	$(document).on('click',"#ml-cancel",function(){
+		$("input[name='memberChx']").prop("checked",false);
+		$("#memberAll").prop("checked",false);
+		show_noncheckmenu();
+	});
+	
+	
+	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
+	$("input#burger-check").change(function(){
+	    if($("#burger-check").is(":checked")){
+	        $(".big").css({'width':'73.3%','position':'relative','top':'24px'});
+	        $(".menucontent").css({'visibility':'visible','transition':'all .2s'});
+	    }else{
+	        $(".big").css({'width':'100%','top':'0'});
+	        $(".menucontent").css({'visibility':'hidden','transition':'all .2s'});
+	    }
+	});  
+	
+	// 모든 조직 펼치기
+	$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
+		$(".summary").click();      // 모든 조직의 summary 클릭
+	});
+	
+	
+	// 메시지 전송 이벤트
+	$("#message").click(function(){
+		var selectedList = $("input[name='memberChx']:checked");
+		var empnoArr = new Array();
+		selectedList.each(function(index,item){
+			var empno = $(item).parent().parent().attr("id");
+			empnoArr.push(empno);
+		});
+		var str_empno = empnoArr.join(",");
+		
+		location.href="<%=ctxPath%>/message/write.up?to="+str_empno;
+	});
+	
+	
+	// 한 줄 클릭시 해당 팀원의 상세보기로 이동
+	$(document).on("click",".mem-tr",function(e){
+		if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
+		var empno = $(this).attr("id");
+		console.log(empno);
+		location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
+	});
+	
+	
+	
+});// end of$(document).ready(function(){})--------------------------
+
+///////////////////////////////////////////////////////////////////
+	      
+// Function declaration
+
+
+//체크시 나타나는 메뉴
+function show_checkmenu(){
+	$(".ml-noncheckmenu").hide();
+	$(".ml-checkmenu").fadeIn("fast");
+}//end of show_checkmenu
+
+// 체크안되었을때 나타나는 메뉴
+function show_noncheckmenu(){
+	$(".ml-checkmenu").hide();
+	$(".ml-noncheckmenu").fadeIn("fast");
+}//end of show_noncheckmenu
+
+
+//체크박스 하나 체크 이벤트
+function check_one(){
+	var total = $("input[name='memberChx']").length;
+	var checked = $("input[name='memberChx']:checked").length;
+
+	if(total != checked){
+		$("#memberAll").prop("checked", false);
+		show_checkmenu();
+		$("#check_ctn").text(checked);
+		
+	} else {
+		$("#memberAll").prop("checked", true); 
+		show_checkmenu();
+		$("#check_ctn").text(checked);
+	}
+	
+	if(checked<=0) {
+		$("#memberAll").prop("checked", false);
+		show_noncheckmenu();
+	}
+	
+}//end of check_one
+
+//체크박스 전체개수값 구해오기
+function totalChx(){
+	const allCnt = $("input:checkbox[name='memberChx']").length;  // 체크여부 상관없는 모든 체크박스개수
+	$("#memberCnt").text(allCnt);
+}//end of totalChx
+
+
+//구성원을 구하는 ajax
+function showEmpList(teamVal){
+	
+	const searchCondition = $("#searchCondition").val();
+	const searchVal = $("#searchVal").val();
+	
+	$.ajax({
+		url: "<%= ctxPath%>/showEmpList.up",
+		data: {"searchCondition":searchCondition,
+				"searchVal":searchVal,
+				"teamVal":teamVal},
+		type: "post",
+		dataType:"json",
+		success:function(json){
+			//console.log(JSON.stringify(json));
+			
+			let html = '';
+			if(json.length > 0 ){ //불러올 구성원목록이 있는 경우
+				
+				$.each(json,function(index,item){
+					
+					html += '<tr id="'+item.employee_no+'" class="mem-tr">'+
+								'<td><input type="checkbox" name="memberChx" class="'+item.department_name+'" id="'+item.name_kr+'" value="'+item.employee_no+'"/></td>'+
+								'<td>'+
+									'<div class="profile" href="#" style="padding: 1px;">';
+					if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
+						
+					} else { // 프로필사진이 없는 경우
+						html += '<span class="pic"><span>지은</span></span>';
+					}
+										
+					html +=	'<span class="my">'+
+											'<span class="name" style="font-size: 10.8pt;">'+item.name_kr+'</span><br>'+
+											'<span class="role" style="font-size: 9pt;">'+item.role+'</span>'+
+										'</span>'+
+									'</div>'+
+								'</td>'+
+								'<td>';
+					if(item.employee_no == 1){ //사장(대표)인 경우
+						html +=	'<span class="positionIcon">'+
+											'<span>'+item.position+'</span>'+
+										'</span>'+
+									'</td>'+
+								'</tr>';
+						
+					} else{
+						html +=	'<span class="positionIcon">'+
+										'<span>'+item.department_name+' '+item.team_name+'&nbsp;|&nbsp;'+item.position+'</span>'+
+									'</span>'+
+								'</td>'+
+							'</tr>';
+					}
+				});//end of each
+				
+				
+			} else {
+				html = '<tr><td width="100%" style="font-size: 11pt; border-bottom: none;">조회된 구성원이 없습니다.</td></tr>';
+			}
+			
+			$("#empList").html(html);
+			totalChx();
+			
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+	});//end of ajax
+}//end of showEmpList
+
+	   
+	   
 </script>
 <nav id="admin_mainList" class="margin-container">
 	<a id="memberInfo_mainList" class="header-nonsub">구성원</a>
@@ -386,16 +578,16 @@
 <div class="member_container">
 	<form action="#" class="booking-form ml-3" style="float: right;">
 		<div class="row" style="padding-top: 11px;">
-		
 			<%-- 검색 --%>
 			<div class=" mr-2">
 				<div class="form-group">
 					<div class="form-field">
 						<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;">
-							<option value="">이름</option>
-							<option value="">소속</option>
-							<option value="">직무</option>
-							<option value="">직위</option>
+							<option value="name_kr" selected>이름</option>
+							<option value="department_name">부서</option>
+							<option value="team_name">팀</option>
+							<option value="role">직무</option>
+							<option value="position">직위</option>
 						</select>
 					</div>
 				</div>
@@ -403,47 +595,48 @@
 			<div>
 				<div class="form-group">
 					<div class="form-field" style="padding-left:5px; margin-right: -9px;">
-						<input type="text" class="form-control" placeholder="검색" style="width:90%; font-size: 9pt; padding:6px 12px;">
+						<input id="searchVal" type="text" class="form-control" placeholder="검색" style="width:90%; font-size: 9pt; padding:6px 12px;">
 					</div>
 				</div>
 			</div>
 			<div class="align-items-end mt-1 mr-4">
 				<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-					<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 11.5%;"></a>
+					<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 8.5%; top:134px;"></a>
 				</div>
 			</div>
+			<!-- 
 			<div>
 				<span class="arrayIcon">
 					<span><ion-icon name="swap-vertical-outline" style="position: absolute; left: 7px; bottom:7px; font-size: 12pt;"></ion-icon></span>
 	            </span>
 			</div>
+			 -->
 			<div>
 				<span class="groupIcon">
 					<input class="burger-check" type="checkbox" id="burger-check" />
 					<label class="burger-icon" for="burger-check"><span class="burger-sticks"></span></label>
-					<div class="menu">
-						<div class="menucontent" style="width: 340px; visibility: hidden; padding: 27px 0px 10px 38px;">
+					<div class="menu" style="margin-top:6px;">
+						<div class="menucontent" style="width: 340px; visibility: hidden; padding: 27px 0px 10px 38px; height: 500px; overflow-y: auto;">
 							<div style="font-size: 12pt; font-weight: bold; color: #4C4E54; padding-bottom: 27px;">
 								<span style="padding-right: 190px;">조직도</span>
-								<span><i class="fas fa-expand-alt unfold"></i></span>
-								<span class="unfoldAlert" style="display: none;">모든 조직 펼치기</span> <%-- 호버 이벤트시 jQuery 효과주기 --%>
+								<span class="expand tp" data-bs-toggle="tooltip" data-bs-placement="top" title="모든 조직 펼치기"><i class="fas fa-expand-alt unfold"></i></span>
+								<!-- <span class="unfoldAlert">모든 조직 펼치기</span> --> <%-- 호버 이벤트시 jQuery 효과주기 --%>
 							</div>
-							
-							<details>
-								<summary class="summary">IT</summary>
-							   	<ul>
-							      <li><a href="#" class="orgmenu">개발1팀</a><span id="cntbadge" ><span id="newCnt">1</span></span></li>
-							      <li><a href="#" class="orgmenu">개발2팀</a></li>
-							      <li><a href="#" class="orgmenu">기술지원팀1팀</a></li>
-							    </ul>
-							</details>
-							<details>
-								<summary class="summary">기획</summary>
-							   	<ul>
-							      <li><a href="#" class="orgmenu">기획1팀</a><span id="cntbadge" ><span id="newCnt">1</span></span></li>
-							      <li><a href="#" class="orgmenu">기획2팀</a></li>
-							    </ul>
-							</details>
+							<div style="width:250px;">
+								<div id="" class="orgmenu" style="font-size: 11pt;font-weight: 700; color: #4C4E54; margin-bottom: 5px;">전체</div>
+								<c:forEach var="dept" items="${requestScope.deptvoList}">
+									<details>
+										<summary class="summary">${dept.department_name}</summary>
+									   	<ul id="${dept.department_no}" class="deptno">
+									   		<c:forEach var="dt" items="${requestScope.dtList}">
+									   			<c:if test="${dept.department_no == dt.department_no}">
+									   				<li><a id="${dt.team_no}" class="orgmenu">${dt.team_name}</a><span id="cntbadge" ><span id="newCnt">${dt.total}</span></span></li>
+									   			</c:if>
+									   		</c:forEach>
+									    </ul>
+									</details>
+								</c:forEach>
+							</div>
 						</div>
 					</div>
 	            </span>
@@ -452,125 +645,25 @@
 	</form>
 		
 	<%-- 전체 구성원 --%>
-	<div style="margin-bottom: 15px; float: left; color: #4d4f53; font-weight: 700;">
-		<span style="margin: 0 12px 0 23px;">
-			<input type="checkbox" id="memberAll" onClick="allCheckBox();" />
+	<div style="margin:15px 0 0 8px; float: left; color: #4d4f53; font-weight: 700;">
+		<input type="checkbox" id="memberAll"/>
+		<span style="margin: 0 12px 0 23px;" class="ml-noncheckmenu">
+			<span>전체 &nbsp; <span style="color:#4285f4;" id="memberCnt"></span>명</span>
 		</span>
-		<span>전체 구성원 &nbsp; <span style="color:#4285f4;" id="memberCnt"></span>명</span>
-		<span>
-			<button type="button" id="message" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
+		<span class="ml-checkmenu" style="display: none;">
+			<span id="check_ctn" style="color: #4285f4;"></span>명 선택
+			<button type="button" id="message" style="font-size: 9.5pt" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="메시지 보내기"><span><i class="far fa-envelope"></i></span></button>
+			<button type="button" id="ml-cancel" class="btn">취소</button>
 		</span>
 	</div>
-	<div class="big">
-	 	<table class="table custom-table big" style="float: left;">
+	<div class="big" style="height: 500px; overflow-y: auto; width: 100%;">
+	 	<table class="table custom-table" style="float: left;">
 	       <colgroup>
 		          <col width="5px" />
 		          <col width="650px" />
 		          <col width="220px" />
 	      	</colgroup>
-	     	<tbody>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile detailview" href="#" style="padding: 1px ;">
-				      <span class="pic">
-					      <span>지은</span></span>
-					      <span class="my"><span class="name" style="font-size: 10.8pt;">김지은</span><br>
-					      <span class="role" style="font-size: 9pt;">개발자</span>
-				      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>IT 개발1팀&nbsp;|&nbsp;대리</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile detailview" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>혜린</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">진혜린</span><br>
-				      <span class="role" style="font-size: 9pt;">개발자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>IT 기술지원팀&nbsp;|&nbsp;사원</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile detailview" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>채영</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
-				      <span class="role" style="font-size: 9pt;">디자이너</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile detailview" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>예은</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
-				      <span class="role" style="font-size: 9pt;">기획자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile detailview" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>채영</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">강채영</span><br>
-				      <span class="role" style="font-size: 9pt;">디자이너</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>디자인 디자인1팀&nbsp;|&nbsp;과장</span>
-		            </span>
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><input type="checkbox" name="pnum" class="chkboxpnum" id="pnum${status.index}" value=""/></td>   
-	              <td>
-	                <div class="profile detailview" href="#" style="padding: 1px ;">
-			      <span class="pic">
-				      <span>예은</span></span>
-				      <span class="my"><span class="name" style="font-size: 10.8pt;">이예은</span><br>
-				      <span class="role" style="font-size: 9pt;">기획자</span>
-			      </span>
-	                </div>
-	              </td> 
-	              <td>
-	              	<span class="positionIcon">
-						<span>기획 기획1팀&nbsp;|&nbsp;부장</span>
-		            </span>
-	              </td>
-	           </tr>
+	     	<tbody id="empList">
 	         </tbody>
 	 	</table>
 	</div>

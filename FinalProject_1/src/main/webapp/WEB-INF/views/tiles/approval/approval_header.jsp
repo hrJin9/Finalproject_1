@@ -59,7 +59,7 @@
 	
 	#subList a {
 		display: block;
-		width: 10%;
+		width: 14%;
 		padding: .9em 0;
 		/* color: #333; */
 		text-align: center;
@@ -72,7 +72,7 @@
 	    position: absolute;
 	    left: 2%;
 	    bottom: -1px;
-	    width: 10%;
+	    width: 14%;
 	    height: 2px;
 	    background: #333;
 	    transition: all .3s ease-in-out;
@@ -147,7 +147,7 @@
 	  color:#bfbfbf;
 	}
 	.icon-star-full{
-		color:#ffc107;
+		color: #0775ff;
 		padding:0 auto;
 		font-size: 11pt;
 		position: relative;
@@ -159,14 +159,11 @@
 		position: relative;
 	}
 	a.icon-star-empty:hover, a.icon-star-full:hover {
-		color: #ffc107;
+		color: #0775ff;
 	}
 	a, a:hover {
     	text-decoration: none !important;
 	}
-	a.icon-star-empty:hover {
-		color: #ffc107;
-    }
 	.title:hover{
 		cursor: pointer; 
 		text-decoration: underline;
@@ -253,13 +250,60 @@
 	}
 	#writebtn{
 		font-size: 10pt;
-    	padding: 7px 25px;
-		font-weight: 600;
+    	padding: 0px 21px 1px 9px;
+    	font-weight: 600;
 		color: white;
-    	border-radius: 8px;
-		border-width: 0.1px;
-		border-color: rgb(176 176 176);
+    	border-radius: 11px;
+    	border-width: 0px;
+   	    display: flex;
+   	    align-items: center;
+		/* border-color: rgb(176 176 176); */
 	}
+	
+	
+	
+	.flatpickr-month
+	.flatpickr-monthDropdown-months
+	.flatpickr-weekdays
+	.flatpickr-weekday{
+		background: #ffffff !important;
+		color: #3a3a3a !important;
+	}
+	.toggleSwitch {
+	width: 35px;
+  height: 20px;
+  display: block;
+  position: relative;
+  border-radius: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 10px 2px rgb(0 0 0 / 11%);
+  cursor: pointer;
+  margin: 15px;
+}
+
+.toggleSwitch .toggleButton {
+  width: 13px;
+  height: 13px;
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #0775ff;
+}
+
+#toggle:checked ~ .toggleSwitch {
+  background: #0775ff;
+}
+
+#toggle:checked ~ .toggleSwitch .toggleButton {
+  left: calc(100% - 19px);
+  background: #fff;
+}
+
+.toggleSwitch, .toggleButton {
+  transition: all 0.2s ease-in;
+}
 </style>
 <script>
 	$(document).ready(function(){
@@ -278,12 +322,12 @@
 </nav>
 
  <div style="display: inline-block;position: relative;float: right;right: 90px;top: -49px;">
-  	<a href="<%= request.getContextPath()%>/approval/writing.up" id="writebtn"class="btn gradientbtn"><i class="icon icon-quill" style="margin-right: 5px;"></i>작성하기</a>
+  	<a href="<%= request.getContextPath()%>/approval/writing.up" id="writebtn"class="btn gradientbtn"><span style="margin-top: -7px;font-weight: 100;margin-right: 5px;font-size: 24pt;display: flex;align-items: center;">+</span>작성하기</a>
 </div>
 
-
+ 
 <nav id="subList" class="margin-container">
-	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up" style="margin-left: 2%;">상신함</a>
+	<a id="noticeboard-total" class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval.up" style="margin-left: 2%;">내가올린결재</a>
 	<a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/tome.up" style="margin-left: 3%;">수신함</a>
 	<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
 	<div class="subList_underline"></div>

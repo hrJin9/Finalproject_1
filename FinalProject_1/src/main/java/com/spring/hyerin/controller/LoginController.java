@@ -1,5 +1,8 @@
 package com.spring.hyerin.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.finalproject.common.AES256;
 import com.spring.finalproject.common.Sha256;
 import com.spring.finalproject.service.InterFinalprojectService;
 import com.spring.hyerin.model.EmployeeVO;
@@ -24,6 +28,9 @@ public class LoginController {
 	@Autowired
 	private InterLoginService service;
 	
+	@Autowired
+	private AES256 aes;
+	
 	@RequestMapping(value = "/login.up")
 	public ModelAndView login(HttpServletRequest request, ModelAndView mav) {
 		mav.setViewName("login/login");
@@ -31,7 +38,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/loginEnd.up", method= {RequestMethod.POST})
-	public ModelAndView loginEnd(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView loginEnd(HttpServletRequest request, ModelAndView mav) throws Throwable  {
 		String userid = request.getParameter("userid");
 		String passwd = request.getParameter("passwd");
 		
@@ -41,6 +48,7 @@ public class LoginController {
 		
 		// 로그인한 유저 알아보기
 		EmployeeVO loginuser = service.getLoginMember(paraMap);
+		
 		if(loginuser == null) { //로그인 실패시
 			String message = "아이디 또는 비밀번호를 다시 입력해주세요.";
 			String loc = "javascript:history.back()";
@@ -48,6 +56,8 @@ public class LoginController {
 			mav.addObject("loc", loc);
 			mav.setViewName("msg");
 		} else { // 로그인성공시
+			loginuser.setEmail(aes.decrypt(loginuser.getEmail()) );
+			loginuser.setMobile(aes.decrypt(loginuser.getMobile()));
 			// 세션에 로그인유저 정보 저장하기
 			HttpSession session = request.getSession();
 			session.setAttribute("loginuser", loginuser);
@@ -88,24 +98,6 @@ public class LoginController {
 		return mav;
 	}// end of logout
 	
-	
-	//세션에 사이드바 정보 저장하기
-	@ResponseBody
-	@RequestMapping(value = "/sbcheck.up", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
-	public String sidebarCheck(HttpServletRequest request) {
-		
-		String sidebar_yn = request.getParameter("sidebar_yn");
-		HttpSession session = request.getSession();
-		session.setAttribute("sidebar_yn", sidebar_yn);
-		System.out.println(session.getAttribute("sidebar_yn"));
-		
-		String sbynstatus = (String)session.getAttribute("sidebar_yn");
-		
-		JSONObject jsonobj = new JSONObject();
-		jsonobj.put("sbynstatus", sbynstatus);
-		
-		return jsonobj.toString();
-	}
 	
 	
 	@RequestMapping(value = "/login/pwdFind.up")
