@@ -26,12 +26,6 @@ public class CalendarController {
 		return "calendar/calendar_todo.tiles";
 	}
 	
-	/*
-	 * @RequestMapping(value = "/calendar.up") public ModelAndView
-	 * meetingroom(HttpServletRequest request, ModelAndView mav) {
-	 * 
-	 * mav.setViewName("calendar/calendar.tiles"); return mav; }
-	 */
 
 	
 }

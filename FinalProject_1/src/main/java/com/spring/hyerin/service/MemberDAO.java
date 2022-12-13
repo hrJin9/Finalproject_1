@@ -172,6 +172,37 @@ public class MemberDAO implements InterMemberDAO {
 		int n = sqlsession.update("member.updateEmployee",evo);
 		return n;
 	}
+
+	
+	// 해당 사원의 정보를 변경해주기
+	@Override
+	public int updateMyInfo(EmployeeVO evo) {
+		int n = sqlsession.update("member.updateMyInfo", evo);
+		return n;
+	}
+
+	// 해당 사원들의 정보 알아오기
+	@Override
+	public List<EmployeeVO> empList(Map<String, String[]> paraMap) {
+		List<EmployeeVO> empList = sqlsession.selectList("member.empList", paraMap);
+		return empList;
+	}
+
+	
+	// 모든 사원의 정보 알아오기
+	@Override
+	public List<EmployeeVO> empListAll() {
+		List<EmployeeVO> empList = sqlsession.selectList("member.empListAll");
+		return empList;
+	}
+
+	
+	// 해당 정보로 사원테이블에 insert 해주기
+	@Override
+	public int memberRegister(EmployeeVO evo) {
+		int n = sqlsession.insert("member.memberRegister", evo);
+		return n;
+	}
 	
 	
 	
