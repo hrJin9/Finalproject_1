@@ -4,7 +4,7 @@
 
 
 	<select id="getLoginMember" resultType="com.spring.hyerin.model.EmployeeVO" parameterType="HashMap">
-		select employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, role, position, authority,birthday
+		select employee_no, fk_department_no, fk_team_no, name_kr, name_en, passwd, jointype, manager_no, hire_date, salary, commission_pct, mobile, postcode, address, detail_address, extra_address, email, gender, profile_systemfilename, profile_orginfilename, academic_ability, major, militaryservice, bank, accountnumber, role, position, authority,birthday, dayoff_cnt
 		from tbl_employee
 		where delete_status = 1 and employee_no = #{userid} 
 	</select>

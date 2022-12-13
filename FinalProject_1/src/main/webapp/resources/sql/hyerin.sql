@@ -1429,3 +1429,25 @@ commit;
 
 select * from tbl_employee
 order by hire_date desc
+
+
+
+select * from tbl_employee
+where employee_no in 
+
+
+desc tbl_employee
+
+
+select * from user_constraints
+where table_name = 'TBL_EMPLOYEE'
+
+alter table tbl_employee drop constraint SYS_C0030743
+
+SYS_C0030742
+SYS_C0030743
+
+
+
+select * from tbl_employee
+order by hire_date desc

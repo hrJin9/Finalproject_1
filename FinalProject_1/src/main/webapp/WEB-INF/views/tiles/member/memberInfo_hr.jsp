@@ -53,6 +53,7 @@ $(document).ready(function(){
 		location.href="<%= ctxPath%>/admin_memberUpdate.up?empno="+"${requestScope.empno}";
 	})
 	
+	console.log("${sessionScope.dayoff_cnt}");
 	
 });//end of ready
 
