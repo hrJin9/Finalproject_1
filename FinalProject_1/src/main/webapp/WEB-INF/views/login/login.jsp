@@ -234,7 +234,7 @@
 
 			<div class="d-flex flex-column">
 				<button type="button" id="btn_submit" onclick="goLogin()">로그인</button>
-				<a href="#"><button type="button" id="btn_register">회원가입</button></a>
+				<a href="<%=ctxPath%>/memberRegister.up"><button type="button" id="btn_register">회원가입</button></a>
 			</div>
 		</div>
 	</form>

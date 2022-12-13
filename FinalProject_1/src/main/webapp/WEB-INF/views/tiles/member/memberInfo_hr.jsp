@@ -48,6 +48,12 @@ $(document).ready(function(){
 		location.href="<%= ctxPath%>/message/write.up?to="+"${requestScope.empno}";
 	});
 	
+	// 수정버튼 클릭시 관리자 정보수정페이지로 이동
+	$("#updateInfo").click(function(){
+		location.href="<%= ctxPath%>/admin_memberUpdate.up?empno="+"${requestScope.empno}";
+	})
+	
+	console.log("${sessionScope.dayoff_cnt}");
 	
 });//end of ready
 
@@ -216,7 +222,12 @@ function getWorkinghour(){
 	    	<span style="margin-right: 31px;"></span>
 		</c:if>
 	    <span class="myInfo">
-	    	<span style="font-size: 20pt; font-weight: 700;">${requestScope.evo.name_kr}</span><br>
+    		<span style="font-size: 20pt; font-weight: 700;">${requestScope.evo.name_kr}</span>
+	    	<c:set var="logat" value="${sessionScope.loginuser.authority}"/>
+	    	<c:if test="${logat==3 || logat==6 || logat==12 || logat==15 || logat==21 || logat==24 || logat==30 || logat==42 || logat==60 || logat==84 || logat==105 || logat==120 || logat==210 || logat==420 || logat==840 || logat==99}">
+	    		<span id="updateInfo"><i class="fas fa-pen update tp" data-bs-toggle="tooltip" data-bs-placement="top" title="정보 수정"></i></span>
+	    	</c:if>
+    		<br>
 	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -8px;"><span id="team" style="padding-right: 10px;">소속</span>
 	    		<c:if test="${not empty requestScope.evo.department_name}">
 	    			${requestScope.evo.department_name}
@@ -237,10 +248,10 @@ function getWorkinghour(){
 	    	<button type="button" id="message" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="메시지 보내기" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
 	    	<button type="button" id="status">
 	    		<span>
-	    			<c:if test="${requestScope.evo.status == 1}">
+	    			<c:if test="${requestScope.evo.delete_status == 1}">
 	    			<i class="fas fa-circle" style="color: #07B419; padding-right: 5px; font-size: 7pt;"></i>재직중
 	    			</c:if>
-	    			<c:if test="${requestScope.evo.status == 0}">
+	    			<c:if test="${requestScope.evo.delete_status == 0}">
 	    			<i class="fas fa-circle" style="color: #d0d0d0; padding-right: 5px; font-size: 7pt;"></i>퇴사예정
 	    			</c:if>
     			</span>
@@ -452,19 +463,19 @@ function getWorkinghour(){
 	                   	<div>
 		                   	<div class="condition-cell">
 		                   	 <span style="margin-right: 30px;">
-		                   	 	<c:if test="${requestScope.evo.status == 1}">
+		                   	 	<c:if test="${requestScope.evo.delete_status == 1}">
 				                	<input type="radio" class="custom-control-radio2" id="nomal" name="accountStatus" checked>
 				                </c:if>
-		                   	 	<c:if test="${requestScope.evo.status != 1}">
+		                   	 	<c:if test="${requestScope.evo.delete_status != 1}">
 				                	<input type="radio" class="custom-control-radio2" id="nomal" name="accountStatus" checked>
 				                </c:if>
 				                <label for="nomal" class="js-period-type radio-label-checkbox2" data-code="unlimit">정상</label>
 		                   	 </span>
 		                   	 <span>
-		                   	 	<c:if test="${requestScope.evo.status == 0}">
+		                   	 	<c:if test="${requestScope.evo.delete_status == 0}">
 				                	<input type="radio" class="custom-control-radio2" id="stop" name="accountStatus" checked>
 				                </c:if>
-		                   	 	<c:if test="${requestScope.evo.status != 0}">
+		                   	 	<c:if test="${requestScope.evo.delete_status != 0}">
 				                	<input type="radio" class="custom-control-radio2" id="stop" name="accountStatus">
 				                </c:if>
 				                <label for="stop" class="js-period-type radio-label-checkbox2" data-code="unlimit">중지</label>
@@ -475,11 +486,12 @@ function getWorkinghour(){
 	                </tr>
 		        </tbody>
 		 	</table>
-		  
+		  <!-- 
 		  <div class="workstatus-buttoncontainer" style="margin-right: 45%;">
 			 <button type="button" class="workstatus-save gradientbtn btn">저장하기</button>
 			 <button type="reset" class="workstatus-cancel btn" style="color: #4d4f53;">취소</button><br><br><br><br>
 	      </div>
+	       -->
 	      </c:if>
        </div>
        <c:if test="${sessionScope.loginuser.employee_no == requestScope.empno}">
