@@ -311,6 +311,29 @@ public class MemberController {
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping(value="/mailPwdCheck.up")
+	public String mailPwdCheck(String email) {
+		return mailService.findPwd(email);
+	}//end of mailCheck
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/getEmployeeInfo.up")
+	public String getEmployeeInfo(HttpServletRequest request, EmployeeVO evo) throws Throwable{
+		
+		evo.setEmail(aes.encrypt(evo.getEmail()));
+
+		//해당 정보의 사원 가져오기
+		String employee_no = service.getEmployeeInfo(evo);
+		if(employee_no == null) employee_no = "";
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("employee_no", employee_no);
+		
+		return jsonobj.toString();
+	}//end of getEmployeeInfo
+	
 	
 	
 	

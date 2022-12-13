@@ -24,8 +24,8 @@
 let b_flag_addressBtn_click = false;
 
 var code = ""; // 이메일인증용
-var b_emailSendCheck = false;
-var b_emailCheck = false;
+var b_emailSendCheck = true;
+var b_emailCheck = true;
 
 $(document).ready(function(){
 	//툴팁 사용
@@ -151,6 +151,11 @@ $(document).ready(function(){
 		location.href="<%= ctxPath%>/admin_memberUpdate.up?empno="+"${requestScope.empno}";
 	})
 	
+	//이메일값이 한번이라도 바뀌었다면
+	$("#email").change(function(){
+		b_emailSendCheck = false;
+		b_emailCheck = false;
+	});
 	
 });// end of $(document).ready(function(){})-------------------------------
 
@@ -338,8 +343,11 @@ function checkEmailCode(){
 // 본인의 개인정보를 수정
 function updateMyInfo(){
 	
-	var mobile = $("#hp1").val() + "-" + $("#hp2").val() + "-" + $("#hp3").val();
-	$("#mobile").val(mobile);
+	
+	if(($("#h1").val() != "" ||  $("#h1").val() != "010") && $("#hp2").val() != "" && $("#hp3").val() != ""){
+		var mobile = $("#hp1").val() + "-" + $("#hp2").val() + "-" + $("#hp3").val();
+		$("#mobile").val(mobile);
+	}
 	
 	//이메일 유효성검사
 	const emailReg = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");

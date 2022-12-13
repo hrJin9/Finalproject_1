@@ -104,7 +104,7 @@
 	#btnChange:hover {
 		opacity: 1;
 	}
-
+/* 
 	.pwdAlert {
 		width: 185px; 
 		height: 48px; 
@@ -119,45 +119,84 @@
 		/* right: 81px; */
 		box-shadow: 1px 1px 1px 1.3px rgba(0, 0, 0, 0.2);
 	}
+	 */
 </style>
   
   
 <script type="text/javascript">
 
-	$(document).ready(function(){
-	    
-		$(".pwdAlert").hide();
-		
-		$("input#newPassword").click(function(){  // 입력란 클릭시
-			$(".pwdAlert").show();
-		});
-		
-		$('html').click(function(e) {   
-			if(!$(e.target).hasClass('newPassword')){ 
-				$(".pwdAlert").hide();
-			}
-		});
-		// ***** 나중에 8자~15자로 입력과 영문,숫자,특수문자 각 1개 이상 사용의 유효성 검사에 따라 체크표시 색깔 변하도록 하면 될듯 하다. *****
-		
-		/* $("input#newPassword").keyup(function(){ // 입력란 클릭시
-			$(".pwdAlert").hide();
-		}); */
-		
-		$("#modarTitle").text("비밀번호 변경");
-		
-	});// end of $(document).ready(function(){})-------------------------------------
+$(document).ready(function(){
+    
+	$(".error").hide();
 	
-	// 모달창에 입력한 input 태그 value 값 초기화 시키기
-	function func_form_reset_empty() {  // 비밀번호 입력란에 있는 값 비워주는 메소드
-		document.querySelector("form[name='pwdChangeFrm']").reset();  // 해당 form 태그 초기화시키기
+	console.log()
+	
+	// ***** 나중에 8자~15자로 입력과 영문,숫자,특수문자 각 1개 이상 사용의 유효성 검사에 따라 체크표시 색깔 변하도록 하면 될듯 하다. *****
+	
+	/* $("input#newPassword").keyup(function(){ // 입력란 클릭시
 		$(".pwdAlert").hide();
+	}); */
+	
+	$("#modarTitle").text("비밀번호 변경");
+	
+});// end of $(document).ready(function(){})-------------------------------------
+
+// 모달창에 입력한 input 태그 value 값 초기화 시키기
+function func_form_reset_empty() {  // 비밀번호 입력란에 있는 값 비워주는 메소드
+	document.querySelector("form[name='pwdChangeFrm']").reset();  // 해당 form 태그 초기화시키기
+	$(".error").hide();
+	$("#pwdalert").css("color","#666666");
+}
+
+
+// 비밀번호 변경하기
+function changePwd(){
+	//비밀번호 유효성 검사하기
+	const pwdReg = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/
+	const pwd = $("#passwd").val().trim();
+	if(!pwdReg.test(pwd)){
+		$("#passwd").focus();
+		$("#pwdalert").css("color","#4285f4");
+		return;
+	} else {
+		$("#pwdalert").css("color","#666666");
 	}
+	
+	//비밀번호 확인값이 같은지 확인하기
+	const pwdchx = $("#passwdChx").val().trim();
+	if(pwd != pwdchx){
+		$("#passwdChx").focus();
+		$(".pwdchxAlert").show();
+		return;
+	} else {
+		$(".pwdchxAlert").hide();
+	}
+	
+	
+	// 비밀번호 변경해주기
+	$.ajax({
+		url:"<%= ctxPath%>/pwdFindEnd.up",
+		type:"post",
+		data:$("#pwdChangeFrm").serialize(),
+		dataType:"json",
+		success:function(json){
+			if(json.n == 1){
+				alert("비밀번호가 변경되었습니다.");
+				parent.$("#userPwdFind").modal('hide');
+				parent.$("#iframe_pwdFind").attr("src","<%= request.getContextPath()%>/login/pwdFind.up"); // 초기화
+			}
+		}
+	});
+	
+	
+}//end changePwd
+
 
 </script>  
   
 </head>
 <body> 
-<form name="pwdChangeFrm">
+<form id="pwdChangeFrm" name="pwdChangeFrm">
 	<!-- Modal header -->
 	<!-- 
 	<button type="button" class="btn-close pwdFindClose" data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
@@ -166,32 +205,38 @@
     <h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
 	 -->
 	<ul style="list-style-type: none">
+	<!-- 
 	    <li style="margin: 10px 0 7px 0">
 	       <label for="password" style="display: inline-block; width: 90px; margin-left: 18px;">비밀번호</label>
-	       <input type="password" name="password" id="password" size="25" placeholder="임시 비밀번호 입력" autocomplete="off" required />  <!-- label 태그의 for값 == input 태그의 id값 -->
+	       <input type="password" name="password" id="password" size="25" placeholder="임시 비밀번호 입력" autocomplete="off" required />  label 태그의 for값 == input 태그의 id값
 		   <hr>
 	    </li>
+	     -->
 	    <li style="margin: 10px 0 6px 0;">
 	       <label for="password">새 비밀번호</label>
-	       <input type="password" class="newPassword" name="newPasswd" id="newPassword" size="25" placeholder="새 비밀번호" autocomplete="off" required />
+	       <input type="password" class="newPassword" name="passwd" id="passwd" size="25" placeholder="새 비밀번호" autocomplete="off" required />
+	       <div id="pwdalert" class="pwdAlert" style="font-size: 9pt; color: #666666; margin-left: 138px;">비밀번호는 8자~15자 영문,숫자,특수문자로 입력하세요.</div>
 	    </li>
 	    <li>
 	       <label for="password"></label>
-	       <input type="password" name="newPasswdCheck" id="newPasswordCheck" size="25" placeholder="새 비밀번호 확인" autocomplete="off" required />
+	       <input type="password" id="passwdChx" size="25" placeholder="새 비밀번호 확인" autocomplete="off" required />
+	       <div class="error pwdchxAlert" style="font-size: 9pt; color: #4285f4; margin-left: 138px;">암호가 일치하지 않습니다.</div>
 	    </li>
    </ul>
 
 	<div class="text-center">
-		<button type="button" class="btn btn-success" id="btnChange">변경하기</button>
+		<button type="button" class="btn btn-success" id="btnChange" onclick="changePwd()">변경하기</button>
     </div>
+    <input type="hidden" name="employee_no" value="${requestScope.employee_no}"/>
 </form>
-
+<!-- 
     <div class="pwdAlert" style="z-index: 9999;">
 		<i class="fas fa-check-circle" style="color: #8c8c8c; margin-right: 7px; font-size:8pt;"></i>
 		<span id="alertText" style="color: #cccccc;">8자~15자로 입력</span><br>
 		<i class="fas fa-check-circle" style="color: #8c8c8c; margin-right: 7px; font-size:8pt;"></i>
 		<span id="alertText" style="color: #cccccc;">영문,숫자,특수문자 각 1개 이상 사용</span>
 	</div>
+	 -->
 </body>
 </html>	
 	

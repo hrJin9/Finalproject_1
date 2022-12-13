@@ -227,23 +227,6 @@ function getExcelEmp(status){
 	frm.submit();
 	
 	$("#str_empnoArr").val("");
-	<%-- 
-	$.ajax({
-		url: "<%= ctxPath%>/getExcelEmp.up",
-		traditional: true,
-		data: {"empnoArr":empnoArr},
-		dataType:"json",
-		success:function(json){
-			
-			
-		},
-		error: function(request, status, error){
-			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		}
-		
-		
-	});	
-	 --%>
 	
 }//end of getExcelEmp
 
@@ -339,7 +322,7 @@ function getExcelEmp(status){
 		    	<thead>   
 		            <tr >
 		              <th><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th> 
-		              <th onclick="sortTable()" class="boardth" width="11%" scope="col" id="namearray"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
+		              <th class="boardth" width="11%" scope="col" id="namearray"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
 		              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
 						  <div id="department_name" class="dropdown-menu">
 					  			<a id="" class="dropdown-item" href="#">전체</a>

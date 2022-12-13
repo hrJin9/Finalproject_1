@@ -201,7 +201,7 @@
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-history"></span><span class="menu-text">로그관리</span></a></li>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_memberList.up'"><a><span class="icon icon-user-tie"></span><span class="menu-text">구성원관리</span></a></li>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_payroll.up'"><a><span class="icon icon-magic-wand"></span><span class="menu-text">급여정산</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_attendanceList_usage.up'"><a><span class="icon icon-briefcase"></span><span class="menu-text">근태관리</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_attendanceList_holding.up'"><a><span class="icon icon-briefcase"></span><span class="menu-text">근태관리</span></a></li>
      		</div>
       </ul> 
     </div>

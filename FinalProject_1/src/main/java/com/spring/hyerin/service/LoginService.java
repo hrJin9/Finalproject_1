@@ -23,4 +23,11 @@ public class LoginService implements InterLoginService {
 		EmployeeVO loginuser = dao.getLoginMember(paraMap);
 		return loginuser;
 	}
+	
+	// 패스워드 바꿔주기
+	@Override
+	public int ChangePwd(EmployeeVO evo) {
+		int n = dao.changePwd(evo);
+		return n;
+	}
 }

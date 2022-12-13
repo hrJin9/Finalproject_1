@@ -38,6 +38,7 @@ public class EmployeeVO {
 	private String age;
 	private String workinghour;
 	private String employmenttype;
+	private String useCnt;
 	
 	
 	
@@ -374,13 +375,23 @@ public class EmployeeVO {
 	}
 
 
-	public String getemploymenttype() {
+	public String getEmploymenttype() {
 		return employmenttype;
 	}
 
 
-	public void setemploymenttype(String employmenttype) {
+	public void setEmploymenttype(String employmenttype) {
 		this.employmenttype = employmenttype;
+	}
+
+
+	public String getUseCnt() {
+		return useCnt;
+	}
+
+
+	public void setUseCnt(String useCnt) {
+		this.useCnt = useCnt;
 	}
 	
 	
