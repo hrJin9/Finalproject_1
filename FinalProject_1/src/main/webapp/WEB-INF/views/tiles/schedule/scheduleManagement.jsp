@@ -750,9 +750,28 @@ function delCalendar(smcatgono, smcatgoname){ // smcatgono => 캘린더 소분�
 			<div id="myCal" class="accordion-collapse collapse show" style="margin-left: 50px; margin-bottom: 10px;"></div>  
 		</div>
 		
-		 
 		
-		<input type="checkbox" id="allComCal" class="calendar_checkbox" checked/>&nbsp;&nbsp;<label for="allComCal">사내 캘린더</label>
+		<div class="calendar-side">      
+			 	  	        
+			<div class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#companyCal" style="width: 88%; text-align: inherit; margin-left: 18px;">  
+				<input type="checkbox" id="allComCal" class="calendar_checkbox" checked/>&nbsp;&nbsp;<label for="allComCal">사내 캘린더</label> 
+			</div>  
+			 
+			 <%-- 사내 캘린더를 보여주는 곳 --%>
+			<div id="companyCal" class="accordion-collapse collapse" style="margin-left: 50px; margin-bottom: 10px;"></div>
+		</div>
+		
+		  
+		<div class="calendar-side">        
+			 	  	        
+			<div class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#shareCal" style="width: 88%; text-align: inherit; margin-left: 18px;">  
+				<input type="checkbox" id="sharedCal" class="calendar_checkbox" value="0" checked/>&nbsp;&nbsp;<label for="sharedCal">공유받은 캘린더</label>
+			</div>  
+			 
+			 <%-- 공유받은 캘린더를 보여주는 곳 --%>
+			<div id="shareCal" class="accordion-collapse collapse" style="margin-left: 50px; margin-bottom: 10px;"></div>
+		</div>
+		
 	
 	<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.  	
 	     <c:if test="${sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }"> --%>
@@ -761,11 +780,10 @@ function delCalendar(smcatgono, smcatgoname){ // smcatgono => 캘린더 소분�
 		 </c:if> 
 	<%-- </c:if>	--%>  
 	    
-	    <%-- 사내 캘린더를 보여주는 곳 --%>
-		<div id="companyCal" style="margin-left: 50px; margin-bottom: 10px;"></div>
+	   
 		
 
-		<input type="checkbox" id="sharedCal" class="calendar_checkbox" value="0" checked/>&nbsp;&nbsp;<label for="sharedCal">공유받은 캘린더</label> 
+		
 	</div>
 	 
 	
