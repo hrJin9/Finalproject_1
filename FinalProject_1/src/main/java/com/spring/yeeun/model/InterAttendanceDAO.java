@@ -32,21 +32,23 @@ public interface InterAttendanceDAO {
 	
 	
 	//** 휴가 페이지 **//
-	// 휴가 개요 보여주기
+	// 잔여연차 구하기
+	EmployeeVO getempvo(String fk_employee_no);
+		
+	// 휴가 개요 보여주기 (+ 연차 상세)
 	//List<DayoffVO> dayoffListView();
 	List<DayoffVO> dayoffListView(String fk_employee_no);
 
-	// 잔여연차 구하기
-	EmployeeVO getempvo(String fk_employee_no);
-	
-	// 년도별 휴가 개용 보여주기
+	// 년도별 휴가 개요 보여주기
 	List<DayoffVO> dayoffListViewByYear(Map<String, String> paraMap);
+
 
 	
 	// 매월 연차 +1 스프링 스케줄러
-	List<DayoffVO> dayoffAddScheduler(DayoffVO dayoffvo);
-
+	int addDayoff();
 	
+	// 년도별 연차 상세 보여주기
+	List<DayoffVO> dayoffDetailViewByYear(Map<String, String> paraMap);
 
 
 

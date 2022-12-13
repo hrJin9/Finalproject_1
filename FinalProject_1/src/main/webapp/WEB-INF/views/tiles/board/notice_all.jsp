@@ -22,6 +22,7 @@
 	}
 }
 
+
 /* === 게시글목록 테이블 css === */
 .table thead th {
 	padding-top: 0;
@@ -136,7 +137,6 @@ input {
      left: 0%;
   margin-right: 14px;
 }
-
 
 
 /* ===  옵션창  === */
@@ -318,20 +318,20 @@ div.datebox > span > input {
 	display:none;
 }
 /* 댓글아이콘 */
-/* #iconbubble{
+#iconbubble{
 	color:#4c4e54;
 	padding:0 auto;
 	font-size: 10pt;
 	position: relative; 
 	left:15px;
 	top:3px;"
-} */
-/* 댓글갯수 */
-/* #bubblecnt{
+}
+/* 댓글깻수 */
+#bubblecnt{
 	position: relative; 
 	left:8px;
 	top:2px;
-} */
+}
 /* 파일첨부 아이콘 */
 #iconattachment{
 	color:#4c4e54;
@@ -411,6 +411,7 @@ div.datebox > span > input {
 	padding: 0;
 }
 
+
 /* 내게시물 */
 .groupIcon {
 	border: 1px solid #f7f7f7;
@@ -427,7 +428,7 @@ div.datebox > span > input {
 	left: 121.5%;
 	font-size: 9pt; 
 	background-color: #f7f7f7;
-}  	 	
+} 	
 
 .menu {
 	position: absolute;
@@ -695,20 +696,37 @@ li::marker {
 	width: 53%;
 }
 
+/* 알림창  */
+div#alert {
+    display: none;
+    width: 273px;
+    height: 35px;
+    background-color: #4d4d4d;
+    color: white;
+    font-weight: bold;
+    font-size: 10pt;
+    border-radius: 2em;
+    padding-left: 32px;
+    position: fixed;
+    top: 15px;
+    right: 38%;
+    box-shadow: 1px 1px 1px 1.3px rgb(0 0 0 / 20%);
+}
+
 </style>
 
 <script type="text/javascript">
 
-$(document).ready(function(){
-	$(".search-period-wr").hide();
-	$("div#ntRplAnon").hide();
-	$("a#notice").addClass('list_iscurrent');
-	$("#date_total").prop("checked", true);
-	
-	/* 북마크 표시 */
-	  $('.bookmark').click(function(e) {
+	$(document).ready(function(){
+		$(".search-period-wr").hide();
+		$("div#ntRplAnon").hide();
+		$("a#notice").addClass('list_iscurrent');
+		$("#date_total").prop("checked", true);
+		
+		/* 북마크 표시 */
+		$('.bookmark').click(function(e) {
 		  	const $this = $(this);
-
+		
 		  	if ( $this.hasClass('icon-star-empty') ) {
 		  		$this.removeClass('icon-star-empty');
 		  		$this.addClass('icon-star-full');
@@ -717,52 +735,26 @@ $(document).ready(function(){
 		  		$this.addClass('icon-star-empty');
 		  	}
 		  	/* e.preventDefault(); */
-	});
-	  
-	
-	/* 게시물뷰 링크 이동 */
-	 $('.titlefirst').click(function() {
+		});
+		  
 		
-	});
-	
-	//offcanvas
- 	$("a#writebtn").click(function(e){
- 		$('.offcanvas').offcanvas('show');
- 	});
-	 	
-	
-	
- 	<%-- 텍스트 에디터 시작 --%>
-	/* const editor = new toastui.Editor({
-	    el: document.querySelector("#editor"),
-	    height: "500px",
-	    initialEditType: "wysiwyg",
-	    hooks: {
-	      addImageBlobHook: function (blob, callback) {
-	        const formData = new FormData();
-	        formData.append("image", blob);
-	        const imageURL = imageUpload(formData);
-	        // console.log(imageURL);
-	        callback(imageURL, "image");
-	      },
-	    },
-	    language: 'ko-KR'
-	 }); */
-	 const { Editor } = toastui; 
-	 const { colorSyntax } = Editor.plugin;
-	 
-	 /* const colorSyntaxOptions = {
-			 preset: ['#181818', '#292929', '#393939']
-	 }; */
-
-	const editor = new Editor({
-	      el: document.querySelector('#editor'),
-	      height: '500px',
-	      initialEditType:"wysiwyg",
-	      previewStyle: 'vertical',
-	      plugins: [colorSyntax],
-	      /* language: "ko-KR", */
-	      hooks: {
+		/* 게시물뷰 링크 이동 */
+		 $('.titlefirst').click(function() {
+			
+		});
+		
+		// offcanvas
+	 	$("a#writebtn").click(function(e){
+	 		$('.offcanvas').offcanvas('show');
+	 	});
+		 	
+		
+	 	<%-- 텍스트 에디터 시작 --%>
+		/* const editor = new toastui.Editor({
+		    el: document.querySelector("#editor"),
+		    height: "500px",
+		    initialEditType: "wysiwyg",
+		    hooks: {
 		      addImageBlobHook: function (blob, callback) {
 		        const formData = new FormData();
 		        formData.append("image", blob);
@@ -770,252 +762,330 @@ $(document).ready(function(){
 		        // console.log(imageURL);
 		        callback(imageURL, "image");
 		      },
-		    } 
+		    },
+		    language: 'ko-KR'
+		 }); */
+		 const { Editor } = toastui; 
+		 const { colorSyntax } = Editor.plugin;
+		 
+		 /* const colorSyntaxOptions = {
+				 preset: ['#181818', '#292929', '#393939']
+		 }; */
+	
+		const editor = new Editor({
+		      el: document.querySelector('#editor'),
+		      height: '500px',
+		      initialEditType:"wysiwyg",
+		      previewStyle: 'vertical',
+		      plugins: [colorSyntax],
+		      /* language: "ko-KR", */
+		      hooks: {
+			      addImageBlobHook: function (blob, callback) {
+			        const formData = new FormData();
+			        formData.append("image", blob);
+			        const imageURL = imageUpload(formData);
+			        // console.log(imageURL);
+			        callback(imageURL, "image");
+			      },
+			    } 
+		    });
+	     
+		<%-- 텍스트 에디터 끝 --%>
+		
+		
+		// 글쓰기 저장하기 버튼
+		$("button#btnWrite").click(function(){
+	         
+	         // 글제목 유효성 검사
+	         const subject = $("input#title").val().trim();
+	         if(subject == "") {
+	            alert("글제목을 입력하세요.");
+	            return; // 종료
+	         }
+	      
+	      <%-- === 글내용 유효성 검사(스마트 에디터 사용 할 경우) 시작 === --%>
+	         var contentval = $("div#editor").val();
+	              
+	         // 글내용 유효성 검사 하기 
+	         // alert(contentval); // content에  공백만 여러개를 입력하여 쓰기할 경우 알아보는것.
+	         // <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p> 이라고 나온다.
+	         
+	         contentval = contentval.replace(/&nbsp;/gi, ""); // 공백을 "" 으로 변환
+		     /*    
+	                          대상문자열.replace(/찾을 문자열/gi, "변경할 문자열");
+	              ==> 여기서 꼭 알아야 될 점은 나누기(/)표시안에 넣는 찾을 문자열의 따옴표는 없어야 한다는 점입니다. 
+	                          그리고 뒤의 gi는 다음을 의미합니다.
+	      
+	             g : 전체 모든 문자열을 변경 global
+	             i : 영문 대소문자를 무시, 모두 일치하는 패턴 검색 ignore
+		     */ 
+		      //   alert(contentval);
+		      //   <p>             </p>
+	         
+	         contentval = contentval.substring(contentval.indexOf("<p>")+3);   // "            </p>"  => index 3 부터 까지
+	         contentval = contentval.substring(0, contentval.indexOf("</p>")); // "            "
+	                  
+	         if(contentval.trim().length == 0) {
+	         	alert("글내용을 입력하세요.");
+	            return;
+	         }
+	       <%-- === 글내용 유효성 검사(스마트 에디터 사용 할 경우) 끝 === --%>
+	         
+	         // 폼(form)을 전송(submit)
+	         const frm = document.addFrm;
+	         frm.method = "POST";
+	         frm.action = "<%= ctxPath%>/addEnd.action";
+	         frm.submit();
+ 		});  
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/* 익명체크뜨게하기 */
+	    $("input#ntAlwReply").change(function(){
+	        if($("#ntAlwReply").is(":checked")) ntRplAnonDiv.style.display="block";
+	        else ntRplAnonDiv.style.display="none";
 	    });
-     
-	<%-- 텍스트 에디터 끝 --%>
+		
+	    
+	    <%-- 옵션창 날짜 직접입력 --%>
+	    $("input[name='period-type']").change(function(){
+	        if($("#date_select").is(":checked")){
+			    $(".search-period-wr").show();
+	        }else{
+	        	$(".search-period-wr").hide();
+	        }
+	    });
+		
+	  
+	    
+	    <%-- 카테고리 복수 선택 인풋태그에 보이도록하기 --%>
+	    $("input[name='category']").change(function(e){
+	    	const $target = $(e.target).val()
+	   		let inputval = $("input#ctgy").val()
 	
-	
-	
-	// 글쓰기 버튼
-    $("button#writecmt").click(function(){
-       
-       
-       // 폼(form)을 전송(submit)
-    });	  
-	
-	
-	
-	/* 익명체크뜨게하기 */
-    $("input#ntAlwReply").change(function(){
-        if($("#ntAlwReply").is(":checked")) ntRplAnonDiv.style.display="block";
-        else ntRplAnonDiv.style.display="none";
-    });
-	
-	
-	
-    
-    <%-- 옵션창 날짜 직접입력 --%>
-    $("input[name='period-type']").change(function(){
-        if($("#date_select").is(":checked")){
-		    $(".search-period-wr").show();
-        }else{
-        	$(".search-period-wr").hide();
-        }
-    });
-	
-  
-    
-    <%-- 카테고리 복수 선택 인풋태그에 보이도록하기 --%>
-    $("input[name='category']").change(function(e){
-    	const $target = $(e.target).val()
-   		let inputval = $("input#ctgy").val()
-
-   		if($(this).is(":checked")){// 체크했다면 
-	    	if($("input#ctgy").val() != ""){ // 체크된게 있다면 
-	    		inputval += ","+ $target;
-	    		$("input#ctgy").val(inputval);
-	    	}
-	    	else{ // 체크된게 없다면
-		    	$("input#ctgy").val($target);
-	    	}
-        }else{// 체크해지했다면
-        	if($target == inputval){//하나밖에 없다면  
-        		$("input#ctgy").val("");
-        	}
-        	else{// 여러개 있다면 
-	        	let arrval = [];
-	        	arrval = inputval.split(",");
-	        	for(let i=0; i<arrval.length; i++){
-	        		if(arrval[i]==$target){
-	        			arrval.splice(i,1);
-	        			break;
-	        		}
+	   		if($(this).is(":checked")){// 체크했다면 
+		    	if($("input#ctgy").val() != ""){ // 체크된게 있다면 
+		    		inputval += ","+ $target;
+		    		$("input#ctgy").val(inputval);
+		    	}
+		    	else{ // 체크된게 없다면
+			    	$("input#ctgy").val($target);
+		    	}
+	        }else{// 체크해지했다면
+	        	if($target == inputval){//하나밖에 없다면  
+	        		$("input#ctgy").val("");
 	        	}
-	        	inputval = arrval.toString();
-	        	$("input#ctgy").val(inputval);
-        		
-        	}
-        }
-    });
-	
-    
- // 플랫피커
- 	flatpickr.localize(flatpickr.l10ns.ko);
- 	flatpickr($(".dateSelector"));
-	$(".dateSelector").flatpickr({
-		dateFormat: "Y-m-d",
-		defaultDate: new Date(),
-		local: 'ko'
-	});
-	
-	
-	
-	// 초기화 버튼 누르면 옵션 값들 비우기 
-	$("button#optionreset").click(function(){
-		$("#ctgy").val("");
-		$("#writer").val("");
-		$("#date_total").prop("checked", true);
+	        	else{// 여러개 있다면 
+		        	let arrval = [];
+		        	arrval = inputval.split(",");
+		        	for(let i=0; i<arrval.length; i++){
+		        		if(arrval[i]==$target){
+		        			arrval.splice(i,1);
+		        			break;
+		        		}
+		        	}
+		        	inputval = arrval.toString();
+		        	$("input#ctgy").val(inputval);
+	        		
+	        	}
+	        }
+	    });
 		
-		$("input[name='category']").each(function() {
-			if(this.checked)
-				this.checked = false;
-        });
-	});
-	
-	
-	//툴팁 사용
-	var tooltipel = $(".tp").tooltip();
-	
-	// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
-	$("input#burger-check").change(function(){
-	    if($("#burger-check").is(":checked")){
-	        $(".table").css({'width':'62%','margin-top':'32px'});
-	        // $(".table th:nth-child(2)").attr("width","8%");
-	        $(".myscrap").css({'position':'relative', 'top':'31.5px', 'right':''});
-	        $(".table th:nth-child(1)").css({'width':'6%'});
-	        $(".table th:nth-child(3)").attr("width","14%");
-	        $(".nb-info").css("width", "96%");
-	        $(".myscrap").fadeIn(100);
-	        
-	    } else{
-	        $(".table").css({'width':'100%','margin-top':''});
-	        // $(".table th:nth-child(2)").attr("width","6%");
-	        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
-	        $(".table th:nth-child(1)").css({'width':''});
-	        $(".table th:nth-child(3)").attr("width","6%");
-	        $(".nb-info").css("width", "53%");
-	        $(".myscrap").fadeOut(100);
-	    }
-	});  
-	
-	
-	// 별 북마크표시
-	$(".check-star").click(function(){
-		const itag = $(this).find("i");
-		if ( itag.hasClass('icon-star-empty') ) {
-			itag.removeClass('icon-star-empty');
-			itag.addClass('icon-star-full');
-			itag.css({"color":"#ffc107","transition":"all .2s"});  	
-		} else {
-	  		itag.removeClass('icon-star-full');
-	  		itag.addClass('icon-star-empty');
-	  		itag.css({"color":"","transition":"all .2s"});  
-	  	}
-	});
-	
-	// 체크박스 개수
-	var total = $("input[name='ms-check']").length;
-	// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
-	$("#ms-checkall").change(function(){
-		const itag = $("input[name='ms-check']").next().find("i");
+	    
+	 // 플랫피커
+	 	flatpickr.localize(flatpickr.l10ns.ko);
+	 	flatpickr($(".dateSelector"));
+		$(".dateSelector").flatpickr({
+			dateFormat: "Y-m-d",
+			defaultDate: new Date(),
+			local: 'ko'
+		});
 		
-		if($("#ms-checkall").is(":checked")){
-			$("input[name='ms-check']").prop("checked",true);
-			ms_check(itag); ms_check($(this).next().find("i"));
-			show_checkmenu();
-			$("#check_ctn").text(total);
+		
+		
+		// 초기화 버튼 누르면 옵션 값들 비우기 
+		$("button#optionreset").click(function(){
+			$("#ctgy").val("");
+			$("#writer").val("");
+			$("#date_total").prop("checked", true);
 			
-		} else {
-			$("input[name='ms-check']").prop("checked",false);
-			ms_uncheck(itag); ms_uncheck($(this).next().find("i"));
-			show_noncheckmenu();
-		}
-	});
-	
-	$("input[name='ms-check']").change(function(e) {
-		const itag = $(e.target).next().find("i");
-		var checked = $("input[name='ms-check']:checked").length;
+			$("input[name='category']").each(function() {
+				if(this.checked)
+					this.checked = false;
+	        });
+		})
 		
-		ms_check(itag);
-		show_checkmenu();
-		if(!$(e.target).is(":checked")){
-			ms_uncheck(itag);
-		}		
+		//툴팁 사용
+		var tooltipel = $(".tp").tooltip();
 		
-		if(checked<=0)
-			show_noncheckmenu();
-		$("#check_ctn").text(checked);
+		// 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기
+		$("input#burger-check").change(function(){
+		    if($("#burger-check").is(":checked")){
+		        $(".table").css({'width':'62%','margin-top':'32px'});
+		        // $(".table th:nth-child(2)").attr("width","8%");
+		        $(".myscrap").css({'position':'relative', 'top':'31.5px', 'right':''});
+		        $(".table th:nth-child(1)").css({'width':'6%'});
+		        $(".table th:nth-child(3)").attr("width","14%");
+		        $(".nb-info").css("width", "96%");
+		        $(".myscrap").fadeIn(100);
+		        
+		    } else{
+		        $(".table").css({'width':'100%','margin-top':''});
+		        // $(".table th:nth-child(2)").attr("width","6%");
+		        $(".myscrap").css({'position':'relative', 'top':'', 'right':''});
+		        $(".table th:nth-child(1)").css({'width':''});
+		        $(".table th:nth-child(3)").attr("width","6%");
+		        $(".nb-info").css("width", "53%");
+		        $(".myscrap").fadeOut(100);
+		    }
+		});  
 		
-		if(total != checked){
-			$("#ms-checkall").prop("checked", false);
-			ms_uncheck($("#ms-checkall").next().find("i"));
-		} else {
-			$("#ms-checkall").prop("checked", true);
-			ms_check($("#ms-checkall").next().find("i"));
-		}
-	});
+		
+		// 별 북마크표시
+		$(".check-star").click(function(){
+			const itag = $(this).find("i");
+			if ( itag.hasClass('icon-star-empty') ) {
+				itag.removeClass('icon-star-empty');
+				itag.addClass('icon-star-full');
+				itag.css({"color":"#ffc107","transition":"all .2s"});  	
+			} else {
+		  		itag.removeClass('icon-star-full');
+		  		itag.addClass('icon-star-empty');
+		  		itag.css({"color":"","transition":"all .2s"});  
+		  	}
+		});
+		
+		// 체크박스 개수
+		var total = $("input[name='ms-check']").length;
+		// 체크박스 전체선택 기능 및 체크박스 선택시 메뉴 변경
+		$("#ms-checkall").change(function(){
+			const itag = $("input[name='ms-check']").next().find("i");
+			
+			if($("#ms-checkall").is(":checked")){
+				$("input[name='ms-check']").prop("checked",true);
+				ms_check(itag); ms_check($(this).next().find("i"));
+				show_checkmenu();
+				$("#check_ctn").text(total);
+				
+			} else {
+				$("input[name='ms-check']").prop("checked",false);
+				ms_uncheck(itag); ms_uncheck($(this).next().find("i"));
+				show_noncheckmenu();
+			}
+		});
+		
+		$("input[name='ms-check']").change(function(e) {
+			const itag = $(e.target).next().find("i");
+			var checked = $("input[name='ms-check']:checked").length;
+			
+			ms_check(itag);
+			show_checkmenu();
+			if(!$(e.target).is(":checked")){
+				ms_uncheck(itag);
+			}		
+			
+			if(checked<=0)
+				show_noncheckmenu();
+			$("#check_ctn").text(checked);
+			
+			if(total != checked){
+				$("#ms-checkall").prop("checked", false);
+				ms_uncheck($("#ms-checkall").next().find("i"));
+			} else {
+				$("#ms-checkall").prop("checked", true);
+				ms_check($("#ms-checkall").next().find("i"));
+			}
+		});
+		
+		
+	});//end of ready
 	
 	
-});//end of ready
-
-//체크박스  css변경 이벤트
-function ms_check(itag){
-	itag.removeClass("icon-checkbox-unchecked");
-	itag.addClass("icon-checkbox-checked");
-	itag.css({"color":"#37A652","transition":"all .2s"});
-}
-
-function ms_uncheck(itag){
-	itag.removeClass("icon-checkbox-checked");
-	itag.addClass("icon-checkbox-unchecked");
-	itag.css({"color":"rgba(0,0,0,0.2)","transition":"all .2s"});  
-}
-
-//체크했을 때 보이는 메뉴
-function show_checkmenu(){
-	$(".mg-noncheckmenu").hide();
-	$(".mg-checkmenu").fadeIn("fast");
-}
-
-// 체크안할 때 보이는 메뉴
-function show_noncheckmenu(){
-	$(".mg-checkmenu").hide();
-	$(".mg-noncheckmenu").fadeIn("fast");
-}
-
-<%-- 카테고리 멀티 셀렉터 열리고 닫히고  --%>
-function multiSelect(value){
-	 if(value=="OPEN") categorydiv.style.visibility="visible";
-	 else categorydiv.style.visibility="hidden";
-}
-
-<%-- 옵션창 열리고 닫히고  --%>
-function optionForm(value){
-	 if(value=="OPEN") option.style.visibility="visible";
-	 else option.style.visibility="hidden";
-}
-
-
-//태그 직접입력을 선택했을경우 
-function changetagname(obj){
-	$("span.error").hide();
-	let html1 = "";
-	let html2 = "";
-	if(obj.value !="plus"){
-		$("div.existhide").hide();
-		$("div#divPlusTag1").html("");
-		$("div#divPlusTag2").html("");
+	//체크박스  css변경 이벤트
+	function ms_check(itag){
+		itag.removeClass("icon-checkbox-unchecked");
+		itag.addClass("icon-checkbox-checked");
+		itag.css({"color":"#37A652","transition":"all .2s"});
 	}
-	else{
-		$("div.existhide").show();
-		html1 += '<label for="tagname" class="control-label">태그명</label>';
-		html2 += '<input type="text" class="form-control" name="tagname" id="tagname" placeholder="태그명을 입력해주세요" >';
-		$("div#divPlusTag1").html(html1);
-		$("div#divPlusTag2").html(html2);
-	}
-};
-
-function goSearch(){
 	
-}
+	function ms_uncheck(itag){
+		itag.removeClass("icon-checkbox-checked");
+		itag.addClass("icon-checkbox-unchecked");
+		itag.css({"color":"rgba(0,0,0,0.2)","transition":"all .2s"});  
+	}
+	
+	//체크했을 때 보이는 메뉴
+	function show_checkmenu(){
+		$(".mg-noncheckmenu").hide();
+		$(".mg-checkmenu").fadeIn("fast");
+	}
+	
+	// 체크안할 때 보이는 메뉴
+	function show_noncheckmenu(){
+		$(".mg-checkmenu").hide();
+		$(".mg-noncheckmenu").fadeIn("fast");
+	}
+	<%-- 카테고리 멀티 셀렉터 열리고 닫히고  --%>
+	function multiSelect(value){
+		 if(value=="OPEN") categorydiv.style.visibility="visible";
+		 else categorydiv.style.visibility="hidden";
+	}
+	
+	<%-- 옵션창 열리고 닫히고  --%>
+	function optionForm(value){
+		 if(value=="OPEN") option.style.visibility="visible";
+		 else option.style.visibility="hidden";
+	}
+	
+	
+	//태그 직접입력을 선택했을경우 
+	function changetagname(obj){
+		$("span.error").hide();
+		let html1 = "";
+		let html2 = "";
+		if(obj.value !="plus"){
+			$("div.existhide").hide();
+			$("div#divPlusTag1").html("");
+			$("div#divPlusTag2").html("");
+		}
+		else{
+			$("div.existhide").show();
+			html1 += '<label for="tagname" class="control-label">태그명</label>';
+			html2 += '<input type="text" class="form-control" name="tagname" id="tagname" placeholder="태그명을 입력해주세요" >';
+			$("div#divPlusTag1").html(html1);
+			$("div#divPlusTag2").html(html2);
+		}
+	};
+	
+	<%-- //Function Declaration
+	function goView(seq) {
+		location.href="<%= request.getContextPath()%>/view.action?seq="+seq;
+	}// end of function goView(seq)-------------------
+	
+	
+	function goSearch() { // 검색하는 함수 호출
+		const frm = document.searchFrm;
+		frm.method = "GET";  // 검색하는 것은 굳이 "POST" 방식을 쓸 필요가 없다.
+		frm.action = "<%= ctxPath%>/list.action";
+		frm.submit();
+	}// end of function goSearch()-------------------
+	 --%>
 
 </script>
 <div class="container mt-5">
 	<div class="row">
       <div class="table-responsive" style="width: 100%; overflow-y: hidden;">
       	 
-          <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
+           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
 			<div class="row" style="float: right;position: relative;left: -121px;" >
 			
 				<%-- 검색 --%>
@@ -1034,7 +1104,6 @@ function goSearch(){
 				<div class="">
 					<div class="form-group">
 						<div class="form-field">
-							<!-- <div class="icon"><span class="fa fa-search"></span></div> --> 
 							<input type="text" class="form-control" placeholder="검색" style="width:135%; font-size: 9pt; padding:6px 12px;padding-left: 45px; position: relative; left: 8%">
 						</div>
 					</div>
@@ -1090,7 +1159,7 @@ function goSearch(){
 													</td>
 													<td width="72%">
 														<div><span>글제목</span><span><i class="fas fa-paperclip"></i></span></div>
-														<div><span>관리자</span>·<span>마케팅</span></div>
+														<div><span>진혜린</span>&nbsp;<span>대리</span></div>
 													</td>
 													<td width="22%">
 														<div>2022.11.13</div>
@@ -1105,7 +1174,7 @@ function goSearch(){
 								</div>
 							</div>
 						</div>
-		            </div>
+		             </div>
 				  </div>
 			</div>
 		
@@ -1217,272 +1286,246 @@ function goSearch(){
    </div>
 </form>
 
-	
-        <table class="table" style="height: 400px;">
-          <thead>
-            <tr>
-              <th width="4%" scope="col"/>
-              <th width="83%"scope="col"/>
-              <th width="6%"scope="col"/>
-            </tr>
-          </thead>
-          <tbody>
-          	<tr class="topnotice"><!-- 공지 상단에 고정 -->
-          	  <td>1</td>
-              <td>
-              	<div class="titlefirst"> 
-	              	<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
-	              	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[코로나 문진표] 11/15일자 결과 공유</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div class="nb-info">
-              		<div style="display: inline-block; width: 11%;">
-              			<span class="categorybadge">일반</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="username">관리자</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="writedate">2022.11.16</span>
-              		</div>
-              		<div style="display: inline-block; width: 30%;"> 
-              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
-              		</div>
-              	</div>			
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr class="topnotice">
-              <td>2</td>
-              <td>
-              	<div class="titlefirst">
-              		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
-              		<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div class="nb-info">
-              		<div style="display: inline-block; width: 11%;">
-              			<span class="categorybadge">일반</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="username">관리자</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="writedate">2022.11.16</span>
-              		</div>
-              		<div style="display: inline-block; width: 30%;"> 
-              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
-              		</div>
-              	</div>					
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            
-            <tr class="topnotice">
-               <td>3</td>
-               <td>
-              	<div class="titlefirst">
-              		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
-              		<span class="title">[떰접식당 이용정책 변경안내]</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              	</div>  
-              	<div class="nb-info">
-              		<div style="display: inline-block; width: 11%;">
-              			<span class="categorybadge">인사</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="username">관리자</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="writedate">2022.11.16</span>
-              		</div>
-              		<div style="display: inline-block; width: 30%;"> 
-              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
-              		</div>
-              	</div>					
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr>
-               <td>4</td>
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">[그룹웨어] 알림기능 업데이트 안내</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-              	</div>  
-              	<div class="nb-info">
-              		<div style="display: inline-block; width: 11%;">
-              			<span class="categorybadge">경조사</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="username">관리자</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="writedate">2022.11.16</span>
-              		</div>
-              		<div style="display: inline-block; width: 30%;"> 
-              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
-              		</div>
-              	</div>		
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr >
-               <td>5</td>
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">[온라인 세미나] 11/25(금) 세미나 공지</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div>  
-              	<div class="nb-info">
-              		<div style="display: inline-block; width: 11%;">
-              			<span class="categorybadge">경조사</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="username">관리자</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="writedate">2022.11.16</span>
-              		</div>
-              		<div style="display: inline-block; width: 30%;"> 
-              			<span class="icon icon-bubble2" id="iconbubble" ></span><span id="bubblecnt">11</span>
-              		</div>
-              	</div>			
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            
-          </tbody>
-        </table>
-   		<h2 class="mt-3"style="text-align: center;">페이징처리</h2>	
 
+	<table class="table" style="height: 400px;">
+	<thead>
+	  <tr>
+	    <th width="4%" scope="col"/>
+	    <th width="83%"scope="col"/>
+	    <th width="6%"scope="col"/>
+	  </tr>
+	</thead>
+	<tbody>
+		<tr class="topnotice"><!-- 공지 상단에 고정 -->
+	  <td>1</td>
+	   <td>
+	   	<div class="titlefirst"> 
+	    	<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+	    	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[코로나 문진표] 11/15일자 결과 공유</span>
+	   		<span class="icon icon-attachment" id="iconattachment"></span> 
+	   	</div>  
+	   	<div class="nb-info">
+	   		<div style="display: inline-block; width: 11%;">
+	   			<span class="categorybadge">일반</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="username">관리자</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="writedate">2022.11.16</span>
+	   		</div>
+	   	</div>			
+	   </td>
+	   <td>
+	   	<a href="#" class="bookmark icon icon-star-empty"></a>
+	   </td>
+	 </tr>
+	 <tr class="topnotice">
+	   <td>2</td>
+	   <td>
+	   	<div class="titlefirst">
+	   		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+	   		<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
+	   		<span class="icon icon-attachment" id="iconattachment"></span> 
+	   	</div>  
+	   	<div class="nb-info">
+	   		<div style="display: inline-block; width: 11%;">
+	   			<span class="categorybadge">일반</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="username">관리자</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="writedate">2022.11.16</span>
+	   		</div>
+	   	</div>					
+	   </td>
+	   <td>
+	   	<a href="#" class="bookmark icon icon-star-empty"></a>
+	   </td>
+	 </tr>
+	 
+	 <tr class="topnotice">
+	    <td>3</td>
+	    <td>
+	   	<div class="titlefirst">
+	   		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+	   		<span class="title">[떰접식당 이용정책 변경안내]</span>
+	   		<span class="icon icon-attachment" id="iconattachment"></span> 
+	   		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
+	   	</div>  
+	   	<div class="nb-info">
+	   		<div style="display: inline-block; width: 11%;">
+	   			<span class="categorybadge">인사</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="username">관리자</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="writedate">2022.11.16</span>
+	   		</div>
+	   	</div>					
+	   </td>
+	   <td>
+	   	<a href="#" class="bookmark icon icon-star-empty"></a>
+	   </td>
+	 </tr>
+	 <tr>
+	    <td>4</td>
+	    <td>
+	   	<div class="titlefirst">
+	   		<span class="title">[그룹웨어] 알림기능 업데이트 안내</span>
+	   		<span class="icon icon-attachment" id="iconattachment"></span> 
+	   		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
+	   	</div>  
+	   	<div class="nb-info">
+	   		<div style="display: inline-block; width: 11%;">
+	   			<span class="categorybadge">경조사</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="username">관리자</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="writedate">2022.11.16</span>
+	   		</div>
+	   	</div>		
+	   </td>
+	   <td>
+	   	<a href="#" class="bookmark icon icon-star-empty"></a>
+	   </td>
+	 </tr>
+	 <tr >
+	    <td>5</td>
+	    <td>
+	   	<div class="titlefirst">
+	   		<span class="title">[온라인 세미나] 11/25(금) 세미나 공지</span>
+	   		<span class="icon icon-attachment" id="iconattachment"></span> 
+	   	</div>  
+	   	<div class="nb-info">
+	   		<div style="display: inline-block; width: 11%;">
+	   			<span class="categorybadge">경조사</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	   			<span class="username">관리자</span>
+	   		</div>
+	   		<div style="display: inline-block; width: 10%;">
+	         			<span class="writedate">2022.11.16</span>
+	         		</div>
+	         	</div>			
+	         </td>
+	         <td>
+	         	<a href="#" class="bookmark icon icon-star-empty"></a>
+	         </td>
+	       </tr>
+	       
+	     </tbody>
+	   </table>
+	<h2 class="mt-3"style="text-align: center;">페이징처리</h2>
      
 	</div>
 </div>
 </div>
 
 <!-- 오프캔버스 시작 -->
-		<div class="offcanvas offcanvas-end" style="width: 800px;" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-		  <div class="offcanvas-header">
-		    <div class="offcanvas-title headeroffcanvas" style="font-weight: 700;font-size: 16pt;"id="offcanvasScrollingLabel">공지사항</div>
-		    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		  </div>
-		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
-		  <div class="offcanvas-body">
-	    		
-    		<form>
-	    		<div class="d-flex-space mb-3">
-	    			<div class="mb-1">
-	    				<div class="dropdown bootstrap-select">
-	    					<div class="custom-control custom-checkbox" style="min-height: auto; padding-bottom: 5px;">
-	    						<input type="checkbox" class="checkbox-disable custom-control-input" id="ntPriority" name="ntPriority">
-	    						<label class="custom-control-label" for="ntPriority">이 글을 상단에 고정합니다</label>
-	    					</div>
-	    				</div>
-						<div class="d-flex-space mb-1">
-							<div class="dropdown bootstrap-select">
-								<div class="custom-control custom-checkbox" style="min-height: auto; padding-bottom: 5px;">
-									<input type="checkbox" class="checkbox-disable custom-control-input" id="ntAlwReply" name="ntAlwReply">
-									<label class="custom-control-label" for="ntAlwReply">이 글에 댓글달기를 허용합니다</label>
-								</div>
-							</div>
-						</div>
-						<div class="d-flex-space" id="ntRplAnonDiv">
-							<div class="dropdown bootstrap-select">
-								<div class="custom-control custom-checkbox" style="min-height: auto; padding-bottom: 5px;">
-									<input type="checkbox" class="checkbox-disable custom-control-input" id="ntRplAnon" name="ntRplAnon">
-									<label class="custom-control-label" for="ntRplAnon">이 글의 댓글은 익명으로 작성됩니다</label>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			
-			<!-- <hr class="HRhr  mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/> -->
-			<div class="form-group"style="width:30%">
-			
-				<div class="form-group mr-1  mb-2">
-					<div class="form-field">
-						<select name="selectTag" id="selectTag" class="mb-1" style="padding: 10px 13px; background-color: #fafafa;font-size: 14px;color: #484848;font-weight: 500;border-radius: 5px; border:1px solid #ced4da; font-size: 10pt;" onchange="changetagname(this)">
-							<option value="" selected>태그선택</option>
-							<option value="">전체공지</option>
-							<option value="">일반공지</option>
-							<option value="">사내공지</option>
-							<option value="">이벤트공지</option>
-							<option value="">문진표공유</option>
-							<option value="plus">태그추가</option>
-						</select>
-						</div>
-				</div>
-				  <div id="divPlusTag1"></div><!-- <span class="error">태그명을 입력해주세요</span> -->
-				  <div id="divPlusTag2"></div>
+<div class="offcanvas offcanvas-end" style="width: 800px;" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title headeroffcanvas" style="font-weight: 700;font-size: 16pt;"id="offcanvasScrollingLabel">공지사항</div>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
+  <div class="offcanvas-body">
+    		
+ 	<form>
+   		<div class="d-flex-space mb-3">
+   			<div class="mb-1">
+   				<div class="dropdown bootstrap-select">
+   					<div class="custom-control custom-checkbox" style="min-height: auto; padding-bottom: 5px;">
+   						<input type="checkbox" class="checkbox-disable custom-control-input" id="ntPriority" name="ntPriority">
+   						<label class="custom-control-label" for="ntPriority">이 글을 상단에 고정합니다</label>
+   					</div>
+   				</div>
 			</div>
-			
-			<div class="form-group" style="margin-top: 10px;">
-				<span class="control-label">제목</span>
-				<div class="position-relative">
-					<input type="text" id="title" class="form-control" title="" placeholder="제목을 입력해주세요" name="title" value="">
-				</div>
+		</div>
+		
+		<!-- <hr class="HRhr  mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/> -->
+		<div class="form-group"style="width:30%">
+		
+		<div class="form-group mr-1  mb-2">
+			<div class="form-field">
+				<select name="selectTag" id="selectTag" class="mb-1" style="padding: 10px 13px; background-color: #fafafa;font-size: 14px;color: #484848;font-weight: 500;border-radius: 5px; border:1px solid #ced4da; font-size: 10pt;" onchange="changetagname(this)">
+					<option value="" selected>태그선택</option>
+					<option value="">전체공지</option>
+					<option value="">일반공지</option>
+					<option value="">사내공지</option>
+					<option value="">이벤트공지</option>
+					<option value="">문진표공유</option>
+					<option value="plus">태그추가</option>
+				</select>
 			</div>
-			
-			
-			<div class="form-group" style="margin-top: 10px;">
-				<span class="control-label">내용</span>
-				<div class="position-relative mb-1">
-				      <div id="editor"></div>
-				</div>
+		</div>
+		    <div id="divPlusTag1"></div><!-- <span class="error">태그명을 입력해주세요</span> -->
+		    <div id="divPlusTag2"></div>
+		</div>
+		
+		<div class="form-group" style="margin-top: 10px;">
+			<span class="control-label">제목</span>
+			<div class="position-relative">
+				<input type="text" id="title" class="form-control" title="" placeholder="제목을 입력해주세요" name="title" value="">
 			</div>
-			<div class="form-group" style="margin-top: 10px;">
-				<span class="control-label">파일첨부</span><span style="color: #d8d8d8;font-size:9pt">파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요</span>
-				<div class="position-relative">
-					<input type="file" id="file" class="form-control"  name="file" >
-				</div>
+		</div>
+		
+		
+		<div class="form-group" style="margin-top: 10px;">
+			<span class="control-label">내용</span>
+			<div class="position-relative mb-1">
+			      <div id="editor"></div>
 			</div>
-	    	<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
-	    	
-	    	<!-- <div class="form-group" style="margin-top: 10px;">
-				<div class="control-label" style="float: left;">공개범위</div>
-	            <div class="condition-cell">
-	                <input type="radio" class="custom-control-radio2" id="entire" name="showrange">
-	                <label for="entire" class="js-period-type radio-label-checkbox2" data-code="unlimit">전체공개</label>
-	                <input type="radio" class="custom-control-radio2" id="dept" name="showrange">
-	                <label for="dept" class="js-period-type radio-label-checkbox2" data-code="unlimit">부서공개</label>
-	                <input type="radio" class="custom-control-radio2" id="manager" name="showrange">
-	                <label for="manager" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리자공개</label>
-				</div>
-			</div> -->
-	    	<div class="form-group" style="margin-top: 5px;">
-				<div class="control-label" style="float: left;">알림설정</div>
-	            <div class="condition-cell">
-	                <!-- <input type="radio" class="custom-control-radio2" id="mail" name="boardalarm">
-	                <label for="mail" class="js-period-type radio-label-checkbox2" data-code="unlimit">메일알림</label> -->
-	                <input type="radio" class="custom-control-radio2" id="popup" name="boardalarm">
-	                <label for="popup" class="js-period-type radio-label-checkbox2" data-code="unlimit">팝업알림</label>
-	                <input type="radio" class="custom-control-radio2" id="none" name="boardalarm">
-	                <label for="none" class="js-period-type radio-label-checkbox2" data-code="unlimit">미설정</label>
-				</div>
+		</div>
+		<div class="form-group" style="margin-top: 10px;">
+			<span class="control-label">파일첨부</span><span style="color: #d8d8d8;font-size:9pt">파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요</span>
+			<div class="position-relative">
+				<input type="file" id="file" class="form-control"  name="file" >
 			</div>
-    	</form>
-			
-    			<div class="workstatus-buttoncontainer">
-	  				<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
-		  			<!-- <button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button> -->
-		  			<button type="button" class="workstatus-save mr-1 gradientbtn">저장하기</button>
-		  			<button type="reset" class="workstatus-cancel mr-1">취소</button>
-	  			</div>
+		</div>
+    	<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
     	
-		  	</div>
-		  </div>
-		<!-- 오프캔버스 끝 -->
+    	<!-- <div class="form-group" style="margin-top: 10px;">
+			<div class="control-label" style="float: left;">공개범위</div>
+            <div class="condition-cell">
+                <input type="radio" class="custom-control-radio2" id="entire" name="showrange">
+                <label for="entire" class="js-period-type radio-label-checkbox2" data-code="unlimit">전체공개</label>
+                <input type="radio" class="custom-control-radio2" id="dept" name="showrange">
+                <label for="dept" class="js-period-type radio-label-checkbox2" data-code="unlimit">부서공개</label>
+                <input type="radio" class="custom-control-radio2" id="manager" name="showrange">
+                <label for="manager" class="js-period-type radio-label-checkbox2" data-code="unlimit">관리자공개</label>
+			</div>
+		</div> -->
+    	<div class="form-group" style="margin-top: 5px;">
+			<div class="control-label" style="float: left;">알림설정</div>
+            <div class="condition-cell">
+                <!-- <input type="radio" class="custom-control-radio2" id="mail" name="boardalarm">
+                <label for="mail" class="js-period-type radio-label-checkbox2" data-code="unlimit">메일알림</label> -->
+                <input type="radio" class="custom-control-radio2" id="popup" name="boardalarm">
+                <label for="popup" class="js-period-type radio-label-checkbox2" data-code="unlimit">팝업알림</label>
+                <input type="radio" class="custom-control-radio2" id="none" name="boardalarm">
+                <label for="none" class="js-period-type radio-label-checkbox2" data-code="unlimit">미설정</label>
+			</div>
+		</div>
+   	</form>
+		
+	<div class="workstatus-buttoncontainer">
+		<button type="button" class="workstatus-del"><i class="fa-solid fa-trash-can"></i></button>
+		<!-- <button type="button" class="workstatus-save mr-1"style="color:#dc3545; border: solid 1px rgba(0, 0, 0, 0.1); background-color: white;">임시저장<span style="color:#a3a3a3"> | 5</span></button> -->
+		<button type="button" class="workstatus-save mr-1 gradientbtn" id="btnWrite">저장하기</button>
+		<button type="reset" class="workstatus-cancel mr-1">취소</button>
+	</div>   			
+   	
+	</div>
+</div>
+<!-- 오프캔버스 끝 -->
+		
+<div id="alert">
+	<i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+	<span id="alertText" style="position: relative; bottom: 2px;"></span>
+</div>	
+		

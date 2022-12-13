@@ -313,57 +313,6 @@ where fk_employee_no = 100016 and seldate = '2022-12-09'
 order by startTime asc
 
 
----- 수정중
-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi') , 'yyyy-mm-dd hh24:mi')
-to_date(to_char(enddate,'yyyy-mm-dd hh24:mi') , 'yyyy-mm-dd hh24:mi')
-
-
-with B as
-(select
-     adno, fk_employee_no, adcatgo,
-     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
-     GREATEST(endTime) AS endTime
-     --substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
-     --substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
-     --ROUND((enddate-startdate)*24*60) AS total,
-     --trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
-     --trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
-from 
-(select adno, fk_employee_no, adcatgo, startTime, GREATEST(endTime, endTime) AS endTime,
-        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
-        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
- from tbl_attendance
- where fk_employee_no = 100016  and to_char(startTime, 'yyyy-mm-dd') = '2022-12-09'
- ) v)
-select adno, fk_employee_no, adcatgo, seldate, endTime
-from B
--- where fk_employee_no = 100016 and seldate = '2022-12-09'
-order by startTime asc
-
-
-select adno, fk_employee_no, adcatgo, startTime, endTime,
-       to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
-       to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
-from tbl_attendance
-where fk_employee_no = 100016  and to_char(startTime, 'yyyy-mm-dd') = '2022-12-06'
-
-
-
-
-
-
-
-
-
-
-SELECT  GREATEST( 1, 2, 3, 4, 5 )
-      , LEAST( SYSDATE, TO_DATE('2021-12-08', 'YYYYMMDD') )
-DAUL
-
-SELECT GREATEST(COL1, COL2, COL3) FROM TABLENAME;
-
-
-
 
 
 
@@ -411,7 +360,7 @@ from
             substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
             ROUND((to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')-to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi'))*24*60) AS total
       from tbl_attendance 
-      where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-10'
+      where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-09'
     ) V
     group by seldate 
 )b
@@ -471,26 +420,6 @@ FROM c;
 
 NVL(MAX(seldate), '0') AS seldate,
 
-
--- 전체 근무목록 보여주기
-with B as
-(select
-     adno, fk_employee_no, adcatgo,
-     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate,
-     substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 12) AS startTime, 
-     substr(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 12) AS endTime,
-     ROUND((enddate-startdate)*24*60) AS total,
-     trim(trunc(ROUND((enddate-startdate)*24*60) / 60)) AS workTime,
-     trim(trunc(mod(abs(ROUND((enddate-startdate)*24*60)), 60))) AS workMin
-from 
-(select adno, fk_employee_no, adcatgo, startTime, endTime,
-        to_date(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as startdate,  
-        to_date(to_char(endTime, 'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi') as enddate 
- from tbl_attendance) v)
-select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin, total
-from B
-where fk_employee_no = 100016 and seldate = '2022-12-05'
-order by startTime desc
 
 
 -- 전체 근무목록 보여주기(최종본)
@@ -568,6 +497,65 @@ where fk_employee_no = 100016 and seldate = '2022-12-09'
 order by startTime asc
 
 
+
+-- 최종1 수정본2
+select seldate, startTime, endTime
+from 
+(
+select seldate,
+       substr(to_char(min(startTime), 'yyyy-mm-dd hh24:mi'), 12) AS startTime,
+       substr(to_char(max(endTime), 'yyyy-mm-dd hh24:mi'), 12) AS endTime
+from
+(
+  select adno, fk_employee_no, startTime, endTime,
+        substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate
+  from tbl_attendance 
+  where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-09'    
+) V
+group by seldate
+)b
+
+-- 또는
+
+select seldate,
+       substr(to_char(min(startTime), 'yyyy-mm-dd hh24:mi'), 12) AS startTime,
+       substr(to_char(max(endTime), 'yyyy-mm-dd hh24:mi'), 12) AS endTime
+from
+(
+  select adno, fk_employee_no, startTime, endTime,
+        substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate
+  from tbl_attendance 
+  where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-09'    
+) V
+group by seldate 
+
+
+
+-- 최종1 수정본2(최최최종본!!! 이거!!!!!)
+select seldate,
+       startTime_t + startTime_m  AS startTime,
+       endTime_t + endTime_m  AS endTime
+from 
+(
+select seldate,
+       to_number(substr(to_char(min(startTime), 'yyyy-mm-dd hh24:mi'), 12, 2)) AS startTime_t,
+       to_number(round(substr(to_char(min(startTime), 'yyyy-mm-dd hh24:mi'), 15)/60, 1)) AS startTime_m,
+
+       to_number(substr(to_char(max(endTime), 'yyyy-mm-dd hh24:mi'), 12, 2)) AS endTime_t,
+       to_number(round(substr(to_char(max(endTime), 'yyyy-mm-dd hh24:mi'), 15)/60, 1)) AS endTime_m    
+from
+(
+  select adno, fk_employee_no, startTime, endTime,
+        substr(to_char(startTime, 'yyyy-mm-dd hh24:mi'), 0, 10) AS seldate
+  from tbl_attendance 
+  where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-14'    
+) V
+group by seldate
+)b
+
+
+
+
 -- 일주일치 총 근무시간 구하기
 with B as
 (select
@@ -590,21 +578,6 @@ where fk_employee_no = 100016 and seldate = '2022-12-09'
 
 
 
-
-
-
-
-
-
-
-and ROWNUM = 1 -- 한행만 추출
-
-
-
-
-
-
-
 MERGE INTO tbl_attendance -- 삽입/수정의 대상이 될 테이블
 USING DUAL -- 원본 데이터가 있는 테이블
    ON (adno == '' or adno == null)
@@ -618,7 +591,7 @@ select *
 from tbl_employee
 where employee_no = '100016';
 
-update tbl_employee set dayoff_cnt = 3  -- leess 계정의 로그인날짜를 21/08/19 로 변경함. -- add_months()의 숫자 단위는 개월수이다.
+update tbl_employee set dayoff_cnt = 3 
 where employee_no = '100016';
 commit;
 
@@ -802,9 +775,61 @@ select A.dono, A.fk_employee_no, A.fk_ano, A.docatgo, A.startdate, A.startday, A
        n+r as usedays
 FROM A JOIN B
 ON A.dono = B.dono
-where fk_employee_no = 100016 and substr(A.startdate, 0,4) = '2022' 
+where fk_employee_no = 100016 and substr(A.startdate, 0,4) = '2021' 
       and to_date(A.startdate,'yyyy-mm-dd') <= to_date(to_char(sysdate, 'yyyy-mm-dd'), 'yyyy-mm-dd')
 order by startdate desc
+
+
+-- 연습용
+select 
+  count(*) as count, 
+  to_char(to_date(appdate), 'YYYY-MM') as monthlydata,
+from
+  tbl_dayoff 
+where 1=1
+  and appdate>=202212 and appdate<202301
+group by to_char(to_date(appdate), 'YYYY-MM')
+order by monthlydata;
+
+
+
+SELECT 
+    TO_CHAR(purchased_at, 'yyyy-mm'),
+    user_idx,
+    COUNT(*)
+FROM tbl_dayoff
+GROUP BY 
+TO_CHAR(startdate, 'yyyy-mm'), 
+user_idx
+
+select dono, fk_ano, docatgo, startdate, enddate, startdate
+from tbl_dayoff
+where fk_employee_no = 100016 and substr(startdate, 0,4) = '2022' 
+
+
+-- 연습용 끝
+
+
+
+update tbl_employee set dayoff_cnt = dayoff_cnt+1
+where employee_no != 99
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ----
@@ -822,42 +847,80 @@ from B
 
 
 
-
-
 delete from tbl_dayoff;
 commit;
 
 -- 연차데이터
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-03 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-04 13:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-03 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-04 13:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-10-03 14:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-10-03 18:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-10-03 14:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-10-03 18:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-03 14:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-04 13:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-03 14:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-04 13:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-11-15 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-11-15 18:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-11-15 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-11-15 18:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-11-08 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-11-10 18:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-11-08 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-11-10 18:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-18 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-20 18:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-18 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-20 18:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-15 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-15 18:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-15 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-15 18:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2021-12-01 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2021-12-01 18:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2021-12-01 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2021-12-01 18:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2020-09-01 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2020-09-01 18:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2020-09-01 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2020-09-01 18:00', 'yyyy-mm-dd hh24:mi'));
 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
-values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-05 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-05 18:00', 'yyyy-mm-dd hh24:mi'))
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-05 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-05 18:00', 'yyyy-mm-dd hh24:mi'));
 
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-02-05 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-02-05 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-04-30 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-04-30 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-05-09 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-05-10 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-04-02 14:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-04-02 18:00', 'yyyy-mm-dd hh24:mi'));
+
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-07-20 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-07-22 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-08-05 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-08-05 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-09-15 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-09-15 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-09-16 14:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-09-16 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-11 14:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-11 18:00', 'yyyy-mm-dd hh24:mi'));
+
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2020-07-20 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2020-07-21 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2020-04-12 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2020-04-12 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2020-01-27 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2020-01-29 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2020-10-20 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2020-10-20 18:00', 'yyyy-mm-dd hh24:mi'));
 
 commit;
 -- 1 행 이(가) 삽입되었습니다.
@@ -869,7 +932,7 @@ select *
 from tbl_dayoff;
 
 delete from tbl_dayoff
-where dono='do-82'
+where dono='do-150';
 commit;
 
 -- to_char(sysdate, 'dy')    AS 줄인요일명
@@ -878,6 +941,18 @@ from dual;
 -- 목
 
 
+select employee_no, dayoff_cnt
+from tbl_employee
+where employee_no = 100016
+
+
+update tbl_employee set dayoff_cnt = dayoff_cnt-1
+where employee_no != 99;
+commit;
+
+
+update tbl_employee set dayoff_cnt = dayoff_cnt+1
+where employee_no != 99
 
 
 
@@ -888,6 +963,12 @@ from dual;
 
 
 
+
+
+-----------------------------------------------------------------------------------------
+게시판
+
+desc tbl_notice_board
 
 
 

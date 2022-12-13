@@ -1,6 +1,8 @@
 package com.spring.yeeun.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,15 +20,47 @@ public class BoardController {
 		return "board/view.tiles";
 	}
 	
+	/*
 	@RequestMapping(value = "/board/add.up")
 	public String add(HttpServletRequest request) {
 		return "board/add.tiles";
+	}	*/
+	
+	
+	// 게시판 목록 및 글쓰기
+	@RequestMapping(value = "/board_all.up")
+	public ModelAndView rl_board_all(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
+		mav.setViewName("board/notice_all.tiles"); 
+		return mav; 
 	}
 	
-	@RequestMapping(value = "/board_all.up")
-	public String board_all(HttpServletRequest request) {
-		return "board/notice_all.tiles";
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value = "/board_team.up")
 	public String board_team(HttpServletRequest request) {

@@ -77,12 +77,6 @@ public class AttendanceDAO implements InterAttendanceDAO {
 	
 	
 	
-	// 휴가 개요 보여주기
-	@Override
-	public List<DayoffVO> dayoffListView(String fk_employee_no) {
-		List<DayoffVO> dayoffList = sqlsession.selectList("attendance.dayoffListView", fk_employee_no);
-		return dayoffList;
-	}
 
 	// 잔여연차 구하기
 	@Override
@@ -91,21 +85,35 @@ public class AttendanceDAO implements InterAttendanceDAO {
 		return evo;
 	}
 	
-	// 년도별 휴가 개용 보여주기
+	// 휴가 개요 보여주기 (+ 연차 상세)
+	@Override
+	public List<DayoffVO> dayoffListView(String fk_employee_no) {
+		List<DayoffVO> dayoffList = sqlsession.selectList("attendance.dayoffListView", fk_employee_no);
+		return dayoffList;
+	}
+	
+	// 년도별 휴가 개요 보여주기
 	@Override
 	public List<DayoffVO> dayoffListViewByYear(Map<String, String> paraMap) {
 		List<DayoffVO> dayoffListbyYear = sqlsession.selectList("attendance.dayoffListViewByYear", paraMap);
 		return dayoffListbyYear;
 	}
 
-	// 매월 연차 +1 스프링 스케줄러 ==> 수정필요
+
+
+	// 매월 연차 +1 스프링 스케줄러
 	@Override
-	public List<DayoffVO> dayoffAddScheduler(DayoffVO dayoffvo) {
-		// TODO Auto-generated method stub
-		return null;
+	public int addDayoff() {
+		int n = sqlsession.update("attendance.addDayoff");
+		return n;
 	}
 
-	
+	// 년도별 연차 상세 보여주기
+	@Override
+	public List<DayoffVO> dayoffDetailViewByYear(Map<String, String> paraMap) {
+		List<DayoffVO> dayoffDetail = sqlsession.selectList("attendance.dayoffDetailViewByYear", paraMap);
+		return dayoffDetail;
+	}
 
 
 

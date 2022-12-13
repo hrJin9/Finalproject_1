@@ -72,11 +72,16 @@
 	    background: white;
 	    position: absolute;
 	    left: 18.85%;
-	    top: 26.7%;
+	    top: 26%;
 	}
      
 	#myChart {
-		height: 407.3px;
+		display: block;
+	    box-sizing: border-box;
+	    height: 418px;
+	    width: 977.6px;
+	    min-height: 418px;
+	    max-height: 418px;
 		width: 1121px !important;
 	}
 </style>
@@ -463,7 +468,7 @@
 		totaltimebyDay();  // 하루치 총 근무시간 구하기
 		totaltimebyWeek(); // 일주일치 총 근무시간 구하기
 			
-		// 총 근무시간 및 시작,종료시간 조회해오기
+		// 하루치 시작,종료시간 조회해오기
 		$.ajax({
 			url:"<%= request.getContextPath()%>/getworkTimebyDay.up",
 			traditional: true,
@@ -578,10 +583,6 @@
    			    );
    			    
    			    
-   			   // myChart.update();
-					
-   			    
-   			    
 			},
 			error: function(request, status, error){
 	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -603,7 +604,7 @@
 			async:false,
 			dataType:"JSON",  
 			success:function(json){ 
-				console.log("야아아아아아"+JSON.stringify(json));  // 배열타입도 모두 찍을 수 있다.
+				//console.log(JSON.stringify(json));  // 배열타입도 모두 찍을 수 있다.
 				
 				$(".date").each(function(index, item){  // 7번만큼 반복
 					//console.log("JSON.workTime : "+json[index].workTime);
@@ -648,7 +649,7 @@
 			success:function(json){ 
 				//console.log(JSON.stringify(json));  // 배열타입도 모두 찍을 수 있다.
 				//console.log("JSON.realtotal_per : "+json.realtotal_per);
-				
+
 				
 				// 막대바 색상변경
 				if(json.realtotal_per <= 77) {
