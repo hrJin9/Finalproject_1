@@ -12,7 +12,7 @@ public class DayoffVO {
 
 	private String startday;
 	private String endday;
-	private String usedays;
+	private String usedays;      //  연차사용개수
 	private String n;
 	private String r;
 	private String cnt;

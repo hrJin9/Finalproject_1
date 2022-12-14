@@ -301,4 +301,11 @@ public class MemberService implements InterMemberService {
 		return employee_no;
 	}
 	
+	//해당 정보의 사원 가져오기
+	@Override
+	public String getEmployeeInfo(EmployeeVO evo) {
+		String employee_no = dao.getEmployeeInfo(evo);
+		return employee_no;
+	}
+	
 }

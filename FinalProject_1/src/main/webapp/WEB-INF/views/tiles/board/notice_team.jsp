@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="board_header.jsp"%> 
+<%@ include file="noticeboard_header.jsp"%> 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 
@@ -20,7 +20,6 @@
       font-weight: 300;
 		}
 	}
-}
 
 
 /* === 게시글목록 테이블 css === */
@@ -82,8 +81,8 @@ table tr:hover {
     color: #484848;
 }
 
-#file{
-	font-size: 14px;
+#file, #mg-file {
+    font-size: 14px;
 }
 
 #title, #tagname {
@@ -1421,84 +1420,6 @@ function goSearch(){
               	<a href="#" class="bookmark icon icon-star-empty"></a>
               </td>
             </tr>
-            <tr >
-               <td>5</td>
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div> 
-              	<div class="nb-info">
-              		<div style="display: inline-block; width: 11%;">
-              			<span class="categorybadge">경조사</span>
-              		</div>
-              		<div style="display: inline-block; width: 16.5%;">
-              			<span class="username">진혜린&nbsp;사원</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="writedate">2022.11.16</span>
-              		</div>
-              		<div style="display: inline-block; width: 30%;"> 
-              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
-              		</div>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr >
-               <td>5</td>
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div> 
-              	<div class="nb-info">
-              		<div style="display: inline-block; width: 11%;">
-              			<span class="categorybadge">경조사</span>
-              		</div>
-              		<div style="display: inline-block; width: 16.5%;">
-              			<span class="username">진혜린&nbsp;사원</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="writedate">2022.11.16</span>
-              		</div>
-              		<div style="display: inline-block; width: 30%;"> 
-              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
-              		</div>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
-            <tr >
-               <td>5</td>
-               <td>
-              	<div class="titlefirst">
-              		<span class="title">[경조사] 김상후 사원 결혼소식</span>
-              		<span class="icon icon-attachment" id="iconattachment"></span> 
-              	</div> 
-              	<div class="nb-info">
-              		<div style="display: inline-block; width: 11%;">
-              			<span class="categorybadge">경조사</span>
-              		</div>
-              		<div style="display: inline-block; width: 16.5%;">
-              			<span class="username">진혜린&nbsp;사원</span>
-              		</div>
-              		<div style="display: inline-block; width: 10%;">
-              			<span class="writedate">2022.11.16</span>
-              		</div>
-              		<div style="display: inline-block; width: 30%;"> 
-              			<span class="icon icon-bubble2" id="iconbubble"></span><span id="bubblecnt">11</span>
-              		</div>
-              	</div>	
-              </td>
-              <td>
-              	<a href="#" class="bookmark icon icon-star-empty"></a>
-              </td>
-            </tr>
             
           </tbody>
         </table>
@@ -1518,7 +1439,7 @@ function goSearch(){
 		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 		  <div class="offcanvas-body">
 	    		
-    		<form>
+    		<form>  <!-- enctype="multipart/form-data" 를 해주어야만 파일첨부가 되어진다. -->
 	    		<div class="d-flex-space mb-3">
 	    			<div class="mb-1">
 	    				<div class="dropdown bootstrap-select">

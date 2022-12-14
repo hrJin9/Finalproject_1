@@ -19,6 +19,13 @@ public class LoginDAO implements InterLoginDAO {
 		return loginuser;
 	}
 	
+	// 패스워드 바꿔주기
+	@Override
+	public int changePwd(EmployeeVO evo) {
+		int n = sqlsession.update("member.changePwd",evo);
+		return n;
+	}
+	
 	
 	
 }

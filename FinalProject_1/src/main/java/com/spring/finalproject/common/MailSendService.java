@@ -74,6 +74,21 @@ public class MailSendService {
 		return Integer.toString(authNumber);
 	}
 	
+	//이메일 보낼 양식
+	public String findPwd(String email) {
+		makeRandomNumber();
+		String setFrom = "flexhyerin@gmail.com";
+		String toMail = email;
+		String title = "[Thumbs up] 비밀번호 찾기 인증 이메일입니다.";
+		String content = 
+				"<br><br>" + 
+						"비밀번호 찾기 인증 번호는  <span style='color:#4285f4; font-size: 15pt; font-weight: bold;'>" + authNumber + "</span>입니다." + 
+						"<br>" + 
+						"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+		mailSend(setFrom, toMail, title, content);
+		return Integer.toString(authNumber);
+	}
+	
 	
 	
 }

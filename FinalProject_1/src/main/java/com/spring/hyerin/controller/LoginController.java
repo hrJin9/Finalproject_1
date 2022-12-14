@@ -44,7 +44,7 @@ public class LoginController {
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put("userid", userid);
-		paraMap.put("pwd", Sha256.encrypt(passwd));
+		paraMap.put("passwd", Sha256.encrypt(passwd));
 		
 		// 로그인한 유저 알아보기
 		EmployeeVO loginuser = service.getLoginMember(paraMap);
@@ -65,6 +65,7 @@ public class LoginController {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginuser", loginuser);
 			session.setAttribute("dayoff_cnt", loginuser.getDayoff_cnt());
+			
 			
 			// 로그인하지 않고 접근한 경우
 			String goBackURL = (String) session.getAttribute("goBackURL");
@@ -110,8 +111,33 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/login/pwdFind_update.up")
-	public String pwdFind_update(HttpServletRequest request) {
-		return "login/pwdFind_update";
+	public ModelAndView pwdFind_update(HttpServletRequest request, ModelAndView mav) {
+		
+		String employee_no = request.getParameter("empno");
+		
+		mav.addObject("employee_no", employee_no);
+		mav.setViewName("login/pwdFind_update");
+		return mav;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/pwdFindEnd.up")
+	public String pwdFindEnd(HttpServletRequest request, EmployeeVO evo) {
+		
+		JSONObject jsonobj = new JSONObject();
+		evo.setPasswd(Sha256.encrypt(evo.getPasswd()));
+		
+//		System.out.println("Employee_no" + evo.getEmployee_no());
+//		System.out.println("Passwd" + evo.getPasswd());
+		
+		// 패스워드 바꿔주기
+		int n = service.ChangePwd(evo);
+		
+		
+		jsonobj.put("n", n);
+		
+		return jsonobj.toString();
+	}
+	
 	
 }

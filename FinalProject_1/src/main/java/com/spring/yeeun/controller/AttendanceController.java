@@ -1,6 +1,6 @@
 package com.spring.yeeun.controller;
 
-import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,8 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,13 +33,9 @@ public class AttendanceController {
 	@Autowired
 	private InterAttendanceService service;
 	
-	/*
-	@RequestMapping(value = "/attendance.up")
-	public ModelAndView rl_attendance(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
-		mav.setViewName("attendance/attendance.tiles"); 
-		return mav; 
-	}*/
 	
+	// ** 근무 ** //
+	// 근무 기본페이지
 	@RequestMapping(value = "/attendance.up")
 	public ModelAndView rl_attendance(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
 		mav.setViewName("attendance/attendance.tiles"); 
@@ -107,42 +101,6 @@ public class AttendanceController {
 		return jsonobj.toString();
 	}
 	
-	
-	// 총 근무시간 조회하기
-	/*
-	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
-	@RequestMapping(value="/getTotalTime.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
-	public String getTotalTime(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
-		
-		String seldate = request.getParameter("seldate"); // 선택한 날짜
-		
-		// 로그인된 유저의 employee_no 알아오기
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
-		String fk_employee_no = loginuser.getEmployee_no();
-		
-		String year = seldate.substring(0,4);
-		String month = seldate.substring(6,8);
-		String day = seldate.substring(10,12);
-		String selectdate = year+'-'+month+'-'+day;
-		
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("fk_employee_no", fk_employee_no);
-		paraMap.put("selectdate", selectdate);
-		
-		Map<String,String> totalTime = service.getTotalTime(paraMap);
-		
-		JSONObject jsonobj = new JSONObject();
-		jsonobj.put("seldate", totalTime.get("seldate"));
-		jsonobj.put("workTime", totalTime.get("workTime"));
-		jsonobj.put("workMin", totalTime.get("workMin"));
-		//System.out.println("seldate : "+ totalTime.get("seldate"));
-		//System.out.println("workTime : "+ totalTime.get("workTime"));
-		//System.out.println("workMin : "  + totalTime.get("workMin"));
-		
-		return jsonobj.toString();
-	}		
-	*/
 	
 	
 	// 저장한 근무상태 조회하기
@@ -254,13 +212,14 @@ public class AttendanceController {
 	
 	
 	
-	// 총 근무시간 및 시작,종료시간 조회해오기
+	
+	// 하루치 시작,종료시간 조회해오기
 	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
 	@RequestMapping(value="/getworkTimebyDay.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
 	public String getworkTimebyDay(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
 		
 		String[] thisWeekDate = request.getParameterValues("thisWeekDate"); // 이번주 날짜
-		//System.out.println("thisWeekDate >> "+thisWeekDate);
+		//System.out.println("thisWeekDate.length >> "+thisWeekDate.length);
 		
 		// 로그인된 유저의 employee_no 알아오기
 		HttpSession session = request.getSession();
@@ -269,67 +228,217 @@ public class AttendanceController {
 		
 		JSONArray jsonArr = new JSONArray();  // []
 		
-        int n = 0;
 		for (int i = 0; i < thisWeekDate.length; i++) {
 			Map<String, String> paraMap = new HashMap<String, String>();
 			String year = thisWeekDate[i].substring(0, 4);
 			String month = thisWeekDate[i].substring(6, 8);
 			String day = thisWeekDate[i].substring(10, 12);
-			
 			String thisWeekDay = year+'-'+month+'-'+day;
-			//System.out.println("thisWeekDay >>> "+thisWeekDay);
 			
 			paraMap.put("fk_employee_no", fk_employee_no);  
-	        paraMap.put("thisWeekDay", thisWeekDay); 
-	        
-	        List<AttendanceVO> workTimeList = service.getworkTimebyDay(paraMap);
-	        
-        	if(workTimeList != null) {
-        		int realtotal = 0;
-        							//9일에는 리스트사이즈가 5
-        		for (int j = 0; j < workTimeList.size(); j++) {
-        			
-        			JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
-        			jsonObj.put("adno", workTimeList.get(j).getAdno());
-        			jsonObj.put("fk_employee_no", workTimeList.get(j).getFk_employee_no());
-        			jsonObj.put("seldate", workTimeList.get(j).getSeldate());
-        			jsonObj.put("startTime", workTimeList.get(j).getStartTime());
-        			jsonObj.put("endTime", workTimeList.get(j).getEndTime());
-        			//jsonObj.put("workTime", workTimeList.get(j).getWorkTime());
-        			//jsonObj.put("workMin", workTimeList.get(j).getWorkMin());
-					jsonArr.put(jsonObj);
-					realtotal += Integer.parseInt(workTimeList.get(j).getTotalTime());
-					//System.out.println("seldate :" +workTimeList.get(j).getSeldate());
-					System.out.println("realtotal :" +realtotal);
+			paraMap.put("thisWeekDay", thisWeekDay); 
+			
+			List<AttendanceVO> workTimeList = service.getworkTimebyDay(paraMap);
+			
+			if(!workTimeList.isEmpty()) {
+				
+				for (int j = 0; j < workTimeList.size(); j++) {
+					JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+					jsonObj.put("seldate", workTimeList.get(j).getSeldate());
+					jsonObj.put("startTime", workTimeList.get(j).getStartTime());
+					jsonObj.put("endTime", workTimeList.get(j).getEndTime());
 					
-					if(workTimeList.size()-1 == j) {
-						int workTime = realtotal / 60;  // 몫
-						int workMin = realtotal % 60;   // 나머지
-						//System.out.println("workTime :" +workTime);
-						//System.out.println("workMin :" +workMin);
-						//System.out.println("realtotal :" +realtotal);
-						
-						jsonObj.put("workTime", workTime);
-						jsonObj.put("workMin", workMin);
-						jsonObj.put("totalTime", realtotal);
-					}
+					jsonArr.put(jsonObj);
 				}
-        		
-        	} else {
-        		JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
-    			jsonObj.put("adno", "null"); 
-    			jsonObj.put("fk_employee_no", "null"); 
-    			jsonObj.put("seldate", "null"); 
-    			jsonObj.put("startTime", "null"); 
-    			jsonObj.put("endTime", "null"); 
-    			jsonObj.put("workTime", "null"); 
-    			jsonObj.put("workMin", "null"); 
-    			jsonArr.put(jsonObj);
-        	}
+				
+			} else {
+				JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+				jsonObj.put("seldate", "null"); 
+				jsonObj.put("startTime", "null"); 
+				jsonObj.put("endTime", "null"); 
+				jsonArr.put(jsonObj);
+			}
 			
 		}
 		
 		return jsonArr.toString();
+	}		
+	
+	
+	/*
+	// 총 근무시간 및 시작,종료시간 조회해오기
+	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
+	@RequestMapping(value="/getworkTimebyDay.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
+	public String getworkTimebyDay(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+		
+		String[] thisWeekDate = request.getParameterValues("thisWeekDate"); // 이번주 날짜
+		//System.out.println("thisWeekDate.length >> "+thisWeekDate.length);
+		
+		// 로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		JSONArray jsonArr = new JSONArray();  // []
+		
+		for (int i = 0; i < thisWeekDate.length; i++) {
+			Map<String, String> paraMap = new HashMap<String, String>();
+			String year = thisWeekDate[i].substring(0, 4);
+			String month = thisWeekDate[i].substring(6, 8);
+			String day = thisWeekDate[i].substring(10, 12);
+			String thisWeekDay = year+'-'+month+'-'+day;
+			
+			paraMap.put("fk_employee_no", fk_employee_no);  
+			paraMap.put("thisWeekDay", thisWeekDay); 
+			
+			List<AttendanceVO> workTimeList = service.getworkTimebyDay(paraMap);
+			
+			if(!workTimeList.isEmpty()) {
+				
+				for (int j = 0; j < workTimeList.size(); j++) {
+					JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+					jsonObj.put("adno", workTimeList.get(j).getAdno());
+					jsonObj.put("fk_employee_no", workTimeList.get(j).getFk_employee_no());
+					jsonObj.put("adcatgo", workTimeList.get(j).getAdcatgo());
+					jsonObj.put("seldate", workTimeList.get(j).getSeldate());
+					jsonObj.put("startTime", workTimeList.get(j).getStartTime());
+					jsonObj.put("endTime", workTimeList.get(j).getEndTime());
+					jsonObj.put("workTime", workTimeList.get(j).getWorkTime());
+					jsonObj.put("workMin", workTimeList.get(j).getWorkMin());
+					jsonObj.put("totalTime", workTimeList.get(j).getTotalTime());
+					System.out.println("seldate_or :" +workTimeList.get(j).getSeldate());
+        			System.out.println("startTime_or :" +workTimeList.get(j).getStartTime());
+        			System.out.println("endTime_or :" +workTimeList.get(j).getEndTime());
+					
+					jsonArr.put(jsonObj);
+				}
+				
+			} else {
+				JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+				jsonObj.put("adno", "null"); 
+				jsonObj.put("fk_employee_no", "null"); 
+				jsonObj.put("seldate", "null"); 
+				jsonObj.put("startTime", "null"); 
+				jsonObj.put("endTime", "null"); 
+				jsonObj.put("workTime", "null"); 
+				jsonObj.put("workMin", "null"); 
+				jsonArr.put(jsonObj);
+			}
+		}
+		return jsonArr.toString();
+	}		
+	*/
+	
+	
+	// 하루치 총 근무시간 구하기
+	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
+	@RequestMapping(value="/totalTimebyDay.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
+	public String totalTimebyDay(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+		
+		String[] thisWeekDate = request.getParameterValues("thisWeekDate"); // 이번주 날짜
+		
+		// 로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		JSONArray jsonArr = new JSONArray();  // []
+		
+		for (int i = 0; i < thisWeekDate.length; i++) {
+			Map<String, String> paraMap = new HashMap<String, String>();
+			String year = thisWeekDate[i].substring(0, 4);
+			String month = thisWeekDate[i].substring(6, 8);
+			String day = thisWeekDate[i].substring(10, 12);
+			String thisWeekDay = year+'-'+month+'-'+day;
+			
+			paraMap.put("fk_employee_no", fk_employee_no);  
+			paraMap.put("thisWeekDay", thisWeekDay); 
+			//System.out.println("여기에요 thisWeekDay >>>>>>>>> "+thisWeekDay);
+
+			List<AttendanceVO> totalworkTimeList = service.getTotalworkTimebyDay(paraMap);
+				
+			int realtotal = 0;
+			for (int j = 0; j < totalworkTimeList.size(); j++) {
+				JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+    			jsonObj.put("seldate", totalworkTimeList.get(j).getSeldate());
+				//System.out.println("seldate :" +totalworkTimeList.get(j).getSeldate());
+				//System.out.println("totalTime :" +totalworkTimeList.get(j).getTotalTime());
+    			if(Integer.parseInt(totalworkTimeList.get(j).getTotalTime()) <= 240) { // 반차 근무
+    				realtotal = Integer.parseInt(totalworkTimeList.get(j).getTotalTime());
+    			} else {
+    				realtotal = Integer.parseInt(totalworkTimeList.get(j).getTotalTime()) - 60;
+    			}
+    			
+				int workTime = realtotal / 60;  // 몫
+    			int workMin = realtotal % 60;   // 나머지
+    			//System.out.println("realtotal :" +realtotal);
+    			//System.out.println("workTime :" +workTime);
+    			//System.out.println("workMin :" +workMin);
+    			jsonObj.put("workTime", workTime);
+    			jsonObj.put("workMin", workMin);
+				jsonArr.put(jsonObj);
+			} 
+		}
+		
+		return jsonArr.toString();
+	}
+	
+	
+	// 일주일치 총 근무시간 구하기
+	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
+	@RequestMapping(value="/totalTimebyWeek.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
+	public String totalTimebyWeek(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+		
+		String[] thisWeekDate = request.getParameterValues("thisWeekDate"); // 이번주 날짜
+		//System.out.println("thisWeekDate >>> "+thisWeekDate);
+		
+		// 로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+		
+		float realtotal = 0;
+		int size = 0;
+		int workTimeList_length = 0;
+		for (int i = 0; i < thisWeekDate.length; i++) {
+			Map<String, String> paraMap = new HashMap<String, String>();
+			String year = thisWeekDate[i].substring(0, 4);
+			String month = thisWeekDate[i].substring(6, 8);
+			String day = thisWeekDate[i].substring(10, 12);
+			String thisWeekDay = year+'-'+month+'-'+day;
+			//System.out.println("thisWeekDay >>>>>>>>>>> "+thisWeekDay);
+			
+			paraMap.put("fk_employee_no", fk_employee_no);  
+			paraMap.put("thisWeekDay", thisWeekDay); 
+			
+			List<AttendanceVO> totalworkTimeList = service.getTotalworkTimebyWeek(paraMap);
+			
+			for (int j = 0; j < totalworkTimeList.size(); j++) {
+				realtotal += Integer.parseInt(totalworkTimeList.get(j).getTotalTime());
+				//System.out.println("realtotal >>>>>>>" +realtotal);
+			}
+			size = totalworkTimeList.size();
+			workTimeList_length += size;
+			//System.out.println("size : "+size);
+		}
+		//System.out.println("workTimeList_length : "+workTimeList_length);
+		
+		// 근무한 날짜 개수만큼 근무시간 빼줘야함 .!!!
+		realtotal = realtotal - (workTimeList_length*60);
+		int workTime = (int)(realtotal / 60);  // 몫
+		int workMin = (int)(realtotal % 60);   // 나머지
+		
+		int realtotal_per = Math.round((realtotal/3120)*100);
+		//System.out.println("realtotal_per : " +realtotal_per);
+		
+		jsonObj.put("workTime", workTime);
+		jsonObj.put("workMin", workMin);
+		jsonObj.put("realtotal_per", realtotal_per);
+		
+		//jsonObj.put("workTimeList_length", workTimeList_length);
+		return jsonObj.toString();
 	}		
 
 	
@@ -343,8 +452,7 @@ public class AttendanceController {
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	
-	// 휴가 개요 보여주기
+	// ** 휴가 개요 ** //
 	@RequestMapping(value = "/dayoff/index.up")
 	public ModelAndView dayoff_index(HttpServletRequest request, ModelAndView mav) throws ParseException {
 		
@@ -355,19 +463,19 @@ public class AttendanceController {
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 		String fk_employee_no = loginuser.getEmployee_no();
 		
-		// 현재 날짜 구하기
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy. MM. dd");
-		Date now = new Date();
-		//String nowTime = sdf.format(now);
-		// System.out.println("현재날짜 >>" + nowTime);
-		//System.out.println("now >>" + now);
 		
 		List<DayoffVO> dayoffList = new ArrayList<DayoffVO>();
 		dayoffList = service.dayoffListView(fk_employee_no);
 		List<DayoffVO> comedayoff = new ArrayList<DayoffVO>();  // 예정연차
 		List<DayoffVO> lastdayoff = new ArrayList<DayoffVO>();  // 사용연차
 		
+		
 		for(DayoffVO list : dayoffList) {
+			// 현재 날짜 구하기
+			Date now = new Date();
+			//String nowTime = sdf.format(now);
+			//System.out.println("현재날짜 >>" + nowTime);
+			//System.out.println("now >>" + now);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
 			Date date = format.parse(list.getStartdate());
 			
@@ -375,21 +483,42 @@ public class AttendanceController {
 			
 			if(compare < 0) { // 예정연차
 				comedayoff.add(list);
+				
 			}else {  // 사용연차
 				lastdayoff.add(list);
 			}
+			
 		}
 		
+		double lastUsedays = 0;
+		double totalUsedays = 0;
+		for(DayoffVO lastdolist : lastdayoff) {
+			lastUsedays += Double.parseDouble(lastdolist.getUsedays()); // 올해 총 사용연차
+		}// end of for------------------
+		//System.out.println("lastUsedays >> "+ lastUsedays);
+		
+		
+		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
+		EmployeeVO evo = service.getempvo(fk_employee_no);
+		//System.out.println(evo.getDayoff_cnt());
+		mav.addObject("evo", evo);
+		
+		DecimalFormat format = new DecimalFormat("##.#");
+		totalUsedays = Double.parseDouble(evo.getDayoff_cnt()) + lastUsedays;
+		//System.out.println("totalUsedays >>>>"+totalUsedays);
+		//System.out.println("totalUsedays >>>>"+format.format(totalUsedays));
+		
+		mav.addObject("totalUsedays", format.format(totalUsedays)); // 올해 부여받은 총 연차
 	    //mav.addObject("dayoffList", dayoffList); // 구해온 값이 null이 아니라면 dayoffList를 dayoff_index.jsp 에 넘긴다.
-	    mav.addObject("comedayoff", comedayoff); // 구해온 값이 null이 아니라면 dayoffList를 dayoff_index.jsp 에 넘긴다.
-	    mav.addObject("lastdayoff", lastdayoff); // 구해온 값이 null이 아니라면 dayoffList를 dayoff_index.jsp 에 넘긴다.
+	    mav.addObject("comedayoff", comedayoff);   // 구해온 값이 null이 아니라면 comedayoff를 dayoff_index.jsp 에 넘긴다.
+	    mav.addObject("lastdayoff", lastdayoff);   // 구해온 값이 null이 아니라면 lastdayoff를 dayoff_index.jsp 에 넘긴다.
 		mav.setViewName("attendance/dayoff_index.tiles");
 		return mav;
 		
 	}
 	
 	
-	// 휴가 개요 ajax로 보여주기
+	// 년도별 휴가 개요 ajax로 보여주기
 	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
 	@RequestMapping(value="/dayoff/index2.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
 	public String dayoff_index2(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
@@ -402,9 +531,6 @@ public class AttendanceController {
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 		String fk_employee_no = loginuser.getEmployee_no();
 		
-		// 현재 날짜 구하기
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy. MM. dd");
-		Date now = new Date();
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("year", year);
@@ -432,47 +558,506 @@ public class AttendanceController {
 	}	
 	
 	
+	
+	
+	
 	// ** 연차상세 ** //
-	// 매월 연차 +1 스프링 스케줄러
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, SQLException.class }, readOnly = false)
-	public boolean autoUpdate() throws Exception {
-	       
-	    //System.out.println("스케줄링 테스트");
-	    
-		DayoffVO dayoffvo = new DayoffVO();
-	    
-	    List<DayoffVO> dayoffAdd = service.dayoffAddScheduler(dayoffvo);
-	        
-	    Date now = new Date();
-	    SimpleDateFormat nowDate = new SimpleDateFormat("yyyy-MM-dd");
-	    
-	    /*
-	    for(TestVO vo : list) {
-	        if("0".equals(vo.getState())) {
-	            
-	            Date edateTest = nowDate.parse(vo.getEdate());
-	            int compare = edateTest.compareTo(now);
-	            
-	            if(compare < 0 ) {
-	                
-	                searchVO.setIdx(vo.getIdx());
-	                schedulerService.autoUpdate(searchVO);
-	            }
-	        }
-	    }
-	    */
-	        
-	    return true;
+	@RequestMapping(value = "/dayoff/detail.up")
+	public ModelAndView dayoff_detail(HttpServletRequest request, ModelAndView mav) throws ParseException {
+		
+		// 로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		List<DayoffVO> dayoffList = new ArrayList<DayoffVO>();  // 예정 + 사용연차
+		dayoffList = service.dayoffListView(fk_employee_no);
+		
+		List<DayoffVO> lastdayoff = new ArrayList<DayoffVO>();  // 사용연차
+		
+		for(DayoffVO list : dayoffList) {
+			// 현재 날짜 구하기
+			Date now = new Date();
+			SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
+			Date date = format.parse(list.getStartdate());
+			
+			int compare = now.compareTo(date);
+			
+			if(compare > 0) { // 사용연차
+				lastdayoff.add(list);
+			}
+			
+		}
+		
+		double lastUsedays = 0;
+		double totalUsedays = 0;
+		
+		double aa = 0;
+		double bb = 0;
+		double cc = 0;
+		double dd = 0;
+		double ee = 0;
+		double ff = 0;
+		double gg = 0;
+		double hh = 0;
+		double ii = 0;
+		double jj = 0;
+		double kk = 0;
+		double ll = 0;
+		
+		for(DayoffVO lastdolist : lastdayoff) {
+			
+			int date = Integer.parseInt(lastdolist.getStartdate().substring(6,8));
+			double result = Double.parseDouble(lastdolist.getUsedays());
+			
+			switch (date) {
+			case 1: date = 1;
+				aa = aa + result;
+				break;
+			case 2: date = 2;
+				bb = bb + result;
+				break;
+			case 3: date = 3;
+				cc = cc + result;
+				break;
+			case 4: date = 4;
+				dd = dd + result;
+				break;
+			case 5: date = 5;
+				ee = ee + result;
+				break;
+			case 6: date = 6;
+				ff = ff + result;
+				break;
+			case 7: date = 7;
+				gg = gg + result;
+				break;
+			case 8: date = 8;
+				hh = hh + result;
+				break;
+			case 9: date = 9;
+				ii = ii + result;
+				break;
+			case 10: date = 10;
+				jj = jj + result;
+				break;
+			case 11: date = 11;
+				kk = kk + result;
+				break;
+			case 12: date = 12;
+				ll = ll + result;
+				break;
+			}
+			
+			lastUsedays += Double.parseDouble(lastdolist.getUsedays()); // 올해 총 사용연차
+		}// end of for------------------
+		
+		DecimalFormat format = new DecimalFormat("##.#");
+		/*
+		System.out.println("aa :" +format.format(aa));
+		System.out.println("bb :" +format.format(bb));
+		System.out.println("cc :" +format.format(cc));
+		System.out.println("dd :" +format.format(dd));
+		System.out.println("ee :" +format.format(ee));
+		System.out.println("ff :" +format.format(ff));
+		System.out.println("gg :" +format.format(gg));
+		System.out.println("hh :" +format.format(hh));
+		System.out.println("ii :" +format.format(ii));
+		System.out.println("jj :" +format.format(jj));
+		System.out.println("kk :" +format.format(kk));
+		System.out.println("ll :" +format.format(ll));
+		*/
+		
+		List<Object> list =  new ArrayList<Object>();
+		list.add(format.format(aa));
+		list.add(format.format(bb));
+		list.add(format.format(cc));
+		list.add(format.format(dd));
+		list.add(format.format(ee));
+		list.add(format.format(ff));
+		list.add(format.format(gg));
+		list.add(format.format(hh));
+		list.add(format.format(ii));
+		list.add(format.format(jj));
+		list.add(format.format(kk));
+		list.add(format.format(ll));
+		
+		
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM");  // 포맷 정의
+        int thisyyyy = Integer.parseInt(formatter.format(now).substring(0, 4)); // 포맷팅 적용 => yyyy
+        int thismm = Integer.parseInt(formatter.format(now).substring(5, 7)); // 포맷팅 적용 => mm
+		
+		//System.out.println("올해 총 사용연차 : "+ lastUsedays);
+		
+		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
+		EmployeeVO evo = service.getempvo(fk_employee_no);
+		//System.out.println("잔여연차 :"+evo.getDayoff_cnt());
+		
+		totalUsedays = Double.parseDouble(evo.getDayoff_cnt()) + lastUsedays;
+		//System.out.println("올해 받은 총 연차 :"+totalUsedays);
+		//System.out.println("올해 받은 총 연차 :"+format.format(totalUsedays));
+		
+		mav.addObject("lastUsedays", format.format(lastUsedays));        // 올해 총 사용연차
+		mav.addObject("UnusedDays", evo.getDayoff_cnt()); // 잔여연차
+		mav.addObject("totalUsedays", format.format(totalUsedays));      // 올해 받은 총 연차
+		mav.addObject("list", list);          // 월별 연차사용
+		mav.addObject("thisyyyy", thisyyyy);  // 이번년도
+		mav.addObject("thismm", thismm);      // 이번달
+    	mav.setViewName("attendance/dayoff_detail.tiles");
+		return mav;
+	}
+	
+	
+	
+	// 년도별 연차 상세 ajax로 보여주기
+	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
+	@RequestMapping(value="/dayoff/detail2.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
+	public String dayoff_detail2(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+		
+		String year = request.getParameter("year"); 
+		//System.out.println(year);
+		
+		// 로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("year", year);
+		paraMap.put("fk_employee_no", fk_employee_no);
+		
+		List<DayoffVO> dayoffDetail = service.dayoffDetailViewByYear(paraMap);  // 특정년도 연차상세현황 조회
+		List<DayoffVO> lastdayoff = new ArrayList<DayoffVO>();  // 사용연차
+		
+		JSONArray jsonArr = new JSONArray();  // []
+		JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+		
+		if(dayoffDetail != null) {
+			for(DayoffVO list : dayoffDetail) {
+				
+				// 현재 날짜 구하기
+				Date now = new Date();
+				SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
+				Date date = format.parse(list.getStartdate());
+				//System.out.println("오잉now:"+now);
+				//System.out.println("오잉list.getStartdate():"+list.getStartdate());
+				//System.out.println("오잉date:"+date);
+				
+				int compare = now.compareTo(date);
+				
+				if(compare > 0) { // 사용연차
+					lastdayoff.add(list);
+				}
+			}// end of for------------------
+		}
+		
+		
+		double lastUsedays = 0;
+		double totalUsedays = 0;
+		
+		double aa = 0;
+		double bb = 0;
+		double cc = 0;
+		double dd = 0;
+		double ee = 0;
+		double ff = 0;
+		double gg = 0;
+		double hh = 0;
+		double ii = 0;
+		double jj = 0;
+		double kk = 0;
+		double ll = 0;
+		
+		String selmm;
+		for(DayoffVO lastdolist : lastdayoff) {
+			
+			int date = Integer.parseInt(lastdolist.getStartdate().substring(6,8));
+			double result = Double.parseDouble(lastdolist.getUsedays());
+			
+			switch (date) {
+			case 1: date = 1;
+				aa = aa + result;
+				break;
+			case 2: date = 2;
+				bb = bb + result;
+				break;
+			case 3: date = 3;
+				cc = cc + result;
+				break;
+			case 4: date = 4;
+				dd = dd + result;
+				break;
+			case 5: date = 5;
+				ee = ee + result;
+				break;
+			case 6: date = 6;
+				ff = ff + result;
+				break;
+			case 7: date = 7;
+				gg = gg + result;
+				break;
+			case 8: date = 8;
+				hh = hh + result;
+				break;
+			case 9: date = 9;
+				ii = ii + result;
+				break;
+			case 10: date = 10;
+				jj = jj + result;
+				break;
+			case 11: date = 11;
+				kk = kk + result;
+				break;
+			case 12: date = 12;
+				ll = ll + result;
+				break;
+			}
+			
+			lastUsedays += Double.parseDouble(lastdolist.getUsedays()); // 올해 총 사용연차
+			selmm = lastdolist.getStartdate().substring(6, 8);
+			
+		}// end of for------------------
+		
+		DecimalFormat format = new DecimalFormat("##.#");
+		/*
+		System.out.println("aa :" +format.format(aa));
+		System.out.println("bb :" +format.format(bb));
+		System.out.println("cc :" +format.format(cc));
+		System.out.println("dd :" +format.format(dd));
+		System.out.println("ee :" +format.format(ee));
+		System.out.println("ff :" +format.format(ff));
+		System.out.println("gg :" +format.format(gg));
+		System.out.println("hh :" +format.format(hh));
+		System.out.println("ii :" +format.format(ii));
+		System.out.println("jj :" +format.format(jj));
+		System.out.println("kk :" +format.format(kk));
+		System.out.println("ll :" +format.format(ll));
+		*/
+		
+		List<Object> list =  new ArrayList<Object>();
+		list.add(format.format(aa));
+		list.add(format.format(bb));
+		list.add(format.format(cc));
+		list.add(format.format(dd));
+		list.add(format.format(ee));
+		list.add(format.format(ff));
+		list.add(format.format(gg));
+		list.add(format.format(hh));
+		list.add(format.format(ii));
+		list.add(format.format(jj));
+		list.add(format.format(kk));
+		list.add(format.format(ll));
+		
+		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
+		EmployeeVO evo = service.getempvo(fk_employee_no);
+		System.out.println("잔여연차 :"+evo.getDayoff_cnt());
+		
+		totalUsedays = Double.parseDouble(evo.getDayoff_cnt()) + lastUsedays;
+		// System.out.println("올해 받은 총 연차 :"+totalUsedays);
+		// System.out.println("올해 받은 총 연차 :"+format.format(totalUsedays));
+		System.out.println("list :"+ list);
+		System.out.println("year :"+ year);
+		
+		jsonObj.put("lastUsedays", format.format(lastUsedays));   // 선택년도 총 사용연차
+		jsonObj.put("totalUsedays", format.format(totalUsedays)); // 선택년도 받은 총 연차
+		jsonObj.put("list", list);      // 월별 연차사용
+		jsonObj.put("selyyyy", year);   // 선택년도
+		jsonArr.put(jsonObj);
+		return jsonArr.toString();
+		
 	}
 	
 	
 	
 	
-	@RequestMapping(value = "/dayoff/detail.up")
-	public ModelAndView dayoff_detail(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	
+	
+	
+	// 매월 연차 +1 스프링 스케줄러
+	/*
+	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
+	@RequestMapping(value="/dayoffUpdate.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
+	public String dayoffUpdate(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+		
+		int n = 0;
+		try {
+			n = service.dayoffUpdate();
+			//System.out.println("n1 결과 >>" + n);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(n != 0) {
+			n = 1;
+			//mav.setViewName("attendance/dayoff_detail.tiles");
+		}
+		System.out.println("n 결과 >>" + n);
+		
+		JSONArray jsonArr = new JSONArray();  // []
+		/*
+		if(dayoffList != null) {
+			for(DayoffVO dovo : dayoffList) {
+				JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
+				jsonObj.put("fk_employee_no", dovo.getFk_employee_no());
+				jsonObj.put("docatgo", dovo.getDocatgo());
+				jsonObj.put("startdate", dovo.getStartdate());
+				jsonObj.put("startday", dovo.getStartday());
+				jsonObj.put("enddate", dovo.getEnddate());
+				jsonObj.put("endday", dovo.getEndday());
+				jsonObj.put("usedays", dovo.getUsedays());
+				jsonArr.put(jsonObj);
+			}// end of for------------------
+		}
+		
+		return jsonArr.toString();
+	}	*/
+	
+	
+	
+	/*
+	@RequestMapping(value="/dayoff/detail.up")  // Controller 에서는 URL 만 잡아주고, Service 단에서 특정 날짜 및 시각을 설정해준다.
+    public ModelAndView dayoffUpdatetest(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) throws Exception {
+		
+		// 현재 날짜 구하기
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM");  // 포맷 정의
+        String doaddDate = formatter.format(now); // 포맷팅 적용
+        //System.out.println("doaddDate >>"+doaddDate);
+        
+		int n = 0;
+		try {
+			n = service.dayoffUpdate();
+			//System.out.println("n1 결과 >>" + n);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(n != 0) {
+			n = 1;
+			//mav.setViewName("attendance/dayoff_detail.tiles");
+		}
+		System.out.println("n 결과 >>" + n);
+		
+    	mav.addObject("doaddResult", n);
+    	mav.addObject("doaddDate", doaddDate);
+    	
+    	
+    	///////////////////////////////////////////////
+    	
+    	// 로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		List<DayoffVO> dayoffList = new ArrayList<DayoffVO>();
+		dayoffList = service.dayoffListView(fk_employee_no);
+		
+		List<DayoffVO> lastdayoff = new ArrayList<DayoffVO>();  // 사용연차
+		
+		for(DayoffVO list : dayoffList) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
+			Date date = format.parse(list.getStartdate());
+			
+			int compare = now.compareTo(date);
+			
+			if(compare > 0) { // 사용연차
+				lastdayoff.add(list);
+			}
+		}
+		
+		float lastUsedays_f = 0;
+		float thismmUsedays_f = 0;
+		int lastUsedays = 0;
+		int thismmUsedays = 0;
+		int totalUsedays = 0;
+		for(DayoffVO lastdolist : lastdayoff) {
+			int thismm = Integer.parseInt(formatter.format(now).substring(5, 7)); // 포맷팅 적용 => mm
+			//System.out.println("thismm >>"+ thismm);
+			int usemm =  Integer.parseInt(lastdolist.getStartdate().substring(6,8));
+			//System.out.println("usemm 111 >>"+ usemm);
+			
+			if(thismm == usemm) { // 올해 사용연차 중 월
+				thismmUsedays_f += Float.parseFloat(lastdolist.getUsedays()); // 올해 총 사용연차
+			}
+			
+			lastUsedays_f += Float.parseFloat(lastdolist.getUsedays()); // 올해 총 사용연차
+		}// end of for------------------
+		///////////////////////////////////////////////
+		    	
+		
+		thismmUsedays = (int)thismmUsedays_f;
+		//System.out.println("올해 이번달 총 사용연차 : "+ thismmUsedays);
+		
+		lastUsedays = (int)lastUsedays_f;
+		//System.out.println("올해 총 사용연차 : "+ lastUsedays);
+		
+		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
+		EmployeeVO evo = service.getempvo(fk_employee_no);
+		//System.out.println("잔여연차 :"+evo.getDayoff_cnt());
+		
+		totalUsedays = Integer.parseInt(evo.getDayoff_cnt()) + lastUsedays;
+		//System.out.println("올해 받은 총 연차 :"+totalUsedays);
+		
+		mav.addObject("thismmUsedays", thismmUsedays); // 올해 이번달 총 사용연차
+		mav.addObject("lastUsedays", lastUsedays);     // 올해 총 사용연차
+		mav.addObject("UnusedDays", evo.getDayoff_cnt()); // 잔여연차
+		mav.addObject("totalUsedays", totalUsedays);   // 올해 받은 총 연차
+    	mav.setViewName("attendance/dayoff_detail.tiles");
+		return mav;
+    }
+	*/
+	
+	
+	// 올해 연차내역 조회하기
+	/*
+	@RequestMapping(value="/dayoffListView.up", method= {RequestMethod.POST})  // 오로지 POST 방식만 허락하는 것임.  위에서는 GET 방식으로  "/login.action" 해주었기에, 이번에는 POST 방식으로 "/loginEnd.action" 해준다.
+	public ModelAndView dayoffListView(ModelAndView mav, HttpServletRequest request){
+		
+		
+		//로그인된 유저의 employee_no 알아오기
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		String fk_employee_no = loginuser.getEmployee_no();
+		
+		// 현재 날짜 구하기
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");  // 포맷 정의
+        String thisYear = formatter.format(now); // 포맷팅 적용
+        System.out.println("thisYear :"+thisYear);
+        
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("fk_employee_no", fk_employee_no);
+		paraMap.put("thisYear", thisYear);
+		// 올해 잔여개수 조회해와서 jsp 에서 뿌려주기
+		
+		
+		List<AttendanceVO> attendancedetail = service.atdetailView(paraMap);
+		
+			
+		mav.addObject("attendancedetail", attendancedetail);
 		mav.setViewName("attendance/dayoff_detail.tiles");
 		return mav;
 	}
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
