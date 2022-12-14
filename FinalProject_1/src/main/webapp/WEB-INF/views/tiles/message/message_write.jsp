@@ -317,9 +317,9 @@ function goSend(){
 		</div>
 	
 		<%-- **** 예약버튼  Modal **** --%> <!-- 이거 기능하다가 벅차면 빼자요 -->
-		<div class="modal fade" id="mw-book-modal" aria-hidden="true" aria-labelledby="mw-address-label" tabindex="-1">
+		<div class="modal fade" id="mw-book-modal" aria-hidden="true" aria-labelledby="mw-address-label" tabindex="-1" style="background-color: rgba(240, 240, 240, 0.85);">
 			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
+				<div class="modal-content" style="border:none;box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 4%), 0px 24px 72px rgb(36 42 48 / 30%);">
 					<div class="modal-header">
 						<h4 class="modal-title" id="exampleModalToggleLabel" style="margin-left: 15px; font-weight: 800; color:#444444;">발송 예약</h4>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -334,9 +334,9 @@ function goSend(){
 		</div>
 	
 		<%-- **** 주소록 Modal **** --%>
-		<div class="modal fade" id="mw-address-modal" aria-hidden="true" aria-labelledby="mw-address-label" tabindex="-1">
+		<div class="modal fade" id="mw-address-modal" aria-hidden="true" aria-labelledby="mw-address-label" tabindex="-1" style="background-color: rgba(240, 240, 240, 0.85);">
 			<div class="modal-dialog modal-lg modal-dialog-centered">
-				<div class="modal-content">
+				<div class="modal-content" style="border:none;box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 4%), 0px 24px 72px rgb(36 42 48 / 30%);">
 					<div class="modal-header">
 						<h4 class="modal-title" id="exampleModalToggleLabel" style="margin-left: 15px; font-weight: 800; color: #444444;">주소록</h4>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

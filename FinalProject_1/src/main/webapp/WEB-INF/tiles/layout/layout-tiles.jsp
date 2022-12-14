@@ -56,7 +56,7 @@
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
 <!-- pretendard-font -->
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css" />
 
 <!-- 텍스트에디터 시작-->
 <!-- <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script> -->
@@ -81,8 +81,8 @@
 	/* 서브메뉴 없는 헤더 */
 	.header-nonsub{font-weight: 800 !important; padding: 0.9em 0 !important; font-size: 18pt !important;}
 	/* 서브메뉴 있는 헤더 */
-	.header-main{font-weight: 600 !important;padding: 0.9em 0 0.3em 0 !important;font-size: 21pt !important; }
-	.header-sub{font-weight: 500 !important;padding: 0.9em 0 !important;font-size: 11pt !important;}
+	.header-main{font-weight: 800 !important;padding: 0.9em 0 0.3em 0 !important;font-size: 21pt !important; width: auto !important;}
+	.header-sub{font-weight: 700 !important;padding: 0.9em 0 !important;font-size: 11pt !important; width: auto;}
 	.gradientbtn{background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%) !important;}
 	.bluebtn{background-color:rgb(0 101 204);} 
 </style>
