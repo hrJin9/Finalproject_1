@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+	<!-- 파일첨부가 없는 글쓰기  --> 
+	<insert id="add" parameterType="com.spring.yeeun.model.NoticeBoardVO">
+		insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status)
+		values(seq_tbl_nboard.nextval, #{fk_employee_no}, #{name_kr}, #{categoryTag}, #{subject}, #{content}, #{priority}, default, default, default)
+	</insert>
+	
+	<!-- 파일첨부가 있는 글쓰기 ===  -->
+    <insert id="add_withFile" parameterType="com.spring.yeeun.model.NoticeBoardVO">
+		insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status, nb_fileName, nb_orgFilename, fileSize) 
+		values(seq_tbl_nboard.nextval, #{fk_employee_no}, #{name_kr}, #{categoryTag}, #{subject}, #{content}, #{priority}, default, default, default, #{nb_fileName}, #{nb_orgFilename}, #{fileSize}) 
+	</insert>
+	
+
+</mapper>

@@ -580,9 +580,6 @@ public class AttendanceController {
 			Date now = new Date();
 			SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
 			Date date = format.parse(list.getStartdate());
-			//System.out.println("오잉now:"+now);
-			//System.out.println("오잉list.getStartdate():"+list.getStartdate());
-			//System.out.println("오잉date:"+date);
 			
 			int compare = now.compareTo(date);
 			
@@ -719,7 +716,7 @@ public class AttendanceController {
 	public String dayoff_detail2(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
 		
 		String year = request.getParameter("year"); 
-		System.out.println(year);
+		//System.out.println(year);
 		
 		// 로그인된 유저의 employee_no 알아오기
 		HttpSession session = request.getSession();
@@ -736,25 +733,29 @@ public class AttendanceController {
 		JSONArray jsonArr = new JSONArray();  // []
 		JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
 		
-		// 현재 날짜 구하기
-		Date now = new Date();
-		
-		/*
-		for(DayoffVO list : dayoffDetail) {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
-			Date date = format.parse(list.getStartdate());
-			
-			int compare = now.compareTo(date);
-			
-			if(compare > 0) { // 사용연차
-				lastdayoff.add(list);
-			}
-		}// end of for------------------
-		*/
+		if(dayoffDetail != null) {
+			for(DayoffVO list : dayoffDetail) {
+				
+				// 현재 날짜 구하기
+				Date now = new Date();
+				SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
+				Date date = format.parse(list.getStartdate());
+				//System.out.println("오잉now:"+now);
+				//System.out.println("오잉list.getStartdate():"+list.getStartdate());
+				//System.out.println("오잉date:"+date);
+				
+				int compare = now.compareTo(date);
+				
+				if(compare > 0) { // 사용연차
+					lastdayoff.add(list);
+				}
+			}// end of for------------------
+		}
 		
 		
 		double lastUsedays = 0;
 		double totalUsedays = 0;
+		
 		double aa = 0;
 		double bb = 0;
 		double cc = 0;
@@ -768,9 +769,9 @@ public class AttendanceController {
 		double kk = 0;
 		double ll = 0;
 		
-		for(DayoffVO lastdolist : dayoffDetail) {
-			System.out.println(lastdolist.getStartdate().getClass().getSimpleName());
-			System.out.println("lastdolist.getStartdate()" + lastdolist.getStartdate());
+		String selmm;
+		for(DayoffVO lastdolist : lastdayoff) {
+			
 			int date = Integer.parseInt(lastdolist.getStartdate().substring(6,8));
 			double result = Double.parseDouble(lastdolist.getUsedays());
 			
@@ -814,58 +815,54 @@ public class AttendanceController {
 			}
 			
 			lastUsedays += Double.parseDouble(lastdolist.getUsedays()); // 올해 총 사용연차
+			selmm = lastdolist.getStartdate().substring(6, 8);
+			
 		}// end of for------------------
 		
-		DecimalFormat format1 = new DecimalFormat("##.#");
-		
-		System.out.println("aa :" +format1.format(aa));
-		System.out.println("bb :" +format1.format(bb));
-		System.out.println("cc :" +format1.format(cc));
-		System.out.println("dd :" +format1.format(dd));
-		System.out.println("ee :" +format1.format(ee));
-		System.out.println("ff :" +format1.format(ff));
-		System.out.println("gg :" +format1.format(gg));
-		System.out.println("hh :" +format1.format(hh));
-		System.out.println("ii :" +format1.format(ii));
-		System.out.println("jj :" +format1.format(jj));
-		System.out.println("kk :" +format1.format(kk));
-		System.out.println("ll :" +format1.format(ll));
-		
+		DecimalFormat format = new DecimalFormat("##.#");
+		/*
+		System.out.println("aa :" +format.format(aa));
+		System.out.println("bb :" +format.format(bb));
+		System.out.println("cc :" +format.format(cc));
+		System.out.println("dd :" +format.format(dd));
+		System.out.println("ee :" +format.format(ee));
+		System.out.println("ff :" +format.format(ff));
+		System.out.println("gg :" +format.format(gg));
+		System.out.println("hh :" +format.format(hh));
+		System.out.println("ii :" +format.format(ii));
+		System.out.println("jj :" +format.format(jj));
+		System.out.println("kk :" +format.format(kk));
+		System.out.println("ll :" +format.format(ll));
+		*/
 		
 		List<Object> list =  new ArrayList<Object>();
-		list.add(format1.format(aa));
-		list.add(format1.format(bb));
-		list.add(format1.format(cc));
-		list.add(format1.format(dd));
-		list.add(format1.format(ee));
-		list.add(format1.format(ff));
-		list.add(format1.format(gg));
-		list.add(format1.format(hh));
-		list.add(format1.format(ii));
-		list.add(format1.format(jj));
-		list.add(format1.format(kk));
-		list.add(format1.format(ll));
-		
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM");  // 포맷 정의
-        int selyyyy = Integer.parseInt(formatter.format(now).substring(0, 4)); // 포맷팅 적용 => yyyy
-        int selmm = Integer.parseInt(formatter.format(now).substring(5, 7)); // 포맷팅 적용 => mm
-		
-		System.out.println("올해 총 사용연차 : "+ lastUsedays);
+		list.add(format.format(aa));
+		list.add(format.format(bb));
+		list.add(format.format(cc));
+		list.add(format.format(dd));
+		list.add(format.format(ee));
+		list.add(format.format(ff));
+		list.add(format.format(gg));
+		list.add(format.format(hh));
+		list.add(format.format(ii));
+		list.add(format.format(jj));
+		list.add(format.format(kk));
+		list.add(format.format(ll));
 		
 		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
 		EmployeeVO evo = service.getempvo(fk_employee_no);
 		System.out.println("잔여연차 :"+evo.getDayoff_cnt());
 		
 		totalUsedays = Double.parseDouble(evo.getDayoff_cnt()) + lastUsedays;
-		System.out.println("올해 받은 총 연차 :"+totalUsedays);
-		System.out.println("올해 받은 총 연차 :"+format1.format(totalUsedays));
+		// System.out.println("올해 받은 총 연차 :"+totalUsedays);
+		// System.out.println("올해 받은 총 연차 :"+format.format(totalUsedays));
+		System.out.println("list :"+ list);
+		System.out.println("year :"+ year);
 		
-		jsonObj.put("lastUsedays", format1.format(lastUsedays));   // 선택년도 총 사용연차
-		jsonObj.put("totalUsedays", format1.format(totalUsedays)); // 선택년도 받은 총 연차
-		jsonObj.put("list", list);       // 월별 연차사용
-		jsonObj.put("selyyyy", selyyyy); // 선택년도
-		jsonObj.put("selmm", selmm);   // 선택년도 해당달
+		jsonObj.put("lastUsedays", format.format(lastUsedays));   // 선택년도 총 사용연차
+		jsonObj.put("totalUsedays", format.format(totalUsedays)); // 선택년도 받은 총 연차
+		jsonObj.put("list", list);      // 월별 연차사용
+		jsonObj.put("selyyyy", year);   // 선택년도
 		jsonArr.put(jsonObj);
 		return jsonArr.toString();
 		

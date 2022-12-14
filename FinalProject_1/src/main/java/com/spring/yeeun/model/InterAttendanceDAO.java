@@ -44,11 +44,13 @@ public interface InterAttendanceDAO {
 
 
 	
-	// 매월 연차 +1 스프링 스케줄러
+	// 매월 연차 업데이트 스프링 스케줄러
 	int addDayoff();
+	int addDayoffInJanuary();
 	
 	// 년도별 연차 상세 보여주기
 	List<DayoffVO> dayoffDetailViewByYear(Map<String, String> paraMap);
+
 
 
 

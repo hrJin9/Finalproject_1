@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="board_header.jsp"%> 
+<%@ include file="noticeboard_header.jsp"%> 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 
@@ -20,7 +20,6 @@
       font-weight: 300;
 		}
 	}
-}
 
 
 /* === 게시글목록 테이블 css === */
@@ -82,8 +81,8 @@ table tr:hover {
     color: #484848;
 }
 
-#file{
-	font-size: 14px;
+#file, #mg-file {
+    font-size: 14px;
 }
 
 #title, #tagname {
@@ -1440,7 +1439,7 @@ function goSearch(){
 		  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 		  <div class="offcanvas-body">
 	    		
-    		<form>
+    		<form>  <!-- enctype="multipart/form-data" 를 해주어야만 파일첨부가 되어진다. -->
 	    		<div class="d-flex-space mb-3">
 	    			<div class="mb-1">
 	    				<div class="dropdown bootstrap-select">

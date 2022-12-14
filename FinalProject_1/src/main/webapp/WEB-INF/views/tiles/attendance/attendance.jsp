@@ -295,7 +295,6 @@
 		        }					
 			});
 		 	
-		 	
 	 	});// end of $(".workingweek > table > tbody > tr:first-child ~ tr").click------------
 	 	
 	 	

@@ -63,45 +63,76 @@
 				type:"POST",
 				dataType:"JSON",          // AttendanceController.java 로 data 를 보낸다.
 				success:function(json){   // AttendanceController.java 에서 jsonObj.put() 한  것을 받아옴.
-					let html = "";
-		         	
-					/* html = '<span id="dayoff-usecnt"></span>';
-				
+					console.log(JSON.stringify(json));  // 배열타입도 모두 찍을 수 있다.
 					
+					let html = "";
+		         	var num = 1;  
 		           	if(json.length != 0) {
-			     		$.each(json, function(index, item){
-			     			html += '<tr>'
-									+ '<td width="2.5%">'
-										+ '<div style="margin-right: 10px;">'
-											+ '<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="20px"/>'
-										+ '</div>'
-									+ '</td>'
-									+ '<td>'
-										+ '<span>'+item.docatgo+'</span>'
-										+ '<span class="dayoff-line"></span>'
-										+ '<span class="do-use-date dayoffdate">'+item.startdate+'&nbsp;('+item.startday+')&nbsp;&nbsp;~&nbsp;&nbsp;'+item.enddate+'&nbsp;('+item.endday+')</span>'
-									+ '</td>'
-									+ '<td width="5%">'
-										+ '<div class="dayoff-cntinfo"><div>'+item.usedays+'일</div></div>'
-									+ '</td>'
-								+ '</tr>';
-		     			  
+		           		
+		           		console.log(json[0].list);
+		           		//console.log(arr);
+		           		var arr = json[0].list;
+		           		
+			     		$.each(arr, function(index, item){  // list 만큼 반복
+			     			
+			     			console.log("길이:" +item.length);
+			     			
+			     			html += '<tr>';
+			     					
+				     				if( num < 10 ) {
+				     					html += '<td>'+year+'. 0'+num+'</td>';
+				     					if( num == 1 ) {
+				     						html += '<td>11일</td>';
+				     					} else {
+				     						html += '<td>+1일</td>';
+				     					}
+				     					html += '<td> </td>'
+				     					      + '<td> </td>';
+			     					    if(item == '0') {
+					     					html += '<td> </td>';
+				     					} else {
+					     					html += '<td>-'+item+'</td>';
+				     					}
+				     				}
+				     				else {  // 10월 이상이면
+				     					html += '<td>'+year+'. '+num+'</td>';
+				     					if( num == 1 ) {
+				     						html += '<td>11일</td>';
+				     					} else {
+				     						html += '<td>+1일</td>';
+				     					}
+				     					html += '<td> </td>'
+				     					      + '<td> </td>';
+				     					if(item == '0') {
+							     			html += '<td> </td>';
+						     			} else {
+							     			html += '<td>-'+item+'</td>';
+						     			}
+				     				}
+			     				
+			     			html += '</tr>';
+		     			    num++;
+		     			   $(".dayoffDetail").html(html);
 			     		}); 
+			     		
 		            }
-			        else {
+		     		
+			       /*  else {
 			        	html += '<div class="dayoff-none"><div>'
 				        	        + '<i class="fa-solid fa-circle-info" style="display: block; margin-bottom: 5px;"></i>'
-				        	        + '사용 기록이 없습니다.'
+				        	        + '연차 기록이 없습니다.'
 			        	        + '</div></div>';
-			        }
+			        } */
 	           	
-	   	         	$(".last_dayoff").html(html);  */
+	   	         	
 				},
 				error: function(request, status, error){
 		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		        }					
 			});
 		});// end of $("select#selyear").change--------------
+		
+		
 		
 		
 	});// end of $(document).ready(function(){})----------------
@@ -179,7 +210,7 @@
 						<!-- <td><div>잔여</div><div style="font-size:8pt;">전년도이월 0</div></td> -->
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="dayoffDetail">
 					<%-- <tr>
 						<td>2022.11</td>
 						<td>+${requestScope.doaddResult}일</td>
@@ -232,14 +263,6 @@
 						</tr>
 					</c:forEach>
 				
-					<%-- <tr id="workwirte-container0">
-						<td>2022.12</td>
-						<td>+1일</td>
-						<td></td>
-						<td></td>
-						<td>-${requestScope.thismmUsedays}일</td> <!-- 월단위로 사용연차  -->
-						<td>${requestScope.UnusedDays}</td>
-					</tr> --%>
 				</tbody>
 			</table>
 		</div>

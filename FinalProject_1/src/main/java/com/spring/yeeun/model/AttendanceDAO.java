@@ -101,10 +101,15 @@ public class AttendanceDAO implements InterAttendanceDAO {
 
 
 
-	// 매월 연차 +1 스프링 스케줄러
+	// 매월 연차 업데이트 스프링 스케줄러
 	@Override
-	public int addDayoff() {
+	public int addDayoff() { // 매년 2~12월(1월 제외)
 		int n = sqlsession.update("attendance.addDayoff");
+		return n;
+	}
+	@Override
+	public int addDayoffInJanuary() { // 매년 1월
+		int n = sqlsession.update("attendance.addDayoffInJanuary");
 		return n;
 	}
 
@@ -114,6 +119,7 @@ public class AttendanceDAO implements InterAttendanceDAO {
 		List<DayoffVO> dayoffDetail = sqlsession.selectList("attendance.dayoffDetailViewByYear", paraMap);
 		return dayoffDetail;
 	}
+
 
 
 

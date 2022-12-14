@@ -5,15 +5,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class NoticeBoardVO {
 	
 	private String nbno;            // 공지게시물번호
-    //private String lg_nbc_no;       // 공지사항분류
-    private String fk_sm_nbc_no;    // 게시글분류번호 (카테고리)
+    //private String nb_tpye;       // 공지사항분류
     private String fk_employee_no;  // 사원번호
     private String name_kr;         // 작성자명
-    private String position;        // 직위
+    //private String position;      // 직위
+    private String categoryTag;     // 게시글분류번호 (카테고리)
     private String subject;         // 글제목
     private String content;         // 글내용
-    private String readcnt;         // 글조회수
+    private String priority;        // 상단고정     1:상단고정,  0:고정안함
     private String writedate;       // 작성일자
+    private String readcnt;         // 글조회수
     private String status;          // 글삭제여부  1:사용가능한 글,  0:삭제된글
     
     private String previousseq;      // 이전글번호 (select 용)
@@ -26,7 +27,7 @@ public class NoticeBoardVO {
     === #152. 파일을 첨부하도록 VO 수정하기
               먼저, 오라클에서 tbl_board 테이블에 3개 컬럼(fileName, orgFilename, fileSize)을 추가한 다음에 아래의 작업을 한다. 
 	*/
-	private MultipartFile attach;  // add.jsp 에서 설정해준 name="attach" 와 동일하게 해줌.
+	private MultipartFile attach;  // noticeboard.jsp 에서 설정해준 name="attach" 와 동일하게 해줌.
 	/*  form 태그에서 type="file" 인 파일을 받아서 저장되는 필드이다. 
 	        진짜파일 ==> WAS(톰캣) 디스크에 저장됨.
 	        조심할것은 MultipartFile attach 는 오라클 데이터베이스 tbl_board 테이블의 컬럼이 아니다.   
@@ -40,20 +41,20 @@ public class NoticeBoardVO {
 	
 	public NoticeBoardVO() {}
 
-	public NoticeBoardVO(String nbno, String lg_nbc_no, String fk_sm_nbc_no, String fk_employee_no, String name_kr,
-				   String position, String subject, String content, String readcnt, String writedate, String status,
-				   String nb_systemfilename, String nb_originfilename, String file_size) {
+	public NoticeBoardVO(String nbno, String fk_employee_no, String name_kr, String categoryTag, String subject,
+			String content, String priority, String writedate, String readcnt, String status, String previousseq,
+			String previoussubject, String nextseq, String nextsubject, MultipartFile attach, String nb_fileName,
+			String nb_orgFilename, String fileSize) {
 		super();
 		this.nbno = nbno;
-		//this.lg_nbc_no = lg_nbc_no;
-		this.fk_sm_nbc_no = fk_sm_nbc_no;
 		this.fk_employee_no = fk_employee_no;
 		this.name_kr = name_kr;
-		this.position = position;
+		this.categoryTag = categoryTag;
 		this.subject = subject;
 		this.content = content;
-		this.readcnt = readcnt;
+		this.priority = priority;
 		this.writedate = writedate;
+		this.readcnt = readcnt;
 		this.status = status;
 	}
 
@@ -63,14 +64,6 @@ public class NoticeBoardVO {
 
 	public void setNbno(String nbno) {
 		this.nbno = nbno;
-	}
-
-	public String getFk_sm_nbc_no() {
-		return fk_sm_nbc_no;
-	}
-
-	public void setFk_sm_nbc_no(String fk_sm_nbc_no) {
-		this.fk_sm_nbc_no = fk_sm_nbc_no;
 	}
 
 	public String getFk_employee_no() {
@@ -89,12 +82,12 @@ public class NoticeBoardVO {
 		this.name_kr = name_kr;
 	}
 
-	public String getPosition() {
-		return position;
+	public String getCategoryTag() {
+		return categoryTag;
 	}
 
-	public void setPosition(String position) {
-		this.position = position;
+	public void setCategoryTag(String categoryTag) {
+		this.categoryTag = categoryTag;
 	}
 
 	public String getSubject() {
@@ -113,12 +106,12 @@ public class NoticeBoardVO {
 		this.content = content;
 	}
 
-	public String getReadcnt() {
-		return readcnt;
+	public String getPriority() {
+		return priority;
 	}
 
-	public void setReadcnt(String readcnt) {
-		this.readcnt = readcnt;
+	public void setPriority(String priority) {
+		this.priority = priority;
 	}
 
 	public String getWritedate() {
@@ -127,6 +120,14 @@ public class NoticeBoardVO {
 
 	public void setWritedate(String writedate) {
 		this.writedate = writedate;
+	}
+
+	public String getReadcnt() {
+		return readcnt;
+	}
+
+	public void setReadcnt(String readcnt) {
+		this.readcnt = readcnt;
 	}
 
 	public String getStatus() {
@@ -201,10 +202,6 @@ public class NoticeBoardVO {
 		this.fileSize = fileSize;
 	}
 
-	
-	
-
-	
 	
 	
 	

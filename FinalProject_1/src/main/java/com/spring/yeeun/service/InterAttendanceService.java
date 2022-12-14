@@ -48,11 +48,12 @@ public interface InterAttendanceService {
 
 
 
-	// 매월 연차 +1 스프링 스케줄러
+	// 매월 연차 업데이트 스프링 스케줄러
 	// 스케줄러로 사용되어지는 메소드는 반드시 파라미터는 없어야 한다.
 	// 2~12월(1월제외) 매월 새벽 4시 30분 마다 연차 +1 업데이트를 해줄 것이다.
 	// 업데이트가 안될 경우, 익셉션을 던져버리기 위해 throws Exception 을 추가해준다.
-	int dayoffUpdate() throws Exception;
+	int dayoffUpdate() throws Exception;  // 2~12월(1월제외)
+	int dayoffUpdateInJanuary() throws Exception;  // 1월
 
 	// 년도별 연차 상세 보여주기
 	List<DayoffVO> dayoffDetailViewByYear(Map<String, String> paraMap);

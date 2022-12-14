@@ -1,0 +1,711 @@
+@charset "UTF-8";
+min-width: 900px;
+thead {
+	tr, th {
+		border-top: none;
+		border-bottom: none!important;
+	 }
+}
+tbody {
+	th, td {
+		color: #777;
+		font-weight: 400;
+     font-weight: 300;
+	}
+}
+
+
+/* === 게시글목록 테이블 css === */
+.table thead th {
+	padding-top: 0;
+    border-bottom: 2px solid #d4d5d6;
+    border-top: 1px solid white;
+}
+.boardth{
+	position: relative;
+	top: -6px;
+}
+.table td{
+	font-size: 10pt;
+    border-bottom: 1px solid #eef2f6;
+    padding-left: 22px;
+}
+.table td:nth-child(1) {
+    padding-top: 27px;
+    border-right: 1.5px solid #eef2f6;
+}
+.table {
+    color: #4c4e54;
+}
+table tr{
+	padding-left: 10px;
+}
+table tr:hover {
+	background-color: #f4f8f9;
+}
+.topnotice{
+	background-color: #f9f9f9;
+}
+
+.username {
+    color: #6d7077;
+    font-weight: 600;
+    position: relative;
+    top: 2px;
+    margin-right: 15px;
+    margin-left: 6px;
+}
+
+
+
+/* === 게시글 목록 === */
+#title,#tagname {
+    height: 44px;
+    padding: 6px 16px 9px 16px;
+    padding-right: 30px;
+    background-color: #fafafa !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    border: 2px solid #e8e8e8 !important;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: calc(1.5 * 10px);
+    color: #484848;
+}
+
+.notopnotice {
+	margin-left: 19px;
+}
+
+
+#file{
+	font-size: 14px;
+}
+
+#title, #tagname {
+    display: block;
+    width: 100%;
+    background-clip: padding-box;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+input {
+    outline: none;
+}
+.control-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+    line-height: 1.43;
+    color: #9e9e9e;
+}
+#title:focus {
+    background-color: #fff !important;
+    border-color: #086bde !important;
+}
+#title:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+}
+
+
+.toastui-editor-defaultUI {
+    width: 100% !important;
+}
+
+/* 최근글 new 아이콘  */
+.newbadge{
+  background-color: #dc3545;
+  width: 12px;
+  height: 12px;
+  display:inline-block;
+  border-radius: 4px;
+  position: relative;
+  left:10px; 
+  color:white;
+  font-size:0.2rem;
+  font-weight:bold; 
+  text-align: center;
+  position: relative;
+     top: -2px;
+     left: 0%;
+  margin-right: 14px;
+}
+
+
+/* ===  옵션창  === */
+div.option {
+    border: 0px solid #b0b0b0d9;
+    padding: 20px;
+    margin-bottom: 22px;
+    width: 600px;  
+    height: auto; 
+    border-radius: 10px;
+    background-color: white;
+    display: inline-block;
+    font-size: 18pt;
+    box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
+    position: absolute;
+    top: 28.5%;
+    left: 55.5%;
+    z-index: 2;
+    overflow:hidden;
+ } 
+.detail-search-conditions {
+  margin: 10px 20px 0 30px;
+}
+.condition-cell.title {
+    width: 100px;
+    height: 43px;
+    /* padding-top: 14px; */
+    border: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    box-sizing: border-box;
+}
+.condition-cell {
+    display: table-cell;
+}
+.js-register-name-search-filter .condition-cell:last-child {
+    width: 80%;
+}
+.target-select-group {
+    margin: 16px 18px 12px 10px;
+    font-size: 10px;
+    color: #555;
+}
+.target-select-group li {
+    float: left;
+    min-width: 122px;
+    height: 28px;
+}
+/* 검색기간 라디오 체크*/
+.radio-label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: -23px;
+}
+.label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: 4px;
+    font-size: 11.5px;
+    top:-1px
+}
+.target-select-group .radio-label-checkbox::before {
+    margin-right: 12px;
+}
+.radio-label-checkbox::before {
+    display: inline-block;
+    content: "";
+    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
+    background-size: 560px auto;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+ul{
+	padding-left: 0;
+	list-style: none;
+	margin-bottom: 3rem;
+}
+/* 검색기간 라디오 라벨*/
+.custom-control-radio {
+    position: relative;
+    left: -5px;
+    top: 3px;
+    z-index: -1;
+ }
+ .radio-label-checkbox::before {
+    display: inline-block;
+    content: "";
+    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
+    background-size: 560px auto;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+ li{
+ 	font-size: 10pt;
+ }
+ 
+ /* 날짜 옵션 */
+.search-period-wr .filter-input-box {
+    overflow: hidden;
+    display: inline-block;
+    margin: 10px 0 0 0;
+    /* padding: 7px 44px 0 10px; */
+    height: 32px;
+    width: auto;
+}
+.filter-input-box {
+    position: relative;
+    height: 40px;
+    margin-top: 10px;
+    padding: 10px 15px 10px 15px;
+    background: #fff;
+    /* border: 1px solid #ddd; */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    /* border-radius: 4px; */
+    width: 100%;
+    font-size: 13px;
+}
+div.datebox > span > input {
+    bottom: 3px !important;
+    top: -10px !important;
+}    
+.attendance-dateSelector {
+    height: 30px;
+    display: inline-block;
+    border: solid 1px rgba(0, 0, 0, .1);
+    margin: 0;
+    width: 120px !important;
+    padding: 7px 20px 7px 20px;
+	border-radius: 7px;
+}
+
+.search-period-wr .filter-date-label {
+    right: 10px;
+}
+.filter-date-label {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+
+
+/* === 글쓰기 === */
+
+/* 카테고리박스 */
+#categorydiv{
+	position:absolute;
+	visibility:hidden;
+	font-size:12px;
+	background-color: white;
+	width:25%;
+	z-index: 2;
+	border: 1px solid gainsboro;
+    padding: 12px;
+    border-radius: 5px;
+}
+#option {
+	visibility:hidden;
+}
+.title:hover {
+    cursor: pointer;
+    text-decoration: underline; 
+}
+.offcanvas {
+    box-shadow: 5px 5px 20px 3px rgb(91 91 91 / 80%) !important;
+}
+/* 익명체크 */
+#ntRplAnonDiv{
+	display:none;
+}
+/* 댓글아이콘 */
+#iconbubble{
+	color:#4c4e54;
+	padding:0 auto;
+	font-size: 10pt;
+	position: relative; 
+	left:15px;
+	top:3px;"
+}
+/* 댓글깻수 */
+#bubblecnt{
+	position: relative; 
+	left:8px;
+	top:2px;
+}
+/* 파일첨부 아이콘 */
+#iconattachment{
+	color:#4c4e54;
+	font-size: 10pt;
+	position: relative; 
+	left:2px;
+}
+.radio-label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: -23px;
+}
+
+
+/* 공개범위, 알림설정 라디오 */
+.custom-control-radio2 {
+    position: relative;
+    left: 21px;
+    top: -2px;
+    z-index: -1;
+}
+.radio-label-checkbox2 {
+    position: relative;
+    cursor: pointer;
+    left: 21px;
+    top: -4px;
+    font-size: 9pt;
+    margin-right: 10px;
+    
+}
+.mr-1{
+	margin-right: 10px;
+}
+
+/* 옵션창 초기화버튼 */
+#optionreset{
+	margin-left: 90px; 
+	border: none; 
+	font-size: 8pt; 
+	font-weight:bold; 
+	border-radius: 3px; 
+	background-color:#3B86C812; 
+	color: #2E5E87;
+	padding: 5px 8px;
+	float: right;
+}
+/* 작성자 검색 */
+#writer{
+	box-shadow: none;
+	font-size:9pt; 
+	border-radius: 0px;
+	border-top: none;
+	border-radius: none;
+	border-left: none;
+	border-right: none;
+}
+
+/* 검색 */
+#searchCondition, #cntselect {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.form-control{
+	font-size: 12pt;
+}
+.row >*{
+	width: auto;
+	padding: 0;
+}
+
+
+/* 내게시물 */
+.groupIcon {
+	border: 1px solid #f7f7f7;
+	padding: 15px;
+	margin-bottom: 20px;
+	margin-right: 10px;
+	width: 18px;  
+	height: 18px; 
+	border-radius: 10px;
+	float: left;
+	
+	display: block; 
+	position: absolute; 
+	left: 121.5%;
+	font-size: 9pt; 
+	background-color: #f7f7f7;
+} 	
+
+.menu {
+	position: absolute;
+       top: 45px;
+    right: 0;
+    height: 100vh;
+    max-width: 0;
+    z-index: 1;
+    background-color: white;
+    border: none;
+}
+
+.burger-icon {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    z-index: 2;
+    padding: 8px 0px;
+    top: 5px;
+    right: 6px;
+    user-select: none;
+    width: auto;
+    margin: 0;
+}
+
+.burger-icon .burger-sticks {
+  background: #333;
+  display: block;
+  height: 2px;
+  position: relative;
+  transition: background .2s ease-out;
+  width: 18px;
+}
+
+.burger-icon .burger-sticks:before,
+.burger-icon .burger-sticks:after {
+  background: #333;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all .2s ease-out;
+  width: 100%;
+}
+
+.burger-icon .burger-sticks:before {
+  top: 5px;
+}
+
+.burger-icon .burger-sticks:after {
+  top: -5px;
+}
+
+.burger-check {
+  display: none;
+}
+
+.burger-check:checked~.menu {
+    max-width: 325px;
+    border: 1px solid #eeeeee;
+}
+
+.burger-check:checked~.burger-icon .burger-sticks {
+  background: transparent;
+}
+
+.burger-check:checked~.burger-icon .burger-sticks:before {
+  transform: rotate(-45deg);
+}
+
+.burger-check:checked~.burger-icon .burger-sticks:after {
+  transform: rotate(45deg);
+}
+
+.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:before,
+.burger-check:checked~.burger-icon:not(.steps) .burger-sticks:after {
+  top: 0;
+}
+
+.table>:not(:first-child){
+	border-top: solid 1px #eeeeee !important;
+}
+
+.orgmenu {
+	cursor: pointer;
+	text-decoration: none;
+	list-style: none;
+	color: #556372;
+    font-size: 10.5pt;
+   	/* line-height: 2px; */
+}
+
+li {
+	line-height: 24.2px;
+}
+
+li::marker {
+    color: #cccccc;
+    font-size: 12pt;
+}
+
+.summary {
+	padding-bottom: 8px; 
+	/* font-weight: bold;  */
+	font-size: 11pt;
+	color: #4C4E54;
+}
+
+.unfold {
+	padding-top: 10px;
+	font-weight: bold;
+	font-size: 10pt;
+	color: #4c4e54;
+	position: relative;
+}
+
+#cntbadge{
+    background-color: #e6e6e6;
+    padding: 0.5em 0.5em;
+    width: 12.5px;
+    height: 15px;
+    font-weight: 600;
+    color: #fbfbfb;
+    display: inline-block;
+    border-radius: 0.25rem;
+    box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 4%);
+    position: relative;
+    top: 9.3px;
+    left: 5px;
+}
+  #newCnt{
+    font-size: 5pt;
+    color: #4C4E54;
+    position: relative;
+    top: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    isolation: isolate;
+  }
+  
+  .unfoldAlert {
+  		border: 1px solid #f7f7f7;
+    padding: 6.3px;
+    text-align: center;
+    width: 106px;
+    height: 30px;
+    border-radius: 8px;
+    background-color: #4d4d4d;
+    color: #f2f2f2;
+    font-size: 8.5pt;
+    position: relative;
+    top: 1.3px;
+    left: 194px;
+  }
+
+
+.myscrap{
+	width: 487px;
+	height: 435px;
+	border-top: solid 2px #d4d5d6;
+	border-left: solid 1px #d4d5d6;
+	z-index: 1;
+	background-color: white;
+	color: #4c4e54;
+	position: relative; top: 25px; right: 476px;
+	display: none;
+}
+
+/* 내게시물 nav바 */
+.mgList-info a:hover{
+	color: #000000;
+	cursor: pointer;
+}
+
+.mgList-info {
+	margin-left: 4%;
+}
+
+.mgList {
+	margin-left: 7%;
+}
+
+.mgList-info {
+	font-size: 11pt;
+}
+
+.mgList-info > a {
+	display: inline-block;
+	width: 13%;
+	text-align: center;
+	padding: 5px;
+	text-decoration: none;
+}
+
+.mgList-info > a > span {
+    margin-left: 1px;
+    color: #37A652;
+    font-weight: bold;
+}
+
+
+/* .mg-current{
+	font-weight: bold;
+} */
+
+.mgList-contents{
+	height: 330px;
+}
+
+.ms-check + label i{
+	color: rgba(0,0,0,0.2);
+	font-size: 11pt;
+}
+
+.check-star{
+	font-size: 13pt;
+	color: rgba(0,0,0,0.3);
+	position: relative; bottom: 2px;
+}
+
+.ms-check + label i:hover, .check-star:hover{
+	cursor: pointer;
+}
+
+.ms-check + label:hover{color:#37A652;}
+.check-star:hover{color:#ffc107;}
+
+.mgList-contents td:first-child ~ td{
+	padding: 7px 5px;
+}
+
+.mg-noncheckmenu{
+	font-size: 10pt;
+}
+
+.mg-left-container{
+	border: none;
+}
+
+.myscrap-top{
+	position: absolute;
+	top: 20%;
+	height: 2px;
+	border: none;
+	background-color: red;
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+}
+
+.nb-info{
+	width: 53%;
+}
+
+/* 알림창  */
+div#alert {
+    display: none;
+    width: 273px;
+    height: 35px;
+    background-color: #4d4d4d;
+    color: white;
+    font-weight: bold;
+    font-size: 10pt;
+    border-radius: 2em;
+    padding-left: 32px;
+    position: fixed;
+    top: 15px;
+    right: 38%;
+    box-shadow: 1px 1px 1px 1.3px rgb(0 0 0 / 20%);
+}

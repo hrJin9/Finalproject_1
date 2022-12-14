@@ -244,8 +244,8 @@
 		with 
 		A as 
 		(select dono, fk_employee_no, fk_ano, docatgo, 
-		 to_char(startdate, 'yyyy.mm.dd') AS startdate, to_char(startdate, 'dy') AS startday,
-		 to_char(enddate, 'yyyy.mm.dd') AS enddate, to_char(enddate, 'dy') AS endday
+		 to_char(startdate, 'yyyy. mm. dd') AS startdate, to_char(startdate, 'dy') AS startday,
+		 to_char(enddate, 'yyyy. mm. dd') AS enddate, to_char(enddate, 'dy') AS endday
 		 from tbl_dayoff
 		),
 		B as
@@ -273,6 +273,10 @@
 		update tbl_employee set dayoff_cnt = dayoff_cnt+1
 		where employee_no != 99
 	</update>
+	
+	
+	
+	
 
 
 	<!-- 년도별 연차 상세 보여주기 -->
@@ -281,8 +285,8 @@
 		with 
 		A as 
 		(select dono, fk_employee_no, fk_ano, docatgo, 
-		 to_char(startdate, 'yyyy.mm.dd') AS startdate, to_char(startdate, 'dy') AS startday,
-		 to_char(enddate, 'yyyy.mm.dd') AS enddate, to_char(enddate, 'dy') AS endday
+		 to_char(startdate, 'yyyy. mm. dd') AS startdate, to_char(startdate, 'dy') AS startday,
+		 to_char(enddate, 'yyyy. mm. dd') AS enddate, to_char(enddate, 'dy') AS endday
 		 from tbl_dayoff
 		),
 		B as

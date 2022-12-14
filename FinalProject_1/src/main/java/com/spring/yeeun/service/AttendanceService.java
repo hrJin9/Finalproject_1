@@ -125,9 +125,10 @@ public class AttendanceService implements InterAttendanceService {
 	} */
 	
 	
+	// 매월 연차 업데이트 스프링 스케줄러
 	@Override
 	//@Scheduled(cron="0 30 4 1 * *")
-	@Scheduled(cron="0 30 4 1 2-12 *")  // 2~12월(1월 제외)
+	@Scheduled(cron="0 30 4 1 2-12 *")  // 매년 2~12월(1월 제외)
 	public int dayoffUpdate() throws Exception {
 		
 		int n = 0;
@@ -143,6 +144,24 @@ public class AttendanceService implements InterAttendanceService {
 		return n;
 	}
 
+	@Override
+	//@Scheduled(cron="0 30 4 1 1 *")  // 매년 1월
+	@Scheduled(cron="0 53 12 * * *") 
+	public int dayoffUpdateInJanuary() throws Exception {
+		
+		int n = 0;
+		try {
+			n = dao.addDayoffInJanuary();
+			System.out.println("올해 기본연차 업데이트가 완료되었습니다.");  
+			n = 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("n 결과 >>" + n);
+		
+		return n;
+	}
+	
 	
 	// 년도별 연차 상세 보여주기
 	@Override
