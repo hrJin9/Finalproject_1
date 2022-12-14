@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="meetingroom"> 
+
+	<!-- 회의실 예약하기  -->  
+	<insert id="meetingroom_add" parameterType="HashMap"> 
+		insert into tbl_meetingroom_reservation(reserno, startdate, enddate, r_content, fk_employee_no)  
+		values(seq_reserno.nextval, to_date(#{startdate}, 'yyyymmddhh24miss'), to_date(#{enddate}, 'yyyymmddhh24miss'), #{r_content}, #{fk_employee_no}) 
+	</insert> 
+
+
+
+
+
+
+
+</mapper>

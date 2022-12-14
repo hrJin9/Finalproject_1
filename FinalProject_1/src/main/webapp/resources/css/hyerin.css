@@ -171,6 +171,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 	box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
 	background-color: #566573;
 	position: absolute; left: 90px; bottom: 460px; 
+	z-index: 100;
 }
 
 .workingiweek-infobox > table{
@@ -199,15 +200,32 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .workingweek-sumbar-default{
 	background-color: #04BFAD;
 	height: 10px;
-	width: 20%;
+	width: 0%;
+	/* max-width: 70%; */
 	border-radius: 10px 0 0 10px;
+	float: left;
 }
+
+.workingweek-sumbar-add {
+    background-color: #ff5e4d;
+    height: 10px;
+    width: 0%;
+    max-width: 23%;
+    border-radius: 0 10px 10px 0;
+    float: left;
+    /* position: relative;
+    left: 757px;
+    z-index: 2; */
+}
+
 .workingweek-sumbar-goal{
-	height: 20px; width:5px;
+	height: 20px; width:9px;
 	background-color: #04BFAD;
 	border: solid 1px white;
 	border-radius: 10px;
-	position: relative; bottom: 15px; left: 70%;
+	position: relative; bottom: 15px; left: 77%;
+	z-index: 2;
+	clear: both;
 }
 
 .workingweek-sumbar-infobox{
@@ -1434,7 +1452,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mg-search{
 	display: inline-block;
 	float: right;
-	width: 54%;
+	width: 53%;
 }
 
 .mg-form{

@@ -5,11 +5,16 @@
  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/fonts/icomoon/style.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
 
 <style type="text/css">
 	.admin_container {
-		width: 88%;
+		width: 90%;
 		margin: 0 auto;
 	}
 
@@ -36,7 +41,6 @@
 		display: block;
 		width: 13%;
 		padding: 0.7em 0 0.9em 0;
-		color: #333;
 		text-decoration: none;
 		margin-right: 4%;
 		color: #D2D6D9;
@@ -97,15 +101,22 @@
 	.table thead th {
 		border-bottom: none;
 		text-align: center; 
+		padding: 8px 0 10px 0;
 	}
-	.boardth{
-		position: relative;
-		top: -6px;
+	
+	th > div {
+		cursor: pointer;
 	}
+	
 	.table td, .table th {
 		font-size: 11pt;
 	    border-top: 1px solid #eef2f6;
 	}
+	
+	.table th {
+		border-top: 1px solid #cccccc;
+	}
+	
 	.table {
 	    color: #4c4e54;
 	}
@@ -196,24 +207,108 @@
 	
 	}
 	
+	
+.dateSelector{
+    border: solid 1px #cccccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 11pt;
+    color: rgb(77, 79, 83);
+    width: 90px;
+    cursor: pointer;
+}
+
+.dateDown{
+	cursor:pointer;
+}
+	
 </style>
 
 <script type="text/javascript">
-	$(document).ready(function(){
+$(document).ready(function(){
+	
+	var sv = "${requestScope.paraMap.searchVal}";
+	var dc = "${requestScope.paraMap.dropCondition}";
+	var dv = "${requestScope.paraMap.dropVal}";
+	var sp = "${requestScope.paraMap.sizePerPage}";
+	
+	if(sv != "") 
+		$("input[name='sv']").val(sv);
+	if(dc != "")
+		$("#dc").val(dc);
+	if(dv != "")
+		$("#dv").val(dv);
+	if(sp != "")
+		$("#cntselect").val(sp);
+	
+	// 데이트피커
+	$(".dateSelector").datepicker({
+	    format: "yyyy",
+	    viewMode: "years", 
+	    minViewMode: "years",
+	    autoclose:true //to close picker once year is selected
+	});
+	/* 
+	flatpickr.localize(flatpickr.l10ns.ko);
+ 	flatpickr($(".dateSelector"));
+	$(".dateSelector").flatpickr({
+		dateFormat: "Y년",
+		defaultDate: new Date(),
+		local: 'ko'
+	});
+	
+	 */
+	
+	$(".dateDown").click(function(){
+		$(".dateSelector").trigger("click");
+	});
+	
+	
+	$(".dropdown-menu > a").click(function(){
+		var dc = $(this).parent().attr("id");
+		var dv = $(this).attr("id");
 		
-	});// end of$(document).ready(function(){})--------------------------
+		$("#dc").val(dc);
+		$("#dv").val(dv);
+		
+		var frm = document.adHolding;
+		frm.action = "<%=ctxPath%>/admin_attendanceList_holding.up";
+		frm.submit();
+	});
+	
+});// end of$(document).ready(function(){})--------------------------
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+// 엑셀 다운로드
+function getAdExcel(){
+	
+		
+		
+}//end getAdExcel()
+	
+	
+	
+	
+
+
 	   
 </script>
 
 <nav id="admin_mainList" class="margin-container">
-	<a id="admin_attendance_holding" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" style="color: black;" class="header-nonsub">휴가 보유 현황</a>
+	<a id="admin_attendance_holding" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" style="color: rgb(77, 79, 83);" class="header-nonsub">휴가 보유 현황</a>
 	<a id="admin_attendance_usage" href="<%= request.getContextPath()%>/admin_attendanceList_usage.up" class="header-nonsub">휴가 사용 내역</a>
 	<div class="list_underline"></div>
 </nav>
 <hr class="HRhr" style="margin-top: 0px;"/><br>
 
+<form id="adHolding" name="adHolding">
 <div class="admin_container">
 	<div class="contentsmargin">
+		<div style="display: inline-block;">
+			<input type="text" class="dateSelector"/>
+			<i class="fa-solid fa-angle-down dateDown" style="position:relative; right:26px; top:1px; color: #d4d4d4;"></i>
+		</div>
 		<div style="display: inline-block;">
       	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
 		       	<span><i class="fa-solid fa-download"></i></span>
@@ -222,33 +317,31 @@
       	 </div>
 		
 		<%-- 검색 --%>
-		<form action="#" class="booking-form ml-3" style="float: right;">
-			<div class="row" style="padding-bottom: 20px;">
-				<div>
-					<div class="form-group">
-						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-							<input type="text" class="form-control" placeholder="이름 검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
-						</div>
-					</div>
-				</div>
-				<div class="align-items-end mt-1 mr-4">
-					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.2%;"></a>
-					</div>
-				</div>
-				<div class=" mr-2">
-					<div class="form-group">
-						<div class="form-field" style="padding-right:10px;">
-							<select name="cntselect" id="cntselect" style="font-size: 9pt; padding:6.7px 12px;">
-								<option value="">20</option>
-								<option value="">40</option>
-								<option value="">80</option>
-							</select>
-						</div>
+		<div class="row" style="padding-bottom: 20px; float:right;">
+			<div>
+				<div class="form-group">
+					<div class="form-field" style="padding-left:5px; margin-right: 14px;">
+						<input type="text" class="form-control" name="sv" placeholder="이름 검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
 					</div>
 				</div>
 			</div>
-		</form>
+			<div class="align-items-end mt-1 mr-4">
+				<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
+					<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.2%;"></a>
+				</div>
+			</div>
+			<div class=" mr-2">
+				<div class="form-group">
+					<div class="form-field" style="padding-right:10px;">
+						<select name="sp" id="cntselect" style="font-size: 9pt; padding:6.7px 12px;">
+							<option>20</option>
+							<option>40</option>
+							<option>80</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		
 		<%-- 전체 구성원 --%>
@@ -258,48 +351,22 @@
 		<table class="table custom-table">   
 	    	<thead>   
 	            <tr>
-	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
-					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">인사·총무</a>
-					      <a class="dropdown-item" href="#">회계·재무</a>
-					      <a class="dropdown-item" href="#">법무</a>
-					      <a class="dropdown-item" href="#">감사</a> 
-					      <a class="dropdown-item" href="#">업무지원</a>
-					      <a class="dropdown-item" href="#">경영지원</a> 
-					      <a class="dropdown-item" href="#">영업</a> 
-					      <a class="dropdown-item" href="#">마케팅·홍보</a> 
-					      <a class="dropdown-item" href="#">기획</a> 
-					      <a class="dropdown-item" href="#">IT</a> 
-					      <a class="dropdown-item" href="#">디자인</a> 
-					      <a class="dropdown-item" href="#">연구·R&D</a> 
-					      <a class="dropdown-item" href="#">구매</a> 
-					      <a class="dropdown-item" href="#">무역</a> 
-					      <a class="dropdown-item" href="#">생산</a> 
-					      <a class="dropdown-item" href="#">서비스</a> 
+	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></div></th>
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>  
+					  <div id="department_name" class="dropdown-menu">
+					     <a id="" class="dropdown-item" href="#">전체</a>
+					  		<c:forEach var="dvo" items="${requestScope.dvoList}">
+					  			<a id="${dvo.department_name}" class="dropdown-item" href="#">${dvo.department_name}</a>
+					  		</c:forEach>
+				  			<a id="none" class="dropdown-item" href="#">미지정</a>
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
-					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">대표</a>
-					      <a class="dropdown-item" href="#">부대표</a>
-					      <a class="dropdown-item" href="#">이사</a>
-					      <a class="dropdown-item" href="#">전무</a> 
-					      <a class="dropdown-item" href="#">상무</a> 
-					      <a class="dropdown-item" href="#">본부장</a> 
-					      <a class="dropdown-item" href="#">부장</a> 
-					      <a class="dropdown-item" href="#">차장</a> 
-					      <a class="dropdown-item" href="#">실장</a> 
-					      <a class="dropdown-item" href="#">과장</a> 
-					      <a class="dropdown-item" href="#">대리</a> 
-					      <a class="dropdown-item" href="#">주임</a> 
-					      <a class="dropdown-item" href="#">사원</a> 
-					      <a class="dropdown-item" href="#">연구원</a> 
-					      <a class="dropdown-item" href="#">수석연구원</a> 
-					      <a class="dropdown-item" href="#">책임연구원</a> 
-					      <a class="dropdown-item" href="#">선임연구원</a> 
-					      <a class="dropdown-item" href="#">전임연구원</a> 
-					      <a class="dropdown-item" href="#">주임연구원</a> 
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
+					  <div id="position" class="dropdown-menu">
+						<a id="" class="dropdown-item" href="#">전체</a>
+						<c:forEach var="position" items="${requestScope.pList}">
+						<a id="${position}" class="dropdown-item" href="#">${position}</a>
+						</c:forEach>
 					  </div>
 				  </th>
 	              <th class="boardth" width="12%" scope="col">총 연차</th>
@@ -308,41 +375,33 @@
 	            </tr> 
 			</thead>
 			<tbody>
-	            <tr> 
-	              <td>김지은</td>
-	              <td>영업</td>
-	              <td>대리</td>
-	              <td>16</td>
-	              <td>11</td>
-	              <td>5</td>
-	            </tr> 
-	            <tr> 
-	              <td>이예은</td>
-	              <td>기획</td>
-	              <td>부장</td>
-	              <td>23</td>
-	              <td>20</td>
-	              <td>3</td>
-	            </tr> 
-	            <tr> 
-	              <td>강채영</td>
-	              <td>디자이너</td>
-	              <td>과장</td>
-	              <td>20</td>
-	              <td>19</td>
-	              <td>1</td>
-	            </tr> 
-	            <tr> 
-	              <td>진혜린</td>
-	              <td>IT</td>
-	              <td>차장</td>
-	              <td>26</td>
-	              <td>20</td>
-	              <td>6</td>
-	            </tr> 
+				<c:if test="${not empty requestScope.evoList }">
+					<c:forEach var="evo" items="${requestScope.evoList}">
+						<tr>
+							<td>${evo.name_kr}</td>
+							<td>${evo.department_name}</td>
+							<td>${evo.position }</td>
+							<td>
+								<c:set var="total" value="${evo.useCnt + evo.dayoff_cnt}"/>
+								${total}
+							</td>
+							<td>${evo.useCnt}</td>
+							<td>${evo.dayoff_cnt}</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				<c:if test="${ empty requestScope.evoList }">
+					<tr><td colspan="6" style="color: #9c9c9c;">조회된 구성원이 없습니다.</td></tr>
+				</c:if>
 	    	</tbody>            
 		</table>
-	
+		<div style="text-align: center;">
+			${requestScope.pageBar}
+		</div>
   	</div>
   </div>
-</div>
+  
+	<input id="dc" type="hidden" name="dc" value=""/>
+	<input id="dv" type="hidden" name="dv" value=""/>
+  
+</form>

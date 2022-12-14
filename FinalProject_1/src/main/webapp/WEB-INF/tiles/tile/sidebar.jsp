@@ -159,7 +159,7 @@
     <span></span>
     <span></span>
   </label>
-  <div class="sidebar">
+  <div class="sidebar" style="z-index: 100;">
 
     <div class="profile profile2" href="#" style="margin-top: 29px; margin-bottom:30px;">
       	<c:if test="${empty sessionScope.loginuser.profile_systemfilename }">
@@ -201,13 +201,13 @@
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-history"></span><span class="menu-text">로그관리</span></a></li>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_memberList.up'"><a><span class="icon icon-user-tie"></span><span class="menu-text">구성원관리</span></a></li>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_payroll.up'"><a><span class="icon icon-magic-wand"></span><span class="menu-text">급여정산</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_attendanceList_usage.up'"><a><span class="icon icon-briefcase"></span><span class="menu-text">근태관리</span></a></li>
+	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_attendanceList_holding.up'"><a><span class="icon icon-briefcase"></span><span class="menu-text">근태관리</span></a></li>
      		</div>
       </ul> 
     </div>
   </div>
   
-  <div id="list-example" class="list-group myprofile"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        style="display:none; width: 200px; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 1; box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.1);">
+  <div id="list-example" class="list-group myprofile" style="display:none; width: 200px; border-radius: 10px; position: fixed; top: 13.5%; left: 1%; z-index: 100; box-shadow: 0px 15px 20px 0px rgba(0,0,0,0.1);">
      <a class="list-group-item list-group-item-action" href="<%= request.getContextPath()%>/memberInfo_hr.up?empno=${sessionScope.loginuser.employee_no}" style="font-size: 14px; cursor: pointer;">
         <i class="far fa-user-circle" style="padding-right: 8px; font-size: 11pt;"></i>
         <span style="font-weight: bold; font-size: 9pt; margin-bottom: 3.5px;">내 프로필</span><br>

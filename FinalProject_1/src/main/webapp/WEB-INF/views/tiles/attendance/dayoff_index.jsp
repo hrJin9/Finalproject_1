@@ -101,6 +101,7 @@
 	     			
 					html = '<span id="dayoff-usecnt"></span>';
 				
+					
 		           	if(json.length != 0) {
 			     		$.each(json, function(index, item){
 			     			html += '<tr>'
@@ -118,6 +119,7 @@
 										+ '<div class="dayoff-cntinfo"><div>'+item.usedays+'일</div></div>'
 									+ '</td>'
 								+ '</tr>';
+		     			  
 			     		}); 
 		            }
 			        else {
@@ -160,9 +162,6 @@
 	
 	
 	
-	
-	
-	
 </script>
 <div class="dayoff-index-container">
 	<div class="dayoff-write">
@@ -172,7 +171,8 @@
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="25px"/>
 				<div>
 					<div>연차 신청</div>
-					<div><span>1</span>일 / <span>15</span>일</div>
+					<%-- <div><span>${requestScope.evo.dayoff_cnt}</span>일 / <span>20</span>일</div> --%>
+					<div><span>${requestScope.evo.dayoff_cnt}</span>일 / <span>${requestScope.totalUsedays}</span>일</div>
 				</div>			
 			</div>
 			<div class="dayoff-box sick" onclick="javascript:location.href='<%=ctxPath%>/approval/writing.up?type=sick'">
@@ -282,14 +282,14 @@
 	
 	
 	<!-- 오프캔버스 시작 -->
-	<div class="offcanvas offcanvas-end dayoff-offcanvas" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+	<!-- <div class="offcanvas offcanvas-end dayoff-offcanvas" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 	  <div class="offcanvas-header">
 	    <div class="offcanvas-title headeroffcanvas" id="offcanvasScrollingLabel"></div>
 	    <div class="do-oc-header">
 	    	<div><span class="pic"><span>지은</span></span></div>
 	    	<div>
 	    		<div style="font-weight: bold;"><span>김지은</span>님의 휴가 요청</div>
-		    	<div class="do-oc-date"></div> <!-- 여긴 자바스크릡트 안해도 됨! -->
+		    	<div class="do-oc-date"></div> 여긴 자바스크릡트 안해도 됨!
 	    	</div>
 	    </div>
 	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -321,7 +321,7 @@
   			<button type="reset" class="do-oc-cancel">휴가 취소하기</button>
 	  	</div>
 	  </div>
-	</div>
+	</div> -->
 	<!-- 오프캔버스 끝 -->
 	
 	

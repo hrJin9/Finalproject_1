@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="board_header.jsp"%>
+<%@ include file="noticeboard_header.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style type="text/css">
 	
@@ -338,8 +338,8 @@ $(document).ready(function(){
 	       	</div>  
 	       	<div class="writeinfo">
 	       		<img class="boardprofile mr-2 mt-1" width="35px" height="35px" style="border-radius: 13px;background-color: white;box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 6%);" src="<%= request.getContextPath()%>/resources/images/로고2.jpg"> 
-	       		<span class="teamname">THUMBS UP</span>
-	     		<span class="writedate">11.16</span>
+	       		<span class="teamname">관리자</span>
+	     		<span class="writedate">2022.11.16</span>
 			     
 	       	</div>
        	</div>
