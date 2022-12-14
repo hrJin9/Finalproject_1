@@ -959,16 +959,117 @@ where employee_no != 99
 
 
 
-
-
-
-
-
-
 -----------------------------------------------------------------------------------------
 게시판
 
-desc tbl_notice_board
+desc tbl_notice_board;
+desc tbl_employee;
+drop table tbl_notice_board purge;
+drop table tbl_nb_smcategory purge;
+
+-- 공지게시판(최종)
+create table tbl_notice_board
+(nbno                 varchar2(30)          not null     -- 공지게시물번호
+-- ,nb_tpye             varchar2(30)          not null    -- 공지사항분류
+,fk_employee_no       number(6)             not null     -- 사원번호  
+,name_kr              varchar2(40)          not null     -- 작성자명
+--,position             varchar2(100)         not null   -- 직위
+,categoryTag          nvarchar2(30)         not null      -- 게시글분류번호
+,subject              Nvarchar2(200)        not null     -- 글제목
+,content              clob                  not null     -- 글내용
+,priority             number default 0      not null     -- 상단고정   1:상단고정,  0:고정안함
+,writedate            date default sysdate  not null     -- 작성일자
+,readcnt              number default 0      not null     -- 글조회수    
+,status               number(1) default 1   not null     -- 글삭제여부  1:사용가능한 글,  0:삭제된글
+,nb_fileName          varchar2(255)                      -- 저장될 파일명    => WAS(톰캣)에 저장될 파일명(2022103109271535243254235235234.png)                    
+,nb_orgFilename       varchar2(255)                      -- 오리지널파일명    => 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명 
+,fileSize            number                              -- 파일크기 
+
+,constraint PK_tbl_notice_board_nbno primary key(nbno)
+,constraint FK_tbl_notice_board_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no)
+,constraint CK_tbl_notice_board_status check( status in(0,1) )
+);
+
+-- 게시글 분류(공지게시판)
+create table tbl_nb_smcategory
+(sm_nbc_no         nvarchar2(30)  not null     -- 게시글분류번호
+,sm_nbc_name       varchar2(50)   not null     -- 게시글분류명
+,constraint PK_tbl_nb_smcategory primary key(sm_nbc_no)
+);
+
+insert into tbl_nb_smcategory(sm_nbc_no, sm_nbc_name)
+values(1, '인사');
+
+insert into tbl_nb_smcategory(sm_nbc_no, sm_nbc_name)
+values(2, '경조사');
+
+insert into tbl_nb_smcategory(sm_nbc_no, sm_nbc_name)
+values(3, '행사');
+
+insert into tbl_nb_smcategory(sm_nbc_no, sm_nbc_name)
+values(4, '일반');
+commit;
+
+select *
+from tbl_nb_smcategory;
+
+
+insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status)
+values(seq_tbl_nboard.nextval, '99', '관리자', '일반', '[전원필독] ★퇴근 시 유의사항★', '해당 사항을 주의해주세요.', default, default, default, default);
+commit;
+
+select *
+from tbl_notice_board;
+
+delete from tbl_notice_board;
+commit;
+
+select *
+from tbl_employee
+
+
+insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status, nb_fileName, nb_orgFilename, fileSize) 
+values(seq_tbl_nboard.nextval, #{fk_employee_no}, #{name_kr}, #{categoryTag}, #{subject}, #{content}, #{priority}, default, default, default, #{nb_fileName}, #{nb_orgFilename}, #{fileSize}) 
+
+insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status)
+values(seq_tbl_nboard.nextval, '99', '관리자', '일반', '[전원필독] ★퇴근 시 유의사항★', '해당 사항을 주의해주세요.', default, default, default, default);
+
+insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status, nb_fileName, nb_orgFilename, fileSize)
+values(seq_tbl_nboard.nextval, '99', '관리자', '일반', '[전원필독] ★퇴근 시 유의사항★', '해당 사항을 주의해주세요.', default, default, default, default);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
