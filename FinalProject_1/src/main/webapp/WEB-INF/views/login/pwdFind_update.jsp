@@ -39,19 +39,16 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/jquery.form.min.js"></script>
 
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  
-<style type="text/css">
 
-	@font-face {
-	    font-family: 'Pretendard-Regular';
-	    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-	    font-weight: 400;
-	    font-style: normal;
-	}
+<!-- pretendard-font -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css" />
+
+<style type="text/css">
 	
 	*{
-		font-family: Pretendard-Regular;	
-		color: #404040;
+		font-family: 'Pretendard';
+		font-weight: 600;	
+		color:	#595959;
 	}
 	
 	.pwdChangeFrm {
@@ -61,7 +58,7 @@
 	li input {
 		border: 1.5px solid #cccccc;
 		border-radius: 3.5px;
-		width: 52%;
+		width: 66%;
 		padding: 5px 10px;
 		opacity: 0.85;
 		font-size: 9pt;
@@ -69,14 +66,17 @@
 	}
 	
 	input:focus {
-		border: 1.8px solid #4285f4;
-    	outline: none;
+		outline: none;
+		border: 1.8px solid transparent;
+		background-image: linear-gradient(white, white), linear-gradient(60deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+    	background-origin: border-box;
+    	background-clip: padding-box, border-box;
 	}
 	
 	label {
 		display: inline-block; 
 		width: 90px; 
-		margin-left: 18px;
+		margin-left: 5px;
 		margin-right: 25px;
 		font-size: 10pt;
 		font-weight: bold;
@@ -90,15 +90,14 @@
 	}
 	
 	#btnChange {
-	    border: 1px solid #4285f4;
-		width: 70%; 
+		width:70%; 
 		margin-left: 15px;
-		margin-top: 90px;
 	    padding: 5px;
-		background-color: #4285f4;
+		background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+		border: rgb(0 101 204) 1px solid;
 		color: white;
 		font-size: 12pt;
-		border-radius: 30px;
+		border-radius: 5px;
 	}
 	
 	#btnChange:hover {
@@ -116,10 +115,17 @@
 		position: fixed; 
 		top: 98px;
 		right: 0;
-		/* right: 81px; */
+		right: 81px;
 		box-shadow: 1px 1px 1px 1.3px rgba(0, 0, 0, 0.2);
 	}
 	 */
+	#btnReset{
+	    border: solid 1px #dbdbdb;
+	    font-size: 11pt;
+	    color: rgba(36, 42, 48, 0.48);
+	    width: 15%;
+        margin: 0px 10px 0 15px;
+	}
 </style>
   
   
@@ -129,15 +135,18 @@ $(document).ready(function(){
     
 	$(".error").hide();
 	
-	console.log()
-	
 	// ***** 나중에 8자~15자로 입력과 영문,숫자,특수문자 각 1개 이상 사용의 유효성 검사에 따라 체크표시 색깔 변하도록 하면 될듯 하다. *****
 	
 	/* $("input#newPassword").keyup(function(){ // 입력란 클릭시
 		$(".pwdAlert").hide();
 	}); */
 	
-	$("#modarTitle").text("비밀번호 변경");
+	$("#modarTitle",parent.document).text("비밀번호 변경");
+	
+	$("#btnReset").click(function(){
+		$("#pwdFindClose",parent.document).trigger("click");
+	});
+	
 	
 });// end of $(document).ready(function(){})-------------------------------------
 
@@ -215,7 +224,7 @@ function changePwd(){
 	    <li style="margin: 10px 0 6px 0;">
 	       <label for="password">새 비밀번호</label>
 	       <input type="password" class="newPassword" name="passwd" id="passwd" size="25" placeholder="새 비밀번호" autocomplete="off" required />
-	       <div id="pwdalert" class="pwdAlert" style="font-size: 9pt; color: #666666; margin-left: 138px;">비밀번호는 8자~15자 영문,숫자,특수문자로 입력하세요.</div>
+	       <div id="pwdalert" class="pwdAlert" style="font-size: 9pt; color: #666666; margin-left: 125px;">비밀번호는 8자~15자 영문,숫자,특수문자로 입력하세요.</div>
 	    </li>
 	    <li>
 	       <label for="password"></label>
@@ -225,7 +234,8 @@ function changePwd(){
    </ul>
 
 	<div class="text-center">
-		<button type="button" class="btn btn-success" id="btnChange" onclick="changePwd()">변경하기</button>
+		<button type="reset" class="btn" id="btnReset">취소</button>
+		<button type="button" class="btn" id="btnChange" onclick="changePwd()">변경하기</button>
     </div>
     <input type="hidden" name="employee_no" value="${requestScope.employee_no}"/>
 </form>

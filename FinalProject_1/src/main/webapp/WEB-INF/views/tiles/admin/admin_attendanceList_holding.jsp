@@ -39,7 +39,6 @@
 	
 	#admin_mainList a {
 		display: block;
-		width: 13%;
 		padding: 0.7em 0 0.9em 0;
 		text-decoration: none;
 		margin-right: 4%;
@@ -64,18 +63,49 @@
 	    color: #212529;
 	    background-color: #fff;
 	    background-clip: padding-box;
-	    border: 1px solid #ced4da;
+	    border: 1px solid rgba(0,0,0,0.1);
 	    border-radius: 0.25rem;
 	}
 
 	.form-control{
-		font-size: 12pt;
+		font-size: 10pt !important;
+		border: 1px solid rgba(0,0,0,0.1);
 	}
 	.row >*{
 		width: auto;
 		padding: 0;
 	}
 	
+	.custom-table{
+	    border-collapse: collapse;
+	    border-radius: 5px;
+	    border-style: hidden;
+	    box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+	    width: 100%;
+	    font-size: 11pt;
+	    color: rgb(77, 79, 83);
+	    text-align: left;
+	    font-weight: 400;
+	}
+	
+	.custom-table th {
+		background-color : #FBFBFB;
+		border-radius: 5px;
+		padding: 10px 20px;
+		border-bottom: solid 1px rgba(0,0,0,0.1);
+		border-right: solid 1px rgba(0,0,0,0.1);
+	}
+	
+	.custom-table td {
+		padding: 7px 20px;
+		border: solid 1px rgba(0,0,0,0.1);
+	}
+	
+	.custom-table th > div {
+		cursor:pointer;
+	}
+	
+	/* 
 	.custom-table {
 		min-width: 900px;
 		thead {
@@ -91,13 +121,17 @@
 			    }
 		      }
 	}
+	 */
 	
+	
+	
+	/* 
 	.table>:not(:first-child) {
 	       border-top: 1.5px solid #cfcfcf;
 	}
+	  */
 	 
-	 
-	
+	/* 
 	.table thead th {
 		border-bottom: none;
 		text-align: center; 
@@ -110,11 +144,11 @@
 	
 	.table td, .table th {
 		font-size: 11pt;
-	    border-top: 1px solid #eef2f6;
+	    border-top: 1px solid #dbdbdb;
 	}
 	
 	.table th {
-		border-top: 1px solid #cccccc;
+		border-top: 1px solid rgba(0,0,0,0.1);
 	}
 	
 	.table {
@@ -124,6 +158,9 @@
 		font-size: 11pt;
 		text-align: center; 
 	}
+	 */
+	
+	
 	
 	.custom-dropdown {
 	border: none!important;
@@ -209,7 +246,7 @@
 	
 	
 #year{
-    border: solid 1px #cccccc;
+    border: solid 1px rgba(0,0,0,0.1);
     border-radius: 5px;
     padding: 5px 10px;
     font-size: 11pt;
@@ -251,7 +288,6 @@ $(document).ready(function(){
 	    format: "yyyy",
 	    viewMode: "years",
 	    minViewMode: "years",
-	    todayBtn: true,
 	    autoclose:true //to close picker once year is selected
 	});
 	
@@ -294,16 +330,25 @@ $(document).ready(function(){
 		frm.submit();
 	});
 	
+	
+	$("#write").click(function(){
+		getExcelAd();
+	});
+	
+	
 });// end of$(document).ready(function(){})--------------------------
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-// 엑셀 다운로드
-function getAdExcel(){
+//엑셀 다운로드
+function getExcelAd(){
 	
-		
-		
-}//end getAdExcel()
+	const frm = document.adHolding;
+	frm.method = "post";
+	frm.action = "<%= ctxPath%>/getExcelAd.up";
+	frm.submit();
+	
+}//end of getExcelEmp
 	
 	
 	
@@ -324,11 +369,11 @@ function getAdExcel(){
 <div class="admin_container">
 	<div class="contentsmargin">
 		<div style="display: inline-block;">
-			<input id="year" name="year" type="text" class="dateSelector" data-provide="datepicker" style="border: solid 1px #cccccc;border-radius: 5px;padding: 5px 10px;font-size: 11pt;color: rgb(77, 79, 83);width: 90px;cursor: pointer;" readonly/>
+			<input id="year" name="year" type="text" class="dateSelector" data-provide="datepicker" style="border: solid 1px rgba(0,0,0,0.1);border-radius: 5px;padding: 5px 10px;font-size: 11pt;color: rgb(77, 79, 83);width: 90px;cursor: pointer;" readonly/>
 			<i class="fa-solid fa-angle-down dateDown" style="cursor: pointer; position:relative; right:26px; top:1px; color: #d4d4d4;"></i>
 		</div>
 		<div style="display: inline-block;">
-      	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
+      	 	<a  id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid rgba(0,0,0,0.1); border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
 		       	<span><i class="fa-solid fa-download"></i></span>
 		       	<span>목록 다운로드</span>
       	 	</a>
@@ -339,19 +384,19 @@ function getAdExcel(){
 			<div>
 				<div class="form-group">
 					<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-						<input type="text" class="form-control" name="sv" placeholder="이름 검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+						<input type="text" class="form-control" name="sv" placeholder="이름 검색" style="width:105%; font-size: 10pt; padding:6px 6px;">
 					</div>
 				</div>
 			</div>
 			<div class="align-items-end mt-1 mr-4">
 				<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-					<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.2%;"></a>
+					<a  class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 9.2%; top:17.2%;"></a>
 				</div>
 			</div>
 			<div class=" mr-2">
 				<div class="form-group">
 					<div class="form-field" style="padding-right:10px;">
-						<select name="sp" id="cntselect" style="font-size: 9pt; padding:6.7px 12px;">
+						<select name="sp" id="cntselect" style="font-size: 10pt; padding:8px 12px; font-weight: 500; color: #4d4f53;">
 							<option>20</option>
 							<option>40</option>
 							<option>80</option>
@@ -366,24 +411,26 @@ function getAdExcel(){
 		<div style="margin-bottom: 15px; float: left;">
 			<%-- 테이블 상단 버튼 만들기 --%>
 		</div>
-		<table class="table custom-table">   
+		<table class="custom-table my-3">   
 	    	<thead>   
 	            <tr>
-	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></div></th>
-	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>  
+	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none;">이름
+	              <!-- <span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span> -->
+	              </div></th>
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>  
 					  <div id="department_name" class="dropdown-menu">
-					     <a id="" class="dropdown-item" href="#">전체</a>
+					     <a id="" class="dropdown-item" >전체</a>
 					  		<c:forEach var="dvo" items="${requestScope.dvoList}">
-					  			<a id="${dvo.department_name}" class="dropdown-item" href="#">${dvo.department_name}</a>
+					  			<a id="${dvo.department_name}" class="dropdown-item" >${dvo.department_name}</a>
 					  		</c:forEach>
-				  			<a id="none" class="dropdown-item" href="#">미지정</a>
+				  			<a id="none" class="dropdown-item" >미지정</a>
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div id="position" class="dropdown-menu">
-						<a id="" class="dropdown-item" href="#">전체</a>
+						<a id="" class="dropdown-item" >전체</a>
 						<c:forEach var="position" items="${requestScope.pList}">
-						<a id="${position}" class="dropdown-item" href="#">${position}</a>
+						<a id="${position}" class="dropdown-item" >${position}</a>
 						</c:forEach>
 					  </div>
 				  </th>

@@ -62,4 +62,129 @@
 	</select>
 	
 	
+	
+	<select id="getAdUseListAll" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, name_kr, fk_department_no, department_name, position, useCnt, dayoff_cnt
+		from
+		(
+		    select row_number() over(order by employee_no desc) as rno, employee_no, name_kr, fk_department_no, department_name, position, nvl(useCnt,0) as useCnt, dayoff_cnt
+		    from
+		    (
+		        select fk_employee_no, sum(nvl(to_date(to_char(enddate, 'yyyy-mm-dd'), 'yyyy-mm-dd hh24:mi:ss') - to_date(to_char(startdate, 'yyyy-mm-dd'), 'yyyy-mm-dd hh24:mi:ss'),0)) as useCnt
+		        from tbl_dayoff
+		        where to_char(startdate, 'yyyy') = #{year}
+		        group by fk_employee_no
+		    )
+		    right join v_employee
+		    on fk_employee_no = employee_no
+		    where employee_no != 99
+		)
+	</select>
+	
+	
+	
+	<!--전체 사용목록 개수 가져오기  -->
+	<select id="getTotalAdUseList" parameterType="HashMap" resultType="int">
+		select count(*)
+		from
+		(
+		    
+		    select row_number() over(order by startdate desc) as rno, employee_no, E.name_kr, fk_department_no, department_name, position, ap_type, startdate, enddate, writeday, final_signyn
+		    from
+		    (
+		        select *
+		        from tbl_approval
+		        where ap_type in ('연차','경조','공가','병가')
+		    )
+		    join tbl_dayoff
+		    on ano = fk_ano
+		    join v_employee E
+		    on fk_empno = employee_no
+		    where to_char(startdate,'yyyy') = #{year}
+		    <if test="sc == 'name_kr' and sv != ''">
+			    and lower(E.name_kr) like '%'||lower(#{sv})||'%'
+		    </if>
+		    <if test="sc == 'period' and sv != ''">
+			    and to_date(to_char(startdate,'yyyy-mm-dd')) between to_date(#{startdate}) and to_date(#{enddate})
+		    </if>
+		    <if test="dc != '' and dv != '' and dv != 'none'">
+		    	and ${dc} = #{dv}
+		    </if>
+		    <if test="dc != '' and dv != '' and dv == 'none'">
+		    	and department_name is null
+		    </if>
+		)
+	</select>
+	
+	
+	<!--전체 사용목록 가져오기  -->
+	<resultMap type="HashMap" id="getAdUseList_map">
+		<result property="employee_no" column="employee_no" javaType="String"/>
+		<result property="name_kr" column="name_kr" javaType="String"/>
+		<result property="fk_department_no" column="fk_department_no" javaType="String"/>
+		<result property="department_name" column="department_name" javaType="String"/>
+		<result property="position" column="position" javaType="String"/>
+		<result property="ap_type" column="ap_type" javaType="String"/>
+		<result property="startdate" column="startdate" javaType="String"/>
+		<result property="enddate" column="enddate" javaType="String"/>
+		<result property="writeday" column="writeday" javaType="String"/>
+		<result property="final_signyn" column="final_signyn" javaType="String"/>
+	</resultMap>	
+	
+	<select id="getAdUseList" parameterType="HashMap" resultMap="getAdUseList_map">
+		select employee_no, name_kr, fk_department_no, department_name, position, ap_type, to_char(startdate,'yyyy-mm-dd') as startdate, to_char(enddate,'yyyy-mm-dd') as enddate, to_char(writeday,'yyyy-mm-dd') as writeday, final_signyn
+		from
+		(
+		    
+		    select row_number() over(order by startdate desc) as rno, employee_no, E.name_kr, fk_department_no, department_name, position, ap_type, startdate, enddate, writeday, final_signyn
+		    from
+		    (
+		        select *
+		        from tbl_approval
+		        where ap_type in ('연차','경조','공가','병가')
+		    )
+		    join tbl_dayoff
+		    on ano = fk_ano
+		    join v_employee E
+		    on fk_empno = employee_no
+		    where to_char(startdate,'yyyy') = #{year}
+		    <if test="sc == 'name_kr' and sv != ''">
+			    and lower(E.name_kr) like '%'||lower(#{sv})||'%'
+		    </if>
+		    <if test="sc == 'period' and sv != ''">
+			    and to_date(to_char(startdate,'yyyy-mm-dd')) between to_date(#{startdate}) and to_date(#{enddate})
+		    </if>
+		    <if test="dc != '' and dv != '' and dv != 'none'">
+		    	and ${dc} = #{dv}
+		    </if>
+		    <if test="dc != '' and dv != '' and dv == 'none'">
+		    	and department_name is null
+		    </if>
+		)
+		where rno between #{startRno} and #{endRno}
+	</select>
+	
+	
+	<select id="getExcelAdUseListAll" parameterType="HashMap" resultMap="getAdUseList_map">
+		select employee_no, name_kr, fk_department_no, department_name, position, ap_type, to_char(startdate,'yyyy-mm-dd') as startdate, to_char(enddate,'yyyy-mm-dd') as enddate, to_char(writeday,'yyyy-mm-dd') as writeday, final_signyn
+		from
+		(
+		    
+		    select row_number() over(order by startdate desc) as rno, employee_no, E.name_kr, fk_department_no, department_name, position, ap_type, startdate, enddate, writeday, final_signyn
+		    from
+		    (
+		        select *
+		        from tbl_approval
+		        where ap_type in ('연차','경조','공가','병가')
+		    )
+		    join tbl_dayoff
+		    on ano = fk_ano
+		    join v_employee E
+		    on fk_empno = employee_no
+		    where to_char(startdate,'yyyy') = #{year}
+		)
+	</select>
+	
+	
+	
 </mapper>

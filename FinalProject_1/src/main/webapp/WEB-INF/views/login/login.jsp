@@ -39,18 +39,15 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/jquery.form.min.js"></script>
 
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<!-- pretendard-font -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css" />
 
 <style type="text/css">
 
-	@font-face {
-	    font-family: 'Pretendard-Regular';
-	    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-	    font-weight: 400;
-	    font-style: normal;
-	}
 	
 	*{
-		font-family: Pretendard-Regular;		
+		font-family: 'Pretendard';
+		font-weight: 500;		
 	}
 	
 	form#login_frm {
@@ -68,7 +65,7 @@
 	
 	/* 아이디, 비밀번호 박스*/
  	div#input_login > input {
-		border: 2px solid #cccccc;
+		border: 2px solid #dbdbdb;
 		width: 99%;
 		padding: 10px 30px;
 		margin: 3px 0;
@@ -79,8 +76,11 @@
 	} 
 	
 	div#input_login > input:focus {
-		border-color:#4285f4;
     	outline: none;
+		border: 2px solid transparent;
+		background-image: linear-gradient(white, white), linear-gradient(60deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+    	background-origin: border-box;
+    	background-clip: padding-box, border-box;
 	}
 	
 	div#input_login > input::placeholder {
@@ -94,10 +94,10 @@
 	
 	/* 계정 저장, 비번 및 아이디찾기 */
 	div#idPwdSave,
-	div#pwdFind {
-		font-size: 9pt;
-		color: #8c8c8c;
-		padding: 5px 18px 3px 7px;
+	div#pwdFind, div#register {
+		font-size: 10pt;
+		color: rgba(36, 42, 48, 0.48);
+		font-weight: 600;
 	}
 
 	/* 로그인 버튼 */
@@ -105,97 +105,107 @@
 		border-style: none;
 		width: 99%;
 	    height: 45px;
+	    opacity: 0.9;
 		padding: 12px;
-		opacity: 0.85;
 		font-size: 13pt;
 		line-height: 20px;
 	    border-radius: 20px;
 	    border-style: none;
-	    background-color: #4285f4;
-	    color: white;
-	    font-weight: bold;
+	    background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+	    border: rgb(0 101 204) solid 1px;
+	    font-weight: 600;
 	    cursor: pointer;
+	    color: white;
 		/* margin-bottom: 5px; */
 	}
 	
-	button#btn_register {
+	#btn_register {
 		border-style: none;
 		background-color: #ffffff;
-		text-decoration: underline; 
-		color: #4d4d4d;
-		padding: 10px 145px;
+		color: rgba(36, 42, 48, 0.48);;
+		font-size: 10pt;
 	}
 	
+	
+	#id_save_find label, #id_save_find a{
+		font-weight: 600;
+	}
+	
+	#idPwdSave * {
+		cursor: pointer;
+	}
 	
 </style>
 
 <script type="text/javascript">
 	
-	$(document).ready(function(){
-		
-		//계정정보 저장했을때
-		if(localStorage.getItem("saveid") != null){
-			$("input#loginUserid").val(localStorage.getItem("saveid"));
-			$("input#saveid").prop("checked",true);
-		}
-		
-		// 패스워드 엔터시
-		$("#loginPwd").keyup(function(e){
-			if(e.keyCode==13){
-				goLogin();
-			}
-		});
-		
-		// 비밀번호 찾기창 닫기 버튼 클릭 시
-		$("button.pwdFindClose").click(function() {
-			const iframe_pwdFind = document.getElementById("iframe_pwdFind"); // 대상 아이프레임 선택
-			const iframe_window = iframe_pwdFind.contentWindow;
+$(document).ready(function(){
 	
-			iframe_window.func_form_reset_empty();
-		});
-		
-		
-		
-		
-		
-	});// end of $(document).ready(function(){})---------------
-	
-	
-	// 로그인 처리 함수
-	function goLogin() {
-	
-		const loginUserid = $("input#loginUserid").val().trim();
-		const loginPwd = $("input#loginPwd").val().trim();
-
-		if (loginUserid == "") {
-			alert("아이디를 입력하세요!");
-			$("input#loginUserid").val("");
-			$("input#loginUserid").focus();
-			return; // 함수 종료
-		}
-
-		if (loginPwd == "") {
-			alert("비밀번호를 입력하세요!");
-			$("input#loginPwd").val("");
-			$("input#loginPwd").focus();
-			return; // 함수 종료
-		}
-		
-		// 계정 저장을 체크했을 경우
-		if ($("#saveid").prop("checked")) {
-			localStorage.setItem("saveid", loginUserid);
-		}
-		// 계정 저장 체크 해제했을 경우
-		else{
-			localStorage.removeItem("saveid");
-		}
-		
-		const frm = document.login_frm;
-		frm.action = "<%=ctxPath%>/loginEnd.up";
-	    frm.method = "post";
-	    frm.submit(); 
+	//계정정보 저장했을때
+	if(localStorage.getItem("saveid") != null){
+		$("input#loginUserid").val(localStorage.getItem("saveid"));
+		$("input#saveid").prop("checked",true);
 	}
 	
+	// 패스워드 엔터시
+	$("#loginPwd").keyup(function(e){
+		if(e.keyCode==13){
+			goLogin();
+		}
+	});
+	
+	// 비밀번호 찾기창 닫기 버튼 클릭 시
+	$("button.pwdFindClose").click(function() {
+		const iframe_pwdFind = document.getElementById("iframe_pwdFind"); // 대상 아이프레임 선택
+		const iframe_window = iframe_pwdFind.contentWindow;
+
+		iframe_window.func_form_reset_empty();
+	});
+	
+	
+	$("#pwdFindClose").click(function(){
+		$("#iframe_pwdFind").attr("src","<%= request.getContextPath()%>/login/pwdFind.up"); //초기화
+	});
+	
+	
+});// end of $(document).ready(function(){})---------------
+
+
+// 로그인 처리 함수
+function goLogin() {
+
+	const loginUserid = $("input#loginUserid").val().trim();
+	const loginPwd = $("input#loginPwd").val().trim();
+
+	if (loginUserid == "") {
+		//alert("아이디를 입력하세요!");
+		$("input#loginUserid").val("");
+		$("input#loginUserid").focus();
+		return; // 함수 종료
+	}
+
+	if (loginPwd == "") {
+		//alert("비밀번호를 입력하세요!");
+		$("input#loginPwd").val("");
+		$("input#loginPwd").focus();
+		return; // 함수 종료
+	}
+	
+	// 계정 저장을 체크했을 경우
+	if ($("#saveid").prop("checked")) {
+		localStorage.setItem("saveid", loginUserid);
+	}
+	// 계정 저장 체크 해제했을 경우
+	else{
+		localStorage.removeItem("saveid");
+	}
+	
+	const frm = document.login_frm;
+	frm.action = "<%=ctxPath%>/loginEnd.up";
+    frm.method = "post";
+    frm.submit(); 
+}
+
 </script>
 
 </head>
@@ -212,13 +222,20 @@
 				<input type="password" name="passwd" id="loginPwd" placeholder="비밀번호" required>
 			</div>
 
-			<div id="id_save_find" class="w-98 d-flex justify-content-between">
+			<div id="id_save_find" class="w-98 d-flex justify-content-between" style="padding: 8px 11px 10px 3px;">
 
 				<div id="idPwdSave">
 					<input id="saveid" type="checkbox" style="position: relative; top:2px; border: 1px solid #c1c1c1; margin: 0 4px 0 2px;" title="계정 저장 선택" />
 					<label for="saveid">계정 저장</label>
 				</div>
-
+				
+				<div id="register">
+					<a id="btn_register" href="<%=ctxPath%>/memberRegister.up" style="text-decoration: none; position:relative; left: 63px;">회원가입</a>
+				</div>
+				
+				<div style="display:inline-block; background-color: #dbdbdb; width: 1.5px; height: 15px; margin: auto 0; position: relative; left: 33px;">
+				</div>
+				
 				<div id="pwdFind">
 					<a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#userPwdFind" data-bs-dismiss="modal" data-bs-backdrop="static">
 					비밀번호 찾기
@@ -234,19 +251,26 @@
 
 			<div class="d-flex flex-column">
 				<button type="button" id="btn_submit" onclick="goLogin()">로그인</button>
-				<a href="<%=ctxPath%>/memberRegister.up"><button type="button" id="btn_register">회원가입</button></a>
 			</div>
 		</div>
 	</form>
 	
 	
 	<%-- **** 비밀번호 찾기 Modal **** --%>
-	<div class="modal fade" id="userPwdFind" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <%-- 아이디찾기 a 태그의 data-target="#userPwdFind" data-dismiss="modal" 와 매핑됨. --%>
-	  <div class="modal-dialog">
-	    <div class="modal-content">
+	<div class="modal fade" id="userPwdFind" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="background-color: rgba(240, 240, 240, 0.85);"> <%-- 아이디찾기 a 태그의 data-target="#userPwdFind" data-dismiss="modal" 와 매핑됨. --%>
+	  <div class="modal-dialog" style="top: 15%;">
+	    <div class="modal-content" style="border:none;box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 4%), 0px 24px 72px rgb(36 42 48 / 30%);">
 	      <!-- Modal header -->
-	      <button type="button" class="btn-close pwdFindClose" data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
-	      <h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 찾기</h4><br>
+	      <div class="modal-header" style="border-bottom: solid 1px rgba(36, 42, 48, 0.06);">
+			<h4 class="modal-title" id="modarTitle" style="font-weight: 800; color: #595959; margin: 2px 10px;">비밀번호 찾기</h4>
+			<button id="pwdFindClose" type="button"  class="pwdFindClose btn" data-bs-dismiss="modal" style="transition: transform 0.1s ease 0s;border: none;background-color: transparent;">
+			<svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 26px; height: 26px; flex-shrink: 0;">
+			<path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM15.5303 15.5303C15.2374 15.8232 14.7626 15.8232 14.4697 15.5303L12.0001 13.0607L9.53033 15.5304C9.23744 15.8233 8.76256 15.8233 8.46967 15.5304C8.17678 15.2376 8.17678 14.7627 8.46967 14.4698L10.9394 12.0001L8.46968 9.53033C8.17679 9.23744 8.17679 8.76256 8.46968 8.46967C8.76257 8.17678 9.23745 8.17678 9.53034 8.46967L12.0001 10.9394L14.4697 8.46978C14.7626 8.17689 15.2374 8.17689 15.5303 8.46978C15.8232 8.76268 15.8232 9.23755 15.5303 9.53044L13.0607 12.0001L15.5303 14.4697C15.8232 14.7626 15.8232 15.2374 15.5303 15.5303Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd">
+			</path></svg></button>
+			<!-- 
+			<button type="button" class="btn-close pwdFindClose" data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
+			 -->
+		</div>
 	      <!-- Modal body -->
 	      <div class="modal-body">
 			<!-- 

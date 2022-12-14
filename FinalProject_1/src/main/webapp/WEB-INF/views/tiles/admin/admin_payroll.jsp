@@ -10,280 +10,276 @@
 
 <style type="text/css">
 	
-	.offcanvas-body::-webkit-scrollbar {
-	    width: 8px;  /* 스크롤바의 너비 */
-	}
+.offcanvas-body::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+
+.offcanvas-body::-webkit-scrollbar-track {
+	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+}
+
+.payroll-save{
+	border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 11pt;
+    border-radius: 10px;
+    padding: 7.5px 19px;
+}
+
+.contentsmargin > table > tbody > tr:hover {
+	background-color: rgba(230,230,230, 0.1);
+	cursor: pointer;
+}
+
+.payroll-detail-table tr td:first-child {
+	text-align: left;
+}
+
+
+.dateSelector{
+	border: solid 1px rgb(0,0,0,0.1);
+	width: 150px;
+	border-radius: 5px;
+	padding: 7px 12px;
+	font-size: 11pt;
+}
+
+.dateSelector + span{
+	position: relative;
+	right: 33px;
+}
+
+.p-input{
+	width: 170px; height: 35px;
+	border: solid 1px #ced4da;
+	border-radius: 5px;
+	font-size: 11pt;
+	padding: 5px;
+}
+
+
+td[rowspan] + td{
+	text-align: left;
+}
+
+/* 상단 nav바 */
+#memberInfo_mainList {
+	position: relative;
+	display: flex;
+	width: 640px;
+	font-size: 18pt;
+	font-weight: bold;
+}
+
+/* 검색 */
+#searchCondition, #cntselect {
+    display: block;
+    width: 100%;
+    line-height: 1.5;
+    color: rgb(77, 79, 83);
+    background-clip: padding-box;
+    border: solid 1px rgba(0,0,0,0.1);
+    border-radius: 0.25rem;
+    font-weight: 500;
+    font-size: 10pt;
+}
+.flatpickr-input {
+	font-size: 10pt;
+	color: rgb(77, 79, 83) !important;
+	font-weight: 500;
+    position: relative;
+    right: 10px;
+}
+
+.form-control{
+	font-size: 10pt !important;
+	border: solid 1px rgba(0,0,0,0.1);
+}
+.row >*{
+	width: auto;
+	padding: 0;
+}
 	
-	.offcanvas-body::-webkit-scrollbar-thumb {
-	    height: 30%; /* 스크롤바의 길이 */
-		background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
-	    border-radius: 10px;
-	}
+.custom-table{
+    border-collapse: collapse;
+    border-radius: 5px;
+    border-style: hidden;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+    width: 100%;
+    font-size: 11pt;
+    color: rgb(77, 79, 83);
+    text-align: left;
+    font-weight: 400;
+}
+
+.custom-table th {
+	background-color : #FBFBFB;
+	border-radius: 5px;
+	padding: 10px 20px;
+	border-bottom: solid 1px rgba(0,0,0,0.1);
+	border-right: solid 1px rgba(0,0,0,0.1);
+}
+
+
+.custom-table td {
+	padding: 7px 20px;
+	border: solid 1px rgba(0,0,0,0.1);
+}
+
+.custom-table th > div {
+	cursor:pointer;
+}
+	 
 	
-	.offcanvas-body::-webkit-scrollbar-track {
-		background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
-	}
-	
-	.payroll-save{
-		border: none;
-	    color: white;
-	    font-weight: 700;
-	    font-size: 11pt;
-	    border-radius: 10px;
-	    padding: 7.5px 19px;
-	}
-	
-	.contentsmargin > table > tbody > tr:hover {
-		background-color: rgba(230,230,230, 0.4);
-		cursor: pointer;
-	}
-	
-	.payroll-detail-table tr td:first-child {
-		text-align: left;
-	}
-	
-	
-	.dateSelector{
-		border: solid 1px #ced4da;
-		width: 150px;
-		border-radius: 5px;
-		height: 30px;
-		padding: 5px 10px;
-		font-size: 11pt;
-	}
-	
-	.dateSelector + span{
+/* Custom Checkbox */
+.control {
+  display: block;
+  position: relative;
+  margin-bottom: 25px;
+  cursor: pointer; }
+
+.control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0; }
+
+.control__indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  border-radius: 3px;
+  border: 2px solid #ccc;
+  background: transparent; }
+
+.control--radio .control__indicator {
+  border-radius: 50%; }
+
+.control:hover input ~ .control__indicator,
+.control input:focus ~ .control__indicator {
+  border: 2px solid #007bff; }
+
+.control input:checked ~ .control__indicator {
+  border: 2px solid #007bff;
+  background: #007bff; }
+
+.control input:disabled ~ .control__indicator {
+  background: #e6e6e6;
+  opacity: 0.6;
+  pointer-events: none;
+  border: 2px solid #ccc; }
+
+
+.control input:checked ~ .control__indicator:after {
+  display: block;
+  color: #fff; }
+
+.control--checkbox .control__indicator:after {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -52%);
+  -ms-transform: translate(-50%, -52%);
+  transform: translate(-50%, -52%); 
+  }
+
+.control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b; }
+
+.control--checkbox input:disabled:checked ~ .control__indicator {
+  background-color: #007bff;
+  opacity: .2;
+  border: 2px solid #007bff; }
+
+
+.custom-dropdown {
+border: none!important;
+> a {
+	color: $rgb(77, 79, 83);
+	.arrow {
+		display: inline-block;
 		position: relative;
-		right: 25px;
+		transition: .3s transform ease;
 	}
-	
-	.p-input{
-		width: 170px; height: 35px;
-		border: solid 1px #ced4da;
-		border-radius: 5px;
-		font-size: 11pt;
-		padding: 5px;
+}
+&.show {
+	> a {
+		.arrow {
+			transform: rotate(-180deg);
+		}
 	}
-	
-	
-	td[rowspan] + td{
-		text-align: left;
+}
+
+.btn {
+	&:active, &:focus {
+		box-shadow: none!important;
+		outline: none;
+	}	
+	&.btn-custom {
+		border: 1px solid #efefef;	
 	}
-	
-	/* 상단 nav바 */
-	#memberInfo_mainList {
-		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 18pt;
-		font-weight: bold;
-	}
-	
-	/* 검색 */
-	#searchCondition, #cntselect {
-	    display: block;
-	    width: 100%;
-	    font-size: 1rem;
-	    font-weight: 400;
-	    line-height: 1.5;
-	    color: #212529;
-	    background-color: #fff;
-	    background-clip: padding-box;
-	    border: 1px solid #ced4da;
-	    border-radius: 0.25rem;
+}
+
+.dropdown-menu {
+	border: 1px solid transparent!important;
+	box-shadow: 0 15px 30px 0 rgba($black, .2);
+	margin-top: -10px!important;
+	padding: 20px 0;
+	opacity: 0;
+	border-radius: 0;
+	background: $white;
+	// right: auto!important;
+	// left: auto!important;
+	transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+	visibility: hidden;
+	&.active {
+		opacity: 1;
+		visibility: visible;
+		margin-top: 0px!important;
 	}
 
-	.form-control{
-		font-size: 12pt;
-	}
-	.row >*{
-		width: auto;
-		padding: 0;
-	}
-	
-	.custom-table {
-		min-width: 900px;
-		thead {
-			tr, th {
-				border-top: none;
-				border-bottom: none!important;
-			    }
-		      }
-		tbody {
-		    td {
-				color: #777;
-				font-weight: 400;
-			    }
-		      }
-	}
-	
-	.table>:not(:first-child) {
-	       border-top: 1.5px solid #cfcfcf;
-	}
-	 
-	 
-	
-	/* Custom Checkbox */
-	.control {
-	  display: block;
-	  position: relative;
-	  margin-bottom: 25px;
-	  cursor: pointer; }
-	
-	.control input {
-	  position: absolute;
-	  z-index: -1;
-	  opacity: 0; }
-	
-	.control__indicator {
-	  position: absolute;
-	  top: 2px;
-	  left: 0;
-	  height: 15px;
-	  width: 15px;
-	  border-radius: 3px;
-	  border: 2px solid #ccc;
-	  background: transparent; }
-	
-	.control--radio .control__indicator {
-	  border-radius: 50%; }
-	
-	.control:hover input ~ .control__indicator,
-	.control input:focus ~ .control__indicator {
-	  border: 2px solid #007bff; }
-	
-	.control input:checked ~ .control__indicator {
-	  border: 2px solid #007bff;
-	  background: #007bff; }
-	
-	.control input:disabled ~ .control__indicator {
-	  background: #e6e6e6;
-	  opacity: 0.6;
-	  pointer-events: none;
-	  border: 2px solid #ccc; }
-	
-	
-	.control input:checked ~ .control__indicator:after {
-	  display: block;
-	  color: #fff; }
-	
-	.control--checkbox .control__indicator:after {
-	  top: 50%;
-	  left: 50%;
-	  -webkit-transform: translate(-50%, -52%);
-	  -ms-transform: translate(-50%, -52%);
-	  transform: translate(-50%, -52%); 
-	  }
-	
-	.control--checkbox input:disabled ~ .control__indicator:after {
-	  border-color: #7b7b7b; }
-	
-	.control--checkbox input:disabled:checked ~ .control__indicator {
-	  background-color: #007bff;
-	  opacity: .2;
-	  border: 2px solid #007bff; }
-	
-	.table thead th {
-		border-bottom: none;
-		text-align: center; 
-	}
-	.boardth{
+	a {
+		// border-bottom: 1px solid rgba($black, .1);
+		font-size: 14px;
+		padding: 8px 20px;
 		position: relative;
-		top: -6px;
-	}
-	.table td, .table th {
-		font-size: 11pt;
-	    border-top: 1px solid #eef2f6;
-	}
-	.table {
-	    color: #4c4e54;
-	}
-	table td{
-		font-size: 11pt;
-		text-align: center; 
-	}
-	
-	.custom-dropdown {
-	border: none!important;
-	> a {
 		color: $black;
-		.arrow {
+		&:last-child {
+			border-bottom: none;
+		}
+		.icon {
+			margin-right: 15px;
 			display: inline-block;
-			position: relative;
-			transition: .3s transform ease;
 		}
-	}
-	&.show {
-		> a {
-			.arrow {
-				transform: rotate(-180deg);
-			}
-		}
-	}
-	
-	.btn {
-		&:active, &:focus {
-			box-shadow: none!important;
-			outline: none;
-		}	
-		&.btn-custom {
-			border: 1px solid #efefef;	
-		}
-	}
-	
-	.dropdown-menu {
-		border: 1px solid transparent!important;
-		box-shadow: 0 15px 30px 0 rgba($black, .2);
-		margin-top: -10px!important;
-		padding: 20px 0;
-		opacity: 0;
-		border-radius: 0;
-		background: $white;
-		// right: auto!important;
-		// left: auto!important;
-		transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
-		visibility: hidden;
-		&.active {
-			opacity: 1;
-			visibility: visible;
-			margin-top: 0px!important;
-		}
-	
-		a {
-			// border-bottom: 1px solid rgba($black, .1);
-			font-size: 14px;
-			padding: 8px 20px;
-			position: relative;
+		&:hover, &:active, &:focus {
+			background: $light;
 			color: $black;
-			&:last-child {
-				border-bottom: none;
-			}
-			.icon {
-				margin-right: 15px;
-				display: inline-block;
-			}
-			&:hover, &:active, &:focus {
-				background: $light;
-				color: $black;
-				.number {
-					color: $white;
-				}
-			}
-	
 			.number {
-				padding: 2px 6px;
-				font-size: 11px;
-				background: $orange;
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				right: 15px;
-				border-radius: 4px;
 				color: $white;
 			}
-		}		
-	
-	}
+		}
+
+		.number {
+			padding: 2px 6px;
+			font-size: 11px;
+			background: $orange;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 15px;
+			border-radius: 4px;
+			color: $white;
+		}
+	}		
+
+}
 	
 	
 </style>
@@ -355,15 +351,14 @@
 	   
 </script>
 
-<div class="container">
+<div class="container" style="color: rgb(77, 79, 83);">
 	<nav id="memberInfo_mainList" class="">
-		<div id="attendance" style="color: black;" class="header-nonsub">급여정산</div>
+		<div id="attendance" style="color: rgb(77, 79, 83);" class="header-nonsub">급여정산</div>
 	</nav>
 	<hr class="HRhr" style="margin-top: 0px; width: 113%; position:relative; right: 85px;"/><br>
 	
 	<div class="contentsmargin" style="clear: both;">
 		<div style="margin-bottom: 15px; float: left; display: flex;">
-			<span style="font-weight: 700;">귀속월</span>
 			<div style="margin-left: 10px;">
 				<input class="dateSelector"/>
 				<span><i class="fas fa-chevron-down" style="font-size: 9pt;"></i></span>
@@ -376,7 +371,7 @@
 				<div class=" mr-2">
 					<div class="form-group">
 						<div class="form-field">
-							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;">
+							<select name="searchCondition" id="searchCondition" style="padding:6.7px 12px;">
 								<option value="">이름</option>
 								<option value="">이메일</option>
 								<option value="">연락처</option>
@@ -387,19 +382,19 @@
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-							<input type="text" class="form-control" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+							<input type="text" class="form-control" placeholder="검색" style="width:105%; padding:6px 6px;">
 						</div>
 					</div>
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a;font-size: 10pt; padding: 0.375rem; position: absolute; right: 10%;"></a>
 					</div>
 				</div>
 				<div class=" mr-2">
 					<div class="form-group">
 						<div class="form-field" style="padding-right:10px;">
-							<select name="cntselect" id="cntselect" style="font-size: 9pt; padding:6.7px 12px;">
+							<select name="cntselect" id="cntselect" style="padding:6.7px 12px;">
 								<option value="">20</option>
 								<option value="">40</option>
 								<option value="">80</option>
@@ -415,12 +410,12 @@
 		<div style="margin-bottom: 15px; float: left;">
 			<%-- 테이블 상단 버튼 만들기 --%>
 		</div>
-		<table class="table custom-table ap-table">   
+		<table class="custom-table ap-table my-3">   
 	    	<thead>   
 	            <tr>
-	              <th width="5%"><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+	              <th width="1%"><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th>
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; ">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></div></th>
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; ">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">인사·총무</a>
 					      <a class="dropdown-item" href="#">회계·재무</a>
@@ -440,7 +435,7 @@
 					      <a class="dropdown-item" href="#">서비스</a> 
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; ">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">대표</a>
 					      <a class="dropdown-item" href="#">부대표</a>
@@ -463,7 +458,7 @@
 					      <a class="dropdown-item" href="#">주임연구원</a> 
 					  </div>
 				  </th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">고용형태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; ">고용형태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">정직원</a>
 					      <a class="dropdown-item" href="#">계약직</a>

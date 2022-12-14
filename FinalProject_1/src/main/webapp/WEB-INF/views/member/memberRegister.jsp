@@ -42,18 +42,20 @@
 
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
-<style type="text/css">
+<!-- pretendard-font -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css" />
 
-	@font-face {
-	    font-family: 'Pretendard-Regular';
-	    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-	    font-weight: 400;
-	    font-style: normal;
-	}
+
+<style type="text/css">
 	
 	*{
-		font-family: Pretendard-Regular;	
-		color: #404040;
+		font-family: 'Pretendard';
+		font-weight: 600;		
+	    color: #4d4f53;
+	}
+	
+	input::placeholder{
+		color: rgba(36, 42, 48, 0.48);
 	}
 	
 	form {
@@ -62,7 +64,7 @@
 	
 	
 	form input, form select {
-		border: 1.5px solid #cccccc;
+		border: 2px solid #dbdbdb;
 		border-radius: 3.5px;
 		width: 75%;
 		padding: 10px 17px;
@@ -85,18 +87,24 @@
 	
 	
 	input:focus, select:focus {
-		border: 1.8px solid #4285f4;
-    	outline: none;
+		outline: none;
+		border: 2px solid transparent;
+		background-image: linear-gradient(white, white), linear-gradient(60deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+    	background-origin: border-box;
+    	background-clip: padding-box, border-box;
 	}
 	
 	#btnRegister {
-		width: 190px;
+		width: 29%;
 	    padding: 7.5px;
-	    border: 1px solid #4285f4;
-		background-color: #4285f4;
+	    /* border: 1px solid rgb(0 101 204); */
+	    background-image: linear-gradient(60deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+	    border: solid 1px rgb(0 101 204);
+		/* background-color: rgb(0 101 204); */
 		color: white;
 		font-size: 13pt;
-		border-radius: 30px;
+		border-radius: 5px;
+		margin-right: 10px;
 	}
 	
 	#btnRegister:hover {
@@ -104,16 +112,16 @@
 	}
 	
 	#btnReset{
-	    border-radius: 30px;
-	    border: solid 1px #d9d9d9;
+	    border-radius: 5px;
+	    border: solid 2px #dbdbdb;
 	    padding: 8px 20px;
-	    color: #333333;
+	    color: rgba(36, 42, 48, 0.48);
 	    margin-right: 10px;
-	    width: 25%;
+	    width: 29%;
 	}
 	
 	.error {
-		color: #4285f4;
+		color: rgb(0 101 204);
 		font-size: 9pt;
 		margin-left: 20px;
 	}
@@ -124,15 +132,20 @@
 	
 	#spinner{
 		position: relative;
-	    right: 66px;
+	    right: 69px;
 	    top: 9px;
+	    border: 4px solid transparent;
+	    border-right-color: white;
+	    background-image: linear-gradient(white, white), linear-gradient(60deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+	    background-origin: border-box;
+	    background-clip: padding-box, border-box;
 	}
 	
 	#emailCheck{
-		border: solid 1px #cccccc;
+		border: solid 2px #dbdbdb;
 		border-radius: 5px; 
 		font-size: 11pt; 
-		padding: 10px 25px; 
+		padding: 9.5px 25px; 
 		height: auto; 
 		color: #666666;
 	}
@@ -144,11 +157,15 @@
 	
 	#confirmEmail{
 	    background-color: white;
-	    border: solid 1px #cccccc;
-	    padding: 10px 11px;
+	    border: solid 2px #dbdbdb;
+	    padding: 9.5px 11px;
 	    border-radius: 5px;
 	    font-size: 11pt;
 	    color: #666666;
+	}
+	
+	button {
+		font-weight: 600;
 	}
 	
 </style>
@@ -161,9 +178,6 @@ var b_emailCheck = false;
 $(document).ready(function(){
 	
 	//$("#selboxDirect").hide();  // 소속 직접작성란 숨기고 시작한다.
-	$(".error").hide();
-	$("#spinner").hide();
-	$(".sendAlert").hide();
 	
 	// 소속 입력
 	$("#team").change(function() {
@@ -199,9 +213,8 @@ function goEmailCheck(){
 		$(".emailAlert").hide();
 	}
 	
-	//$("#emailCheck").text("");
-	//$("#emailCheck").css("padding","20px 45px");
-	//$("#spinner").show();
+	$("#spinner").show();
+	$("#emailCheck").css("color","white");
 	
 	$.ajax({
 		url:"<%= ctxPath%>/mailCheck.up?email="+email,
@@ -209,7 +222,16 @@ function goEmailCheck(){
 		success:function(data){
 			console.log("data:" + data);
 			code = data;
+			$("#spinner").hide();
+			$("#emailCheck").css("color","#666666");
 			$(".sendAlert").show();
+			
+			$("#emailCheckbtn").show();
+			$("#confirmEmail").show();
+			
+			$("#emailCheck").attr("disabled",true);
+			$("#email").attr("readonly",true);
+			
 			b_emailSendCheck = true;
 		}
 	});//end ajax
@@ -254,7 +276,7 @@ function goRegister(){
 	const pwd = $("#passwd").val();
 	if(!pwdReg.test(pwd)){
 		$("#passwd").focus();
-		$("#pwdalert").css("color","#4285f4");
+		$("#pwdalert").css("color","rgb(0 101 204)");
 		return;
 	} else {
 		$("#pwdalert").css("color","#666666");
@@ -313,7 +335,7 @@ function goRegister(){
   
 	<div class="collapse show">
 		<form name="registerFrm">
-			<div class="subject">이름<span class="error nameAlert">이름을 입력해주세요.</span></div>
+			<div class="subject">이름<span class="error nameAlert" style="display:none;">이름을 입력해주세요.</span></div>
 			<input id="name" type="text" class="required" name="name_kr" size="50" placeholder="이름 입력" />
 			<%-- 
 			<div>아이디</div>  사번으로 입력
@@ -327,7 +349,7 @@ function goRegister(){
 			<input id="passwd" type="password" class="required" name="passwd" size="50" placeholder="비밀번호 입력" />
 			<!-- <span class="error">비밀번호는 8자~15자 영문,숫자,특수문자로 입력하세요.</span> -->
 		
-			<div class="subject">비밀번호확인<span class="error pwdchxAlert">암호가 일치하지 않습니다.</span></div>
+			<div class="subject">비밀번호확인<span class="error pwdchxAlert" style="display:none;">암호가 일치하지 않습니다.</span></div>
 			<input id="passwdCheck" type="password" class="required" size="50" placeholder="비밀번호 확인" />
 			
 			
@@ -351,14 +373,14 @@ function goRegister(){
 			</select>
 			<!-- <input input type="text" id="selboxDirect" name="selboxDirect" /> -->
 			
-			<div style="vertical-align: middle;" class="subject">이메일<span class="error emailAlert">이메일 형식에 맞지 않습니다.</span></div>
+			<div style="vertical-align: middle;" class="subject">이메일<span class="error emailAlert" style="display:none;">이메일 형식에 맞지 않습니다.</span></div>
 			<input id="email" type="text" class="required" name="email" placeholder="이메일 입력" style="width: 57%;"/>
-			<button type="button" id="emailCheck" class="btn" onclick="goEmailCheck()">인증하기</button>
-			<span id="spinner" class="spinner-border text-success"></span>
+			<button type="button" id="emailCheck" class="btn" onclick="goEmailCheck()" style="font-weight: 500;">인증하기</button>
+			<span id="spinner" class="spinner-border text-success" style="display: none;"></span>
 			<span id="emailCheckResult"></span>
-			<input id="emailCheckbtn" type="text" placeholder="인증번호 입력" style="width: 57%;"/>
-			<button id="confirmEmail" type="button" onclick="checkEmailCode()" >인증번호 확인</button>			
-			<div class="sendAlert">인증번호가 전송되었습니다.</div>
+			<input id="emailCheckbtn" type="text" placeholder="인증번호 입력" style="width: 57%; display:none;"/>
+			<button id="confirmEmail" type="button" onclick="checkEmailCode()" style="font-weight:500; display:none;">인증번호 확인</button>			
+			<div class="sendAlert" style="display:none; color:rgb(0 101 204);">인증번호가 전송되었습니다.</div>
 			<br>
 			<!-- 
 			<div id="emailVerify">

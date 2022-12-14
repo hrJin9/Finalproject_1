@@ -1510,12 +1510,29 @@ from
 )
 where rno between 1 and 10
 
-select * from tab;
 
 
-select * from tbl_dayoff
+-- 연차 사용내역 조회
 
 
-select * from TBL_APPROVAL
 
-select * from tbl_approval
+select employee_no, name_kr, fk_department_no, department_name, position, ap_type, startdate, enddate, writeday, final_signyn
+from
+(
+    
+    select row_number() over(order by startdate desc) as rno, employee_no, E.name_kr, fk_department_no, department_name, position, ap_type, startdate, enddate, writeday, final_signyn
+    from
+    (
+        select *
+        from tbl_approval
+        where ap_type in ('연차','경조','공가','병가') -- 처리중이면 표시가 어떻게 되어야하는거지..?;;
+    )
+    join tbl_dayoff
+    on ano = fk_ano
+    join v_employee E
+    on fk_empno = employee_no
+    where to_char(startdate,'yyyy') = '2022'
+    and lower(E.name_kr) like '%'||lower('지은')||'%'
+    and to_date(to_char(startdate,'yyyy-mm-dd')) between to_date('2022-12-19') and to_date('2022-12-19')
+)
+where rno between 1 and 10
