@@ -5,12 +5,12 @@ public class Meetingroom_reservationVO {
 	
 	private String 	reserno;			//회의실 예약번호
 	private String 	r_date;				// 회의실 예약일
-	private String 	r_startdate;		// 시작일자
-	private String 	r_enddate;			// 종료일자 
+	private String 	startdate;			// 시작일자
+	private String 	enddate;			// 종료일자 
 	private String 	r_content;			// 예약내용
 	private String 	r_status;			// 예약상태
 	private String 	r_application;		// 신청일 
-	private String 	fk_roomno;			// 회의실 번호 
+	private String 	fk_roomno;			// 회의실 번호  
 	private String 	fk_employee_no;		// 사원번호
 	
 	
@@ -18,13 +18,13 @@ public class Meetingroom_reservationVO {
 	public Meetingroom_reservationVO() {}
 
 
-	public Meetingroom_reservationVO(String reserno, String r_date, String r_startdate, String r_enddate,
+	public Meetingroom_reservationVO(String reserno, String r_date, String startdate, String enddate,
 			String r_content, String r_status, String r_application, String fk_roomno, String fk_employee_no) {
 		super();
 		this.reserno = reserno;
 		this.r_date = r_date;
-		this.r_startdate = r_startdate;
-		this.r_enddate = r_enddate;
+		this.startdate = startdate;
+		this.enddate = enddate;
 		this.r_content = r_content;
 		this.r_status = r_status;
 		this.r_application = r_application;
@@ -59,29 +59,24 @@ public class Meetingroom_reservationVO {
 	}
 
 
-
-	public String getR_startdate() {
-		return r_startdate;
+	public String getStartdate() { 
+		return startdate;
 	}
 
 
-
-	public void setR_startdate(String r_startdate) {
-		this.r_startdate = r_startdate;
+	public void setStartdate(String startdate) {
+		this.startdate = startdate;
 	}
 
 
-
-	public String getR_enddate() {
-		return r_enddate;
+	public String getEnddate() {
+		return enddate;
 	}
 
 
-
-	public void setR_enddate(String r_enddate) {
-		this.r_enddate = r_enddate;
+	public void setEnddate(String enddate) {
+		this.enddate = enddate;
 	}
-
 
 
 	public String getR_content() {

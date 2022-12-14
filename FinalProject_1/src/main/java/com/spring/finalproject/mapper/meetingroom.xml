@@ -3,10 +3,10 @@
 <mapper namespace="meetingroom"> 
 
 	<!-- 회의실 예약하기  -->  
-	<insert id="meetingroom" parameterType="HashMap">
-		insert into tbl_meetingroom_reservation(reserno, r_startdate, r_enddate, r_content, fk_employee_no) 
-		values(seq_reserno.nextval, to_date(#{r_startdate}, 'yyyymmddhh24miss'), to_date(#{r_enddate}, 'yyyymmddhh24miss'), #{r_content}, #{fk_employee_no})
-	</insert>
+	<insert id="meetingroom_add" parameterType="HashMap"> 
+		insert into tbl_meetingroom_reservation(reserno, startdate, enddate, r_content, fk_employee_no)  
+		values(seq_reserno.nextval, to_date(#{startdate}, 'yyyymmddhh24miss'), to_date(#{enddate}, 'yyyymmddhh24miss'), #{r_content}, #{fk_employee_no}) 
+	</insert> 
 
 
 

@@ -118,18 +118,18 @@ create table tbl_meetingroom
 );
 -- Table TBL_CONFERENCE이(가) 생성되었습니다.
 
-
+ 
 --- 회의실 예약 ----   
 create table tbl_meetingroom_reservation 
 (reserno           number         not null      -- 회의실 예약번호
 ,r_date            date           not null      -- 회의실 예약일
-,r_startdate       date           not null      -- 시작일자
-,r_enddate         date           not null      -- 종료일자 
+,startdate         date           not null      -- 시작일자
+,enddate           date           not null      -- 종료일자    
 ,r_content         varchar2(4000) not null      -- 예약내용
 ,r_status          number         not null      -- 예약상태
 ,r_application     date           not null      -- 신청일 
-,fk_roomno         number         not null      -- 회의실 번호
-,fk_employee_no    number(6)      not null      -- 사원번호
+,fk_roomno         number         not null      -- 회의실 번호 
+,fk_employee_no    number(6)      not null      -- 사원번호 
 ,constraint PK_reservation_reserno primary key(reserno) 
 ,constraint FK_reservation_fk_roomno foreign key(fk_roomno)   
             references tbl_meetingroom(roomno) on delete cascade	
