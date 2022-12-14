@@ -68,5 +68,8 @@ public interface InterMemberService {
 	
 	// 사원번호 채번해오기
 	String getNewEmpno(String fk_department_no);
+	
+	//해당 정보의 사원 가져오기
+	String getEmployeeInfo(EmployeeVO evo);
 
 }

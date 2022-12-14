@@ -29,6 +29,7 @@
     padding: 6px 32px;
     font-size: 12px;
     line-height: 1.33;
+    color: var(--colors-grayLight);
 	}
 
 	
@@ -126,22 +127,20 @@
 /* 	div.toastui-editor-mode-switch{
 		display: none !important;
 	} */
-	.toastui-editor-defaultUI-toolbar {
-    	border-bottom: 0px solid #ebedf2 !important;
-    }
 	.toastui-editor-defaultUI {
 		width: 100%;
     }
     .write-topput{
-    	padding: 2px 9px;
-	    padding-left: 10px;
-	    background-color: #fafafa;
-	    height: 30px;
-	    color: #484848;
-	    font-weight: 400;
-	    border-radius: 5px;
-	    border: 1px solid #fafafa;
-	    font-size: 9pt;
+    	padding: 4px 69px;
+    	padding-left: 10px; 
+    	background-color: #fafafa;
+    	font-size: 14px;
+    	height: 35px;
+    	color: #484848;
+    	font-weight: 500;
+    	border-radius: 5px; 
+    	border:1px solid #fafafa;
+    	font-size: 10pt;
     }
     
     
@@ -258,12 +257,8 @@
     font-size: 11px;
 }
 .attendance-dateSelector {
-	width: 80% !important;
-	height: 35px !important;
-	font-size: 11pt;
-}
-.btninpt:hover {
-	background-color:#f6f6f6;
+	width: 100% !important;
+	height: 38px !important;
 }
 
 .form-inputlabel {
@@ -308,14 +303,40 @@
 #myModal_selSignMem {
   overflow: auto;
 } 
+div.option {
+    border: 0px solid #b0b0b0d9;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    /* display: inline-block; */
+    font-size: 18pt;
+    box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
+    margin: 0 auto; 
+    width: 450px;
+    height: 50%;
+    position: fixed;
+    top: 42%;
+    left: 32.5%;
+    /* min-width: 430px; */
+    /* top: 27%; */
+    z-index: 3000;
+    display: none;
+    /* max-width: 25%; */
+ } 
+div.option:before {
+    bottom: 0;
+    content: " ";
+    left: -7px;
+    opacity: .0001;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -9999;
+}
 .selectedmem{
 	margin-top:0px !important;
 	/* margin-bottom: 10px  !important; */
-	padding-bottom: 50px;
-    padding-top: 10px;
-    border-radius: 10px;
-    padding-left: 10px;
-    padding-right: 20px;
+	padding-bottom: 60px;
 }
 td{
 	width: 77%;
@@ -345,21 +366,20 @@ div#memcontent-iframe{
     width: 0.3em;
     height: 0.3em;
 }
-div#dayoff-temp, div#wort-temp{
+div#dayoff-temp{
 	display:hidden;
 }
 </style> 
 <script>
 	$(document).ready(function(){
 		$("#writebtn").hide(); // 글쓰기 버튼 숨기기
-		//툴팁 사용
-		var tooltipel = $(".tp").tooltip();
 		
 		$("input.dayradio").attr("disabled", true) // 반차 라디오버튼 못누르게  
 		const mydayoff = "${sessionScope.loginuser.dayoff_cnt}";
 		// 로그인한 사용자 값 넣기 
 		$("input#left-dayoffcnt").val(mydayoff);
 		$("input#use-dayoffcnt").val("0");
+		$("input[name='myname']").val("${sessionScope.loginuser.name_kr}");
 		
 		
 		// 날짜피커 값이 변경될때마다 연차 갯수 바뀌게하기 
@@ -470,44 +490,18 @@ div#dayoff-temp, div#wort-temp{
 		
 		
 		
-		let id = ""; 
+		
 		/* 양식에 맞는 모달창 뜨게하기  */
 		$("div.dayoff-box").click(function(e){
 			const temname = $(this).children('div').text();
 			//console.log(temname);
-			$("input#subject").val(temname+'결재');
-			$("input#ap_type").val(temname);
-			$("#tempbadge").text(temname+'작성하기');
+			$("input#template-name").val(temname);
 			
 			const $target = $(e.target)
-			id = $target.attr("id");
-			
+			const id = $target.attr("id");
+
 			id!="timeoff"? $("div#dayoff-temp").hide():$("div#dayoff-temp").show(); // 연차양식 뜨게하기  
-			
-			if( id=="work"){ // 업무기안서 양식 뜨게하기 
-				
-				$.ajax({
-					url: "<%= ctxPath%>/getdeptname.up",
-					type:"GET",
-					dataType:"json",
-					success: function(json) {
-						let html = '';
-						if(json.length > 0){
-							html += '<option value="" selected disabled>옵션을 선택해주세요</option>'
-							$.each(json, function(index,item) {
-								html += '<option value="'+item.deptname+'" selected>'+item.deptname+'</option>'  
-							});
-						}
-						$("#deptname").html(html);
-						$("div#work-temp").show();
-					},
-					error: function(request, status, error){
-						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				    }
-				});
-			}else{
-				$("div#work-temp").hide()
-			}
+			id!="work"? $("div#work-temp").hide():$("div#work-temp").show();  // 업무양식 뜨게하기 
 			
 			let data = ""
 			switch (id) {
@@ -581,14 +575,20 @@ div#dayoff-temp, div#wort-temp{
 		
 		<%-- 텍스트 에디터 끝 --%>
 		
-		
-		// **** 결재문서 제출 ****  
 		// 저장하기 눌렀을경우 
 		$("button#approvalsave").click(function(){
-
 			$('#content').prepend(editor.getHTML());
 			
+			let useval = Number($("input#use-dayoffcnt").val());
+			let leftval = Number($("input#left-dayoffcnt").val());
 			
+			if(useval == 0){ // 사용연차가 0보다 적으면 
+				alert("신청하는 연차가 없습니다!");
+				return;
+			}else if( useval<0 ){
+				alert("신청할려는 연차가 잔여연차 갯수보다 많습니다!");
+				return;
+			}
 			
 			// 글제목 유효성 검사
 	         const subject = $("input#subject").val().trim();
@@ -607,155 +607,16 @@ div#dayoff-temp, div#wort-temp{
 	               return;
 	           }
 	         $("#content").val(contentval);         
-	         
-	         
-				if(id=="timeoff"){ // 연차 양식이라면 
-					let useval = Number($("input#use-dayoffcnt").val());
-					let leftval = Number($("input#left-dayoffcnt").val());
-					
-					// 연차결재일경우
-					// 양식 다 작성했는지 검사
-					// 반차 적용하기 
-					
-					if(useval == 0){ // 사용연차가 0보다 적으면 
-						alert("신청하는 연차가 없습니다!");
-						return;
-					}else if( useval<0 ){
-						alert("신청할려는 연차가 잔여연차 갯수보다 많습니다!");
-						return;
-					}
-					
-					// 반차 날짜에 적용하기 
-					const startday= $("#startday").val();
-					const endday= $("#endday").val();
-					if($("#startmorning").is(":checked")){ // 시작일 오전에 체크됐으면 
-						$("#startday").val(startday+' 09:00');
-					}else if($("#startnoon").is(":checked")){ // 시작일 오후에 체크됐으면
-						$("#startday").val(startday+' 13:00');
-					}else{
-						$("#startday").val(startday+' 09:00');
-					}
-					
-					if($("#endmorning").is(":checked")){ // 종료일 오전에 체크됐으면 
-						$("#endday").val(endday+' 09:00');
-					}else if($("#endnoon").is(":checked")){ // 종료일 오후에 체크됐으면
-						$("#endday").val(endday+' 13:00');
-					}else{
-						$("#endday").val(endday+' 09:00');
-					}
-					
-				}
-				else if(id=="work"){ // 업무 양식이라면
-					const dept = $("select#deptname").val();
-					if(dept == "" || dept == null) {
-			              alert("부서를 선택해주세요!");
-			               return;
-			          }
-				}
 
-	      	// 결재라인 넘겨주기 
-				let appendval='';
-				let appendtext='';
-				$("div[name='approvalstep']").each(function(index){ // 추가된 단계만큼  
-					// 단계, 사원번호 넘겨주기
-					//console.log($(this).find('.empno'));
-					const $this = $(this); 
-					$this.find('input.empno').each(function(num, item){
-						let val = $(item).val();
-						if(val == "") return;
-						
-						if(num != 0 ) val=','+val;  // 결재사원구분자 
-						else if (index !=0 && num == 0){
-							val='/'+val; // 결재단게구분자 
-						}
-						
-						appendval += val;
-						 console.log('appendval => '+appendval); 
-					});
-					
-					$this.find('span.name').each(function(num, item){
-						let text = $(item).text();
-						if(text == "") return;
-						
-						if(num != 0 ) text=','+text;  // 결재사원구분자 
-						else if (index !=0 && num == 0){
-							text='/'+text; // 결재단게구분자 
-						}
-						appendtext += text;
-						console.log('appendtext => '+appendtext); 
-					});
-				});
-				$("input[name='approvalline']").val(appendval);
-				$("input[name='approvalline_name']").val(appendtext);
-				// 참조자 넘겨주기 
-				let referhtml = '';
-				let appendval2='';
-				let appendtext2='';
-				let flag =0; 
-				let flag2 =0; 
-				const referbox =$("div#memcontent-iframe0").find(".selectedmem") 
-				referbox.find('input.empno').each(function(index){ // 추가된 참조사원만큼  
-					// 단계, 사원번호 넘겨주기
-					//console.log($(this).find('.empno'));
-					const $this = $(this); 
-					let val = $this.val();
-					if(val == "") return false;
-					if(flag != 0 ) val=','+val;  // 참조사원구분자
-					
-					appendval2 += val;
-					flag+=1;
-				});
-				referbox.find('span.name').each(function(index){ // 추가된 참조사원만큼  
-					// 단계, 사원번호 넘겨주기
-					//console.log($(this).find('.empno'));
-					const $this = $(this); 
-					let text = $this.text();
-					if(text == "") return false;
-					if(flag2 != 0 ) text=','+text;  // 참조사원구분자
-					
-					appendtext2 += text;
-					flag2 +=1;
-				});
-				$("input[name='referline']").val(appendval2);
-				$("input[name='referline_name']").val(appendtext2);
-				
-			
 	         // 폼(form)을 전송(submit)
 	   		 const frm = document.addFrm;
 	         frm.method = "POST";
-	         frm.action = "<%= ctxPath%>/approval/add.up";
-	         frm.submit();  
-		});
-		
-		
-		
-		/* 결재라인 호버효과 */
-		$(document).on({
-			mouseenter: function(){
-				$(this).css('background-color','#f6f6f6');
-				// 만일 1단계만 있다면 삭제버튼 계속 안보이게 하기 
-				if($("div[name='approvalstep']").length > 1) 
-					$(this).find('.delboxbtn').css('display','flex');
-			},
-			mouseleave: function(){
-				$(this).css('background-color','transparent');
-				$(this).find('.delboxbtn').css('display','none');
-			}
-		}, '.signheader');
-		
-		
-		// 외부영역 클릭 시 팝업 닫기
-		$(document).mouseup(function (e){
-			var option = $(".option");
-			if(option.has(e.target).length === 0){
-				option.css('display','none');
-			}
+	         frm.action = "<%= ctxPath%>/addEnd.up";
+	         frm.submit(); 
 		});
 		
 	});//end of $(document).ready(function(){}---------------
-			
-			
-			
+	
 	function imageUpload(formData) {
 		  let imageURL;
 
@@ -782,208 +643,15 @@ div#dayoff-temp, div#wort-temp{
 		$('#writemodal').modal('show');
 	};
 	
-	
 	function showmodal_selSignMem(){
 		$('#myModal_selSignMem').modal('show');
 	}
-	
-	// 저장된 개인결재선보여주기 
 	function showmodal_mySignMade(){
-		$.ajax({
-			url: "<%= ctxPath%>/approval/loadsavedline.up",
-			type:"GET",
-			/* data:{"ano":anoval
-				, "ap_type":ap_type}, */
-			dataType:"json",
-			success: function(json) {
-				html = '';
-				let sno = '';
-				if(json.length > 0){
-					
-					for (let i = 0; i < json.length; i++) {
-					    if(i==0 || json[i].signpath_no != json[i-1].signpath_no){
-					    	html += '<div onclick="picksavedline('+json[i].signpath_no+')" name="savedstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">'
-							 	+'<div style="margin-top: 0;"><span  id="savespan1" style="font-weight: 500;display: block;">'+json[i].signpath_name+'</span></div>'
-					      	  	+'<div style="margin-top: 5px;">'
-					  				+'<div class="selectedmem" style="padding-bottom: 20px;">'
-							      	  	+'<div class="signli">'
-					    }
-					    html += '<header class="signheader" style="padding: 30px 8px;">'
-		  					+'<div class="profile" style="padding: 1px;width: 190px;">'
-		  					+'<span class="pic"><span>'+json[i].name_kr.substr(1)+'</span></span>'
-		  					+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+json[i].name_kr+'</span><br>'
-		  					+'<span class="role" style="font-size: 9pt;">'+json[i].role+'</span></span></div>'
-		  					+'<span class="positionIcon"><span>'+json[i].departemt_name+' '+json[i].team_name+'&nbsp;|&nbsp;'+json[i].position+'</span></span>'
-		  					+'<div class="separator" aria-orientation="horizontal" ></div>'
-		  					+'<span class="signspan" style="color: #5d6267;font-size: 13px;font-weight: 500;"><span>'+json[i].step+'단계</span>'
-				  		   +'</span></header>';
-				  		
-				  		if( i== json.length-1 || json[i].signpath_no != json[i+1].signpath_no ){
-				  			html += '</div></div></div></div>';
-				  		}
-					    
-					}
-				}
-				else{
-					html += '<div style="text-align:center;color:grey;">저장한 결재라인이 없습니다.</div>' ;
-				}
-				
-				$("#mysavedline").html(html);
-			},
-			
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }
-		});
-		
+		$('#myModal_signName').modal('show');
+	}
+	function showmodal_saveSignLine(){
 		$('#myModal_saveSignLine').modal('show');
 	}
-	// 저장된 결재라인 선택시 해당 문서 결재단계적용 
-	function picksavedline(signpath_no){
-		
-		$.ajax({
-			url: "<%= ctxPath%>/approval/getmyline.up",
-			type:"GET",
-			data:{"signpath_no":signpath_no},
-			dataType:"json",
-			success: function(json) {
-				let html = '';
-				if(json.length > 0){
-					
-					for (let i = 0; i < json.length; i++) {
-					    if(i==0 || json[i].step != json[i-1].step){
-					    	html += `<div class="signli" id="stepdiv`+json[i].step+`" name="approvalstep">`
-							 	+`<header class="signheader" style="background-color: transparent;">`
-								  +`<span class="signspan" id="stepspan`+json[i].step+`" style="color: rgb(141, 150, 161);">`
-				  				+`<span>`+json[i].step+`단계</span></span>`
-				  			+`<div class="separator" aria-orientation="horizontal"></div>`
-				  			+`<div class="stepbtn">`
-				  				+`<button type="button" id="delbox`+json[i].step+`" class="delboxbtn" onclick="del_stepapproval(`+json[i].step+`,event)" style="display: none;"><div style="height: 16px;display: flex;align-items: center;justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px;height: 20px;flex-shrink: 0;width: 20px;height: 20px;flex-shrink: 0;">`
-				  				+`<path d="M10.5358 4.82022C10.0803 4.82022 9.67068 5.09715 9.50151 5.51946L9.29552 6.03371H14.7045L14.4985 5.51946C14.3293 5.09715 13.9197 4.82022 13.4642 4.82022H10.5358ZM7.8091 4.84345L7.33232 6.03371H5.66739C4.74652 6.03371 4 6.77918 4 7.69876C4 8.37524 4.20052 9.0366 4.5763 9.59947L5.01266 10.2531V19.0787C5.01266 20.1398 5.87408 21 6.93671 21H17.0633C18.1259 21 18.9873 20.1398 18.9873 19.0787V10.2531L19.4237 9.59947C19.7995 9.0366 20 8.37524 20 7.69876C20 6.77917 19.2535 6.03371 18.3326 6.03371H16.6677L16.1909 4.84345C15.7449 3.73007 14.6651 3 13.4642 3H10.5358C9.33493 3 8.25508 3.73007 7.8091 4.84345ZM5.83031 7.85393H7.94937H16.0506H18.1697C18.1442 8.11627 18.0543 8.36917 17.9071 8.58979L17.1646 9.70197V19.0787C17.1646 19.1345 17.1192 19.1798 17.0633 19.1798H6.93671C6.88078 19.1798 6.83544 19.1345 6.83544 19.0787V9.70197L6.09295 8.58979C5.94566 8.36917 5.8558 8.11627 5.83031 7.85393ZM10.8861 17.9663V10.0787H9.06329V17.9663H10.8861ZM14.9367 17.9663V10.0787H13.1139V17.9663H14.9367Z" fill="#c32700" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>`
-					  			+`<button type="button" id="plusmem`+json[i].step+`" class="plusmembtn" onclick="optionForm('OPEN',event,`+json[i].step+`)"><div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; flex-shrink: 0;">`
-					  			+`<path d="M12.9 12.9L19 12.9L19 11.1L12.9 11.1L12.9 5L11.1 5L11.1 11.1L5 11.1L5 12.9L11.1 12.9L11.1 19L12.9 19L12.9 12.9Z" fill="#556372" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>`
-					  		+`</div></header>`
-					  		+`<ul class="signul"><li class="signli-prof">`
-							+`<div class="signdiv-prof">`
-								+`<div style="line-height: 1;display: block;width:100%;">`
-  	  							+`<div id="memcontent-iframe`+json[i].step+`">`
-					    }
-					    
-					    
-					    html +='<div class="selectedmem">'
-					 		+'<div class="profile" style="padding: 1px;">'
-					 		+'<input class="empno" hidden="" value="'+json[i].sign_empno+'">'
-					 		+'<span class="pic"><span>'+json[i].name_kr.substr(1)+'</span></span>'
-					 		+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+json[i].name_kr+'</span>'
-					 		+'<br><span class="role" style="font-size: 9pt;">'+json[i].role+'</span></span></div>'
-					 		+'<span class="positionIcon"><span>'+json[i].departemt_name+' '+json[i].team_name+'&nbsp;|&nbsp;'+json[i].position+'</span></span>'
-					 		+'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_appendmember(event)">'
-					 		+'</button></div>'
-				  		   
-				  		   
-				  		if( i== json.length-1 || json[i].step != json[i+1].step ){
-				  			html += '</div></div></div></li></ul></div>';
-				  		}
-					 		
-					}// for()---------------------------------------------
-					
-				}
-				
-				$(".approvalplus").html(html);
-			},
-			
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }
-		});
-		$('#myModal_saveSignLine').modal('hide');
-	}
-	
-	
-	
-	
-	
-	
-	
-	// 선택된 라인 개인결재선으로 저장
-	function showmodal_saveSignLine(){
-		if($('.selectedmem').length >0 ){
-			$('#myModal_signName').modal('show');
-		}else{
-			alert("우선 결재사원을 선택해주세요!");
-		}
-	}
-	function savemystep(){
-		if($("#signpath_name").val() != ""){ // 결재선 이름을 적었으면 
-			let n=0
-			let result = 0;
-			let spno = 0;
-			//var list = [];
-			$("div[name='approvalstep']").each(function(index){ // 추가된 단계만큼  
-				// 단계, 사원번호 넘겨주기
-				//console.log($(this).find('.empno'));
-				const $this = $(this); 
-				let appendval='';
-				$this.find('input.empno').each(function(index, item){
-					let val = $(item).val();
-					if(index != 0 ) val=','+val;
-					
-					appendval += val;
-					//console.log('appendval => '+appendval);
-				});			
-				if(appendval != ""){
-					
-					if(spno==0){ // tbl_signpath 한번 넣기 
-						$.ajax({
-							url: "<%= ctxPath%>/approval/getspno.up",
-							type:"GET",
-							dataType:"json",
-							async:false,
-							success: function(json) {
-								console.log(json.spno);
-								spno = json.spno;
-							},
-							error: function(request, status, error){
-								alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-						    }
-						});
-					}
-					
-					if(spno != 0){
-						$.ajax({ // tbl_signpath_detail 
-							url: "<%= ctxPath%>/approval/savemyline.up",
-							type:"POST",
-							data:{"signpath_name":$("#signpath_name").val()
-								, "signpath":appendval
-								,"signstep":index+1
-								,"signpath_no":spno}, 
-							dataType:"json",
-							success: function(json) {
-								result *= json.result;
-								//console.log(result);
-								n++;
-							},
-							error: function(request, status, error){
-								alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-						    }
-						});
-						
-					}
-				}
-				//list.push(appendval); // 단계마다 들감. [(10001,10001),(10001)]
-			});
-			result ==1? alert("저장에 성공했습니다!"):alert("저장에 성공했습니다!");
-			$('#myModal_signName').modal('hide');
-		}
-		else{
-			alert("저장할 결재선명을 적어주세요!")
-		}
-	}
-	
-	
-	
-	
-	
 	
 	
 	
@@ -992,8 +660,7 @@ div#dayoff-temp, div#wort-temp{
 		if(!confirm("결재문서를 닫으시겠습니까? 작성중인 내용은 모두 삭제됩니다.")){
 			$('#writemodal').modal("show");  
 		}else{
-			/* $('#appform').reset(); */
-			// val(""); // 모든 값 없애기 !!
+			// val(""); // 모든 값 없애기 
 			$('#writemodal').modal("hide"); //닫기 
 		}
 	}
@@ -1001,14 +668,12 @@ div#dayoff-temp, div#wort-temp{
 	
 	let num = 0;
 	<%-- 옵션창 열리고 닫히고  --%>
-	function optionForm(value,e,thisnum){
+	function optionForm(value,e){
 		 if(value=="OPEN") {
 			 option.style.display="block";
-			 /* console.log("$(this) =>"+$(this).html()); */
-/* 			 console.log("$(e.target) =>"+$(e.target).html()); */
-			 num = thisnum;
+			 num = $(e.target).attr("id");
+			 console.log("옵션창 열릴때 num 값 =>"+num);
 			 //num = optionnum; //옵션창 열린 박스 넘버 저장 
-			 //console.log("옵션창 열릴때 num 값 =>"+num);
 		 }
 		 else{
 			 option.style.display="none";
@@ -1025,17 +690,13 @@ div#dayoff-temp, div#wort-temp{
 				  +'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_appendmember(event)"></button>'
 				  +'</div>';
 		
-		//console.log("멤버append할때 num 값 =>"+num);
+		console.log("멤버append할때 num 값 =>"+num);
 		$("div#memcontent-iframe"+num).append(html);
-		/* $("div#memcontent-iframe"+num).next(".selmembtn").css('display','none'); */
 	}
 	
 	/*  append 된 멤버 삭제버튼 누를시  */
 	function del_appendmember(e){
 		$(e.target).parent().remove();
-		
-		// 선택된 멤버가 하나도 없다면 
-		$(".selmembtn").css('display','block');
 	}
 	
 	
@@ -1045,47 +706,33 @@ div#dayoff-temp, div#wort-temp{
 	/* 승인단계 박스 단계추가 */
 	function approvalplus(){
 		++aprCnt;
-		let html = $("div.approvalplus").html();
+		let html = $(".approvalplus").html();
 		
-		html += `<div class="signli" id="stepdiv`+aprCnt+`" name="approvalstep"  >`
-		  +`<header class="signheader">`
-		  +`<span class="signspan spanbox" id="stepspan`+aprCnt+`" style="color: rgb(141, 150, 161);">`
-				+`<span>`+aprCnt+`단계</span>`
-		  +`</span>`
-			+`<div class="separator" aria-orientation="horizontal" ></div>`
-			+`<div class="stepbtn">`
-  				+`<button type="button" id="delbox`+aprCnt+`" class="delboxbtn" onclick="del_stepapproval(`+aprCnt+`,event)"><div style="height: 16px;display: flex;align-items: center;justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px;height: 20px;flex-shrink: 0;width: 20px;height: 20px;flex-shrink: 0;">`
-  				+`<path d="M10.5358 4.82022C10.0803 4.82022 9.67068 5.09715 9.50151 5.51946L9.29552 6.03371H14.7045L14.4985 5.51946C14.3293 5.09715 13.9197 4.82022 13.4642 4.82022H10.5358ZM7.8091 4.84345L7.33232 6.03371H5.66739C4.74652 6.03371 4 6.77918 4 7.69876C4 8.37524 4.20052 9.0366 4.5763 9.59947L5.01266 10.2531V19.0787C5.01266 20.1398 5.87408 21 6.93671 21H17.0633C18.1259 21 18.9873 20.1398 18.9873 19.0787V10.2531L19.4237 9.59947C19.7995 9.0366 20 8.37524 20 7.69876C20 6.77917 19.2535 6.03371 18.3326 6.03371H16.6677L16.1909 4.84345C15.7449 3.73007 14.6651 3 13.4642 3H10.5358C9.33493 3 8.25508 3.73007 7.8091 4.84345ZM5.83031 7.85393H7.94937H16.0506H18.1697C18.1442 8.11627 18.0543 8.36917 17.9071 8.58979L17.1646 9.70197V19.0787C17.1646 19.1345 17.1192 19.1798 17.0633 19.1798H6.93671C6.88078 19.1798 6.83544 19.1345 6.83544 19.0787V9.70197L6.09295 8.58979C5.94566 8.36917 5.8558 8.11627 5.83031 7.85393ZM10.8861 17.9663V10.0787H9.06329V17.9663H10.8861ZM14.9367 17.9663V10.0787H13.1139V17.9663H14.9367Z" fill="#c32700" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>`
-	  			+`<button type="button" id="plusmem`+aprCnt+`" class="plusmembtn" onClick="optionForm('OPEN',event,`+aprCnt+`)"><div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; flex-shrink: 0;">`
-	  			+`<path d="M12.9 12.9L19 12.9L19 11.1L12.9 11.1L12.9 5L11.1 5L11.1 11.1L5 11.1L5 12.9L11.1 12.9L11.1 19L12.9 19L12.9 12.9Z" fill="#556372" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>`
-				/* +`<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(event)"  style="float: right;"></button>` */
-		   +`</div>`
-			+`</header>`
-				+`<ul class="signul">`
-					+`<li class="signli-prof">`
-						+`<div class="signdiv-prof">`
-							+`<div style="line-height: 1;display: block;width:100%;">`
-							+`<div id="memcontent-iframe`+aprCnt+`"></div>`
-						  		/* +`<button id="`+aprCnt+`" type="button" class="attendance-dateSelector  selmembtn" onClick="optionForm('OPEN',event,`+aprCnt+`)">`
-					      	  		+`<span style="color: rgba(36, 42, 48, 0.48);">`
-					      	  			+`<span style="font-size: 10pt;text-align: center;color: rgb(85, 99, 114);display: block;" >대상 검색</span>`
-					      	  			+`<span style="line-height: 2;font-size: 8pt;text-align: center;color: rgb(141, 150, 161);display: block;" >승인·참조 대상을 선택해주세요.</span>`
-					      	  		+`</span>`
-					      	  	+`</button>` */
-						  	+`</div>`
-			  			+`</div>`
-		  			+`</li>`
-	  			+`</ul>`
-			+`</div>`
+		
+		
+		
+		html += `<div id="stepdiv`+aprCnt+`" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">`
+			  	  	+`<div style="margin-top: 0;">`
+			      	  	+`<span id="stepspan`+aprCnt+`" class="spanbox" style="font-weight: bold;display: block;">`+aprCnt+`단계</span>`
+						+`<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(event)"  style="float: right;"></button>`      	  	
+			  	  	+`</div>`
+			  	  	
+			  	  	+`<div id="memcontent-iframe`+aprCnt+`"></div>`
+			  	  	+`<button id="`+aprCnt+`" type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',event)">`
+			  	  		+`<span style="color: rgba(36, 42, 48, 0.48);">`
+			  	  			+`<span style="font-size: 10pt;text-align: left;" >대상 검색</span>`
+			  	  		+`</span>`
+			  	  	+`</button>`
+			  	  +`</div>`;
 		$("div.approvalplus").html(html);
 	} 
 	
 	/* 승인단계 박스 삭제버튼 누를경우 */
-	function del_stepapproval(delidnum,e){
-		/* const thisdivbody = $(e.target).parent().parent().parent(); */
-		/* const delidnum = thisdivbody.attr("id").substr(-1); */
-		//console.log("delidnum =>"+delidnum)
-		$("#stepdiv"+delidnum).remove();
+	function del_stepapproval(e){
+		const thisdivbody = $(e.target).parent().parent();
+		const delidnum = thisdivbody.attr("id").substr(-1);
+		console.log("delidnum =>"+delidnum)
+		thisdivbody.remove();
 		
 		// 삭제 버튼 누르면 해당 승인단계박스의 단계보다 큰 애들은 한칸씩 내려옴
 		let j =1;
@@ -1099,8 +746,6 @@ div#dayoff-temp, div#wort-temp{
 				const divid = $this.find("#stepdiv"+j);
 				const divid2 = $this.find("#memcontent-iframe"+j);
 				const spanid = $this.find("#stepspan"+j);
-				const delboxid = $this.find("#delbox"+j);
-				const plusmemid = $this.find("#plusmem"+j);
 				const btnid = $this.find("#"+j);
 				
 				--j; // 단계낮추기
@@ -1114,12 +759,6 @@ div#dayoff-temp, div#wort-temp{
 				spanid.attr('id',"stepspan"+j); // id 단계 변경 
 				//console.log("spanid의 id => "+spanid.attr('id'))
 				btnid.attr('id',j); // id 단계 변경 
-				
-				delboxid.attr('onclick','del_stepapproval('+j+',event);');
-				plusmemid.attr('onclick',"optionForm('OPEN',event,"+j+");");
-				
-				delboxid.attr('id','delbox'+j); // id 단계 변경 
-				plusmemid.attr('id','plusmem'+j); // id 단계 변경 
 				
 				++j;	
 			}
@@ -1155,13 +794,11 @@ div#dayoff-temp, div#wort-temp{
 	    return zero + n;
 	}
 
-	
-	
-	
 </script>
 
 <div class="dayoff-index-container">
 	<div class="dayoff-write">
+		<!-- <div class="margin-container dayoff-subject">잔여 휴가</div> -->
 		<div class="ml-1 margin-container approval-box" >
 			<div class="dayoff-box timeoff mb-2" style="width: 32.4%;" id="timeoff">
 				<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="25px"/>
@@ -1208,347 +845,445 @@ div#dayoff-temp, div#wort-temp{
 	
 	
 	</div>
-	 
+	
 	
 	 
 	<!-- 모달창 -->
 	<!--  aria-labelledby="staticBackdropLabel"  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" -->
 	<%-- ****************** 결재선 상신 모달창 시작 ********************* --%>
-	<div class="modal fade" id="writemodal" tabindex="-1"  aria-labelledby="staticBackdropLabel"  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="background-color: rgba(240, 240, 240, 0.85);">
- <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable" style="    border-radius: 0.5rem;box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 4%), 0px 24px 72px rgb(36 42 48 / 30%);max-width: 1080px !important;align-items: normal !important;">
-   <div class="modal-content" style="border:none">
-			<div class="modal-body" style="padding: 0px;">
-			  	<form id="appform"name="addFrm" enctype="multipart/form-data"> 
-				<div style="float: left;width: 100%;height: 100%;justify-content: flex-start;align-items: stretch;flex-direction: row;display: flex;">
-					<div style="width: 70%;height: 100%;">
-						  <!-- 문서 헤더버튼  -->
-						  <div class="head-btnsection" >
-							  <div class="ApvHeader-footer">
-								  <div class="ApvHeader-footer_column" id="badgesection"><button type="button" class="btn btn-badge statebadge"id="tempbadge" style="margin-top:0;"></button></div><!-- 문서상태뱃지 -->
-								  <div class="ApvHeader-footer_column" id="btnsection">
-										<select  name="preserveperiod" id="selectTag" class="mb-1 write-topput" style="display:inline-block;margin-right: 10px;">
-											<!-- <option value="" disabled selected>보존연한</option> -->
-											<option value="0" selected>영구보존</option>
-											<option value="1">1년</option>
-											<option value="3">3년</option>
-											<option value="5">5년</option>
-											<option value="10">10년</option>
-										</select>
-										
-										<button  onclick="modalclose()" type="button"   style="transition: transform 0.1s ease 0s;border: none;background-color: transparent;">
-										<svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 26px; height: 26px; flex-shrink: 0;">
-										<path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM15.5303 15.5303C15.2374 15.8232 14.7626 15.8232 14.4697 15.5303L12.0001 13.0607L9.53033 15.5304C9.23744 15.8233 8.76256 15.8233 8.46967 15.5304C8.17678 15.2376 8.17678 14.7627 8.46967 14.4698L10.9394 12.0001L8.46968 9.53033C8.17679 9.23744 8.17679 8.76256 8.46968 8.46967C8.76257 8.17678 9.23745 8.17678 9.53034 8.46967L12.0001 10.9394L14.4697 8.46978C14.7626 8.17689 15.2374 8.17689 15.5303 8.46978C15.8232 8.76268 15.8232 9.23755 15.5303 9.53044L13.0607 12.0001L15.5303 14.4697C15.8232 14.7626 15.8232 15.2374 15.5303 15.5303Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd">
-										</path></svg></button>
-								  </div>
-							  </div>
-			  	     	  </div>
-						  <!-- 문서 헤더정보  -->			  
-						  <div id="datasection" style="border-bottom: 1px solid rgba(36, 42, 48, 0.06);">
-						  	<div class="sc-bCfvAP cstQxy">
-						  		<input type="text" class="ApvHeader-title" name="title"id="subject" value=""> <!-- 작성 문서 제목. 클릭한 문서에 맞는 템플릿 이름 들어감  -->
-							<div class="sc-cOxWqc ft-16 StyledApv">
-								  	  <!-- <div class="ApvDl-item"style="font-weight:500;"><span class="ApvDl-dd"><i class="icon icon-file-text2"></i></span></div> -->
-									  <div class="ApvDl-item" id="submitinput">
-									  	<input type="text" hidden="" name="name_kr" value="${sessionScope.loginuser.name_kr}"  />
-									  	<input type="text" hidden="" name="fk_empno" value="${sessionScope.loginuser.employee_no}"  />
-									  	<input type="text"id="ap_type" hidden="" name="ap_type" value=""  />
-									  	<input name="approvalline" hidden val="">
-									  	<input name="approvalline_name" hidden val="">
-									  	<input name="referline" hidden val="">
-									  	<input name="referline_name" hidden val="">
-									  </div>
+	<div class="modal fade" id="writemodal" tabindex="-1"   aria-labelledby="staticBackdropLabel"  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+	  <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable" style="min-width:50% !important;max-width: 75% !important;align-items: normal !important;">
+	    <div class="modal-content" style="border:none">
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1.2rem;">결재 상신</h4>
+	        <button type="button" class="btn-close" onclick="modalclose()"></button><!-- data-bs-dismiss="modal" -->
+	      </div>
+	      <!-- Modal body -->
+	      <div class="modal-body" style="padding: 30px;overflow: auto;">
+			<form name="addFrm" enctype="multipart/form-data">
+				<div class="form-group mb-3">
+					<div style="display:inline-block;margin-right: 20px;">
+						<span class="control-label">템플릿</span> 
+						<div class="position-relative">
+							<input id="template-name"style="padding-right: 14px;"type="text"  class="write-topput"  name="tempname"  readonly>
+						</div>
+					</div>
+					<div class="form-field " style="display:inline-block;margin-right: 20px;float:right;">
+						<span class="control-label">보존연한</span>
+						<select name="selectTag" id="selectTag" class="mb-1 write-topput" style="display:inline-block;">
+							<option value="영구" selected>영구</option>
+							<option value="1">1년</option>
+							<option value="3">3년</option>
+							<option value="5">5년</option>
+							<option value="10">10년</option>
+						</select>
+					</div>
+					<div style="display:inline-block;">
+						<span class="control-label">이름</span> 
+						<div class="position-relative">
+							<input style="padding-right: 14px;"type="text" id="" class="write-topput"  name="myname" value="김지은" readonly>
+						</div>
+					</div>
+				</div>
+				<hr class="HRhr mt-3 mb-3"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
+				
+				
+				
+				
+				<div id="dayoffopt"style="display:none;position: fixed; left: 0px; top: 0px; transform: translate3d(348px, 272px, 0px); min-width: max-content; z-index: 1002; --radix-popper-transform-origin:0% 0px;">
+						  					<div data-side="bottom" data-align="start" role="listbox" aria-orientation="vertical" data-state="open" dir="ltr" id="radix-:rap:" aria-labelledby="radix-:rao:" class="c-bWOuWO c-bWOuWO-ieTlZXA-css" tabindex="-1" data-orientation="vertical" style="outline: none; pointer-events: auto; --radix-dropdown-menu-content-transform-origin:0% 0px;">
+						  					<div data-role="select-content-root">
+						  					<div class="c-fkvKyD c-kvgLFJ" style="overflow: hidden scroll; max-height: 293.846px;">
+						  					<div style="min-width: 100%; display: table;">
+						  					<div role="group">
+						  					<div class="c-fUKQMF">
+						  					<div role="option" aria-checked="false" data-radix-collection-item="" class="c-gpCuAp c-hJlXvB" data-state="unchecked" tabindex="-1" data-orientation="vertical">
+						  					<div style="width: 100%;">
+						  					<div class="c-jYnSkl">결혼</div></div></div>
+						  					<div role="option" aria-checked="false" data-radix-collection-item="" class="c-gpCuAp c-hJlXvB" data-state="unchecked" tabindex="-1" data-orientation="vertical">
+						  					<div style="width: 100%;">
+						  					<div class="c-jYnSkl">상병</div></div></div>
+						  					<div role="option" aria-checked="false" data-radix-collection-item="" class="c-gpCuAp c-hJlXvB" data-state="unchecked" tabindex="-1" data-orientation="vertical">
+						  					<div style="width: 100%;">
+						  					<div class="c-jYnSkl">기타</div></div></div>
+						  					</div></div></div></div></div></div></div>
+						  					
+				<div style="display: flex;min-height: 32px;">
+						  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
+						  				<span style="font-weight: 500;line-height: 18px;display: -webkit-box;overflow: hidden;text-overflow: ellipsis;word-break: break-all;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">부서</span>
+						  				<div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div>
+						  			</div>
+						  			<div style="width: 100%;">
+						  				<div>
+						  					<!-- <button onclick="$('#dayoffopt').css('display','block')" type="button" id="radix-:rao:" aria-haspopup="menu" data-state="open" aria-disabled="false" class="buttonipt" aria-expanded="true" aria-controls="radix-:rap:">
+						  						<div style="display: flex;align-items: center;padding: 0px;font-size: 14px;line-height: 1.5;width: 100%;">
+						  							<span style="color:#8d96a1;font-weight: 500;">옵션을 선택해주세요.</span>
+						  						</div>
+						  					</button> -->
+						  					
+						  					
+						  				</div>
+						  			</div>
+						  		</div> 		  					
+				<!-- 템플릿따라 다른 내용넣기    -->
+
+				<div id="bytemp"></div>
+				
+				<div id="dayoff-temp">
+					<div class="form-field mb-3" style="display:inline-block;margin-right: 20px;">
+						<span class="form-inputlabel">휴가종류</span>
+						<select name="selectTag" id="selectTag" class="mb-1"style="padding: 10px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 1px solid #ced4da;font-size: 10pt;" >
+								<option value="연차" selected>연차</option>
+							<!-- <option value="">조퇴</option>
+								<option value="">지각</option> -->
+								<option value="경조">경조</option>
+								<option value="공가">공가</option>
+								<option value="병가">병가</option>
+						</select>
+					</div>
+					<br>
+					<div class="form-group mb-3"style="display:inline-block;">
+						<span class="form-inputlabel" style="z-index: 2;">기간 및 일시</span>
+						<div class="search-period-wr" >
+			                <div class="js-search-pickr-layer" data-code="unlimit" style="position: relative;top: -22px;">
+			                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
+				                	<div class="datebox margin-container">
+										<span><span class="icon icon-calendar"></span><input name="startdate" id="startday"class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
+									</div>
 								</div>
-							</div>
-						  </div>
-						  
-						  <!-- 문서내용  -->
-						  <div class="pad-part tempbycont"style="padding-top: 32px;padding-left: 60px;padding-right: 60px;"> 
-						  	<!-- <div class="ApvSection-header"><h2 class="ApvSection-title">내용</h2></div> --> 
-							  <div class="ApvSection-body">
-							  	
-							  	<!-- ********************* 연차 템플릿 ********************* -->	
-							  	<div id="dayoff-temp" style="color: white;font-size: 16px;line-height: 1.63;">
-							  		<div style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>
-							  				<span class="iptlabel">휴가종류</span>
-							  				<div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div>
-							  			</div>
-							  			<div style="width: 100%;">
-							  				<select name="docatgo" id="selectTag" class="mb-1 btninpt"style="width: 80%;cursor:pointer;padding: 8px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 0px solid #ced4da;font-size: 10pt;" >
-													<option value="" selected disabled>옵션을 선택해주세요</option>
-													<option value="연차" selected>연차</option>
-													<option value="경조">경조</option>
-													<option value="공가">공가</option>
-													<option value="병가">병가</option>
-											</select>
-							  			</div>
-							  		</div> 
-							  		
-							  		<div style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-							  				<span class="iptlabel">시작일</span>
-							  				<div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div>
-							  			</div>
-							  			<div style="width: 100%;">
-							  				<div>
-							  					<span><input name="startdate" id="startday"class="mb-1 dateSelector attendance-dateSelector btninpt" style="padding:0px 3px 1px 15px;border: none;"/></span>
-							  				</div>
-							  			</div>
-							  		</div> 
-							  		<div style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-							  				<span class="iptlabel">종료일</span>
-							  				<div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div>
-							  			</div>
-							  			<div style="width: 100%;">
-							  				<div>
-							  					<span><input name="enddate" id="endday" class="mb-1 dateSelector attendance-dateSelector btninpt" style="padding:0px 3px 1px 15px;border: none;"/></span>
-							  				</div>
-							  			</div>
-							  		</div> 
-							  		<div class="mb-1"style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>
-							  				<span class="iptlabel">반차여부</span>
-							  				<!-- <div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div> -->
-							  			</div>
-							  			<div style="width: 100%;padding-left: 14px;padding-top: 5px;">
-							  				<div>
-							  				<div class="mb-1 custom-control custom-checkbox" style="min-height: auto;padding-bottom: 5px;display: inline-block;">
-							  					<input type="checkbox" class="checkbox-disable custom-control-input" id="halfstart" name="halfstart">
-							  					<label class="custom-control-label form-inputlabel" for="halfstart" style="display: inline-block;font-size: 13px;color:rgba(0,0,0,0.7)">시작일</label>
-								
-												<span>   						
-							   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
-										                <input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">
-										                <label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
-										                <input type="radio" class="custom-control-radio2 dayradio" id="startnoon" name="startdaynight">
-										                <label for="startnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
-													</div>
-												</span>
-							  				</div>
-							  				
-							  				<div class="custom-control custom-checkbox" style="min-height: auto;right: -18px; padding-bottom: 5px;display: inline-block;">
-						   						<input type="checkbox" class="checkbox-disable custom-control-input" id="halfend" name="halfend">
-						   						<label class="custom-control-label form-inputlabel" for="halfend"style="display: inline-block;font-size: 13px;color:rgba(0,0,0,0.7)">종료일</label>
-						   						
-						   						<span>
-							   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
-										                <input type="radio" class="custom-control-radio2 dayradio" id="endmorning" name="enddaynight">
-										                <label for="endmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
-										                <input type="radio" class="custom-control-radio2 dayradio" id="endnoon" name="enddaynight">
-										                <label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
-													</div>
-												</span>
-						   					</div>
-							  			</div>
-							  			</div> 
-							  		</div>
-							  		<div class="mb-1" style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>
-							  				<span class="iptlabel">사용연차</span>
-							  			</div>
-							  			<div style="width: 100%;">
-							  				<div>
-							  					<input style="padding-left: 12pt;color: #acaeb1;width: 80%;border: 0;background-color: white;font-size: 11pt;"type="text" name="use-dayoffcnt" id="use-dayoffcnt" class="form-control" value="" readonly>
-							  				</div>
-							  			</div>
-							  		</div> 
-							  		<div class="mb-1"style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>
-							  				<span class="iptlabel">잔여연차</span>
-							  			</div>
-							  			<div style="width: 100%;">
-							  				<div>
-							  					<input  style="padding-left: 12pt;color: #acaeb1;width: 80%;border: 0;background-color: white;font-size: 11pt;"type="text" id="left-dayoffcnt" name="left-dayoffcnt" class="form-control" value="" readonly>
-							  				</div>
-							  			</div>
-							  		</div> 
-							  	</div>
-								<!-- ********************* 연차 템플릿 ********************* -->						  	
-							  	
-							  	
-								<!-- ********************* 업무 템플릿 ********************* -->						  	
-							  	<div id="work-temp" style="color: rgb(17, 17, 17);font-size: 16px;line-height: 1.63;">
-							  		<div style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>
-							  				<span class="iptlabel">협조부서</span>
-							  				<div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div>
-							  			</div>
-							  			<div style="width: 100%;">
-							  				<select name="deptname"id="deptname" class="mb-1 btninpt"style="width: 80%;cursor:pointer;padding: 8px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 0px solid #ced4da;font-size: 10pt;" >
-											</select>
-							  			</div>
-							  		</div> 
-							  		
-							  		<div style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-							  				<span class="iptlabel">시행일자</span>
-							  				<div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div>
-							  			</div>
-							  			<div style="width: 100%;">
-							  				<div>
-							  					<span><input name="executedate" id="executeday"class="mb-1 dateSelector attendance-dateSelector btninpt" style="padding:0px 3px 1px 15px;border: none;"/></span>
-							  				</div>
-							  			</div>
-							  		</div> 
-							  	</div>
-							  	<!-- ********************* 업무 템플릿 ********************* -->	
-							  	
-							  		<div style="display: flex;min-height: 32px;">
-							  			<div style="display: flex;align-items: center;width: 160px;height: 32px;">
-							  			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M12 8.09095V6.27277H10.2022V8.09095H12zM12 9.90913H13.7977V8.09095H12V9.90913zM12 11.7273V9.90913H10.2022V11.7273H12zM12 11.7273V13.5455H10.2022V16.2728H13.7977V11.7273H12z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M4.80899 21L4 20.1818V3.81818L4.80899 3H14.6966L15.2687 3.23964L19.7631 7.78509L20 8.36364V20.1818L19.191 21H4.80899ZM5.61798 4.63636V19.3636H18.382V8.70254L14.3615 4.63636H13.7977V6.27277H12V4.63636H5.61798Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-							  				<span class="iptlabel">첨부파일</span>
-							  			</div>
-							  			<div style="width: 100%;">
-							  				<div style="line-height: 1.5;width: 100%;">
-							  					<div class="input-group" style="padding-left: 10pt;font-size: 11pt !important;  width: 80%;">
-													<input multiple="" type="file" name="attaches" class="form-control mg-file" id="mg-file" style="border-radius: 5px; color: #444444 !important; border: solid 1px #00000008; font-size: 11pt; height: 33px; position:relative; ">
-												</div>
-							  				</div>
-							  			</div>
-							  		</div> 
-							  		
-					  		</div>
-					  	  </div>
-							  		
-						  
-						<div class="pad-part form-group" style="padding-top:0;padding-left: 60px;padding-right: 60px;">
-						<!-- <div class="ApvSection-header"><h2 class="ApvSection-title">내용</h2></div> -->
-						<!-- <span class="form-inputlabel">내용</span> -->
-							<div class="position-relative mb-3" style="width: 100%;z-index:0;">
-							      <textarea id="content" name="content" hidden="hidden"></textarea>
-							      <div id="editor" style="height: 300px;width: 100%;"></div>
-							</div>
+			                    <span class="dash-swung" style="position: relative;right: 1px;">~</span>
+			                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box" >
+				                	<div class="datebox margin-container">
+										<span><span class="icon icon-calendar"></span><input name="enddate" id="endday" class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
+									</div>
+								</div>
+			                </div>
+			            </div>
+					</div>
+					
+					<div class="form-group"style="display:inline-block;position: absolute;">
+						<span class="form-inputlabel">사용연차</span> 
+						<div class="position-relative" style="display:inline-block;top:-1.4px">
+							<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="use-dayoffcnt" class="form-control" value="2" readonly>
+						</div>
+					</div>
+					<div class="form-group"style="display:inline-block;top: -21.4px;position: relative;right: -61px;top: -20.9px;">
+						<span class="form-inputlabel">잔여연차</span> 
+						<div class="position-relative" style="display:inline-block;top:-1.4px">
+							<input style="padding-right: 14px;width: 25%;background-color: #e9ecef;"type="text" id="left-dayoffcnt" name="left-dayoffcnt" class="form-control" value="2" readonly>
+						</div>
+					</div>
+					
+					<br>
+					<div class="form-group mb-3"style="display:inline-block;position: relative;">
+						<span class="form-inputlabel">반차여부</span>
+						<div class="custom-control custom-checkbox" style="min-height: auto;padding-bottom: 5px;display: inline-block;">
+	   						
+	   						<input type="checkbox" class="checkbox-disable custom-control-input" id="halfstart" name="halfstart">
+	   						<label class="custom-control-label form-inputlabel" for="halfstart" style="display: inline-block;font-size: 13px;color:#418dd0">시작일</label>
+							
+							<span>   						
+		   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
+					                <input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">
+					                <label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
+					                <input type="radio" class="custom-control-radio2 dayradio" id="startnoon" name="startdaynight">
+					                <label for="startnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
+								</div>
+							</span>
+	   					</div>
+	   					
+						<div class="custom-control custom-checkbox" style="min-height: auto;right: -18px; padding-bottom: 5px;display: inline-block;">
+	   						<input type="checkbox" class="checkbox-disable custom-control-input" id="halfend" name="halfend">
+	   						<label class="custom-control-label form-inputlabel" for="halfend"style="display: inline-block;font-size: 13px;color:#418dd0">종료일</label>
+	   						
+	   						<span>
+		   						<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">
+					                <input type="radio" class="custom-control-radio2 dayradio" id="endmorning" name="enddaynight">
+					                <label for="endmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>
+					                <input type="radio" class="custom-control-radio2 dayradio" id="endnoon" name="enddaynight">
+					                <label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
+								</div>
+							</span>
+							
+	   					</div>
+					</div>
+					
+				</div>
+
+				
+				<div id="work-temp">
+					<div style="display: flex;">
+						<div class="form-group mb-3"style="display:inline-block;margin-right: 10px;">	
+							<span class="form-inputlabel" style="z-index: 2;">시행일자</span>
+							<div class="search-period-wr" >
+				                <div class="js-search-pickr-layer" data-code="unlimit" style="position: relative;top: -22px;">
+				                    <div class="js-date-type js-pickr-layer js-start-flatpickr filter-input-box">
+					                	<div class="datebox margin-container">
+											<span><span class="icon icon-calendar"></span><input class="dateSelector attendance-dateSelector" style="padding:0px 3px 1px 15px;text-align: center;"/></span>
+										</div>
+									</div>
+				                </div>
+				            </div>
+						</div>
 						
-					  	  <div class="modal-footer" style="position: sticky;bottom: 0;background-color: white;display: flex;align-items: center;border-top:0px;padding: 15px 0;">
-						  	  <div id="footercss">
-							  	  
-							  	  <!-- <button id="rejdoc"class="approvebtn" type="button" style="margin-right:10px;">
-							  	  	<div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-knmidH-justify-space-between c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css" style="width: 100%;"><div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-bICGYT-justify-center c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css c-fGHEql c-fGHEql-jVpCez-align-center">
-							  	  	<div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M12 13.2728L17.0205 18.2933L18.2932 17.0205L13.2728 12L18.2932 6.97954L17.0205 5.70675L12 10.7272L6.97954 5.70675L5.70675 6.97954L10.7272 12L5.70675 17.0205L6.97954 18.2932L12 13.2728Z" fill="currentColor"></path></svg></div>
-							  	  	<div style="display: inline-block;"><span>취소</span></div></div></div>
-							  	  </button> -->
-							  	  <button id="approvalsave"  class="approvebtn"type="button" style="background-image: linear-gradient(65deg, rgb(104 78 215) -0.96%, rgb(56 63 255) 100%);color:white;font-weight:500;">
-							  	  	<div style="display: inline-block;width: 100%;"><span>보내기</span></div>
-								  </button>
-						  	  </div>
-					  	  </div>
-				  	</div>
-				  </div> 
-				  <aside style="float: right;width: 30%;background: #fbfbfb;">
-					  <!-- 문서 결재라인 --> 
-					  <div data-radix-scroll-area-viewport dir="ltr" class="pad-part" style="box-shadow: inset 1px 0px 0px rgba(0, 0, 0, 0.08);isolation: isolate;position: relative;padding: 26px 24px;height: 100%;width: 100%;">
-						  <div class="ApvSection-header" style="display: flex;flex-direction: row;justify-content: flex-start;">
-						  	<h2 class="ApvSection-title"style="margin: auto 0;" >승인・참조</h2>
-						  	<button type="button"  onclick="showmodal_saveSignLine()"class="btn tp" style="display: flex;font-size: small;"data-bs-toggle="tooltip" data-bs-placement="top" title="개인결재선으로 저장"><i style="color: rgb(78 111 215);background-color: transparent;" class="icon icon-user-plus"></i></button> <!-- 삭제 -->
-						  	<button type="button"  onclick="showmodal_mySignMade()"class="btn tp" style="display: flex;font-size: small;"data-bs-toggle="tooltip" data-bs-placement="top" title="결재선 불러오기"><i style="color: #abb3ba;background-color: transparent;" class="icon icon-users"></i></button> <!-- 삭제 -->
-						  </div>
-						  <div class="ApvSection-body approvalplus">
-							  <div class="signli"  id="stepdiv1" name="approvalstep"  > 
-							  <header class="signheader">
-								  <span class="signspan" id="stepspan1"style="color: rgb(141, 150, 161);">
-						  				<span>1단계</span>
-						  		  </span>
-						  			<div class="separator" aria-orientation="horizontal" ></div>
-						  			<div class="stepbtn">
-						  			<!-- 단계박스 삭제 버튼 -->
-						  				<button type="button" id="delbox1" class="delboxbtn"onclick="del_stepapproval(1,event)"><div style="height: 16px;display: flex;align-items: center;justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px;height: 20px;flex-shrink: 0;width: 20px;height: 20px;flex-shrink: 0;">
-						  				<path d="M10.5358 4.82022C10.0803 4.82022 9.67068 5.09715 9.50151 5.51946L9.29552 6.03371H14.7045L14.4985 5.51946C14.3293 5.09715 13.9197 4.82022 13.4642 4.82022H10.5358ZM7.8091 4.84345L7.33232 6.03371H5.66739C4.74652 6.03371 4 6.77918 4 7.69876C4 8.37524 4.20052 9.0366 4.5763 9.59947L5.01266 10.2531V19.0787C5.01266 20.1398 5.87408 21 6.93671 21H17.0633C18.1259 21 18.9873 20.1398 18.9873 19.0787V10.2531L19.4237 9.59947C19.7995 9.0366 20 8.37524 20 7.69876C20 6.77917 19.2535 6.03371 18.3326 6.03371H16.6677L16.1909 4.84345C15.7449 3.73007 14.6651 3 13.4642 3H10.5358C9.33493 3 8.25508 3.73007 7.8091 4.84345ZM5.83031 7.85393H7.94937H16.0506H18.1697C18.1442 8.11627 18.0543 8.36917 17.9071 8.58979L17.1646 9.70197V19.0787C17.1646 19.1345 17.1192 19.1798 17.0633 19.1798H6.93671C6.88078 19.1798 6.83544 19.1345 6.83544 19.0787V9.70197L6.09295 8.58979C5.94566 8.36917 5.8558 8.11627 5.83031 7.85393ZM10.8861 17.9663V10.0787H9.06329V17.9663H10.8861ZM14.9367 17.9663V10.0787H13.1139V17.9663H14.9367Z" fill="#c32700" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>
-						  			<!-- 단계박스 멤버추가 버튼 -->
-							  			<button type="button" id="plusmem1" class="plusmembtn" onClick="optionForm('OPEN',event,1)"><div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; flex-shrink: 0;">
-							  			<path d="M12.9 12.9L19 12.9L19 11.1L12.9 11.1L12.9 5L11.1 5L11.1 11.1L5 11.1L5 12.9L11.1 12.9L11.1 19L12.9 19L12.9 12.9Z" fill="#556372" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>
-							  		</div>
-					  			</header>
-									<ul class="signul">
-										<li class="signli-prof">
-											<div class="signdiv-prof">
-												<div style="line-height: 1;display: block;width:100%;">
-													<!-- iframe 선택된 멤버 보여주기  -->
-			      	  							<div id="memcontent-iframe1"></div>
-											  	</div>
-								  			</div>
-							  			</li>
-						  			</ul>
-					  			</div>
-				  			</div>
-					  		  <button type="button" class="plusstepbox" style="width:100%;border:1px solid #dbdbd; background-color: white;display: block;"onclick="approvalplus(1)">
-					      	  		<span class="ant-typography c-iuedIb" style="color: rgba(36, 42, 48, 0.48);" >
-					      	  			<span data-lokalise="true" style="font-size: 10pt;" >+ 단계 추가하기</span>
-					      	  		</span>
-					      	  </button>
-							  <div class="signli mt-5" >
-							  <header class="signheader">
-							  <span class="signspan" style="color: rgb(141, 150, 161);">
-					  				<span>참조자</span>
-					  		  </span>
-					  			<div class="separator" aria-orientation="horizontal" ></div>
-					  			<div class="stepbtn">
-					  				<!-- 단계박스 멤버추가 버튼 -->
-							  			<button type="button" id="plusmem0" class="plusmembtn" onClick="optionForm('OPEN',event,0)"><div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; flex-shrink: 0;">
-							  			<path d="M12.9 12.9L19 12.9L19 11.1L12.9 11.1L12.9 5L11.1 5L11.1 11.1L5 11.1L5 12.9L11.1 12.9L11.1 19L12.9 19L12.9 12.9Z" fill="#556372" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>
-					  			</div>
-					  			</header>
-									<ul class="signul">
-										<li class="signli-prof">
-											<div class="signdiv-prof">
-												<div style="line-height: 1;display: block;width:100%;">
-													<!-- iframe 선택된 멤버 보여주기  -->
-			      	  								<div id="memcontent-iframe0"></div>
-											  	</div>
-								  			</div>
-							  			</li>
-						  			</ul>
-					  			</div>
-				  				
-					  </div>
-				  </aside>
-			</div>
-		    </form>
+						<div class="form-field mb-3" style="display:inline-block;margin-right: 20px;">
+							<span class="form-inputlabel">협조부서</span><!-- style="padding: 10px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 1px solid #ced4da;font-size: 10pt;" -->
+							<select name="selectTag" id="selectTag" class="mb-1 attendance-dateSelector" >
+									<option value="" selected>IT</option>
+								<!-- <option value="">조퇴</option>
+									<option value="">지각</option> -->
+									<option value="">경조</option>
+									<option value="">공가</option>
+									<option value="">병가</option>
+							</select>
+						</div>
+					</div>
+					
+				</div>
+				
+				
+				
+					
+				
+				<div class="form-group">
+					<span class="form-inputlabel">제목</span> 
+					<div class="position-relative">
+						<input type="text" name="subject" id="subject" class="form-control" placeholder="제목을 입력해주세요" name="title" >
+					</div>
+				</div>
+				
+				<div class="form-group mt-3" >
+					<span class="form-inputlabel">내용</span>
+					<div class="position-relative mb-1">
+					      <textarea id="content" name="content" hidden="hidden"></textarea>
+					      <div id="editor"></div>
+					</div>
+					
+					<!-- <textarea placeholder="휴가 등록 메시지 입력" id="memo" class="ant-input c-uExMz" style="height: 37px; max-height: 9.0072e+15px; resize: none;"></textarea> -->
+					
+				</div>
+				
+				<!-- 
+				<div class="form-group" style="font-size: 9pt;" >
+					<p> 1. 연차의 사용은 근로기준법에 따라 전년도에 발생한 개인별 잔여 연차에 한하여 사용함을 원칙으로 한다. 단, 최초 입사시에는 근로 기준법에 따라 발생 예정된 연차를 차용하여 월 1회 사용 할 수 있다.
+					 2. 경조사 휴가는 행사일을 증명할 수 있는 가족 관계 증명서 또는 등본, 청첩장 등 제출
+					 3. 공가(예비군/민방위)는 사전에 통지서를, 사후에 참석증을 반드시 제출
+					 </p>
+				</div>
+				 -->
+				
+				
+				
+				<div class="form-group mt-3">
+					<span class="control-label"style="margin-bottom: 0;">파일첨부</span><span style="color: #d8d8d8;font-size:9pt">파일은 하나당 최대 10MByte 까지 업로드 가능합니다. 여러개를 첨부하려면 [Shift키] 또는 [Ctrl키]를 누르고 선택해주세요</span>
+					<div class="position-relative">
+						<input style="font-size: 10pt;"type="file" id="file" class="form-control"  name="file" >
+					</div>
+				</div>
+		    	
+				<div class="form-group mt-3" >
+					<span class="control-label"style="margin-bottom: 0;">관련문서</span>
+					<div class="position-relative">
+						<!-- <input type="file" id="file" class="form-control"  name="file" > -->
+						<div class="text-primary cursor-pointer mt-1">+
+						관련문서 첨부하기</div>
+					</div>
+				</div> 
+		    	
+		    	
+		    	
+		    	<div width="100%" class="sc-jIRcFI dwAYaw mt-5">
+		    		<span class="control-label"style="margin-bottom: 0;">결재라인</span><button type="button" class="btn" style="display: inline-block;border-radius: 6px;font-size: 11px;height: 38px;min-width: 38px;padding: 0 14px;"onclick="showmodal_saveSignLine()"><i class="icon icon-checkmark" style="margin-right: 10px;"></i><span>저장한 결재라인 가져오기</span></button>
+		    		<div class="apv-wrapper  cursor-pointer">
+		    			<table class="table table-fixed my-3" onclick="showmodal_selSignMem()">
+		    				<caption class="sr-only"></caption>
+		    				<thead>
+		    					<tr>
+		    						<th class="sc-hhOBVt iIsGzI">순서</th>
+		    						<th class="sc-hhOBVt iIsGzI">타입</th>
+		    						<th class="sc-hhOBVt iIsGzI">결재자</th>
+		    					</tr>
+		    				</thead>
+		    	 			<tbody>
+		    				<tr class="sc-gYbzsP dvJzzI no-select">
+		    					<td class="sc-cCjUiG Osauc">
+		    						<div>1</div>
+		    					</td>
+		    					<td class="sc-cCjUiG Osauc">결재</td>
+		    					<td class="sc-cCjUiG Osauc">
+		    						<div class="sc-ezOQGI gBMVIv">
+		    							<div class="sc-kMjNwy dqCMym">팀리더</div>
+		    						</div>
+		    					</td>
+		    				</tr>
+		    				<tr class="sc-gYbzsP bHZyYu no-select">
+		    					<td class="sc-cCjUiG Osauc">
+		    						<div>2</div>
+		    					</td>
+		    					<td class="sc-cCjUiG Osauc">합의</td>
+		    					<td class="sc-cCjUiG Osauc">
+		    						<div class="sc-ezOQGI gBMVIv">
+		    							<div class="sc-kMjNwy dqCMym">상위 팀리더</div>
+		    						</div>
+		    					</td>
+		    				</tr>
+		    			</tbody>
+		    		</table>
+		    	</div>
+		    	<!-- <div class="wrapper">
+		    		<div>통보</div>
+		    		<div class="sc-cabOPr hDNriY">
+		    			<div>통보자가 없습니다.</div>
+		    		</div>
+		    	</div> -->
+		    	<div class="wrapper">
+		    		<div>참조</div>
+		    		<div class="sc-cabOPr hDNriY">
+		    		<div>참조자가 없습니다.</div>
+		    	</div>
+		    </div>
+		  </div>
+		    	
+    		</form>
+	
+	      </div>
+	
+	
+	
+	      <!-- Modal footer -->
+	
+	      <div class="modal-footer">
+			 
+			<button type="button" id="approvalsave"class="workstatus-save bluebtn mr-1">저장하기</button>
+		  	<button type="reset" class="workstatus-cancel mr-1"onclick="modalclose()">취소</button>
+	
+	      </div>
+	
+	
+	
 	    </div>
-    
-    
-  </div>
-
-</div>
-</div>
-
 	
+	  </div>
 	
-	<%-- ****************** 결재선 멤버리스트 시작 ********************* --%>
-	<div id="option" class="option">
-	   <div id="mwa-container" style="height: auto;">
-			<iframe id="mwa" name="selmemiframe"style="border: none; width: 100%;height: 280px;" src="<%= request.getContextPath()%>/approval/memberList.up"></iframe>
-		</div>
 	</div>
+
+  
+   
+   
+   
+   <%-- ****************** 결재선 라인 선택 모달창 시작 ********************* --%>
+	
+	<div class="modal fade " id="myModal_selSignMem"  tabindex="-1"aria-labelledby="staticBackdropLabel" aria-hidden="true"style="background: rgba(0, 0, 0, 0.5);display: none; z-index: 1060;">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-height: 60%;min-height: 60%;top: 15%;">
+	    <div class="modal-content" style="border:none">
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1.2rem;">승인・참조 대상</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button><!-- data-bs-dismiss="modal" -->
+	      </div>
+	     
+	      <!-- Modal body -->
+	      <div class="modal-body " style="padding: 30px;overflow: auto;">
+	      	  
+	      	  <div class="approvalplus">
+	      	  
+		      	  <div id="stepdiv1" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">
+		      	  	<div style="margin-top: 0;">
+			      	  	<span  id="stepspan1" class="spanbox" style="font-weight: bold;display: block;">1단계</span>
+						<button type="button" class="btn-close step-del" aria-label="close" onclick="del_stepapproval(event)" style="float: right;"></button>      	  	
+		      	  	</div>
+		      	  	
+		      	  	<!-- iframe 선택된 멤버 보여주기  -->
+		      	  	<div id="memcontent-iframe1"></div>
+
+		      	  	<button id="1" type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',event)">
+		      	  		<span style="color: rgba(36, 42, 48, 0.48);">
+		      	  			<span style="font-size: 10pt;text-align: left;" >대상 검색</span>
+		      	  		</span>
+		      	  	</button>
+		      	  </div>
+		      	  
+	      	  	</div>
+	      	  
+	      	  
+	      	  	<button type="button" class="attendance-dateSelector" style="border-color:#dbdbdb; background-color: white;display: block;width: 100%;"onclick="approvalplus(1)">
+	      	  		<span class="ant-typography c-iuedIb" style="color: rgba(36, 42, 48, 0.48);" >
+	      	  			<span data-lokalise="true" style="font-size: 10pt;" >+ 단계 추가하기</span>
+	      	  		</span>
+	      	  	</button>
+	      	  	<!-- <button type="button" class="mt-1 attendance-dateSelector" style="border-color:white; background-color: white;display: block;width: 100%;">
+	      	  		<span class="ant-typography c-iuedIb" style="color: rgb(82 82 82);" >
+	      	  			<span data-lokalise="true" style="font-size: 10pt;" ><i class="icon icon-upload" style="margin-right: 10px;"></i> 결재선 불러오기</span>
+	      	  		</span>
+	      	  	</button> -->
+	      	  	
+            </div>
+
+             <div class="modal-footer">
+              <a  style="float: left;cursor:pointer;color:white;"class="btn bluebtn" onclick="showmodal_mySignMade()">개인결재선저장하기</a> 
+              <!-- <a href="#" data-bs-dismiss="modal" class="btn">취소</a>  -->
+              <a  class="btn" style="cursor:pointer;color:rgb(0 101 204)">확인</a>
+            </div> 
+          </div>
+        </div>
+    </div>
+    
+
+  
    
    
    
    <%-- ****************** 저장한 승인라인 모달창 시작 ********************* --%>
 	
 	<div class="modal fade " id="myModal_saveSignLine"  tabindex="-1"aria-labelledby="staticBackdropLabel" aria-hidden="true"style="background: rgba(0, 0, 0, 0.5);display: none; z-index: 1060;">
-	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-height: 500px;min-height: 500px;top: 15%;">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-height: 60%;min-height: 60%;top: 15%;">
 	    <div class="modal-content" style="border:none">
+	      <!-- Modal Header -->
 	      <div class="modal-header">
-	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 600;font-size: 1.2rem;">저장한 결재라인</h4>
+	        <h4 class="modal-title" style="padding: 0 10px;font-weight: 700;font-size: 1.2rem;">저장한 결재라인</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button><!-- data-bs-dismiss="modal" -->
 	      </div>
 	     
+	      <!-- Modal body -->
 	      <div class="modal-body " style="padding: 30px;overflow: auto;">
-	      	   <div id="mysavedline">
-	      	  	</div> 
+	      	  
+	      	  <div class="approvalplus">
+	      	  
+		      	  <div id="stepdiv1" name="approvalstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">
+		      	  	<div style="margin-top: 0;">
+			      	  	<span  id="stepspan1" class="spanbox" style="font-weight: bold;display: block;">1단계</span>
+						      	  	
+		      	  	</div>
+		      	  	
+		      	  	<!-- iframe 선택된 멤버 보여주기  -->
+		      	  	<div id="memcontent-iframe1"></div>
+
+		      	  	<button id="1" type="button" class="attendance-dateSelector" style="background-color: white;display: block;" onClick="optionForm('OPEN',event)">
+		      	  		<span style="color: rgba(36, 42, 48, 0.48);">
+		      	  			<span style="font-size: 10pt;text-align: left;" >대상 검색</span>
+		      	  		</span>
+		      	  	</button>
+		      	  </div>
+		      	  
+	      	  	</div>
+	      	  
+	      	  
+	      	  	
             </div>
+
           </div>
         </div>
-    </div> 
+    </div>
     
     
+    
+    
+     
+     
+     
+     
+     
     
     
     <%-- ****************** 결재선 라인 저장 모달창 시작 ********************* --%>
@@ -1564,21 +1299,36 @@ div#dayoff-temp, div#wort-temp{
 	     
 	      <!-- Modal body -->
 	      <div class="modal-body " style="padding: 30px;overflow: auto;">
-			<!-- <form id="mysingpath" name="mysingpath" > -->
-				<div class="form-group">
-					<span class="form-inputlabel">결재선 이름</span> 
-					<div class="position-relative">
-						<input type="text" id="signpath_name" class="form-control" placeholder="" name="signpath_name" value="">
-					</div>
+			
+			<div class="form-group">
+				<span class="form-inputlabel">결재선 이름</span> 
+				<div class="position-relative">
+					<input type="text" id="title" class="form-control" title="" placeholder="" name="title" value="">
 				</div>
-			<!-- </form> -->
+			</div>
 
 		 </div>
              <div class="modal-footer">
               <a data-bs-dismiss="modal" class="btn" style="cursor:pointer;">취소</a>
-              <a class="btn" onclick="savemystep()" style="cursor:pointer;color:rgb(0 101 204)">확인</a>
+              <a class="btn" style="cursor:pointer;color:rgb(0 101 204)">확인</a>
             </div> 
           </div>
         </div>
     </div>
+	
+	
+	
+	<%-- ****************** 결재선 멤버리스트 시작 ********************* --%>
+	<div id="option" class="option">
+	   <!-- <div style="font-size: 11pt; color: #595959; font-weight: bold; padding-bottom: 20px;">검색 옵션</div> -->
+	   <div id="mwa-container" style="height: 271px;">
+			<iframe id="mwa" name="selmemiframe"style="border: none; width: 100%;height: 280px;" src="<%= request.getContextPath()%>/approval/memberList.up"></iframe>
+		</div>
+		
+        <div class="modal-footer">
+         <a style="cursor:pointer;"class="btn" onclick="optionForm('CLOSE')">닫기</a>
+         <a style="cursor:pointer;"class="btn btn-primary">Save</a> 
+       </div> 
+	</div>
+	
 	

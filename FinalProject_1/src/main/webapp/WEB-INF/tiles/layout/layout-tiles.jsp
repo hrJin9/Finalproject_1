@@ -81,8 +81,8 @@
 	/* 서브메뉴 없는 헤더 */
 	.header-nonsub{font-weight: 800 !important; padding: 0.9em 0 !important; font-size: 18pt !important;}
 	/* 서브메뉴 있는 헤더 */
-	.header-main{font-weight: 800 !important; padding: 0.9em 0 0.3em 0 !important; font-size: 18pt !important; }
-	.header-sub{font-weight: 700 !important;  padding: 0.9em 0 !important; font-size: 12pt !important;}
+	.header-main{font-weight: 600 !important;padding: 0.9em 0 0.3em 0 !important;font-size: 21pt !important; }
+	.header-sub{font-weight: 500 !important;padding: 0.9em 0 !important;font-size: 11pt !important;}
 	.gradientbtn{background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%) !important;}
 	.bluebtn{background-color:rgb(0 101 204);} 
 </style>

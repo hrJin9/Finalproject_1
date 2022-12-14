@@ -203,6 +203,14 @@ public class MemberDAO implements InterMemberDAO {
 		int n = sqlsession.insert("member.memberRegister", evo);
 		return n;
 	}
+
+	
+	//해당 정보의 사원 가져오기
+	@Override
+	public String getEmployeeInfo(EmployeeVO evo) {
+		String employee_no = sqlsession.selectOne("member.getEmployeeInfo", evo);
+		return employee_no;
+	}
 	
 	
 	

@@ -1451,3 +1451,71 @@ SYS_C0030743
 
 select * from tbl_employee
 order by hire_date desc
+
+
+
+select mobile from tbl_employee
+where name_kr = '강해린'
+
+
+select * from tbl_employee
+
+select email from tbl_employee
+where email like '%na%'
+
+
+select * from tbl_dayoff
+
+
+
+
+-- 근태관리 => 총 개수 조회
+select count(*)
+from
+(
+    select row_number() over(order by employee_no desc) as rno, employee_no, name_kr, fk_department_no, department_name, position, nvl(useCnt,0) as useCnt, dayoff_cnt
+    from
+    (
+        select fk_employee_no, sum(nvl(to_date(to_char(enddate, 'yyyy-mm-dd'), 'yyyy-mm-dd hh24:mi:ss') - to_date(to_char(startdate, 'yyyy-mm-dd'), 'yyyy-mm-dd hh24:mi:ss'),0)) as useCnt
+        from tbl_dayoff
+        group by fk_employee_no
+    )
+    right join v_employee
+    on fk_employee_no = employee_no
+    where employee_no != 99
+    and name_kr like '%'||'혜'||'%'
+    and ${dropCondition} = #{dropVal}
+)
+
+
+
+-- 근태관리 => 연차 개수 조회 
+select employee_no, name_kr, fk_department_no, department_name, position, useCnt, dayoff_cnt
+from
+(
+    select row_number() over(order by employee_no desc) as rno, employee_no, name_kr, fk_department_no, department_name, position, nvl(useCnt,0) as useCnt, dayoff_cnt
+    from
+    (
+        select fk_employee_no, sum(nvl(to_date(to_char(enddate, 'yyyy-mm-dd'), 'yyyy-mm-dd hh24:mi:ss') - to_date(to_char(startdate, 'yyyy-mm-dd'), 'yyyy-mm-dd hh24:mi:ss'),0)) as useCnt
+        from tbl_dayoff
+        where to_char(startdate, 'yyyy') = '2022'
+        group by fk_employee_no
+        
+    )
+    right join v_employee
+    on fk_employee_no = employee_no
+    where employee_no != 99
+    and name_kr like '%'||'혜'||'%'
+    and 
+)
+where rno between 1 and 10
+
+select * from tab;
+
+
+select * from tbl_dayoff
+
+
+select * from TBL_APPROVAL
+
+select * from tbl_approval
