@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,11 +32,11 @@ public class MeetingroomController {
 	}
 	
 	
-	 
+	/*
 	// 회의실 예약하기 
-	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
-	@RequestMapping(value="/support/meetingroom.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
-	public String meetingadd(HttpServletRequest request, HttpServletResponse response) throws Exception {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+	@ResponseBody     
+	@RequestMapping(value="/support/meetingroom.up", produces="text/plain;charset=UTF-8")
+	public String meetingadd(HttpServletRequest request, HttpServletResponse response) throws Exception {  
 		
 		String[] sdateArr = request.getParameterValues("startTimeArr");  // 시작시간 배열
 		String[] edateArr = request.getParameterValues("endTimeArr");  	 // 종료시간 배열
@@ -66,6 +67,7 @@ public class MeetingroomController {
 	        paraMap.put("r_enddate", r_enddate);  
 	        paraMap.put("r_content", r_content);   
 	        
+	        System.out.println("fk_employee_no : " +fk_employee_no); 
 	        System.out.println("r_startdate : " +r_startdate);
 	        System.out.println("r_enddate : "+r_enddate);
 	        System.out.println("r_content : "+r_content);
@@ -86,7 +88,47 @@ public class MeetingroomController {
 		jsonobj.put("n", n2);
 		return jsonobj.toString();
 	}
+	*/ 
+	 
+	// === 회의실 예약하기 === 
+	@RequestMapping(value="/support/meetingroom_add.up", method = {RequestMethod.POST}) 
+	public ModelAndView meetingroom_add(ModelAndView mav, HttpServletRequest request) throws Throwable {
 		
+		String startdate = request.getParameter("startdate");  
+		String enddate = request.getParameter("enddate"); 
+		
+		System.out.println("확인용 startdate => " + startdate);
+		System.out.println("확인용 enddate => " + enddate); 
+		
+		 
+		String r_content = request.getParameter("r_content");
+		System.out.println("확인용 r_content => " + r_content);  
+		
+		String fk_employee_no = request.getParameter("fk_employee_no");
+		System.out.println("확인용 fk_employee_no => " + fk_employee_no);   
+		
+		Map<String,String> paraMap = new HashMap<String, String>();
+		paraMap.put("startdate", startdate);
+		paraMap.put("enddate", enddate);
+		paraMap.put("r_content", r_content); 
+		paraMap.put("fk_employee_no", fk_employee_no);
+		
+		int n = service.meetingroom_add(paraMap);
+ 
+		if(n == 0) {
+			mav.addObject("message", "예약 실패하였습니다.");
+		}
+		else {
+			mav.addObject("message", "예약 성공하였습니다.");
+		}
+		
+		mav.addObject("loc", request.getContextPath()+"/support/meetingroom.up");
+		
+		mav.setViewName("msg");
+		
+		return mav;
+	}
+	
 		
 	
 }

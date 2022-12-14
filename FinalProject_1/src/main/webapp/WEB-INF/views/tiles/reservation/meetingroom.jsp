@@ -9,11 +9,21 @@
 		width: 50%;
 		height: 20px;
 		background-color: #04BFAD;
-		border-radius: 5px;
+		border-radius: 5px; 
 		position: absolute; top:46%; left:25%;
 	}
+	
+	.meeting{
+		height: 68%; 
+    	border: none; 
+	}
+	
+	.mr-write-container > div:nth-child(2) {  
+	    width: 100% !important; 
+	}
+	
 </style>
-
+ 
 <script>
 	$(document).ready(function(){
 		$("a#mettingroom-3").removeClass("iscurrent");
@@ -52,19 +62,19 @@
 			local: 'ko'
 		});
 		 
-		
+	/* 	
 		// flatpickr에서 선택된 날짜 구하고 날짜를 넣어주기
 		getSelectedDate();
 		putDate();
 		putTodayDot();
 		// flatpickr 날짜 변경 이벤트 
-		$(".mr-date").change(function(){
-			getSelectedDate();
+		$("dateSelector").change(function(){
+			getSelectedDate(); 
 			putDate();
 			putTodayDot();
 		}); 
 		
-		
+		 */ 
 		
 		//종일 체크시
 		$("#mr-write-allday").change(function(e){
@@ -76,7 +86,7 @@
 				$("#mr-startdate").val(allday_date);
 			}
 			else{
-				$("#mr-enddate").attr("disabled", false);
+				$("#mr-enddate").attr("disabled", false); 
 				$("#mr-enddate").css("cursor","");
 			}
 		});
@@ -93,10 +103,10 @@
 		
 		
 		
-		
+<%-- 		
 		// 저장하기 버튼 클릭시
 	 	$("#goSave").click(function(){
-	 		
+	 		 
 	 		
 	 		var start = []; 
 	 		var end = [];
@@ -106,12 +116,12 @@
 				start.push($(".stime").eq(y).val());
 			}
 			
-	 		var etimearr = $(".etime");
+	 		var etimearr = $(".etime"); 
 			for (var z=0; z<etimearr.length; z++) { // 종료시간
 				end.push($(".etime").eq(z).val());
 			}
 	 		
-	 		// 근무상태 저장하기
+	 		// 회의실 예약하기 
 	 		$.ajax({
 				url:"<%= request.getContextPath()%>/support/meetingroom.up", 
 				traditional: true, // 배열 넘겨줄때 필요
@@ -121,6 +131,8 @@
 				//type:"POST",
 				dataType:"JSON",   // AttendanceController.java 로 data 를 보낸다.
 				success:function(json){   // AttendanceController.java 에서 jsonObj.put() 한 json.name 을 받아옴.
+					console.log("startTimeArr : " +startTimeArr);
+					console.log("endTimeArr : " +endTimeArr); 
 					alert("근무 상태가 저장되었습니다.");
 					location.href="javascript:location.reload(true)"; // 현재 페이지로 이동(==새로고침) 서버에 가서 다시 읽어옴. 
 					
@@ -132,19 +144,141 @@
 			
 	 	});// end of $("#goSave").click(function()----------
 		
+ --%>		
+	
+	//=== ***(type="date")관련 시작 *** === // 
+	// 시작시간, 종료시간		
+	var html="";
+	for(var i=0; i<24; i++){
+		if(i<10){
+			html+="<option value='0"+i+"'>0"+i+"</option>";
+		}
+		else{
+			html+="<option value="+i+">"+i+"</option>";
+		}
+	}// end of for----------------------
+	
+	$("select#startHour").html(html);
+	$("select#endHour").html(html);
+	 
+	// 시작분, 종료분 
+	html="";
+	for(var i=0; i<60; i=i+5){
+		if(i<10){
+			html+="<option value='0"+i+"'>0"+i+"</option>";
+		}
+		else {
+			html+="<option value="+i+">"+i+"</option>";
+		}
+	}// end of for--------------------
+	html+="<option value="+59+">"+59+"</option>"
+	
+	$("select#startMinute").html(html);
+	$("select#endMinute").html(html); 
+	// === ***(type="date")관련 끝 *** === // 
+	
+	// '종일' 체크박스 클릭시
+	$("input#allDay").click(function() {
+		var bool = $('input#allDay').prop("checked");
 		
+		if(bool == true) {
+			$("select#startHour").val("00");
+			$("select#startMinute").val("00");
+			$("select#endHour").val("23");
+			$("select#endMinute").val("59");
+			$("select#startHour").prop("disabled",true);
+			$("select#startMinute").prop("disabled",true);
+			$("select#endHour").prop("disabled",true);
+			$("select#endMinute").prop("disabled",true);
+		} 
+		else {
+			$("select#startHour").prop("disabled",false);
+			$("select#startMinute").prop("disabled",false);
+			$("select#endHour").prop("disabled",false);
+			$("select#endMinute").prop("disabled",false);
+		}
+	}); 	
+	 	
 		
+	//저장 버튼 클릭  
+	$("#goSave").click(function(){ 
+	
+		// 일자 유효성 검사 (시작일자가 종료일자 보다 크면 안된다!!)
+		var startDate = $("input#startDate").val();	
+	 	var sArr = startDate.split("-");
+	 	startDate= "";	 
+	 	for(var i=0; i<sArr.length; i++){
+	 		startDate += sArr[i];
+	 	}
+	 	
+	 	var endDate = $("input#endDate").val();	
+	 	var eArr = endDate.split("-");   
+	  	var endDate= "";
+	  	for(var i=0; i<eArr.length; i++){
+	  		endDate += eArr[i];
+	  	}
+			
+	  	var startHour= $("select#startHour").val();
+	  	var endHour = $("select#endHour").val();
+	  	var startMinute= $("select#startMinute").val();
+	  	var endMinute= $("select#endMinute").val();
+	     
+	  	// 조회기간 시작일자가 종료일자 보다 크면 경고
+	     if (Number(endDate) - Number(startDate) < 0) {
+	      	alert("종료일이 시작일 보다 작습니다."); 
+	      	return;
+	     }
+	     
+	  	// 시작일과 종료일 같을 때 시간과 분에 대한 유효성 검사
+	     else if(Number(endDate) == Number(startDate)) {
+	     	
+	     	if(Number(startHour) > Number(endHour)){
+	     		alert("종료일이 시작일 보다 작습니다."); 
+	     		return;
+	     	}
+	     	else if(Number(startHour) == Number(endHour)){
+	     		if(Number(startMinute) > Number(endMinute)){
+	     			alert("종료일이 시작일 보다 작습니다.");  
+	     			return;
+	     		}
+	     		else if(Number(startMinute) == Number(endMinute)){
+	     			alert("시작일과 종료일이 동일합니다."); 
+	     			return;
+	     		}
+	     	} 
+	     }// end of else if---------------------------------
+	 	
+			
+			// 오라클에 들어갈 date 형식(년월일시분초)으로 만들기
+			var sdate = startDate+$("select#startHour").val()+$("select#startMinute").val()+"00";
+			var edate = endDate+$("select#endHour").val()+$("select#endMinute").val()+"00";
+			
+			$("input[name=startdate]").val(sdate);
+			$("input[name=enddate]").val(edate);
 		
+			  
+			var frm = document.meetingFrm; 
+			frm.action="<%= ctxPath%>/support/meetingroom_add.up";    
+			frm.method="post"; 
+			frm.submit(); 
+			
+			
+			
+			
+	
+		});// end of $("button#register").click(function(){})--------------------
+	 	
+	 	
 		
 
 		}); //end of ready
-		
+		 
 		
 		
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// function declaration
-		
-		
+ 		
+<%-- 		
 		// flatpickr에 선택된 날짜를 구하는 함수
 		var thisWeek = []; // 주차 데이터 넣는 용
 		var thisWeekArr = []; //오늘날짜 dot 검사용
@@ -228,7 +362,7 @@
 				
 				
 			});
-			
+			 
 			
 		}//end of putDate()
 		
@@ -247,11 +381,11 @@
 				} else{
 					$("#datedot"+index).html("");
 				}
-				
+				 
 			});
 		}//end of putTodayDot()
-		
-		
+		 --%>
+		  
 		
 </script>
 
@@ -310,6 +444,7 @@
 					</c:forEach>
 				</tr>
 			</table>
+			 
 			
 			
 			<!-- 오프캔버스 시작 -->
@@ -328,11 +463,13 @@
 								<div>~에 위치한 회의실입니다. 예약 후 이용바랍니다.</div>
 								<div>담당자 연락처 : 010-8828-4730</div>
 							</div>
-						</div>
+						</div> 
 			  		</div>
 			  		
+			  		<form name="meetingFrm">  
 			  		<div class="mr-write-container">
 			  			<div style="font-weight: bold;">예약 일정·정보 입력</div>
+			  			<!-- 
 			  			<div>
 			  				<div>
 			  					<input id="mr-startdate" class="dateSelector stime" placeholder="ex) 2022-01-01" />
@@ -340,17 +477,35 @@
 							<i class="fa-solid fa-arrow-right" style="color: #C6C6C6; margin: 0px 2%;"></i>
 							<div style="text-align: right;"> 
 								<input id="mr-enddate" class="dateSelector etime" placeholder="ex) 2022-01-01" />
-							</div>
+							</div> 
 			  			</div>
 			  			<span class="mr-write-allday-container">
 			  				<input id="mr-write-allday" type="checkbox"/> <label for="mr-write-allday">종일</label>
-			  			</span>
-			  		</div>
-		  			<textarea class="mr-write" placeholder="예약 목적 입력"></textarea>
+			  			</span> -->  
+			  			<div style="display: flex;align-items: center;">    
+							<input type="date" id="startDate" value="${requestScope.chooseDate}" style="height: 30px;max-width: 18%;"/>&nbsp;  
+							<select id="startHour" class="meeting"></select> 시  
+							<select id="startMinute" class="meeting"></select> 분 
+							<a style="margin: 0% 5%;">-</a>   
+							<input type="date" id="endDate" value="${requestScope.chooseDate}" style="height: 30px;max-width: 18%;"/>&nbsp;
+							<select id="endHour" class="meeting"></select> 시 
+							<select id="endMinute" class="meeting"></select> 분&nbsp;  
+							   
+							<div style="display: flex;align-items: center;margin-left: 4%;">   
+								<input type="checkbox" id="allDay" style="width: 31%;"/>&nbsp;<label for="allDay" style="">종일</label>    
+							</div>
+							
+							<input type="hidden" name="startdate"/>
+							<input type="hidden" name="enddate"/>
+						</div> 
+			  		</div> 
+		  			<textarea class="mr-write" name="r_content" id="r_content" placeholder="예약 목적 입력"></textarea>
 			  	<div class="workstatus-buttoncontainer">
 		  			<button type="button" class="workstatus-save gradientbtn" id="goSave">저장하기</button> 
 		  			<button type="reset" class="workstatus-cancel text-reset" data-bs-dismiss="offcanvas" aria-label="Close">취소</button>
 	  			</div>
+	  			<input type="hidden" value="${sessionScope.loginuser.employee_no}" name="fk_employee_no"/> 
+	  		  </form>
 			  </div>
 			</div>
 			<!-- 오프캔버스 끝 -->
