@@ -498,12 +498,10 @@ function selectonemg(mno){
 		async: false,
 		dataType:"json",
 		success:function(json){
-			
 			if(json.mno == null) {
 				mnostatus = true;
 				return;
 			}
-			
 			let html = '';
 			html += '<div class="mgc-container">'+
 					'<div class="mgc-header">'+
