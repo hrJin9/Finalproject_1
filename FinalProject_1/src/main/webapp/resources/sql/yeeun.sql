@@ -941,7 +941,7 @@ from dual;
 -- 목
 
 
-select employee_no, dayoff_cnt
+select employee_no, dayoff_cnt, position
 from tbl_employee
 where employee_no = 100016
 
@@ -954,11 +954,13 @@ commit;
 update tbl_employee set dayoff_cnt = dayoff_cnt+1
 where employee_no != 99
 
+update tbl_employee set dayoff_cnt = dayoff_cnt+1
+where position = '사원'
 
-
-
-
-
+select *
+from tbl_employee;
+desc tbl_employee;
+-- 사원, 대리, 과장, 부장, 대표
 -----------------------------------------------------------------------------------------
 게시판
 
@@ -1037,11 +1039,22 @@ values(seq_tbl_nboard.nextval, '99', '관리자', '일반', '[전원필독] ★�
 insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status, nb_fileName, nb_orgFilename, fileSize)
 values(seq_tbl_nboard.nextval, '99', '관리자', '일반', '[전원필독] ★퇴근 시 유의사항★', '해당 사항을 주의해주세요.', default, default, default, default);
 
+-- 페이징 처리를 안한 검색어가 없는 전체 글목록 보여주기
+select nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, 
+       to_char(writedate, 'yyyy-mm-dd')as writedate, readcnt, status, nb_fileName
+from tbl_notice_board
+where status = 1
+order by nbno desc;
 
-
-
-
-
+-- 페이징 처리를 안한 검색어가 있는 전체 글목록 보여주기
+select nbno, fk_employee_no, name_kr, categoryTag, subject, priority, 
+       to_char(writedate, 'yyyy-mm-dd')as writedate, readcnt, status, nb_fileName
+from tbl_notice_board
+where status = 1
+<if test='searchCondition != "" and searchVal != ""'>   <!-- 3. if test="key명"> <when test="key명"> 인 경우 "key명" -->
+and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'   <!-- 2. 식별자(테이블명, 컬럼명)로 사용할때는 ${key명} -->  <!-- 1. HashMap 에 있는 데이터인 검색어는  #{key명} -->
+</if>
+order by nbno desc
 
 
 

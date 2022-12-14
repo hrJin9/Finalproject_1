@@ -6,39 +6,34 @@
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/board.css?after">
 <style type="text/css">
+#searchWord {
+	width:135%; 
+	font-size: 9pt;
+	padding:6px 12px;
+	padding-left: 45px; 
+	position: relative; left: 8%
+}
+#searchbtn {
+	style="color:#76787a;
+	background-color: white; 
+	font-size: 0.8rem; 
+	padding: 0.375rem; 
+	position: absolute; 
+	bottom: 5%; 
+	right: -15%"
+}
 </style>
+
 
 <script type="text/javascript">
 	$(document).ready(function(){
-
 		
 		$(".search-period-wr").hide();
 		$("div#ntRplAnon").hide();
 		$("a#notice").addClass('list_iscurrent');
 		$("#date_total").prop("checked", true);
 		
-		/* 북마크 표시 */
-		$('.bookmark').click(function(e) {
-		  	const $this = $(this);
-		
-		  	if ( $this.hasClass('icon-star-empty') ) {
-		  		$this.removeClass('icon-star-empty');
-		  		$this.addClass('icon-star-full');
-		  	} else {
-		  		$this.removeClass('icon-star-full');
-		  		$this.addClass('icon-star-empty');
-		  	}
-		  	/* e.preventDefault(); */
-		});
-		  
-		
-		/* 게시물뷰 링크 이동 */
-		 $('.titlefirst').click(function() {
-			
-		});
-		
-		
-		
+		<%-- ***** 글쓰기 ***** --%>
 		/* 관리자 계정만 공지게시판 글쓰기 권한 부여 */
 		if(${sessionScope.loginuser.employee_no} == '99') {
 			$("a#writebtn").show();
@@ -50,7 +45,6 @@
 	 	$("a#writebtn").click(function(e){
 	 		$('.offcanvas').offcanvas('show');
 	 	});
-		 	
 		
 	 	<%-- 텍스트 에디터 시작 --%>
 		editor = new toastui.Editor({
@@ -70,13 +64,30 @@
 		 });
 		<%-- 텍스트 에디터 끝 --%>
 		
-		
 		/* 익명체크뜨게하기 */
 	    /* $("input#ntAlwReply").change(function(){
 	        if($("#ntAlwReply").is(":checked")) ntRplAnonDiv.style.display="block";
 	        else ntRplAnonDiv.style.display="none";
 	    }); */
 		
+	    
+	    <%-- ***** 글 목록 ***** --%>
+	    // 검색하기  ==> 검색조건 및 검색어 값 유지시키기 , 자동금 완성하기 추후에 처리하기★
+	    $("input#searchWord").keyup(function(e){
+			if(e.keyCode == 13) { // 검색어에 엔터를 했을 경우
+				
+				goSearch(); // 검색하는 함수 호출
+			}
+		});
+	    
+	    
+	    // 검색시 검색조건 및 검색어 값 유지시키기
+		if( ${not empty requestScope.paraMap} ){  // 글목록보기에서 검색할 시 paraMap 값이 비어있지 않다면
+			$("select#searchCondition").val("${requestScope.paraMap.searchCondition}");  
+			$("input#searchVal").val("${requestScope.paraMap.searchVal}");  
+		}
+	    
+	    
 	    
 	    <%-- 옵션창 날짜 직접입력 --%>
 	    $("input[name='period-type']").change(function(){
@@ -154,7 +165,7 @@
 		    if($("#burger-check").is(":checked")){
 		        $(".table").css({'width':'62%','margin-top':'32px'});
 		        // $(".table th:nth-child(2)").attr("width","8%");
-		        $(".myscrap").css({'position':'relative', 'top':'31.5px', 'right':''});
+		        $(".myscrap").css({'position':'relative', 'top':'25.5px', 'right':''});
 		        $(".table th:nth-child(1)").css({'width':'6%'});
 		        $(".table th:nth-child(3)").attr("width","14%");
 		        $(".nb-info").css("width", "96%");
@@ -171,6 +182,26 @@
 		    }
 		});  
 		
+		
+		/* 북마크 표시 */
+		$('.bookmark').click(function(e) {
+		  	const $this = $(this);
+		
+		  	if ( $this.hasClass('icon-star-empty') ) {
+		  		$this.removeClass('icon-star-empty');
+		  		$this.addClass('icon-star-full');
+		  	} else {
+		  		$this.removeClass('icon-star-full');
+		  		$this.addClass('icon-star-empty');
+		  	}
+		  	/* e.preventDefault(); */
+		});
+		  
+		
+		/* 게시물뷰 링크 이동 */
+		 $('.titlefirst').click(function() {
+			
+		});
 		
 		// 별 북마크표시
 		$(".check-star").click(function(){
@@ -227,6 +258,14 @@
 				ms_check($("#ms-checkall").next().find("i"));
 			}
 		});
+		
+		
+		//const searchCondition = $("#searchCondition").val();
+		//const searchVal = $("#searchVal").val();
+		
+		
+		
+		
 		
 		
 	});//end of ready---------------------------------------
@@ -294,14 +333,16 @@
 		location.href="<%= request.getContextPath()%>/view.action?seq="+seq;
 	}// end of function goView(seq)-------------------
 	
-	
-	function goSearch() { // 검색하는 함수 호출
+	--%>
+	// 검색하는 함수
+	function goSearch() { // 검색하는 함수
 		const frm = document.searchFrm;
-		frm.method = "GET";  // 검색하는 것은 굳이 "POST" 방식을 쓸 필요가 없다.
-		frm.action = "<%= ctxPath%>/list.action";
-		frm.submit();
+		frm.method = "GET";  
+		frm.action = "<%= ctxPath%>/board_all.up";
+		frm.submit(); 
 	}// end of function goSearch()-------------------
-	 --%>
+		
+	
 	
 	//폼값을 받아서 저장하기
 	function goSave() {
@@ -362,18 +403,19 @@
 	<div class="row">
       <div class="table-responsive" style="width: 100%; overflow-y: hidden;">
       	 
-           <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;">
-			<div class="row" style="float: right;position: relative;left: -121px;" >
+           <!-- <form action="#" class="booking-form ml-3"  style="margin-bottom: 3px;"> -->
+           <form name="searchFrm">
+			<div class="row" style="float: right; position: relative; left: -121px; margin-bottom: 0.6%;" >
 			
 				<%-- 검색 --%>
 				<div class=" mr-2">
 					<div class="form-group"">
 						<div class="form-field">
 							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px; position: relative; left: 15%;">
-								<option value="">전체</option>
-								<option value="">작성자</option>
-								<option value="">제목</option>
-								<option value="">제목+내용</option>
+								<!-- <option value="all" selected>전체</option> -->
+								<option value="name_kr">작성자</option>
+								<option value="subject">제목</option>
+								<option value="content">내용</option>
 							</select>
 						</div>
 					</div>
@@ -381,7 +423,7 @@
 				<div class="">
 					<div class="form-group">
 						<div class="form-field">
-							<input type="text" class="form-control" placeholder="검색" style="width:135%; font-size: 9pt; padding:6px 12px;padding-left: 45px; position: relative; left: 8%">
+							<input type="text" name="searchVal" id="searchVal" class="form-control" placeholder="검색" autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -392,7 +434,7 @@
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: -17%"></a>
+						<button type="button" class="btn icon icon-search" id="searchbtn" onclick="goSearch()"></button>
 					</div>
 				</div>
 				
@@ -556,7 +598,7 @@
 		        </div> -->
 		        <div class="condition-right">
 		            <button type="reset" class="workstatus-cancel" onClick="optionForm('CLOSE'), multiSelect('CLOSE')">취소</button>
-		            <button type="button" class="workstatus-save mr-1"  onClick="goSearch()">검색</button>
+		            <button type="button" class="workstatus-save mr-1"  onClick="goOptionSearch()">검색</button>
 		        </div>
 		    </div>
 		</div>
@@ -564,7 +606,8 @@
 </form>
 
 
-	<table class="table" style="height: 400px;">
+	<%-- ★★★★★★★★★★ 게시글 목록 뿌리기 ★★★★★★★★★ --%>
+	<table class="table">
 	<thead>
 	  <tr>
 	    <th width="4%" scope="col"/>
@@ -573,128 +616,57 @@
 	  </tr>
 	</thead>
 	<tbody>
-		<tr class="topnotice"><!-- 공지 상단에 고정 -->
-	  <td>1</td>
-	   <td>
-	   	<div class="titlefirst"> 
-	    	<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
-	    	<span class="title" onclick="location.href='/thumbsup/board/view.up'">[코로나 문진표] 11/15일자 결과 공유</span>
-	   		<span class="icon icon-attachment" id="iconattachment"></span> 
-	   	</div>  
-	   	<div class="nb-info">
-	   		<div style="display: inline-block; width: 11%;">
-	   			<span class="categorybadge">일반</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="username">관리자</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="writedate">2022.11.16</span>
-	   		</div>
-	   	</div>			
-	   </td>
-	   <td>
-	   	<a href="#" class="bookmark icon icon-star-empty"></a>
-	   </td>
-	 </tr>
-	 <tr class="topnotice">
-	   <td>2</td>
-	   <td>
-	   	<div class="titlefirst">
-	   		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
-	   		<span class="title">[전원필독] ★퇴근 시 유의사항★</span>
-	   		<span class="icon icon-attachment" id="iconattachment"></span> 
-	   	</div>  
-	   	<div class="nb-info">
-	   		<div style="display: inline-block; width: 11%;">
-	   			<span class="categorybadge">일반</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="username">관리자</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="writedate">2022.11.16</span>
-	   		</div>
-	   	</div>					
-	   </td>
-	   <td>
-	   	<a href="#" class="bookmark icon icon-star-empty"></a>
-	   </td>
-	 </tr>
-	 
-	 <tr class="topnotice">
-	    <td>3</td>
-	    <td>
-	   	<div class="titlefirst">
-	   		<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
-	   		<span class="title">[떰접식당 이용정책 변경안내]</span>
-	   		<span class="icon icon-attachment" id="iconattachment"></span> 
-	   		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-	   	</div>  
-	   	<div class="nb-info">
-	   		<div style="display: inline-block; width: 11%;">
-	   			<span class="categorybadge">인사</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="username">관리자</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="writedate">2022.11.16</span>
-	   		</div>
-	   	</div>					
-	   </td>
-	   <td>
-	   	<a href="#" class="bookmark icon icon-star-empty"></a>
-	   </td>
-	 </tr>
-	 <tr>
-	    <td>4</td>
-	    <td>
-	   	<div class="titlefirst">
-	   		<span class="title notopnotice">[그룹웨어] 알림기능 업데이트 안내</span>
-	   		<span class="icon icon-attachment" id="iconattachment"></span> 
-	   		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
-	   	</div>  
-	   	<div class="nb-info">
-	   		<div style="display: inline-block; width: 11%;">
-	   			<span class="categorybadge">경조사</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="username">관리자</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="writedate">2022.11.16</span>
-	   		</div>
-	   	</div>		
-	   </td>
-	   <td>
-	   	<a href="#" class="bookmark icon icon-star-empty"></a>
-	   </td>
-	 </tr>
-	 <tr >
-	    <td>5</td>
-	    <td>
-	   	<div class="titlefirst">
-	   		<span class="title notopnotice">[온라인 세미나] 11/25(금) 세미나 공지</span>
-	   		<span class="icon icon-attachment" id="iconattachment"></span> 
-	   	</div>  
-	   	<div class="nb-info">
-	   		<div style="display: inline-block; width: 11%;">
-	   			<span class="categorybadge">경조사</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	   			<span class="username">관리자</span>
-	   		</div>
-	   		<div style="display: inline-block; width: 10%;">
-	         			<span class="writedate">2022.11.16</span>
-	         		</div>
-	         	</div>			
-	         </td>
-	         <td>
-	         	<a href="#" class="bookmark icon icon-star-empty"></a>
-	         </td>
-	       </tr>
+		<c:forEach var="boardvo" items="${requestScope.boardList}" varStatus="status">
+			<tr class="topnotice"><!-- 공지 상단에 고정 -->
+			  <td>${boardvo.nbno}</td>
+			   <td>
+			   	<div class="titlefirst"> 
+			    	<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/325/pushpin_1f4cc.png" width="15px"/>
+			    	<span class="title" onclick="location.href='/thumbsup/board/view.up'">${boardvo.subject}</span>
+			   		<span class="icon icon-attachment" id="iconattachment"></span> 
+			   	</div>  
+			   	<div class="nb-info">
+			   		<div style="display: inline-block; width: 11%;">
+			   			<span class="categorybadge">${boardvo.categoryTag}</span>
+			   		</div>
+			   		<div style="display: inline-block; width: 10%;">
+			   			<span class="username">${boardvo.name_kr}</span>
+			   		</div>
+			   		<div style="display: inline-block; width: 15%;">
+			   			<span class="writedate">${boardvo.writedate}</span>
+			   		</div>
+			   	</div>			
+			   </td>
+			   <td>
+			   	<a href="#" class="bookmark icon icon-star-empty"></a>
+			   </td>
+			 </tr>
+	       </c:forEach>
 	       
+			 <tr >
+			    <td>5</td>
+			    <td>
+				   	<div class="titlefirst">
+				   		<span class="title notopnotice">[온라인 세미나] 11/25(금) 세미나 공지</span>
+				   		<span class="icon icon-attachment" id="iconattachment"></span> 
+				   	</div>  
+				   	<div class="nb-info">
+			 		<div style="display: inline-block; width: 11%;">
+			 			<span class="categorybadge">경조사</span>
+			 		</div>
+			 		<div style="display: inline-block; width: 10%;">
+			 			<span class="username">관리자</span>
+			 		</div>
+			 		<div style="display: inline-block; width: 10%;">
+			       			<span class="writedate">2022.11.16</span>
+			       		</div>
+			       	</div>			
+		       </td>
+		       <td>
+		       	<a href="#" class="bookmark icon icon-star-empty"></a>
+		       </td>
+		     </tr>
+     
 	     </tbody>
 	   </table>
 	<h2 class="mt-3"style="text-align: center;">페이징처리</h2>

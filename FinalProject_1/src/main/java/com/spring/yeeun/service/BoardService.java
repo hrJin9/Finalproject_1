@@ -1,5 +1,8 @@
 package com.spring.yeeun.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,21 @@ public class BoardService implements InterBoardService {
 	public int add_withFile(NoticeBoardVO boardvo) {
 		int n = dao.add_withFile(boardvo); // 첨부파일이 있는 경우
 		return n;
+	}
+
+	// 페이징 처리를 안한 검색어가 없는 전체 글목록 보여주기
+	/*
+	@Override
+	public List<NoticeBoardVO> boardListNoSearch() {
+		List<NoticeBoardVO> boardList = dao.boardListNoSearch();
+		return boardList;
+	} */
+
+	// 페이징 처리를 안한 검색어가 있는 전체 글목록 보여주기
+	@Override
+	public List<NoticeBoardVO> boardListSearch(Map<String, String> paraMap) {
+		List<NoticeBoardVO> boardList = dao.boardListSearch(paraMap);
+		return boardList;
 	}
 
 	

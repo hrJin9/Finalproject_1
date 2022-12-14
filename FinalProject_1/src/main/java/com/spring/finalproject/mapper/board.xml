@@ -14,5 +14,27 @@
 		values(seq_tbl_nboard.nextval, #{fk_employee_no}, #{name_kr}, #{categoryTag}, #{subject}, #{content}, #{priority}, default, default, default, #{nb_fileName}, #{nb_orgFilename}, #{fileSize}) 
 	</insert>
 	
-
+	<!-- 페이징 처리를 안한 검색어가 없는 전체 글목록 보여주기 -->
+	<!-- <select id="boardListNoSearch" resultType="com.spring.yeeun.model.NoticeBoardVO">
+	    select nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, 
+		       to_char(writedate, 'yyyy-mm-dd')as writedate, readcnt, status
+		from tbl_notice_board
+		where status = 1
+		order by nbno desc
+    </select> -->
+    
+	<!-- 페이징 처리를 안한 검색어가 있는 전체 글목록 보여주기 -->
+	<select id="boardListSearch" parameterType="HashMap" resultType="com.spring.yeeun.model.NoticeBoardVO">
+	select nbno, fk_employee_no, name_kr, categoryTag, subject, priority, 
+	       to_char(writedate, 'yyyy-mm-dd')as writedate, readcnt, status, nb_fileName
+	from tbl_notice_board
+	where status = 1
+	<if test='searchCondition != "" and searchVal != ""'>   <!-- 3. if test="key명"> <when test="key명"> 인 경우 "key명" -->
+	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'   <!-- 2. 식별자(테이블명, 컬럼명)로 사용할때는 ${key명} -->  <!-- 1. HashMap 에 있는 데이터인 검색어는  #{key명} -->
+	</if>
+	order by nbno desc
+	</select>
+	
+	
+	
 </mapper>
