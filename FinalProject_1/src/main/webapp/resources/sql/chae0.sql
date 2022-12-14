@@ -109,7 +109,7 @@ where fk_lgcatgono = 1 and smcatgoname = #{com_smcatgoname}
 
 
 --- 회의실 ---- 
-create table tbl_conference
+create table tbl_meetingroom
 (roomno            number       not null      -- 회의실 번호
 ,room_name         varchar2(20) not null      -- 회의실 명
 ,room_info         varchar2(20) not null      -- 회의실 정보
@@ -120,7 +120,7 @@ create table tbl_conference
 
 
 --- 회의실 예약 ----   
-create table tbl_conference_reservation
+create table tbl_meetingroom_reservation 
 (reserno           number         not null      -- 회의실 예약번호
 ,r_date            date           not null      -- 회의실 예약일
 ,r_startdate       date           not null      -- 시작일자
@@ -131,15 +131,15 @@ create table tbl_conference_reservation
 ,fk_roomno         number         not null      -- 회의실 번호
 ,fk_employee_no    number(6)      not null      -- 사원번호
 ,constraint PK_reservation_reserno primary key(reserno) 
-,constraint FK_reservation_fk_roomno foreign key(fk_roomno)  
-            references tbl_conference(roomno) on delete cascade	
+,constraint FK_reservation_fk_roomno foreign key(fk_roomno)   
+            references tbl_meetingroom(roomno) on delete cascade	
 ,constraint FK_reservation_fk_employee_no foreign key(fk_employee_no) references tbl_employee(employee_no) 
 
 ); 
 -- Table TBL_CONFERENCE_RESERVATION이(가) 생성되었습니다.
 
 
-create sequence seq_conference
+create sequence seq_reserno
 start with 1
 increment by 1
 nomaxvalue
@@ -148,6 +148,19 @@ nocycle
 nocache;
 
 
+
+insert into tbl_meetingroom_reservation(reserno, r_startdate, r_enddate, r_content, fk_employee_no) 
+values(seq_reserno.nextval, to_date(#{r_startdate}, 'yyyymmddhh24miss'), to_date(#{r_enddate}, 'yyyymmddhh24miss'), #{r_content}, #{fk_employee_no})
+ 
+
+insert into tbl_meetingroom_reservation(reserno, r_startdate, r_enddate, r_content, fk_employee_no) 
+values(seq_reserno.nextval, to_date(20221212111511, 'yyyymmddhh24miss'), to_date(20221212121511, 'yyyymmddhh24miss'), '예약헙니다', 100011)
+         
+        
+select *
+from tbl_meetingroom_reservation;
+
+        
 
 select smcatgono, fk_lgcatgono, smcatgoname
 from tbl_calendar_small_category
