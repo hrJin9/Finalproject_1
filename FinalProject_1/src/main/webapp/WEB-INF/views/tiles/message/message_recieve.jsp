@@ -823,10 +823,10 @@ function chxStatus(condition,checkednoArr){
 	<div class="mg-right-container">
 	</div>
 	
-	<input id="curpage" type="text" value=""/>	
-	<input id="allcnt" type="text" value=""/>
-	<input id="unreadcnt" type="text" value=""/>
-	<input id="scrapcnt" type="text" value=""/>
-	<input id="curmno" type="text" value=""/>
+	<input id="curpage" type="hidden" value=""/>	
+	<input id="allcnt" type="hidden" value=""/>
+	<input id="unreadcnt" type="hidden" value=""/>
+	<input id="scrapcnt" type="hidden" value=""/>
+	<input id="curmno" type="hidden" value=""/>
 
 </div>

@@ -9,7 +9,7 @@
 
 <style type="text/css">
 	.admin_container {
-		width: 88%;
+		width: 90%;
 		margin: 0 auto;
 	}
 
@@ -160,15 +160,22 @@
 	.table thead th {
 		border-bottom: none;
 		text-align: center; 
+		padding: 8px 0 10px 0;
 	}
-	.boardth{
-		position: relative;
-		top: -6px;
+	
+	th > div {
+		cursor: pointer;
 	}
+	
 	.table td, .table th {
 		font-size: 11pt;
 	    border-top: 1px solid #eef2f6;
 	}
+	
+	.table th {
+		border-top: 1px solid #cccccc;
+	}
+	
 	.table {
 	    color: #4c4e54;
 	}
@@ -259,6 +266,10 @@
 	   }
 	}
 	
+	.adStatus {
+		padding: 0px 10px !important;
+	}
+	
 </style>
 
 <script type="text/javascript">
@@ -289,8 +300,8 @@
 </script>
 
 <nav id="admin_mainList" class="margin-container">
-	<a id="admin_attendance_holding" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" style="color: black;" class="header-nonsub">휴가 보유 현황</a>
-	<a id="admin_attendance_usage" href="<%= request.getContextPath()%>/admin_attendanceList_usage.up" class="header-nonsub">휴가 사용 내역</a>
+	<a id="admin_attendance_holding" href="<%= request.getContextPath()%>/admin_attendanceList_holding.up" class="header-nonsub">휴가 보유 현황</a>
+	<a id="admin_attendance_usage" href="<%= request.getContextPath()%>/admin_attendanceList_usage.up" style="color: rgb(77, 79, 83);"  class="header-nonsub">휴가 사용 내역</a>
 	<div class="list_underline"></div>
 </nav>
 <hr class="HRhr" style="margin-top: 0px;"/><br>
@@ -353,8 +364,8 @@
 		<table class="table custom-table">   
 	    	<thead>   
 	            <tr>
-	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
-	              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></div></th>
+	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>  
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">인사·총무</a>
 					      <a class="dropdown-item" href="#">회계·재무</a>
@@ -374,7 +385,7 @@
 					      <a class="dropdown-item" href="#">서비스</a> 
 					  </div>
 				  </th>
-	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">대표</a>
 					      <a class="dropdown-item" href="#">부대표</a>
@@ -398,14 +409,14 @@
 					  </div>
 				  </th>
 	              <th class="boardth" width="16%" scope="col">기간</th>
-	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">연차</a>
 					      <a class="dropdown-item" href="#">병가</a>
 					      <a class="dropdown-item" href="#">기타</a>
 					  </div>
 				  </th>
-	              <th class="boardth" width="13%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">세부 항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="13%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">세부 항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">연차</a>
 					      <a class="dropdown-item" href="#">반차</a>
@@ -418,7 +429,7 @@
 					      <a class="dropdown-item" href="#">기타 사유</a>
 					  </div>
 				  </th>
-	              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">승인 여부<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">승인 여부<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">승인</a>
 					      <a class="dropdown-item" href="#">반려</a>
@@ -434,7 +445,7 @@
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>연차</td>
 	              <td>연차</td>
-	              <td><button type="button" class="btn btn-sm button" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em; font-weight: bold;">승인</button></td>
+	              <td><button type="button" class="btn btn-sm button adStatus" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em; font-weight: bold;">승인</button></td>
 	            </tr> 
 	            <tr> 
 	              <td>이예은</td>
@@ -443,7 +454,7 @@
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>연차</td>
 	              <td>반차</td>
-	              <td><button type="button" class="btn btn-sm button" style="background-color: #F24B171F; color: #661400; border-radius: 2em; font-weight: bold;">반려</button></td>
+	              <td><button type="button" class="btn btn-sm button adStatus" style="background-color: #F24B171F; color: #661400; border-radius: 2em; font-weight: bold;">반려</button></td>
 	            </tr> 
 	            <tr> 
 	              <td>강채영</td>
@@ -452,7 +463,7 @@
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>병가</td>
 	              <td>병가</td>
-	              <td><button type="button" class="btn btn-sm button" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em; font-weight: bold;">승인</button></td>
+	              <td><button type="button" class="btn btn-sm button adStatus" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em; font-weight: bold;">승인</button></td>
 	            </tr> 
 	            <tr> 
 	              <td>진혜린</td>
@@ -461,7 +472,7 @@
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>기타</td>
 	              <td>기타 사유</td>
-	              <td><button type="button" class="btn btn-sm button" style="background-color: #F24B171F; color: #661400; border-radius: 2em; font-weight: bold;">반려</button></td>
+	              <td><button type="button" class="btn btn-sm button adStatus" style="background-color: #F24B171F; color: #661400; border-radius: 2em; font-weight: bold;">반려</button></td>
 	            </tr> 
 	    	</tbody>            
 		</table>

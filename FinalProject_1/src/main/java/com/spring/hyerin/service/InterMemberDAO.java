@@ -79,5 +79,8 @@ public interface InterMemberDAO {
 	
 	// 해당 정보로 사원테이블에 insert 해주기
 	int memberRegister(EmployeeVO evo);
+	
+	//해당 정보의 사원 가져오기
+	String getEmployeeInfo(EmployeeVO evo);
 
 }

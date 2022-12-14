@@ -167,8 +167,16 @@ public class Admin_memberController {
 		
 		// 검색조건, 검색어 뷰단에서 유지
 		if (!"".equals(searchCondition) && !"".equals(searchVal) || !"".equals(dropVal)) {
+			
+			//이메일, 핸드폰일 경우 값을 바꿔준다
+			if("email".equals(searchCondition)||"mobile".equals(searchCondition)) {
+				paraMap.put("searchVal", aes.decrypt(paraMap.get("searchVal")));
+			}
+			
 			mav.addObject("paraMap", paraMap);
 		}
+		
+		
 		
 		mav.addObject("totalCount",totalCount);
 		mav.addObject("pageBar", pageBarHTML);
@@ -544,7 +552,7 @@ public class Admin_memberController {
 			bodyCell.setCellValue(empvo.getPosition());
 
 			bodyCell = bodyRow.createCell(5);
-			bodyCell.setCellValue(empvo.getemploymenttype());
+			bodyCell.setCellValue(empvo.getEmploymenttype());
 			bodyCell.setCellStyle(moneyStyle); // 천단위 쉼표, 금액
 
 			bodyCell = bodyRow.createCell(6);

@@ -61,7 +61,7 @@
 	li input {
 		border: 1.5px solid #cccccc;
 		border-radius: 3.5px;
-		width: 52%;
+		width: 68%;
 		padding: 5px 10px;
 		opacity: 0.85;
 		font-size: 9pt;
@@ -84,10 +84,8 @@
 	
 	#btnFind {
 	    border: 1px solid #4285f4;
-		width: 70%; 
-		margin-left: 15px;
-		margin-top: 90px;
-	    padding: 5px;
+		width: 67%; 
+		margin-top: 10px;
 		background-color: #4285f4;
 		color: white;
 		font-size: 12pt;
@@ -97,57 +95,184 @@
 	#btnFind:hover {
 		opacity: 1;
 	}
-
+	
+	
+	.error {
+		font-size: 9pt;
+		color: #4285f4;
+	    margin-left: 26.3%;
+	    margin-top: 5px;
+	}
+	
+	#emailcheckBtn{
+		border: solid 1px #cccccc;
+		background-color: white;
+		padding: 5px 10px;
+		color: #666666;
+		font-size: 11pt;
+	}
+	
 </style>
   
   
 <script type="text/javascript">
 
-	$(document).ready(function(){
+var code = ""; // 이메일 인증용
+var b_emailSendCheck = false;
+var b_emailCheck = false; // 이메일인증을 했는지 여부
+var empno = "";
+
+$(document).ready(function(){
+	
+	$(".error").hide();
+	$("#emailCheckLi").hide();
+	<%-- 
+	$("button#btnFind").click(function(){
+		location.href= "<%= ctxPath%>/login/pwdFind_update.up"; 
+	});
+	 --%>
+});// end of $(document).ready(function(){})---------------
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+// 모달창에 입력한 input 태그 value 값 초기화 시키기
+function func_form_reset_empty() {  // 입력란에 있는 값 비워주는 메소드
+	document.querySelector("form[name='pwdFindFrm']").reset();  // 해당 form 태그 초기화시키기
+}
+
+
+//해당정보에 해당하는 사원정보 가져오기
+function employeeInfo(){
+	
+	
+	
+	if(!b_emailCheck){ //이메일 인증을 안한 경우
+		// 이름 유효성검사
+		const name = $("#name_kr").val().trim();
+		if(name == ""){
+			$("#name_kr").focus();
+			$(".nameAlert").show();
+			return;
+		} else {
+			$(".nameAlert").hide();
+		}
 		
-		$("button#btnFind").click(function(){
-			location.href= "<%= ctxPath%>/login/pwdFind_update.up"; 
+		// 이메일 유효성검사
+		const emailReg = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+		const email = $("#email").val().trim();
+		if(!emailReg.test(email)){
+			$("#email").focus();
+			$(".emailAlert").show();
+			return;
+		} else {
+			$(".emailAlert").hide();
+		}
+		
+		$.ajax({
+			url: "<%=ctxPath%>/getEmployeeInfo.up",
+			type:"post",
+			data:$("#pwdFindFrm").serialize(),
+			dataType:"json",
+			success:function(json){
+				var alertHtml = '';
+				if(json.employee_no != ""){
+					goEmailCheck();
+					empno = json.employee_no;
+				} else {
+					alertHtml = "조회된 사원정보가 없습니다. 다시 입력해주세요.";
+				}
+				$(".emailAlert").text(alertHtml);
+				$(".emailAlert").show();
+			}
 		});
 		
-	});// end of $(document).ready(function(){})---------------
-	
-	
-	// 모달창에 입력한 input 태그 value 값 초기화 시키기
-	function func_form_reset_empty() {  // 입력란에 있는 값 비워주는 메소드
-		document.querySelector("form[name='pwdFindFrm']").reset();  // 해당 form 태그 초기화시키기
+	} else { //모든 인증을 끝낸 경우
+		location.href= "<%= ctxPath%>/login/pwdFind_update.up?empno="+empno; 
 	}
+	
+	
+	
+}//end employeeInfo
+
+//이메일 인증
+function goEmailCheck(){
+	
+	const email = $("#email").val().trim();
+	
+	$.ajax({
+		url:"<%= ctxPath%>/mailPwdCheck.up?email="+email,
+		type:"get",
+		success:function(data){
+			//console.log("data:" + data);
+			code = data;
+			
+			$(".emailAlert").text("인증번호를 전송했습니다.인증번호를 입력해주세요.");
+			$(".emailAlert").show();
+			$("#emailCheckLi").show();
+			b_emailSendCheck = true;
+		}
+	});//end ajax
+	
+}//end of goEmailCheck
+
+//이메일 인증번호 비교
+function checkEmailCode(){
+	const inputval = $("#emailCheck").val();
+	
+	if(code != inputval){
+		$(".emailCheckAlert").text("인증번호가 일치하지 않습니다.");
+		$(".emailCheckAlert").show();
+		return;
+	} else {
+		$(".emailCheckAlert").text("인증이 성공되었습니다.");
+		$(".emailCheckAlert").show();
+		$("#btnFind").text("비밀번호 변경");
+		b_emailCheck = true;
+	}
+	
+}//end checkEmailCode
 
 </script>    
  
 </head>
 <body>   
-<form name="pwdFindFrm">
+<form id="pwdFindFrm" name="pwdFindFrm">
 	<!-- 
 	<h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 찾기</h4><br>
 	 -->
 	<ul style="list-style-type: none">
 	    <li style="margin: 10px 0 7px 0">
-	       <label for="password" style="display: inline-block; width: 90px; margin-left: 18px;">이름</label>
-	       <input type="password" name="password" id="password" size="25" placeholder="이름" autocomplete="off" required />  <!-- label 태그의 for값 == input 태그의 id값 -->
+	       <label for="password" style="display: inline-block; width: 62px; margin-left: 18px;">이름</label>
+	       <input type="text" name="name_kr" id="name_kr" size="25" placeholder="이름" autocomplete="off" required />  <!-- label 태그의 for값 == input 태그의 id값 -->
+	    	<div class="error nameAlert">이름을 입력해주세요.</div> 
 	    </li>
+	    <!-- 
 	    <li style="margin: 10px 0 7px 0">
-	       <label for="userid" style="display: inline-block; width: 90px; margin-left: 18px;">아이디</label>
-	       <input type="text" name="userid" id="userid" size="25" placeholder="아이디" autocomplete="off" required />  <!-- label 태그의 for값 == input 태그의 id값 -->
+	       <label for="userid" style="display: inline-block; width: 90px; margin-left: 18px;">사원번호</label>
+	       <input type="text" name="employee_no" id="employee_no" size="25" placeholder="사원번호" autocomplete="off" required />  label 태그의 for값 == input 태그의 id값
 	    </li>
+	     -->
 	    <li style="margin: 10px 0 7px 0">
-	       <label for="email" style="display: inline-block; width: 90px; margin-left: 18px;">이메일</label>
+	       <label for="email" style="display: inline-block; width: 62px; margin-left: 18px;">이메일</label>
 	       <input type="text" name="email" id="email" size="25" placeholder="이메일" autocomplete="off" required />  <!-- label 태그의 for값 == input 태그의 id값 -->
-	       <%-- <span class="error text-danger">이메일 형식에 맞지 않습니다.</span> --%>
+	      <div class="error emailAlert">이메일 형식에 맞게 입력해주세요.</div> 
+	    </li>
+	    <li id="emailCheckLi" style="margin: 10px 0 7px 0">
+	       <label for="email" style="display: inline-block; width: 62px; margin-left: 18px;">이메일 확인</label>
+	       <input type="text" name="emailCheck" id="emailCheck" size="25" placeholder="인증번호입력" autocomplete="off" required style="width: 49%;"/>  <!-- label 태그의 for값 == input 태그의 id값 -->
+	       <button id="emailcheckBtn" type="button" class="btn" onclick="checkEmailCode()">인증확인</button>
+	      <div class="error emailCheckAlert"></div> 
 	    </li>
 	</ul>
 
 	<div class="text-center">
-		<button type="button" class="btn btn-success" id="btnFind" >확인</button>
+		<button type="button" class="btn" id="btnFind" onclick="employeeInfo()">인증</button>
     </div>
     
-    <%--
     <div class="my-3" id="div_findResult">
 		<p class="text-center">
+			<span id="emailAlert" style="color: #4285f4; font-size: 11pt;"></span>
+		<%-- 
 			// get으로 들어올 경우
 			<c:if test="${requestScope.isUserExist eq false}">
 				<span style="color: red;">사용자 정보가 없습니다.</span>
@@ -165,9 +290,9 @@
 			<c:if test="${requestScope.isUserExist eq true && requestScope.sendMailSuccess == false}">
 				<span style="font-size: 10pt; color: red;">메일 발송이 실패하였습니다.</span><br>
 			</c:if>
+			 --%>
 		</p>
 	</div>
-    --%>
 </form>
 </body>
 </html>
