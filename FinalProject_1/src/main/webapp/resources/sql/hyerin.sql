@@ -1498,13 +1498,15 @@ from
     (
         select fk_employee_no, sum(nvl(to_date(to_char(enddate, 'yyyy-mm-dd'), 'yyyy-mm-dd hh24:mi:ss') - to_date(to_char(startdate, 'yyyy-mm-dd'), 'yyyy-mm-dd hh24:mi:ss'),0)) as useCnt
         from tbl_dayoff
+        where to_char(startdate, 'yyyy') = '2022'
         group by fk_employee_no
+        
     )
     right join v_employee
     on fk_employee_no = employee_no
     where employee_no != 99
     and name_kr like '%'||'혜'||'%'
-    and ${dropCondition} = #{dropVal}
+    and 
 )
 where rno between 1 and 10
 
@@ -1516,5 +1518,4 @@ select * from tbl_dayoff
 
 select * from TBL_APPROVAL
 
-
-select * from tbl
+select * from tbl_approval

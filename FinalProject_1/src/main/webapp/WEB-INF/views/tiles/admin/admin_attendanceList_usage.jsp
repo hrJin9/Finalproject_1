@@ -273,28 +273,62 @@
 </style>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		
-    	// 기간 데이트피커
-		flatpickr.localize(flatpickr.l10ns.ko);
-        flatpickr($(".daterangeSelector"));
-        $(".daterangeSelector").flatpickr({
-        	mode: "range",
-            local: 'ko'
-        });
-		
-		$('#searchCondition').change(function() {
-		    var state = $('#searchCondition option:selected').val();
-		    if(state == 'period') {
-		    	$("#username").css('display','none');
-		    	$("#period").css('display','block');
-		    } else {
-		    	$("#period").css('display','none');
-		    	$("#username").css('display','block');
-		     }
-		});
-		
-	});// end of $(".period").click(function(){})-------------------
+$(document).ready(function(){
+	
+	var sv = "${requestScope.paraMap.searchVal}";
+	var dc = "${requestScope.paraMap.dropCondition}";
+	var dv = "${requestScope.paraMap.dropVal}";
+	var sp = "${requestScope.paraMap.sizePerPage}";
+	var year = "${requestScope.paraMap.year}";
+	
+	if(sv != "") 
+		$("input[name='sv']").val(sv);
+	if(dc != "")
+		$("#dc").val(dc);
+	if(dv != "")
+		$("#dv").val(dv);
+	if(sp != "")
+		$("#cntselect").val(sp);
+	if(year != "")
+		$("#year").val(year);
+	
+	
+	// 데이트피커
+	$("#year").datepicker({
+	    format: "yyyy",
+	    viewMode: "years",
+	    minViewMode: "years",
+	    todayBtn: true,
+	    autoclose:true //to close picker once year is selected
+	});
+	
+	if($("#year").val() == ""){
+		var defaultYear = new Date().getFullYear();
+		$("#year").val(defaultYear);
+	}
+	
+	
+	
+   	// 기간 데이트피커
+	flatpickr.localize(flatpickr.l10ns.ko);
+       flatpickr($(".daterangeSelector"));
+       $(".daterangeSelector").flatpickr({
+       	mode: "range",
+           local: 'ko'
+       });
+	
+	$('#searchCondition').change(function() {
+	    var state = $('#searchCondition option:selected').val();
+	    if(state == 'period') {
+	    	$("#username").css('display','none');
+	    	$("#period").css('display','block');
+	    } else {
+	    	$("#period").css('display','none');
+	    	$("#username").css('display','block');
+	     }
+	});
+	
+});// end of $(".period").click(function(){})-------------------
 	
 	
 </script>
@@ -307,8 +341,13 @@
 <hr class="HRhr" style="margin-top: 0px;"/><br>
 
 
+<form id="douseForm" name="douseForm" class="booking-form">
 <div class="admin_container">	
 	<div class="contentsmargin">
+		<div style="display: inline-block;">
+			<input id="year" name="year" type="text" class="dateSelector" data-provide="datepicker" style="border: solid 1px #cccccc;border-radius: 5px;padding: 5px 10px;font-size: 11pt;color: rgb(77, 79, 83);width: 90px;cursor: pointer;" readonly/>
+			<i class="fa-solid fa-angle-down dateDown" style="cursor: pointer; position:relative; right:26px; top:1px; color: #d4d4d4;"></i>
+		</div>
 		<div style="display: inline-block;">
       	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
 		       	<span><i class="fa-solid fa-download"></i></span>
@@ -317,44 +356,42 @@
       	 </div>
 		
 		<%-- 검색 --%>
-		<form action="#" class="booking-form ml-3" style="float: right;">
-			<div class="row" style="padding-bottom: 20px;">
-			    <div class=" mr-2">
-					<div class="form-group">
-						<div class="form-field">
-							<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;">
-								<option value="username" class="username">이름</option>
-								<option value="period" class="period">기간</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div>
-					<div class="form-group">
-						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-							<input type="text" class="form-control" id="username" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
-							<input type="text" class="form-control daterangeSelector" id="period" placeholder="검색" style="display:none; width:105%; font-size: 9pt; padding:6px 6px; background-color: #fff;">
-						</div>
-					</div>
-				</div>
-				<div class="align-items-end mt-1 mr-4">
-					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.2%;"></a>
-					</div>
-				</div>
-				<div class=" mr-2">
-					<div class="form-group">
-						<div class="form-field" style="padding-right:10px;">
-							<select name="cntselect" id="cntselect" style="font-size: 9pt; padding:6.7px 12px;">
-								<option value="">20</option>
-								<option value="">40</option>
-								<option value="">80</option>
-							</select>
-						</div>
+		<div class="row" style="padding-bottom: 20px; float: right;">
+		    <div class=" mr-2">
+				<div class="form-group">
+					<div class="form-field">
+						<select name="searchCondition" id="searchCondition" style="font-size: 9pt; padding:6.7px 12px;">
+							<option value="name_kr" class="username">이름</option>
+							<option value="period" class="period">기간</option>
+						</select>
 					</div>
 				</div>
 			</div>
-		</form>
+			<div>
+				<div class="form-group">
+					<div class="form-field" style="padding-left:5px; margin-right: 14px;">
+						<input type="text" class="form-control" id="username" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+						<input type="text" class="form-control daterangeSelector" id="period" placeholder="검색" style="display:none; width:105%; font-size: 9pt; padding:6px 6px; background-color: #fff;">
+					</div>
+				</div>
+			</div>
+			<div class="align-items-end mt-1 mr-4">
+				<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
+					<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.2%;"></a>
+				</div>
+			</div>
+			<div class=" mr-2">
+				<div class="form-group">
+					<div class="form-field" style="padding-right:10px;">
+						<select name="cntselect" id="cntselect" style="font-size: 9pt; padding:6.7px 12px;">
+							<option value="">20</option>
+							<option value="">40</option>
+							<option value="">80</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		
 		<%-- 전체 구성원 --%>
@@ -366,56 +403,32 @@
 	            <tr>
 	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></div></th>
 	              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>  
-					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">인사·총무</a>
-					      <a class="dropdown-item" href="#">회계·재무</a>
-					      <a class="dropdown-item" href="#">법무</a>
-					      <a class="dropdown-item" href="#">감사</a> 
-					      <a class="dropdown-item" href="#">업무지원</a>
-					      <a class="dropdown-item" href="#">경영지원</a> 
-					      <a class="dropdown-item" href="#">영업</a> 
-					      <a class="dropdown-item" href="#">마케팅·홍보</a> 
-					      <a class="dropdown-item" href="#">기획</a> 
-					      <a class="dropdown-item" href="#">IT</a> 
-					      <a class="dropdown-item" href="#">디자인</a> 
-					      <a class="dropdown-item" href="#">연구·R&D</a> 
-					      <a class="dropdown-item" href="#">구매</a> 
-					      <a class="dropdown-item" href="#">무역</a> 
-					      <a class="dropdown-item" href="#">생산</a> 
-					      <a class="dropdown-item" href="#">서비스</a> 
+					  <div id="department_name" class="dropdown-menu">
+					     <a id="" class="dropdown-item" href="#">전체</a>
+					  		<c:forEach var="dvo" items="${requestScope.dvoList}">
+					  			<a id="${dvo.department_name}" class="dropdown-item" href="#">${dvo.department_name}</a>
+					  		</c:forEach>
+				  			<a id="none" class="dropdown-item" href="#">미지정</a>
 					  </div>
 				  </th>
 	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
-					  <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">대표</a>
-					      <a class="dropdown-item" href="#">부대표</a>
-					      <a class="dropdown-item" href="#">이사</a>
-					      <a class="dropdown-item" href="#">전무</a> 
-					      <a class="dropdown-item" href="#">상무</a> 
-					      <a class="dropdown-item" href="#">본부장</a> 
-					      <a class="dropdown-item" href="#">부장</a> 
-					      <a class="dropdown-item" href="#">차장</a> 
-					      <a class="dropdown-item" href="#">실장</a> 
-					      <a class="dropdown-item" href="#">과장</a> 
-					      <a class="dropdown-item" href="#">대리</a> 
-					      <a class="dropdown-item" href="#">주임</a> 
-					      <a class="dropdown-item" href="#">사원</a> 
-					      <a class="dropdown-item" href="#">연구원</a> 
-					      <a class="dropdown-item" href="#">수석연구원</a> 
-					      <a class="dropdown-item" href="#">책임연구원</a> 
-					      <a class="dropdown-item" href="#">선임연구원</a> 
-					      <a class="dropdown-item" href="#">전임연구원</a> 
-					      <a class="dropdown-item" href="#">주임연구원</a> 
+					  <div id="position" class="dropdown-menu">
+						<a id="" class="dropdown-item" href="#">전체</a>
+						<c:forEach var="position" items="${requestScope.pList}">
+						<a id="${position}" class="dropdown-item" href="#">${position}</a>
+						</c:forEach>
 					  </div>
 				  </th>
 	              <th class="boardth" width="16%" scope="col">기간</th>
 	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">연차</a>
+					      <a class="dropdown-item" href="#">경조</a>
+					      <a class="dropdown-item" href="#">공가</a>
 					      <a class="dropdown-item" href="#">병가</a>
-					      <a class="dropdown-item" href="#">기타</a>
 					  </div>
 				  </th>
+				  <!-- 
 	              <th class="boardth" width="13%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">세부 항목<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">연차</a>
@@ -429,6 +442,7 @@
 					      <a class="dropdown-item" href="#">기타 사유</a>
 					  </div>
 				  </th>
+				   -->
 	              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">승인 여부<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 					  <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">승인</a>
@@ -444,7 +458,6 @@
 	              <td>대리</td>
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>연차</td>
-	              <td>연차</td>
 	              <td><button type="button" class="btn btn-sm button adStatus" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em; font-weight: bold;">승인</button></td>
 	            </tr> 
 	            <tr> 
@@ -453,7 +466,6 @@
 	              <td>부장</td>
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>연차</td>
-	              <td>반차</td>
 	              <td><button type="button" class="btn btn-sm button adStatus" style="background-color: #F24B171F; color: #661400; border-radius: 2em; font-weight: bold;">반려</button></td>
 	            </tr> 
 	            <tr> 
@@ -461,7 +473,6 @@
 	              <td>디자이너</td>
 	              <td>과장</td>
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
-	              <td>병가</td>
 	              <td>병가</td>
 	              <td><button type="button" class="btn btn-sm button adStatus" style="background-color: #07B4191F; color: #034C0B; border-radius: 2em; font-weight: bold;">승인</button></td>
 	            </tr> 
@@ -471,7 +482,6 @@
 	              <td>차장</td>
 	              <td>2022-11-11&nbsp;~&nbsp;2022-11-13</td>
 	              <td>기타</td>
-	              <td>기타 사유</td>
 	              <td><button type="button" class="btn btn-sm button adStatus" style="background-color: #F24B171F; color: #661400; border-radius: 2em; font-weight: bold;">반려</button></td>
 	            </tr> 
 	    	</tbody>            
@@ -479,3 +489,4 @@
 	
 	</div>
 </div>
+</form>

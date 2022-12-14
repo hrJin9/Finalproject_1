@@ -1,5 +1,7 @@
 package com.spring.admin_attendance.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.hyerin.model.DepartmentsVO;
@@ -37,6 +40,8 @@ public class Admin_attendanceController {
 		String s_sizePerPage = request.getParameter("sp");
 		String s_cur = request.getParameter("cur");
 		
+		String year = request.getParameter("year");
+		
 		if(s_sizePerPage == null || !("20".equals(s_sizePerPage) || "40".equals(s_sizePerPage) || "80".equals(s_sizePerPage) ))
 			s_sizePerPage = "20";
 		if(s_cur == null)
@@ -57,12 +62,20 @@ public class Admin_attendanceController {
 		} catch(NullPointerException e) {
 			searchVal = "";
 		}
+		
+		if(year == null) {
+			Date today = new Date();
+			SimpleDateFormat date = new SimpleDateFormat("yyyy");
+			year = date.format(today);
+		}
+		
 
 		Map<String,String> paraMap = new HashMap<>();
 		paraMap.put("searchVal", searchVal);
 		paraMap.put("dropCondition", dropCondition);
 		paraMap.put("dropVal", dropVal);
 		paraMap.put("sizePerPage", s_sizePerPage);
+		paraMap.put("year",year);
 		
 		// 총 구성원 수(근태) 가져오기
 		int totalCount = service.getAdTotal(paraMap);	
@@ -95,15 +108,15 @@ public class Admin_attendanceController {
 		
 		// [맨처음][이전] 만들기
 		if(pageNo != 1) {
-			pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='처음' href='"+url+"?sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur=1'><span aria-hidden='true'>&laquo;</span></a></li>";
-			pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='이전' href='"+url+"?sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur="+(pageNo-1)+"'><span aria-hidden='true'>&lt;</span></a></li>";
+			pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='처음' href='"+url+"?year="+year+"&sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur=1'><span aria-hidden='true'>&laquo;</span></a></li>";
+			pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='이전' href='"+url+"?year="+year+"&sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur="+(pageNo-1)+"'><span aria-hidden='true'>&lt;</span></a></li>";
 		}
 		while( !(loop > blockSize || pageNo > totalPage) ) {
 			if(pageNo == cur) {
 				pageBarHTML += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #4285f4; color: white !important;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
 			}
 			else {
-				pageBarHTML += "<li class='page-item'><a class='page-link' href='"+url+"?sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur="+pageNo+"'>"+pageNo+"</a></li>";
+				pageBarHTML += "<li class='page-item'><a class='page-link' href='"+url+"?year="+year+"&sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur="+pageNo+"'>"+pageNo+"</a></li>";
 			}
 			
 			loop++;
@@ -111,8 +124,8 @@ public class Admin_attendanceController {
 		}//end of while
 		// [다음][마지막] 만들기
 		if(pageNo <= totalPage) {
-			pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='다음' href='"+url+"?sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur="+pageNo+"'><span aria-hidden='true'>&gt;</span></a></li>";
-			pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='마지막' href='"+url+"?sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur="+totalPage+"'><span aria-hidden='true'>&raquo;</span></a></li>";
+			pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='다음' href='"+url+"?year="+year+"&sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur="+pageNo+"'><span aria-hidden='true'>&gt;</span></a></li>";
+			pageBarHTML += "<li class='page-item'><a class='page-link' aria-label='마지막' href='"+url+"?year="+year+"&sv="+searchVal+"&dc="+dropCondition+"&dv="+dropVal+"&sp="+sizePerPage+"&cur="+totalPage+"'><span aria-hidden='true'>&raquo;</span></a></li>";
 		}
 		
 		pageBarHTML += "</ul></nav>";
@@ -126,10 +139,7 @@ public class Admin_attendanceController {
 		
 		
 		// 검색조건, 검색어 뷰단에서 유지
-		if (!"".equals(searchVal) || !"".equals(dropVal)) {
-			mav.addObject("paraMap", paraMap);
-		}
-		
+		mav.addObject("paraMap", paraMap);
 		mav.addObject("pageBar", pageBarHTML);
 		mav.addObject("evoList",evoList);
 		mav.addObject("dvoList",dvoList);
@@ -140,7 +150,10 @@ public class Admin_attendanceController {
 	} 
 	
 	@RequestMapping(value = "/admin_attendanceList_usage.up")
-	public ModelAndView admin_attendanceList_usage(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView admin_attendanceList_usage(@RequestParam Map<String,String> paraMap, HttpServletRequest request, ModelAndView mav) {
+		
+		
+		
 		mav.setViewName("admin/admin_attendanceList_usage.tiles");
 		return mav;
 	} 

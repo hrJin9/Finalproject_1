@@ -208,7 +208,7 @@
 	}
 	
 	
-.dateSelector{
+#year{
     border: solid 1px #cccccc;
     border-radius: 5px;
     padding: 5px 10px;
@@ -231,6 +231,7 @@ $(document).ready(function(){
 	var dc = "${requestScope.paraMap.dropCondition}";
 	var dv = "${requestScope.paraMap.dropVal}";
 	var sp = "${requestScope.paraMap.sizePerPage}";
+	var year = "${requestScope.paraMap.year}";
 	
 	if(sv != "") 
 		$("input[name='sv']").val(sv);
@@ -240,14 +241,25 @@ $(document).ready(function(){
 		$("#dv").val(dv);
 	if(sp != "")
 		$("#cntselect").val(sp);
+	if(year != "")
+		$("#year").val(year);
+		
+	
 	
 	// 데이트피커
-	$(".dateSelector").datepicker({
+	$("#year").datepicker({
 	    format: "yyyy",
-	    viewMode: "years", 
+	    viewMode: "years",
 	    minViewMode: "years",
+	    todayBtn: true,
 	    autoclose:true //to close picker once year is selected
 	});
+	
+	if($("#year").val() == ""){
+		var defaultYear = new Date().getFullYear();
+		$("#year").val(defaultYear);
+	}
+	
 	/* 
 	flatpickr.localize(flatpickr.l10ns.ko);
  	flatpickr($(".dateSelector"));
@@ -259,8 +271,14 @@ $(document).ready(function(){
 	
 	 */
 	
+	$("#year").change(function(){
+		var frm = document.adHolding;
+		frm.action = "<%=ctxPath%>/admin_attendanceList_holding.up";
+		frm.submit();
+	});
+	 
 	$(".dateDown").click(function(){
-		$(".dateSelector").trigger("click");
+		$("#year").trigger("click");
 	});
 	
 	
@@ -306,8 +324,8 @@ function getAdExcel(){
 <div class="admin_container">
 	<div class="contentsmargin">
 		<div style="display: inline-block;">
-			<input type="text" class="dateSelector"/>
-			<i class="fa-solid fa-angle-down dateDown" style="position:relative; right:26px; top:1px; color: #d4d4d4;"></i>
+			<input id="year" name="year" type="text" class="dateSelector" data-provide="datepicker" style="border: solid 1px #cccccc;border-radius: 5px;padding: 5px 10px;font-size: 11pt;color: rgb(77, 79, 83);width: 90px;cursor: pointer;" readonly/>
+			<i class="fa-solid fa-angle-down dateDown" style="cursor: pointer; position:relative; right:26px; top:1px; color: #d4d4d4;"></i>
 		</div>
 		<div style="display: inline-block;">
       	 	<a href="#" id="write" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #cccccc; border-radius:5px; background-color:white; color:#212529; margin-left: 3px;">
