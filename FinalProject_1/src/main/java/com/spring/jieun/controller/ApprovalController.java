@@ -2,8 +2,9 @@ package com.spring.jieun.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
 import com.spring.finalproject.common.FileManager;
 import com.spring.finalproject.common.MyUtil;
 import com.spring.hyerin.model.EmployeeVO;
@@ -155,7 +155,7 @@ public class ApprovalController {
  		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
  	      
  		
- 		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;'>";
+ 		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
  		String url ="approval.up";
  		
  		// === [맨처음][이전] 만들기 === //
@@ -208,8 +208,16 @@ public class ApprovalController {
 		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
 		String employee_no = loginuser.getEmployee_no();
 		//System.out.println("employee_no => "+employee_no);
+		String searchStartday = request.getParameter("searchStartday");
+		String searchEndday = request.getParameter("searchEndday");
 		
 		String bookmark = request.getParameter("bookmark");
+		if(searchStartday == null) {
+			searchStartday = "";
+		}
+		if(searchEndday == null) {
+			searchEndday = "";
+		}
 		if(bookmark == null || "0".equals(bookmark)) {
 			bookmark = "";
 		}
@@ -231,10 +239,8 @@ public class ApprovalController {
 		
 		Map<String,String> paraMap = new HashMap<>();
 		paraMap.put("employee_no", employee_no);
-		
 		paraMap.put("searchStartday", "");
 		paraMap.put("searchEndday", "");
-		
 		paraMap.put("final_signyn", "");
 		paraMap.put("ap_type", "");
 		paraMap.put("bookmark", "");
@@ -304,34 +310,34 @@ public class ApprovalController {
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 		
 		
-		String pageBar = "<ul style='list-style:none; '>";
-		String url ="approval.up";
-		
-		// === [맨처음][이전] 만들기 === //
-		if(pageNo != 1) {
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[맨처음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
-		}
-		
-		
-		while( !(loop > blockSize || pageNo > totalPage) ) {
-			if(pageNo==currentShowPageNo) {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color: red; padding: 2px 4px; '>"+pageNo+"</li>";
-			}
-			else {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
-			}
-			loop ++;
-			pageNo ++;
-		}// end of while()
-		
-		// === [다음][마지막] 만들기 === //
-		if(pageNo <= totalPage) {
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
-		}
-		
-		pageBar += "</ul>";
+		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
+ 		String url ="approval.up";
+ 		
+ 		// === [맨처음][이전] 만들기 === //
+ 		if(pageNo != 1) {
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='처음' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'><span aria-hidden='true'>&laquo;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='이전' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'><span aria-hidden='true'>&lt;</span></a></li>";
+ 		}
+ 		
+ 		 
+ 		while( !(loop > blockSize || pageNo > totalPage) ) {
+ 			if(pageNo==currentShowPageNo) {
+ 				pageBar += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #4285f4; color: white !important;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
+ 			}
+ 			else {
+ 				pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+ 			}
+ 			loop ++;
+ 			pageNo ++;
+ 		}// end of while()
+ 		
+ 		// === [다음][마지막] 만들기 === //
+ 		if(pageNo <= totalPage) {
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='다음'href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'><span aria-hidden='true'>&gt;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='마지막' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'><span aria-hidden='true'>&raquo;</span></a></li>";
+ 		}
+ 		
+ 		pageBar += "</ul></nav>";
 		mav.addObject("pageBar",pageBar);
 		
 		//String gobackURL = MyUtil.getCurrentURL(request);
@@ -473,22 +479,22 @@ public class ApprovalController {
  		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
  	      
  		
- 		String pageBar = "<ul style='list-style:none; '>";
+ 		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
  		String url ="approval.up";
  		
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
- 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'>[맨처음]</a></li>";
- 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='처음' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'><span aria-hidden='true'>&laquo;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='이전' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'><span aria-hidden='true'>&lt;</span></a></li>";
  		}
  		
  		 
  		while( !(loop > blockSize || pageNo > totalPage) ) {
  			if(pageNo==currentShowPageNo) {
- 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color: red; padding: 2px 4px; '>"+pageNo+"</li>";
+ 				pageBar += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #4285f4; color: white !important;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
  			}
  			else {
- 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+ 				pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
  			}
  			loop ++;
  			pageNo ++;
@@ -496,11 +502,11 @@ public class ApprovalController {
  		
  		// === [다음][마지막] 만들기 === //
  		if(pageNo <= totalPage) {
- 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
- 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='다음'href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'><span aria-hidden='true'>&gt;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='마지막' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'><span aria-hidden='true'>&raquo;</span></a></li>";
  		}
  		
- 		pageBar += "</ul>";
+ 		pageBar += "</ul></nav>";
 		
 		JSONArray jsonarr = new JSONArray(); // []
 		if(approvalList != null) {
@@ -512,7 +518,7 @@ public class ApprovalController {
 				jsonobj.put("ap_type", aprvo.getAp_type());
 				jsonobj.put("title", aprvo.getTitle());
 				jsonobj.put("final_signyn", aprvo.getFinal_signyn());
-				jsonobj.put("ap_systemFileName", aprvo.getAp_systemFileName());
+				jsonobj.put("ap_systemFileName", aprvo.getAp_systemfilename());
 				jsonobj.put("feedbackcnt", aprvo.getFeedbackcnt());
 				jsonobj.put("writeday", aprvo.getWriteday());
 				jsonobj.put("bookmark", aprvo.getBookmark());
@@ -530,6 +536,23 @@ public class ApprovalController {
 			}
 		}
 		return jsonarr.toString(); // "[]" 또는 "[{},{},{}]"
+		
+	}
+	
+//	*** 부서명 가져오기 ***  
+	@ResponseBody
+	@RequestMapping(value = "/getdeptname.up", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8") // 오로지 GET방식만 허락하는 것임.
+	public String getdeptname(HttpServletRequest request,HttpServletResponse response) {
+		List<String> deptlist = service.getdeptname();
+		
+		JSONArray jsonarr = new JSONArray();
+		for(String dept : deptlist) {
+			JSONObject jsonobj = new JSONObject();
+			jsonobj.put("deptname", dept);
+			jsonarr.put(jsonobj);
+		}
+		
+		return jsonarr.toString();  // "[]" 또는 "[{},{},{}]"
 		
 	}
 	
@@ -577,7 +600,7 @@ public class ApprovalController {
 	 */
 	
 	@ResponseBody
-	@RequestMapping(value = "/approval/image_upload.up", method = RequestMethod.POST, produces="text/plain;charset=UTF-8") // 오로지 GET방식만 허락하는 것임.
+	@RequestMapping(value = "/approval/image_upload.up", method = RequestMethod.POST, produces="text/plain;charset=UTF-8") 
 	public String imageUpload(@RequestParam("image")MultipartFile multipartFile,
 							  @RequestParam String uri, HttpServletRequest request) {
 
@@ -630,7 +653,7 @@ public class ApprovalController {
 		if("연차".equals(ap_type)) {
 			aprvo = service.getdayoffInfo(ano);
 		}
-		else if("업무".equals(ap_type)) {
+		else if("업무기안서".equals(ap_type)) {
 			aprvo = service.getworkdocvoInfo(ano);
 		}
 		else {
@@ -652,8 +675,8 @@ public class ApprovalController {
 			jsonobj.put("title", aprvo.getTitle());
 			jsonobj.put("content", aprvo.getContent());
 			jsonobj.put("final_signyn", aprvo.getFinal_signyn());
-			jsonobj.put("ap_systemFileName", aprvo.getAp_systemFileName());
-			jsonobj.put("ap_originFileName", aprvo.getAp_originFileName());
+			jsonobj.put("ap_systemFileName", aprvo.getAp_systemfilename());
+			jsonobj.put("ap_originFileName", aprvo.getAp_originfilename());
 			jsonobj.put("filesize", aprvo.getFilesize());
 			jsonobj.put("preserveperiod", aprvo.getPreserveperiod());
 			jsonobj.put("writeday", aprvo.getWriteday());
@@ -668,7 +691,7 @@ public class ApprovalController {
 				jsonobj.put("startdate", aprvo.getStartdate());
 				jsonobj.put("enddate", aprvo.getEnddate());
 			}
-			else if("업무".equals(ap_type)) {
+			else if("업무기안서".equals(ap_type)) {
 				jsonobj.put("wdno", aprvo.getWdno());
 				jsonobj.put("executedate", aprvo.getExecutedate());
 				jsonobj.put("deptname", aprvo.getDeptname());
@@ -700,7 +723,13 @@ public class ApprovalController {
 				jsonobj.put("signstep", aprvo.getSignstep());
 				jsonobj.put("signyn",aprvo.getSignyn());
 				jsonobj.put("signdate", aprvo.getSigndate());
+				jsonobj.put("department_name", aprvo.getDepartment_name());
+				jsonobj.put("position", aprvo.getPosition());
+				jsonobj.put("role", aprvo.getRole());
+				jsonobj.put("team_name", aprvo.getTeam_name());
 
+				
+				
 				if(aprvo.getFeedback() != null)fbcnt++;
 				
 				jsonobj.put("feedback", aprvo.getFeedback());
@@ -709,8 +738,6 @@ public class ApprovalController {
 				else jsonobj.put("fbcnt", fbcnt);
 				
 				jsonobj.put("name_kr", aprvo.getName_kr());
-				jsonobj.put("signemp_deptname", aprvo.getSignemp_deptname());
-				jsonobj.put("signemp_position", aprvo.getSignemp_position());
 				
 				jsonarr.put(jsonobj);
 				i++;
@@ -722,9 +749,27 @@ public class ApprovalController {
 	
 	
 	
-	
+	// 내문서 결재취소하기 
 	@RequestMapping(value = "/approval/mycancel.up")
 	public ModelAndView approval_mycancel(HttpServletRequest request,ModelAndView mav) {
+		String ano = request.getParameter("ano");
+		System.out.println("ano=>"+ano);
+		int n = service.updatecancelmyapproval(ano);
+		
+		String message = "";
+		String loc ="";
+		
+		message = n==1?"결재신청이 취소 되었습니다!":"결재신청 취소를 실패했습니다."; 
+		
+		loc = request.getContextPath()+"/approval.up";
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		mav.setViewName("msg");  
+		return mav;
+	}
+	// 내문서 수정하기 
+	@RequestMapping(value = "/approval/myedit.up")
+	public ModelAndView approval_myedit(HttpServletRequest request,ModelAndView mav) {
 		String ano = request.getParameter("ano");
 		System.out.println("ano=>"+ano);
 		int n = service.updatecancelmyapproval(ano);
@@ -761,6 +806,10 @@ public class ApprovalController {
 		if(bookmark == null || "0".equals(bookmark)) {
 			bookmark = "";
 		}
+		String searchStartday = request.getParameter("searchStartday");
+//		System.out.println("searchStartday => "+searchStartday);
+		String searchEndday = request.getParameter("searchEndday");
+//		System.out.println("searchEndday => "+searchEndday);
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
 		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
@@ -847,23 +896,23 @@ public class ApprovalController {
 
  		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
  	      
- 		
- 		String pageBar = "<ul style='list-style:none; '>";
+
+ 		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
  		String url ="approval.up";
  		
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
- 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[맨처음]</a></li>";
- 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='처음' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'><span aria-hidden='true'>&laquo;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='이전' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'><span aria-hidden='true'>&lt;</span></a></li>";
  		}
  		
  		 
  		while( !(loop > blockSize || pageNo > totalPage) ) {
  			if(pageNo==currentShowPageNo) {
- 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color: red; padding: 2px 4px; '>"+pageNo+"</li>";
+ 				pageBar += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #4285f4; color: white !important;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
  			}
  			else {
- 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+ 				pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
  			}
  			loop ++;
  			pageNo ++;
@@ -871,11 +920,11 @@ public class ApprovalController {
  		
  		// === [다음][마지막] 만들기 === //
  		if(pageNo <= totalPage) {
- 			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
- 			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='다음'href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'><span aria-hidden='true'>&gt;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='마지막' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'><span aria-hidden='true'>&raquo;</span></a></li>";
  		}
  		
- 		pageBar += "</ul>";
+ 		pageBar += "</ul></nav>";
  		mav.addObject("pageBar",pageBar);
 
  		//String gobackURL = MyUtil.getCurrentURL(request);
@@ -909,7 +958,10 @@ public class ApprovalController {
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
 		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
-		
+		String searchStartday = request.getParameter("searchStartday");
+//		System.out.println("searchStartday => "+searchStartday);
+		String searchEndday = request.getParameter("searchEndday");
+//		System.out.println("searchEndday => "+searchEndday);
 		if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType)) ) {
 			// 장난처울경우 
 			searchType="";
@@ -993,34 +1045,34 @@ public class ApprovalController {
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 		
 		
-		String pageBar = "<ul style='list-style:none; '>";
-		String url ="approval.up";
-		
-		// === [맨처음][이전] 만들기 === //
-		if(pageNo != 1) {
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[맨처음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
-		}
-		
-		
-		while( !(loop > blockSize || pageNo > totalPage) ) {
-			if(pageNo==currentShowPageNo) {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color: red; padding: 2px 4px; '>"+pageNo+"</li>";
-			}
-			else {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
-			}
-			loop ++;
-			pageNo ++;
-		}// end of while()
-		
-		// === [다음][마지막] 만들기 === //
-		if(pageNo <= totalPage) {
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
-		}
-		
-		pageBar += "</ul>";
+		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
+ 		String url ="approval.up";
+ 		
+ 		// === [맨처음][이전] 만들기 === //
+ 		if(pageNo != 1) {
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='처음' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'><span aria-hidden='true'>&laquo;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='이전' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'><span aria-hidden='true'>&lt;</span></a></li>";
+ 		}
+ 		
+ 		 
+ 		while( !(loop > blockSize || pageNo > totalPage) ) {
+ 			if(pageNo==currentShowPageNo) {
+ 				pageBar += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #4285f4; color: white !important;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
+ 			}
+ 			else {
+ 				pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+ 			}
+ 			loop ++;
+ 			pageNo ++;
+ 		}// end of while()
+ 		
+ 		// === [다음][마지막] 만들기 === //
+ 		if(pageNo <= totalPage) {
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='다음'href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'><span aria-hidden='true'>&gt;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='마지막' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'><span aria-hidden='true'>&raquo;</span></a></li>";
+ 		}
+ 		
+ 		pageBar += "</ul></nav>";
 		mav.addObject("pageBar",pageBar);
 		
 		//String gobackURL = MyUtil.getCurrentURL(request);
@@ -1051,7 +1103,10 @@ public class ApprovalController {
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
 		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
-		
+		String searchStartday = request.getParameter("searchStartday");
+//		System.out.println("searchStartday => "+searchStartday);
+		String searchEndday = request.getParameter("searchEndday");
+//		System.out.println("searchEndday => "+searchEndday);
 		if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType)) ) {
 			// 장난처울경우 
 			searchType="";
@@ -1135,34 +1190,34 @@ public class ApprovalController {
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 		
 		
-		String pageBar = "<ul style='list-style:none; '>";
 		String url ="approval.up";
-		
-		// === [맨처음][이전] 만들기 === //
-		if(pageNo != 1) {
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[맨처음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
-		}
-		
-		
-		while( !(loop > blockSize || pageNo > totalPage) ) {
-			if(pageNo==currentShowPageNo) {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color: red; padding: 2px 4px; '>"+pageNo+"</li>";
-			}
-			else {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
-			}
-			loop ++;
-			pageNo ++;
-		}// end of while()
-		
-		// === [다음][마지막] 만들기 === //
-		if(pageNo <= totalPage) {
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
-		}
-		
-		pageBar += "</ul>";
+		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
+ 		
+ 		// === [맨처음][이전] 만들기 === //
+ 		if(pageNo != 1) {
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='처음' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'><span aria-hidden='true'>&laquo;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='이전' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'><span aria-hidden='true'>&lt;</span></a></li>";
+ 		}
+ 		
+ 		 
+ 		while( !(loop > blockSize || pageNo > totalPage) ) {
+ 			if(pageNo==currentShowPageNo) {
+ 				pageBar += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #4285f4; color: white !important;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
+ 			}
+ 			else {
+ 				pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+ 			}
+ 			loop ++;
+ 			pageNo ++;
+ 		}// end of while()
+ 		
+ 		// === [다음][마지막] 만들기 === //
+ 		if(pageNo <= totalPage) {
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='다음'href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'><span aria-hidden='true'>&gt;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='마지막' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'><span aria-hidden='true'>&raquo;</span></a></li>";
+ 		}
+ 		
+ 		pageBar += "</ul></nav>";
 		mav.addObject("pageBar",pageBar);
 		
 		//String gobackURL = MyUtil.getCurrentURL(request);
@@ -1278,7 +1333,7 @@ public class ApprovalController {
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 		
 		
-		String pageBar = "<ul style='list-style:none; '>";
+		String pageBar = "<ul style='list-style:none; display: inline-flex;'>";
 		String url ="approval.up";
 		
 		// === [맨처음][이전] 만들기 === //
@@ -1444,7 +1499,7 @@ public class ApprovalController {
 	}
 	@ResponseBody
 	@RequestMapping(value="/approval/savemyline.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8") 
-	public String savemyline( HttpServletRequest request, HttpServletResponse response) {
+	public String savemyline( HttpServletRequest request, HttpServletResponse response) throws Exception{
 		HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
 		String employee_no = loginuser.getEmployee_no();
@@ -1479,158 +1534,21 @@ public class ApprovalController {
 		
 	
 	@RequestMapping(value = "/approval/add.up")
-	public ModelAndView add(Map<String,String> paraMap, HttpServletRequest request, HttpServletResponse response, ModelAndView mav, ApprovalVO approvalvo, MultipartHttpServletRequest mrequest) {
-	/*
-    form 태그의 name 명과  BoardVO 의 필드명이 같다라면 
-    request.getParameter("form 태그의 name명"); 을 사용하지 않더라도
-    자동적으로 BoardVO boardvo 에 set 되어진다.
-	 */
-//		=== #153. !!! 첨부파일이 있는 경우 작업 시작 !!! === //
-		MultipartFile attach = approvalvo.getAttach();
-		if( !attach.isEmpty() ) {
-			// attach(첨부파일)가 비어 있지 않으면(즉, 첨부파일이 있는 경우라면)
-			/*
-	            1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
-	            >>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기
-                    우리는 WAS의 webapp/resources/files 라는 폴더로 지정해준다.
-                    조심할 것은  Package Explorer 에서  files 라는 폴더를 만드는 것이 아니다.       
-			*/
-			// WAS 의 webapp의 절대경로를 알아와야 한다. 
-			HttpSession session = mrequest.getSession();
-			String root = session.getServletContext().getRealPath("/");
-			
-//			System.out.println("~~~~ 확인용 webapp의 절대경로 => "+root);
-//			~~~~ 확인용 webapp의 절대경로 => /Users/gimjieun/NCS/workspace(spring)/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Board/
-			
-			String path = root+"resources" + File.separator + "files";
-			/* 
-				File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
-		        운영체제가 Windows 이라면 File.separator 는  "\" 이고,
-		        운영체제가 UNIX, Linux, 매킨토시(맥) 이라면  File.separator 는 "/" 이다. 
-			 */
-			
-			// path 가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다. 
-///			System.out.println("~~~~ 확인용 path 의 절대경로 => "+path );
-//			~~~~ 확인용 path 의 절대경로 => /Users/gimjieun/NCS/workspace(spring)/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Board/resources/files
-			
-			/*
-			  	2. 파일첨부를 위한 변수의 설정 및 값을 초기화 한 후 파일 올리기 
-			*/
-			String newFileName = "";
-			// WAS(톰캣)의 디스크에 저장될 파일명
-			
-			byte[] bytes = null;
-			// 첨부파일의 내용물을 담는 것
-			
-			long fileSize = 0;
-			// 첨부파일의 크기 
-			
-			try {
-				bytes = attach.getBytes();
-				// 첨부파일의 내용물을 읽어와서 저장시켜둔다 
-				
-				String originalFilename = attach.getOriginalFilename();
-				// attach.getOriginalFilename() 이 첨부파일명의 파일명(예: 강아지.png) 이다.
-//				System.out.println("~~~ 확인용 originalFilename => "+originalFilename);
+	public ModelAndView add(Map<String,String> paraMap, HttpServletResponse response, MultipartFile[] attaches,ModelAndView mav, ApprovalVO approvalvo, MultipartHttpServletRequest mrequest) throws Exception{
+		
+		approvalvo.setContent(MyUtil.secureCode(approvalvo.getContent())); // 시큐어코드
 
-
-				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
-						   // 첨부되어진 파일을 업로드 하도록 하는 것이다.
-//				System.out.println(">>> 확인용 newFileName => "+newFileName );
-//				>>> 확인용 newFileName => 2022102815213550332738939830.jpg
-				
-				/*
-				  	3. Boardvo approvalvo 에 fileName 값과 orgFilename 값과 fileSize 값을 넣어주기 
-				 */
-				approvalvo.setAp_systemFileName(newFileName);
-				// WAS(톰캣)에 저장된 파일명 (2022102815213550332738939830.jpg)
-				
-				approvalvo.setAp_originFileName(originalFilename);
-				// 게시판 페이지에서 첨부된 파일(강아지.png)을 보여줄 때 사용.
-	            // 또한 사용자가 파일을 다운로드 할때 사용되어지는 파일명으로 사용.
-				
-				fileSize = attach.getSize();// 첨부파일의 크기(단위는 byte임)
-				approvalvo.setFilesize(String.valueOf(fileSize));
-			} catch (Exception e) { // 파일이 깨졌을까봐 
-				e.printStackTrace();
-			} 
-		}
-		
-		// ===  !!! 첨부파일이 있는 경우 작업 끝 !!! === //
-		
-		approvalvo.setContent(MyUtil.secureCode(approvalvo.getContent())); // 시큐어코드 
-		
-		
-		int n = 0;
-		int n1 = 0;
-		int n2 = 0;
-		
 		// 채번하기 
 		String ano = service.getano();
 		approvalvo.setAno(ano);
 		
 		// tbl_approval
-		if( attach.isEmpty() ) {
-			n = service.add(approvalvo); // <== 파일첨부가 없는 글쓰기 
-		}
-		else {
-			n = service.add_withFile(approvalvo); // <== 파일첨부가 있는 글쓰기
-		}
-		
-		// tbl_approval_sign 결재라인 사원들 넣어주기 
-		if(n==1) {
-			String approvalline = (String) mrequest.getAttribute("approvalline");
-			String approvalline_name = (String) mrequest.getAttribute("approvalline_name");
-			String referline = (String) mrequest.getAttribute("referline");
-			String referline_name = (String) mrequest.getAttribute("referline_name");
-			
-			// 결재라인 넣어주기 
-			String[] approvallinearr = approvalline.split("/");
-			String[] approvalline_namearr = approvalline_name.split("/");
-			
-			for(int i=0; i<approvallinearr.length; i++) {
-				int num = 1;
-				String[] linearr = approvallinearr[i].split(",");
-				String[] namearr = approvalline_namearr[i].split(",");
-				for(int j=0; j<linearr.length; j++) {
-					System.out.println(num+"단계 signemp ->"+linearr[j]);
-					approvalvo.setFk_sign_empno(linearr[j]);
-					approvalvo.setName_kr(namearr[j]);
-					
-					approvalvo.setSignstep(String.valueOf(num));
-					
-					n1 = service.addsignline(approvalvo);
-				}
-				++num;
-			}
-			 
-			// 참조사원 넣어주기 
-			String[] referlinearr = referline.split(",");
-			String[] referline_namearr = referline_name.split(",");
-			for(int i=0; i<referlinearr.length; i++) {
-				System.out.println("referemp -> "+referlinearr[i]);
-				System.out.println("referemp_name -> "+referline_namearr[i]);
-				approvalvo.setFk_refer_empno(referlinearr[i]);
-				approvalvo.setName_kr(referline_namearr[i]);
-				
-				n1 = service.addrefer(approvalvo);
-			}
-			
-		}
-		
-		// 각 템플릿에 맞게 양식 넣어두기 
-		if("연차".equals(approvalvo.getAp_type())) {
-			n2 = service.addworkdoc(approvalvo);
-		}else if("업무기안서".equals(approvalvo.getAp_type())) {
-			n2 = service.adddayoff(approvalvo);
-		}
-		
-		
+		int n = service.add(approvalvo,attaches, mrequest); // <== 파일첨부가 없는 글쓰기 
 
 		String message = "";
 		String loc ="";
-		loc = request.getContextPath()+"/approval/writing.up";
-		if(n*n1*n2==1) {
+		loc = mrequest.getContextPath()+"/approval.up";
+		if(n==1) {
 			//mav.setViewName("redirect:/approval/writing.up");
 			message = "신청이 완료되었습니다!";
 		}
@@ -1646,6 +1564,154 @@ public class ApprovalController {
 	}
 	
 		
+	
+	
+	// 결재문서 첨부파일 다운로드  
+	@RequestMapping(value="/afDownload.up")
+	public void approvaldownload(HttpServletRequest request, HttpServletResponse response) {
+		String afno = request.getParameter("afno");
+		Map<String,String> paraMap = new HashMap<>();
+		paraMap.put("afno", afno);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = null;
+		// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+		
+		try {
+			ApprovalVO apvo = null;
+			apvo = service.approvalfilestatus(paraMap);
+			if(apvo == null || (apvo != null && apvo.getAp_originfilename() == null ) ) { // 존재하지않은 결재문서번호일 경우   
+				out = response.getWriter();// out 은 웹브라우저에 기술하는 대상체
+				out.println("<script>alert('존재하지 않은 글번호 이거나 첨부파일이 없으므로 파일다운로드가 불가합니다.'); history.back();</script>");
+				return; // 종료 
+			}
+			else {
+				// 정상적으로 다운로드를 할 경우 
+				String fileName = apvo.getAp_systemfilename();
+				String orgFilename = apvo.getAp_originfilename();
+
+				HttpSession session = request.getSession();
+				String root = session.getServletContext().getRealPath("/");
+				String path = root+"resources" + File.separator + "files";
+				
+				// **** file 다운로드 하기 **** //
+				boolean flag = false;	// file 다운로드 성공, 실패를 알려주는 용
+				flag = fileManager.dofileDownload(fileName, orgFilename, path, response );
+				
+				if(!flag) {// 다운로드가 실패할 경우  
+					out = response.getWriter();
+					out.println("<script>alert('파일다운로드가 실패되었습니다.'); history.back();</script>");
+				}
+			}
+		} catch (NumberFormatException | IOException e) { 
+			try {
+				out = response.getWriter();
+				out.println("<script>alert('파일다운로드가 불가합니다.'); history.back();</script>");
+			} catch (IOException e1) {
+				
+			}
+		}
+	}
+	
+	
+	
+	
+	// 한 결재문서 첨부파일 가져오기 (Ajax)
+		@ResponseBody
+		@RequestMapping(value="/approval/viewFile.up", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
+		public String viewFile( HttpServletRequest request, HttpServletResponse response) {
+			
+			String ano = request.getParameter("ano");
+			
+			List<ApprovalVO> filelist = null ; // 글쓴게 없을수도 있으므로 
+			filelist = service.viewFile(ano);
+			
+			JSONArray jsonarr = new JSONArray(); // []
+			if(filelist != null) {
+				for(ApprovalVO apvfile: filelist ) {
+					JSONObject jsonobj = new JSONObject();
+					jsonobj.put("fk_ano", apvfile.getFk_ano());
+					jsonobj.put("afno", apvfile.getAfno());
+					jsonobj.put("ap_systemfilename", apvfile.getAp_systemfilename());
+					jsonobj.put("ap_originfilename", apvfile.getAp_originfilename());
+					jsonobj.put("filesize", apvfile.getFilesize());
+					jsonarr.put(jsonobj);
+				}
+			}
+			return jsonarr.toString(); // "[]" 또는 "[{},{},{}]"
+		}
+		
+//	   // ==== #168. 스마트에디터. 드래그앤드롭을 사용한 다중사진 파일업로드 ====
+//	   @RequestMapping(value="/image/multiplePhotoUpload.action", method={RequestMethod.POST})
+//	   public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
+//		    
+//		// WAS 의 webapp 의 절대경로를 알아와야 한다. 
+//		HttpSession session = request.getSession();
+//		String root = session.getServletContext().getRealPath("/"); 
+//		String path = root + "resources"+File.separator+"photo_upload";
+//		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다. 
+//			
+//		// System.out.println(">>>> 확인용 path ==> " + path); 
+//		// >>>> 확인용 path ==> /Users/gimjieun/NCS/workspace(spring)/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Board/resources/images/photo_upload  
+//			
+//		File dir = new File(path);
+//		if(!dir.exists()) // 폴더가 없다면 만들어줘라 
+//		    dir.mkdirs();
+//			
+//			
+//		try {
+//
+//			String filename = request.getHeader("file-name"); //파일명을 받는다 - 일반 원본파일명
+//		    // 네이버 스마트에디터를 사용한 파일업로드시 싱글파일업로드와는 다르게 멀티파일업로드는 파일명이 header 속에 담겨져 넘어오게 되어있다. 
+//		    
+//		    /*
+//             [참고]
+//             HttpServletRequest의 getHeader() 메소드를 통해 클라이언트 사용자의 정보를 알아올 수 있다. 
+//   
+//            request.getHeader("referer");           // 접속 경로(이전 URL)
+//            request.getHeader("user-agent");        // 클라이언트 사용자의 시스템 정보
+//            request.getHeader("User-Agent");        // 클라이언트 브라우저 정보 
+//            request.getHeader("X-Forwarded-For");   // 클라이언트 ip 주소 
+//            request.getHeader("host");              // Host 네임  예: 로컬 환경일 경우 ==> localhost:9090    
+//		     */
+//		    
+//	    		
+//	        // System.out.println(">>>> 확인용 filename ==> " + filename); 
+//	        // >>>> 확인용 filename ==> berkelekle%ED%8A%B8%EB%9E%9C%EB%94%9405.jpg
+//	    	
+//			InputStream is = request.getInputStream(); // is는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
+//			
+//	       String newFilename = fileManager.doFileUpload(is, filename, path);
+//	    	
+//		   int width = fileManager.getImageWidth(path+File.separator+newFilename);
+//			
+//		   if(width > 600)
+//		      width = 600;
+//				
+//		// System.out.println(">>>> 확인용 width ==> " + width);
+//		// >>>> 확인용 width ==> 600
+//		// >>>> 확인용 width ==> 121
+//		   
+//		   String ctxPath = request.getContextPath(); //  /board
+//	         
+//           String strURL = "";
+//           strURL += "&bNewLine=true&sFileName="+newFilename; 
+//           strURL += "&sWidth="+width;
+//           strURL += "&sFileURL="+ctxPath+"/resources/photo_upload/"+newFilename;
+//         
+//           // === 웹브라우저 상에 사진 이미지를 쓰기 === //
+//           PrintWriter out = response.getWriter();
+//           out.print(strURL);
+//		   
+//		} catch(Exception e){
+//				e.printStackTrace();
+//		}
+//	   
+//	   }
+		   
+		   
+		   
+		   
 	//////////////////////////////////////////////////////////////////////////////////////
 	public String getCurrentURL(HttpServletRequest request) {
 		HttpSession session = request.getSession();

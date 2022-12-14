@@ -198,9 +198,9 @@ public class ApprovalDAO implements InterApprovalDAO{
 	}
 
 	@Override
-	public int add_withFile(ApprovalVO approvalvo) {
-		int n = sqlsession.insert("approval.add_withFile", approvalvo);
-		return n;	
+	public int addfile(ApprovalVO approvalvo) {
+		int n = sqlsession.insert("approval.addfile",approvalvo); 
+		return n;
 	}
 
 	@Override
@@ -231,5 +231,24 @@ public class ApprovalDAO implements InterApprovalDAO{
 		int n = sqlsession.update("approval.minusempdayoff",approvalvo); 
 		return n;
 	}
+
+	@Override
+	public List<ApprovalVO> viewFile(String ano) {
+		List<ApprovalVO> list = sqlsession.selectList("approval.viewFile", ano);
+		return list;
+	}
+
+	@Override
+	public ApprovalVO approvalfilestatus(Map<String, String> paraMap) {
+		ApprovalVO apvo = sqlsession.selectOne("approval.approvalfilestatus",paraMap); 
+		return apvo;
+	}
+
+	@Override
+	public List<String> getdeptname() {
+		List<String> dept = sqlsession.selectList("approval.getdeptname"); 
+		return dept;
+	}
+
 	
 }

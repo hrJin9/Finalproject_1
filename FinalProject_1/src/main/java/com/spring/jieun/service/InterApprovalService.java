@@ -3,6 +3,9 @@ package com.spring.jieun.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.spring.jieun.model.*;
 
 public interface InterApprovalService {
@@ -60,19 +63,24 @@ public interface InterApprovalService {
 
 
 	String getspno();
-	int savemyline(Map<String, String> paraMap);
+	int savemyline(Map<String, String> paraMap) throws Exception;
 
 	List<ApprovalVO> getmyline(Map<String, String> paraMap);
 
-	
-	// 결재문서 인서트 
-	int add(ApprovalVO approvalvo);
-	int add_withFile(ApprovalVO approvalvo);
+	// 결재문서번호 채번하기 
 	String getano();
-	int addsignline(ApprovalVO approvalvo);
-	int addrefer(ApprovalVO approvalvo);
-	int addworkdoc(ApprovalVO approvalvo);
-	int adddayoff(ApprovalVO approvalvo);
+	// 결재문서 인서트 
+	int add(ApprovalVO approvalvo, MultipartFile[] attaches, MultipartHttpServletRequest mrequest) throws Exception;
+
+	
+	// 한 문서 첨부파일 가져오기 
+	List<ApprovalVO> viewFile(String ano);
+
+	// 첨부파일 있는지 상태
+	ApprovalVO approvalfilestatus(Map<String, String> paraMap);
+
+	List<String> getdeptname();
+
 	
 //	int cancelmyapproval(String ano);
 

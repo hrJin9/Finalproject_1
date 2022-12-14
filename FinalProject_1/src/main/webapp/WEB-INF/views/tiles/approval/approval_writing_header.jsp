@@ -937,6 +937,9 @@ td.title #writertitle{
 .modal-body::-webkit-scrollbar{
   display:none;
 }
+
+
+
 </style>
 <script>
 	$(document).ready(function(){

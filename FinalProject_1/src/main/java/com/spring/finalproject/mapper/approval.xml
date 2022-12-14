@@ -84,17 +84,16 @@
 		</if>
 	</select>
 	<select id="approvalListSearchWithPaging" resultType="com.spring.jieun.model.ApprovalVO" parameterType="HashMap">
-		select rno, ano, fk_empno, ap_type, title, content, final_signyn, ap_systemFileName, writeday, modifyday
+		select rno, ano, fk_empno, ap_type, title, content, final_signyn, writeday, modifyday
 		     ,nvl(feedbackcnt,0) as feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position
 		from             
 		(
-		select rno, ano, fk_empno, ap_type, title, content, final_signyn, ap_systemFileName, writeday, modifyday
+		select rno, ano, fk_empno, ap_type, title, content, final_signyn,  writeday, modifyday
 		       , feedbackcnt, bookmark
 		from
 		(
 		  select row_number() over (order by ano desc) as rno, ano, fk_empno, bookmark
 		       , ap_type, title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn
-		       , nvl2(ap_systemFileName,1,0) as ap_systemFileName
 		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
 		  from tbl_approval
 		  where status = 1 and fk_empno = #{employee_no}
@@ -138,20 +137,20 @@
 		order by rno asc 
 		)A left join v_employee E
 		on A.fk_empno = E.employee_no
+		order by writeday desc
 	</select>
 	<!-- 내게온 결재문서(결재는완료한상태. 진행중이거나 완료상태 ) -->
 	<select id="requestedapprovalListPaging" resultType="com.spring.jieun.model.ApprovalVO" parameterType="HashMap">
-		select rno, ano, fk_empno, ap_type, title, content, final_signyn, ap_systemFileName, writeday, modifyday
+		select rno, ano, fk_empno, ap_type, title, content, final_signyn, writeday, modifyday
       		 ,feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position 
 		from             
 		(
-		select rno, ano, fk_empno, ap_type, title, content, final_signyn, ap_systemFileName, writeday, modifyday
+		select rno, ano, fk_empno, ap_type, title, content, final_signyn, writeday, modifyday
 		       , feedbackcnt, bookmark
 		from
 		(
 		  select row_number() over (order by ano desc) as rno, ano, fk_empno, bookmark
 		       , ap_type, title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn
-		       , nvl2(ap_systemFileName,1,0) as ap_systemFileName
 		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
 		  from tbl_approval
 		  where status = 1 and ano in(select fk_ano
@@ -183,6 +182,7 @@
 		order by rno asc 
 		)A left join v_employee E
 		on A.fk_empno = E.employee_no
+		order by writeday desc
 	</select>
 	
 	<!-- 내게온 결재문서 (결재해야할)  -->
@@ -194,17 +194,16 @@
 		                from tbl_approval_sign
 		                where fk_sign_empno = #{employee_no} and signyn=0)
 		)
-		select rno, ano, fk_empno, ap_type, title, content,  decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn, ap_systemFileName, writeday, modifyday
+		select rno, ano, fk_empno, ap_type, title, content,  decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn, writeday, modifyday
 		     ,nvl(feedbackcnt,0) as feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position 
 		from 
 		(
-		select row_number() over (order by ano desc) as rno, ano, fk_empno, ap_type, title, content, final_signyn, ap_systemFileName, writeday, modifyday
+		select row_number() over (order by ano desc) as rno, ano, fk_empno, ap_type, title, content, final_signyn, writeday, modifyday
 		     ,nvl(feedbackcnt,0) as feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position 
 		from             
 		(
 		  select ano, fk_empno, bookmark
 		       , ap_type, title, content, final_signyn
-		       , nvl2(ap_systemFileName,1,0) as ap_systemFileName
 		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
 		  from tbl_approval
 		  where status = 1 and final_signyn = 0
@@ -253,64 +252,63 @@
 	
    <!--  결재문서타입이 연차와 업무문서일경우 해당테이블과 결재테이블에서 정보를 가져와야한다. -->
    <select id="getdayoffInfo" resultType="com.spring.jieun.model.ApprovalVO" parameterType="String">
-   		select ano, fk_empno, ap_type, title, content, final_signyn
-		     , ap_systemFileName, ap_originFileName, filesize, preserveperiod
-		     , writeday, modifyday, bookmark
-		     , dono, docnt, docatgo, startdate,enddate, name_kr
+   		select ano, fk_empno, ap_type, title, content, final_signyn, name_kr, preserveperiod
+		    , writeday, modifyday, bookmark
+		    , dono, docatgo, startdate,enddate, name_kr
 		from 
-		(select ano, fk_empno, ap_type
-		       , title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려') as final_signyn
-		       , ap_systemFileName, ap_originFileName, filesize, preserveperiod
+		(select name_kr, ano, fk_empno, ap_type
+		       , title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려') as final_signyn, preserveperiod
 		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
 		       , fk_ano_refer, bookmark
-		from tbl_approval A left join tbl_employee E
-		on a.fk_empno = e.employee_no
+		from tbl_approval 
 		where ano = #{ano})A
 		left join 
-		(select fk_ano, dono, docnt, docatgo, startdate,enddate
+		(select fk_ano, dono, docatgo, startdate,enddate
 		from tbl_dayoff
 		where fk_ano = #{ano})B
 		on a.ano = b.fk_ano
    </select>
    <select id="getworkdocvoInfo" resultType="com.spring.jieun.model.ApprovalVO" parameterType="String">
-		select ano, fk_empno, ap_type, title, content, final_signyn
-		     , ap_systemFileName, ap_originFileName, filesize, preserveperiod
+		select ano, fk_empno, ap_type, title, content, final_signyn, name_kr, preserveperiod
 		     , writeday, modifyday, bookmark
-		     , wdno, executedate,deptname, name_kr
+		     , wdno, to_char(executedate,'yyyy-mm-dd') as executedate,deptname, name_kr
 		from 
-		(select name_kr,ano, fk_empno, ap_type
-		       , title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려') as final_signyn
-		       , ap_systemFileName, ap_originFileName, filesize, preserveperiod
+		(select name_kr, ano, fk_empno, ap_type
+		       , title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려') as final_signyn, preserveperiod
 		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
 		       , fk_ano_refer, bookmark
-		from tbl_approval A left join tbl_employee E
-		on a.fk_empno = e.employee_no
+		from tbl_approval 
 		where ano = #{ano})A
 		left join 
 		(select wdno, fk_ano, executedate,deptname
 		from tbl_workdoc
-		where fk_ano = ${ano})B
+		where fk_ano = #{ano})B
 		on a.ano = b.fk_ano
    </select>
    <select id="getapprovalInfo" resultType="com.spring.jieun.model.ApprovalVO" parameterType="HashMap">
-		select name_kr, ano, fk_empno, ap_type, title, content, final_signyn, ap_systemFileName, ap_originFileName, filesize, preserveperiod
+		select name_kr, ano, fk_empno, ap_type, title, content, final_signyn, preserveperiod
 			, writeday, modifyday, fk_ano_refer, bookmark, final_signdate
 		from 
 		(select ano, fk_empno, ap_type, final_signdate
-		       , title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려') as final_signyn
-		       , ap_systemFileName, ap_originFileName, filesize, preserveperiod
+		       , title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려') as final_signyn, preserveperiod
 		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
 		       , fk_ano_refer, bookmark
 		from tbl_approval
-		where ano = #{ano}
-		)V
+		where ano = #{ano})V
 		left join V_employee E
 		on v.fk_empno = e.employee_no
     </select>
+    <select id="getfileInfo" parameterType="String" resultType="com.spring.jieun.model.ApprovalVO">
+    	select afno, fk_ano, ap_systemfilename, ap_originfilename, filesize
+		from tbl_approval_file
+		where fk_ano = #{ano}
+    </select>
+    
+    
     
     <!-- 한문서에 대해 결재라인리스트 가져오기 -->
    <select id="getapprovalLine" resultType="com.spring.jieun.model.ApprovalVO" parameterType="String">
-		select name_kr, fk_ano,asno, fk_sign_empno, signstep, signyn, signdate, feedback, department_name, position
+		select name_kr, fk_ano,asno, fk_sign_empno, signstep, signyn, signdate, feedback, department_name, position, role, team_name
 		from
 		(select fk_ano,asno, fk_sign_empno, signstep, signyn, signdate, feedback
 		from tbl_approval_sign 
@@ -425,26 +423,58 @@
 	
 	<!-- 결재문서 인서트  -->
 	<select id="getano" resultType="String">
-		select seq_tbl_approval_ano.nextval from dual
+		select to_char(sysdate,'yyyymmddhh24mi')||'-'||seq_tbl_approval_ano.nextval from dual
 	</select>
+	<insert id="addfile" parameterType="com.spring.jieun.model.ApprovalVO">
+    	insert into tbl_approval_file(afno, fk_ano, ap_systemfilename, ap_originfilename, filesize)
+		values(seq_tbl_approval_file_afno.nextval, #{ano}, #{ap_systemfilename}, #{ap_originfilename}, #{filesize})
+    </insert>
 	<insert id="add" parameterType="com.spring.jieun.model.ApprovalVO">
 		insert into tbl_approval(ano, fk_empno, name_kr, ap_type, title, content, preserveperiod)
 		values(#{ano}, #{fk_empno}, #{name_kr}, #{ap_type}, #{title}, #{content}, #{preserveperiod})
 	</insert>
-	<insert id="add_withFile" parameterType="com.spring.jieun.model.ApprovalVO">
-		insert into tbl_approval(ano, fk_empno, name_kr, ap_type, title, content, ap_systemFileName, ap_originFileName, filesize, preserveperiod)
-		values(#{ano}, #{fk_empno}, #{name_kr}, #{ap_type}, #{title}, #{content}, #{ap_systemFileName}, #{ap_originFileName}, #{filesize}, #{preserveperiod})
-	</insert>
 	<insert id="addsignline" parameterType="com.spring.jieun.model.ApprovalVO">
-		insert into tbl_approval_sign(asno, fk_ano, fk_sign_empno, signstep, name_kr)
-		values(seq_tbl_approval_sign_asno.nextval, #{ano}, #{sign_empno}, #{signstep},#{name_kr})
+		insert into tbl_approval_sign(asno, fk_ano, fk_sign_empno, signstep, signemp_name_kr)
+		values(seq_tbl_approval_sign_asno.nextval, #{ano}, #{fk_sign_empno}, #{signstep},#{name_kr})
 	</insert>
 	<insert id="addrefer" parameterType="com.spring.jieun.model.ApprovalVO">
-		insert into tbl_approval_refer(referno,fk_ano,fk_refer_empno,signemp_name_kr)
+		insert into tbl_approval_refer(referno,fk_ano,fk_refer_empno,referemp_name_kr)
 		values(seq_tbl_approval_refer_referno.nextval, #{ano}, #{fk_refer_empno}, #{name_kr})
 	</insert>
+	<insert id="addworkdoc" parameterType="com.spring.jieun.model.ApprovalVO">
+		insert into tbl_workdoc(wdno, fk_employee_no, fk_ano, executedate, deptname)
+		values(seq_tbl_workdoc_wdno.nextval, #{fk_empno}, #{ano}, #{executedate}, #{deptname} )
+	</insert>
+	<insert id="adddayoff" parameterType="com.spring.jieun.model.ApprovalVO">
+		insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+		values(seq_dayoff_no.nextval, #{fk_empno},#{ano}, #{docatgo}, TO_DATE(#{startdate},'YYYY-MM-DD hh24:mi'),TO_DATE(#{enddate},'YYYY-MM-DD hh24:mi'))
+	</insert>
 	<update id="minusempdayoff" parameterType="com.spring.jieun.model.ApprovalVO">
-		update tbl_employee set dayoff_cnt = dayoff_cnt-1 where employee_no  = #{employee_no};
+		update tbl_employee set dayoff_cnt = dayoff_cnt-1 where employee_no  = #{fk_empno}
 	</update>
+	 
+	 
+	 
+	 <!-- 한 문서의 첨부파일 정보 -->
+	 <select id="viewFile" parameterType="String" resultType="com.spring.jieun.model.ApprovalVO" >
+	 	select afno,fk_ano, ap_systemfilename, ap_originfilename, filesize
+	 	from tbl_approval_file
+	 	where fk_ano = #{ano}
+	 </select>
+	 
+	 <!-- 첨부파일 있는지 유무  -->
+	 <select id="approvalfilestatus" parameterType="HashMap" resultType="com.spring.jieun.model.ApprovalVO" >
+		select ap_systemfilename, ap_originfilename, fk_ano, afno
+		from tbl_approval A right join (select ap_systemfilename, ap_originfilename, fk_ano, afno
+		                                from tbl_approval_file 
+		                                where afno = #{afno}) F
+		on a.ano = f.fk_ano
+		where status = 1
+	 </select>
 	
+	<select id="getdeptname" resultType="String">
+		select department_name
+		from tbl_departments
+		order by department_name asc
+	</select>
 </mapper>

@@ -877,7 +877,7 @@
 		<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
 	</div>
 	<div class="subList_underline"style="width: 3.5%;left: 8.5%;"></div>
-	<div style="display: inline-flex;position: relative;align-items: center;margin-top: 10px;margin-left: auto;">
+	<div class="rightbtn">
 		
 		<!-- **** 검색필터 **** --> 
 			<form id="searchbar" name="searchFrm" style="display: flex;">
@@ -1043,7 +1043,7 @@
           </tbody>  
         </table>
         	
-        	 <div id="pageBar" align="center" style="width:70%; margin:20px auto;">${requestScope.pageBar}</div>
+      <div id="pageBar" align="center" style="width: fit-content;margin:20px auto;">${requestScope.pageBar}</div>
 	</div>
 	
  	

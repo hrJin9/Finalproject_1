@@ -367,13 +367,23 @@
    color: rgb(17, 17, 17);
 }
   .head-btnsection{
-       padding: 20px 40px 0px;
-   background-color: white;
-   color: rgb(17, 17, 17);
-   position: sticky;
-   top: 0px;
-   z-index: 2;
+      padding: 20px 40px;
+    background-color: white;
+    color: rgb(17, 17, 17);
+    position: sticky;
+    top: 0px;
+    z-index: 2;
   }
+  .statebadge{
+	margin-top: 3px;
+	cursor: default;
+	font-weight: bold !important;
+	border-radius: 1.2em;
+	font-size: .675rem;
+	padding: 0.15rem 0.5rem;
+}
+  
+  
   .Apv-button.is-neutral {
     border-color: rgb(153, 153, 153);
 }
@@ -498,24 +508,101 @@ border-color: rgba(36, 42, 48, 0.04);"
 	padding: .175rem .45rem !important;
 }
 
-/* ===  옵션창  === */
+ 
+ /* ===  옵션창  === */
 div.option {
+    display: none;
     border: 0px solid #b0b0b0d9;
     padding: 20px;
-    margin-bottom: 22px;
-    width: 600px;  
-    height: auto; 
     border-radius: 10px;
     background-color: white;
-    display: inline-block;
     font-size: 18pt;
     box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
-    position: absolute;
-    top: 28.5%;
-    left: 55.5%;
-    z-index: 2;
-    overflow:hidden;
+    /* width: 459px; */
+    height: auto;
+    position: fixed;
+    max-width: 40%;
+    height: auto;
+    position: fixed;
+    min-width: 30%;
+    z-index: 3000;
+    top: 30%;
+    left: 50.5%;
  } 
+ .plusmembtn, .delboxbtn{
+	width: 24px;
+    height: 24px;
+    font-size: 12px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 2%) 0px 2px 6px, rgb(0 0 0 / 6%) 0px -1px 0px inset, rgb(0 0 0 / 8%) 0px 0px 0px 1px inset;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+stepbtn, .plusmembtn{
+   	display: inline-flex;
+}
+.delboxbtn{
+   	display: none;
+   	margin-right: 5px;
+}
+.delboxbtn :hover{
+	background-color :rgba(244, 71, 18, 0.07);
+}
+.selectedmem:hover{
+	background-color:#f6f6f6;
+}
+.selectedmem{
+	margin-top:0px !important;
+	/* margin-bottom: 10px  !important; */
+	padding-bottom: 10px; 
+    padding-top: 10px;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 20px;
+}
+#memcontent-iframe0 > .selectedmem{
+	padding-bottom: 50px;
+}
+#searchWord{
+	 background-color:#92949605;
+	 box-shadow:inset 0px 0px 0px 1px rgba(0, 0, 0, 0.04); 
+	 border-radius: 0.4rem;
+	 width: 112%;
+	 font-size: 9pt;
+	 padding: 6px 12px 6px 70px;
+	 color:#556372
+}
+.signheader{
+height: 26px;
+display: flex;
+align-items: center;
+width: 100%;
+padding-left: 8px;
+padding-right: 8px;
+}
+.signspan{
+flex-shrink: 0;
+margin-right: 10px;
+font-size: 14px;
+font-weight: 600;
+}
+.separator{
+border-style: solid;
+border-width: 0px;
+width: 100%;
+border-top-width: 1px;
+border-color: rgba(36, 42, 48, 0.04);
+margin-right: 10px;
+}
+ 
+ 
+ 
 .detail-search-conditions {
   margin: 10px 20px 0 30px;
 }
@@ -657,9 +744,6 @@ div.datebox > span > input {
     padding: 12px;
     border-radius: 5px;
 }
-#option {
-	visibility:hidden;
-}
 hr {
     margin: 0 !important;
 }
@@ -734,6 +818,165 @@ td.title #writertitle{
     border-radius: 0.8em;
 }
 
+.iptlabel {
+    color: rgba(36, 42, 48, 0.64);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    margin-left: 10px;
+}
+.inptval{
+	/* padding:0px 3px 1px 15px; */
+	border: none;
+    color: rgba(0,0,0,0.7);
+    font-weight: 500;
+    width: 80%;
+    cursor:pointer;
+    padding: 8px 17px;
+    padding-left: 10px;
+    color: #484848;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 0px solid #ced4da;
+    /* font-size: 10pt; */
+}
+.modal-body{
+   -ms-overflow-style: none;
+}
+.modal-body::-webkit-scrollbar{
+  display:none;
+}
+
+
+.imgbtn{
+	    align-items: center;
+    width: 200px;
+    height: 52px;
+    background: #ffffff;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 6px;
+    box-shadow: rgb(0 0 0 / 8%) 0px 0px 0px 1px inset, rgb(0 0 0 / 8%) 0px -1px 0px inset;
+}
+.imgpreview{
+    width: 52px;
+    height: 52px;
+    max-width: 52px;
+    max-height: 52px;
+    border-style: none;
+    vertical-align: middle;
+    object-fit: cover;
+    
+}
+.imgname{
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+    padding: 11px 8px;
+	
+}
+.imgnamespan{
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    color: rgb(36, 42, 48);
+}
+
+.rightbtn{
+	display: inline-flex;
+	margin-bottom: 10px;
+	position: relative;
+	align-items: center;
+	margin-top: 10px;
+	margin-left: auto;
+}
+
+.selmembtn{
+	border: none;
+	 height: 50% !important;
+	 background-color: transparent;
+	display: block;
+}
+.selmembtn:hover{
+	background-color: #ebebeb;
+}
+.signul{
+	margin-bottom: 0 !important;
+}
+.my > .role{
+    font-weight: 400 !important;
+    font-size: 8pt !important;
+    top: 5px !important;
+}
+.my > .name{
+	font-size: 10pt !important;
+    font-weight: 500 !important;
+    top: 4px !important;
+}
+.positionIcon{
+	display: none;
+}
+.btninpt{
+	width: 80%;
+    cursor: pointer;
+    padding: 8px 17px;
+    padding-left: 10px;
+    color: #484848;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 0px solid #ced4da;
+    font-size: 10pt;
+}
+#attachfile, #tempbysection, #textsection{
+	padding-top: 32px;
+	padding-left: 60px;
+	padding-right: 60px;
+	font-size: 16px;
+	line-height: 1.63;
+}
+#attachfile{
+	padding-top: 0;
+}
+.mem-del{
+		color: rgb(141, 150, 161);
+	    float: right;
+	    top: 16px;
+	    position: relative;
+	    width: 0.3em;
+	    height: 0.3em;
+}
+.step-del{
+	float: right;
+    top:-18px;
+    position: relative;
+    width: 0.3em;
+    height: 0.3em;
+}
+.profile{
+	display: inline-flex !important;
+	float: left !important;
+	padding: 1px;
+	color: inherit;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    padding: 1px 13px;
+    text-align: initial;
+}
 </style>
 <nav id="mainList" class="margin-container header-nav">
 	<a class="header-main list_iscurrent" id="send" href="<%= request.getContextPath()%>/approval.up">상신함</a>

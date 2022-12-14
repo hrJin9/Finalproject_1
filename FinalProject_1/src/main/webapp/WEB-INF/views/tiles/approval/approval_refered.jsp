@@ -810,7 +810,7 @@
 		<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
 	</div>
 	<div class="subList_underline"></div>
-	<div style="display: flex;align-items: center;position: relative;left: 100%;">
+	<div class="rightbtn">
 				
 		<!-- <a id="bkList"style="cursor:pointer;color: #0775ff;;font-weight: bold;font-size: 9pt;float: right;margin-right: 15px;">북마크</a> --> <!-- 내가북마크한 문서  -->
 		

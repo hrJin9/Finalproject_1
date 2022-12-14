@@ -71,11 +71,21 @@ public interface InterApprovalDAO {
 //	결재문서 인서트 
 	String getano();
 	int add(ApprovalVO approvalvo);
-	int add_withFile(ApprovalVO approvalvo);
 	int addsignline(ApprovalVO approvalvo);
 	int addrefer(ApprovalVO approvalvo);
 	int addworkdoc(ApprovalVO approvalvo);
 	int adddayoff(ApprovalVO approvalvo);
 	int minusempdayoff(ApprovalVO approvalvo);
+	int addfile(ApprovalVO approvalvo);
+
+	
+	// 첨부파일 가져오기 
+	List<ApprovalVO> viewFile(String ano);
+
+	// 첨부파일 있는지 상태보기 
+	ApprovalVO approvalfilestatus(Map<String, String> paraMap);
+
+	// 부서명 가져오기 
+	List<String> getdeptname();
 
 }

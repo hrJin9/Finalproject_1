@@ -28,8 +28,10 @@ public class ApprovalVO {
 	
 	
 	// 결재문서작성할때 필요한
-//	private String approvalline; 		// 결재사원 라인( 0000,0000/0000 ...) 
-//	private String referline; 		// 피드백갯수 
+	private String approvalline; 		// 결재사원 라인( 0000,0000/0000 ...) 
+	private String approvalline_name; 		// 결재사원 라인( 0000,0000/0000 ...) 
+	private String referline; 		// 피드백갯수 
+	private String referline_name; 		// 피드백갯수 
 	private String usedayoffcnt; 		// 피드백갯수 
 //	private String leftdayoffcnt; 		// 피드백갯수 
 	
@@ -37,9 +39,9 @@ public class ApprovalVO {
 	
 	
 	 private MultipartFile attach;
-	 
-	 private String ap_systemFileName; 	// 파일서버에 업로드되어지는 실제 제품설명서 파일명 (파일명이 중복되는 것을 피하기 위해서 중복된 파일명이 있으면 파일명뒤에 숫자가 자동적으로 붙어 생성됨)
-	 private String ap_originFileName; 	// 웹클라이언트의 웹브라우저에서 파일을 업로드 할때 올리는 제품설명서 파일명 
+	 private String afno; 				// 결재문서 첨부파일 시퀀스 
+	private String ap_systemfilename; 	// 파일서버에 업로드되어지는 실제 제품설명서 파일명 (파일명이 중복되는 것을 피하기 위해서 중복된 파일명이 있으면 파일명뒤에 숫자가 자동적으로 붙어 생성됨)
+	 private String ap_originfilename; 	// 웹클라이언트의 웹브라우저에서 파일을 업로드 할때 올리는 제품설명서 파일명 
 	 private String filesize; 			// 파일크기
 		   
 	
@@ -83,7 +85,7 @@ public class ApprovalVO {
 	
 	// *** 연차 테이블 *** //
 	private String dono;         // 연차번호
-	private int docnt;           // 연차수
+	private String docnt;           // 연차수
 	private String docatgo;      //  연차유형
 	private String startdate;    //  연차시작일
 	private String enddate;      //  연차종료일
@@ -97,7 +99,36 @@ public class ApprovalVO {
 
 	
 	
-	
+	public String getAfno() {
+		return afno;
+	}
+	public void setAfno(String afno) {
+		this.afno = afno;
+	}
+	public String getApprovalline() {
+		return approvalline;
+	}
+	public void setApprovalline(String approvalline) {
+		this.approvalline = approvalline;
+	}
+	public String getApprovalline_name() {
+		return approvalline_name;
+	}
+	public void setApprovalline_name(String approvalline_name) {
+		this.approvalline_name = approvalline_name;
+	}
+	public String getReferline() {
+		return referline;
+	}
+	public void setReferline(String referline) {
+		this.referline = referline;
+	}
+	public String getReferline_name() {
+		return referline_name;
+	}
+	public void setReferline_name(String referline_name) {
+		this.referline_name = referline_name;
+	}
 	public String getReferno() {
 		return referno;
 	}
@@ -194,10 +225,10 @@ public class ApprovalVO {
 	public void setDono(String dono) {
 		this.dono = dono;
 	}
-	public int getDocnt() {
+	public String getDocnt() {
 		return docnt;
 	}
-	public void setDocnt(int docnt) {
+	public void setDocnt(String docnt) {
 		this.docnt = docnt;
 	}
 	public String getDocatgo() {
@@ -292,17 +323,17 @@ public class ApprovalVO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getAp_systemFileName() {
-		return ap_systemFileName;
+	public String getAp_systemfilename() {
+		return ap_systemfilename;
 	}
-	public void setAp_systemFileName(String ap_systemFileName) {
-		this.ap_systemFileName = ap_systemFileName;
+	public void setAp_systemfilename(String ap_systemfilename) {
+		this.ap_systemfilename = ap_systemfilename;
 	}
-	public String getAp_originFileName() {
-		return ap_originFileName;
+	public String getAp_originfilename() {
+		return ap_originfilename;
 	}
-	public void setAp_originFileName(String ap_originFileName) {
-		this.ap_originFileName = ap_originFileName;
+	public void setAp_originfilename(String ap_originfilename) {
+		this.ap_originfilename = ap_originfilename;
 	}
 	public String getFilesize() {
 		return filesize;
@@ -311,20 +342,6 @@ public class ApprovalVO {
 		this.filesize = filesize;
 	}
 	public String getPreserveperiod() {
-		switch (this.preserveperiod) {
-		case "0":
-			preserveperiod = "영구";
-			break;
-		case "1":
-			preserveperiod = "1년";
-			break;
-		case "3":
-			preserveperiod = "3년";
-			break;
-		case "5":
-			preserveperiod = "5년";
-			break;
-		}
 		return preserveperiod;
 	}
 	public void setPreserveperiod(String preserveperiod) {

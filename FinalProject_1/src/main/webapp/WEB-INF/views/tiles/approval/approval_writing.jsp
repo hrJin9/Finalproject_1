@@ -360,7 +360,6 @@ div#dayoff-temp, div#wort-temp{
 		// 로그인한 사용자 값 넣기 
 		$("input#left-dayoffcnt").val(mydayoff);
 		$("input#use-dayoffcnt").val("0");
-		$("input[name='myname']").val("${sessionScope.loginuser.name_kr}");
 		
 		
 		// 날짜피커 값이 변경될때마다 연차 갯수 바뀌게하기 
@@ -471,7 +470,7 @@ div#dayoff-temp, div#wort-temp{
 		
 		
 		
-		
+		let id = ""; 
 		/* 양식에 맞는 모달창 뜨게하기  */
 		$("div.dayoff-box").click(function(e){
 			const temname = $(this).children('div').text();
@@ -481,10 +480,34 @@ div#dayoff-temp, div#wort-temp{
 			$("#tempbadge").text(temname+'작성하기');
 			
 			const $target = $(e.target)
-			const id = $target.attr("id");
-
+			id = $target.attr("id");
+			
 			id!="timeoff"? $("div#dayoff-temp").hide():$("div#dayoff-temp").show(); // 연차양식 뜨게하기  
-			id!="work"? $("div#work-temp").hide():$("div#work-temp").show();  // 업무양식 뜨게하기 
+			
+			if( id=="work"){ // 업무기안서 양식 뜨게하기 
+				
+				$.ajax({
+					url: "<%= ctxPath%>/getdeptname.up",
+					type:"GET",
+					dataType:"json",
+					success: function(json) {
+						let html = '';
+						if(json.length > 0){
+							html += '<option value="" selected disabled>옵션을 선택해주세요</option>'
+							$.each(json, function(index,item) {
+								html += '<option value="'+item.deptname+'" selected>'+item.deptname+'</option>'  
+							});
+						}
+						$("#deptname").html(html);
+						$("div#work-temp").show();
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				    }
+				});
+			}else{
+				$("div#work-temp").hide()
+			}
 			
 			let data = ""
 			switch (id) {
@@ -563,45 +586,7 @@ div#dayoff-temp, div#wort-temp{
 		// 저장하기 눌렀을경우 
 		$("button#approvalsave").click(function(){
 
-			
-			
-			
-			
 			$('#content').prepend(editor.getHTML());
-			
-			let useval = Number($("input#use-dayoffcnt").val());
-			let leftval = Number($("input#left-dayoffcnt").val());
-			
-			// 연차결재일경우
-			// 양식 다 작성했는지 검사
-			// 반차 적용하기 
-			
-			if(useval == 0){ // 사용연차가 0보다 적으면 
-				alert("신청하는 연차가 없습니다!");
-				return;
-			}else if( useval<0 ){
-				alert("신청할려는 연차가 잔여연차 갯수보다 많습니다!");
-				return;
-			}
-			
-			// 반차 날짜에 적용하기 
-			const startday= $("#startday").val();
-			const endday= $("#endday").val();
-			if($("#startmorning").is(":checked")){ // 시작일 오전에 체크됐으면 
-				$("#startday").val(startday+' 09:00');
-			}else if($("#startnoon").is(":checked")){ // 시작일 오후에 체크됐으면
-				$("#startday").val(startday+' 13:00');
-			}else{
-				$("#startday").val(startday+' 09:00');
-			}
-			
-			if($("#endmorning").is(":checked")){ // 종료일 오전에 체크됐으면 
-				$("#endday").val(endday+' 09:00');
-			}else if($("#endnoon").is(":checked")){ // 종료일 오후에 체크됐으면
-				$("#endday").val(endday+' 13:00');
-			}else{
-				$("#endday").val(endday+' 09:00');
-			}
 			
 			
 			
@@ -624,10 +609,53 @@ div#dayoff-temp, div#wort-temp{
 	         $("#content").val(contentval);         
 	         
 	         
-	         
-	      // 결재라인 넘겨주기 
-				let linehtml = '';
+				if(id=="timeoff"){ // 연차 양식이라면 
+					let useval = Number($("input#use-dayoffcnt").val());
+					let leftval = Number($("input#left-dayoffcnt").val());
+					
+					// 연차결재일경우
+					// 양식 다 작성했는지 검사
+					// 반차 적용하기 
+					
+					if(useval == 0){ // 사용연차가 0보다 적으면 
+						alert("신청하는 연차가 없습니다!");
+						return;
+					}else if( useval<0 ){
+						alert("신청할려는 연차가 잔여연차 갯수보다 많습니다!");
+						return;
+					}
+					
+					// 반차 날짜에 적용하기 
+					const startday= $("#startday").val();
+					const endday= $("#endday").val();
+					if($("#startmorning").is(":checked")){ // 시작일 오전에 체크됐으면 
+						$("#startday").val(startday+' 09:00');
+					}else if($("#startnoon").is(":checked")){ // 시작일 오후에 체크됐으면
+						$("#startday").val(startday+' 13:00');
+					}else{
+						$("#startday").val(startday+' 09:00');
+					}
+					
+					if($("#endmorning").is(":checked")){ // 종료일 오전에 체크됐으면 
+						$("#endday").val(endday+' 09:00');
+					}else if($("#endnoon").is(":checked")){ // 종료일 오후에 체크됐으면
+						$("#endday").val(endday+' 13:00');
+					}else{
+						$("#endday").val(endday+' 09:00');
+					}
+					
+				}
+				else if(id=="work"){ // 업무 양식이라면
+					const dept = $("select#deptname").val();
+					if(dept == "" || dept == null) {
+			              alert("부서를 선택해주세요!");
+			               return;
+			          }
+				}
+
+	      	// 결재라인 넘겨주기 
 				let appendval='';
+				let appendtext='';
 				$("div[name='approvalstep']").each(function(index){ // 추가된 단계만큼  
 					// 단계, 사원번호 넘겨주기
 					//console.log($(this).find('.empno'));
@@ -642,16 +670,29 @@ div#dayoff-temp, div#wort-temp{
 						}
 						
 						appendval += val;
-						/* console.log('appendval => '+appendval); */
+						 console.log('appendval => '+appendval); 
+					});
+					
+					$this.find('span.name').each(function(num, item){
+						let text = $(item).text();
+						if(text == "") return;
+						
+						if(num != 0 ) text=','+text;  // 결재사원구분자 
+						else if (index !=0 && num == 0){
+							text='/'+text; // 결재단게구분자 
+						}
+						appendtext += text;
+						console.log('appendtext => '+appendtext); 
 					});
 				});
-				linehtml += '<input name="approvalline" hidden val="'+appendval+'">'
-				$("#submitinput").append(linehtml); 
-				
+				$("input[name='approvalline']").val(appendval);
+				$("input[name='approvalline_name']").val(appendtext);
 				// 참조자 넘겨주기 
 				let referhtml = '';
 				let appendval2='';
+				let appendtext2='';
 				let flag =0; 
+				let flag2 =0; 
 				const referbox =$("div#memcontent-iframe0").find(".selectedmem") 
 				referbox.find('input.empno').each(function(index){ // 추가된 참조사원만큼  
 					// 단계, 사원번호 넘겨주기
@@ -664,17 +705,26 @@ div#dayoff-temp, div#wort-temp{
 					appendval2 += val;
 					flag+=1;
 				});
-				referhtml += '<input name="referline" hidden val="'+appendval2+'">'
-				console.log(referhtml);
-				$("#submitinput").append(referhtml); 
-				
+				referbox.find('span.name').each(function(index){ // 추가된 참조사원만큼  
+					// 단계, 사원번호 넘겨주기
+					//console.log($(this).find('.empno'));
+					const $this = $(this); 
+					let text = $this.text();
+					if(text == "") return false;
+					if(flag2 != 0 ) text=','+text;  // 참조사원구분자
+					
+					appendtext2 += text;
+					flag2 +=1;
+				});
+				$("input[name='referline']").val(appendval2);
+				$("input[name='referline_name']").val(appendtext2);
 				
 			
 	         // 폼(form)을 전송(submit)
 	   		 const frm = document.addFrm;
 	         frm.method = "POST";
 	         frm.action = "<%= ctxPath%>/approval/add.up";
-	         frm.submit(); 
+	         frm.submit();  
 		});
 		
 		
@@ -835,7 +885,8 @@ div#dayoff-temp, div#wort-temp{
 				  			html += '</div></div></div></li></ul></div>';
 				  		}
 					 		
-					}
+					}// for()---------------------------------------------
+					
 				}
 				
 				$(".approvalplus").html(html);
@@ -878,7 +929,7 @@ div#dayoff-temp, div#wort-temp{
 					if(index != 0 ) val=','+val;
 					
 					appendval += val;
-					console.log('appendval => '+appendval);
+					//console.log('appendval => '+appendval);
 				});			
 				if(appendval != ""){
 					
@@ -909,7 +960,7 @@ div#dayoff-temp, div#wort-temp{
 							dataType:"json",
 							success: function(json) {
 								result *= json.result;
-								console.log(result);
+								//console.log(result);
 								n++;
 							},
 							error: function(request, status, error){
@@ -1175,9 +1226,9 @@ div#dayoff-temp, div#wort-temp{
 							  <div class="ApvHeader-footer">
 								  <div class="ApvHeader-footer_column" id="badgesection"><button type="button" class="btn btn-badge statebadge"id="tempbadge" style="margin-top:0;"></button></div><!-- 문서상태뱃지 -->
 								  <div class="ApvHeader-footer_column" id="btnsection">
-										<select name="selectTag" name="preserveperiod" id="selectTag" class="mb-1 write-topput" style="display:inline-block;margin-right: 10px;">
-											<option value="" disabled selected>보존연한</option>
-											<option value="0">영구보존</option>
+										<select  name="preserveperiod" id="selectTag" class="mb-1 write-topput" style="display:inline-block;margin-right: 10px;">
+											<!-- <option value="" disabled selected>보존연한</option> -->
+											<option value="0" selected>영구보존</option>
 											<option value="1">1년</option>
 											<option value="3">3년</option>
 											<option value="5">5년</option>
@@ -1198,23 +1249,22 @@ div#dayoff-temp, div#wort-temp{
 							<div class="sc-cOxWqc ft-16 StyledApv">
 								  	  <!-- <div class="ApvDl-item"style="font-weight:500;"><span class="ApvDl-dd"><i class="icon icon-file-text2"></i></span></div> -->
 									  <div class="ApvDl-item" id="submitinput">
+									  	<input type="text" hidden="" name="name_kr" value="${sessionScope.loginuser.name_kr}"  />
 									  	<input type="text" hidden="" name="fk_empno" value="${sessionScope.loginuser.employee_no}"  />
 									  	<input type="text"id="ap_type" hidden="" name="ap_type" value=""  />
+									  	<input name="approvalline" hidden val="">
+									  	<input name="approvalline_name" hidden val="">
+									  	<input name="referline" hidden val="">
+									  	<input name="referline_name" hidden val="">
 									  </div>
-									  
-									  <!-- <div class="ApvDl-item"><span class="ApvDl-dt">템플릿:</span><span class="ApvDl-dd">'+json.ap_type+'</span></div> -->
-									  <!-- <div class="ApvDl-item"><span class="ApvDl-dt">작성자:</span><span class="ApvDl-dd">'+json.name_kr+'</span></div> -->
 								</div>
 							</div>
 						  </div>
-						  
-						  
 						  
 						  <!-- 문서내용  -->
 						  <div class="pad-part tempbycont"style="padding-top: 32px;padding-left: 60px;padding-right: 60px;"> 
 						  	<!-- <div class="ApvSection-header"><h2 class="ApvSection-title">내용</h2></div> --> 
 							  <div class="ApvSection-body">
-							  	
 							  	
 							  	<!-- ********************* 연차 템플릿 ********************* -->	
 							  	<div id="dayoff-temp" style="color: white;font-size: 16px;line-height: 1.63;">
@@ -1293,9 +1343,7 @@ div#dayoff-temp, div#wort-temp{
 										                <label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label>
 													</div>
 												</span>
-												
 						   					</div>
-							  				
 							  			</div>
 							  			</div> 
 							  		</div>
@@ -1334,12 +1382,7 @@ div#dayoff-temp, div#wort-temp{
 							  				<div style="width: 3px;height: 3px;border-radius: 50%;background-color: #f57453;margin-left: 6px;flex-shrink: 0;"></div>
 							  			</div>
 							  			<div style="width: 100%;">
-							  				<select name="deptname" class="mb-1 btninpt"style="width: 80%;cursor:pointer;padding: 8px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 0px solid #ced4da;font-size: 10pt;" >
-													<option value="" selected disabled>옵션을 선택해주세요</option>
-													<option value="연차" selected>IT</option>
-													<option value="경조">경조</option>
-													<option value="공가">공가</option>
-													<option value="병가">병가</option>
+							  				<select name="deptname"id="deptname" class="mb-1 btninpt"style="width: 80%;cursor:pointer;padding: 8px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 0px solid #ced4da;font-size: 10pt;" >
 											</select>
 							  			</div>
 							  		</div> 
@@ -1367,7 +1410,7 @@ div#dayoff-temp, div#wort-temp{
 							  			<div style="width: 100%;">
 							  				<div style="line-height: 1.5;width: 100%;">
 							  					<div class="input-group" style="padding-left: 10pt;font-size: 11pt !important;  width: 80%;">
-													<input multiple="" type="file" name="attach" class="form-control mg-file" id="mg-file" style="border-radius: 5px; color: #444444 !important; border: solid 1px #00000008; font-size: 11pt; height: 33px; position:relative; ">
+													<input multiple="" type="file" name="attaches" class="form-control mg-file" id="mg-file" style="border-radius: 5px; color: #444444 !important; border: solid 1px #00000008; font-size: 11pt; height: 33px; position:relative; ">
 												</div>
 							  				</div>
 							  			</div>
@@ -1430,12 +1473,6 @@ div#dayoff-temp, div#wort-temp{
 												<div style="line-height: 1;display: block;width:100%;">
 													<!-- iframe 선택된 멤버 보여주기  -->
 			      	  							<div id="memcontent-iframe1"></div>
-											  		<!-- <button id="1" type="button" class="attendance-dateSelector selmembtn"onClick="optionForm('OPEN',event,1)">
-										      	  		<span style="color: rgba(36, 42, 48, 0.48);text-align: center;">
-										      	  			<span style="font-size: 10pt;color: rgb(85, 99, 114);display: block;" >대상 검색</span>
-										      	  			<span style="line-height: 2;font-size: 8pt;color: rgb(141, 150, 161);display: block;" >승인·참조 대상을 선택해주세요.</span>
-										      	  		</span>
-										      	  	</button> -->
 											  	</div>
 								  			</div>
 							  			</li>
@@ -1465,12 +1502,6 @@ div#dayoff-temp, div#wort-temp{
 												<div style="line-height: 1;display: block;width:100%;">
 													<!-- iframe 선택된 멤버 보여주기  -->
 			      	  								<div id="memcontent-iframe0"></div>
-											  		<!-- <button type="button" class="attendance-dateSelector selmembtn"onClick="optionForm('OPEN',event,1)">
-										      	  		<span style="color: rgba(36, 42, 48, 0.48);text-align: center;">
-										      	  			<span style="font-size: 10pt;color: rgb(85, 99, 114);display: block;" >대상 검색</span>
-										      	  			<span style="line-height: 2;font-size: 8pt;color: rgb(141, 150, 161);display: block;" >승인·참조 대상을 선택해주세요.</span>
-										      	  		</span>
-										      	  	</button> -->
 											  	</div>
 								  			</div>
 							  			</li>
@@ -1489,11 +1520,6 @@ div#dayoff-temp, div#wort-temp{
 </div>
 </div>
 
-  
-   
-   
-   
-
 	
 	
 	<%-- ****************** 결재선 멤버리스트 시작 ********************* --%>
@@ -1502,9 +1528,6 @@ div#dayoff-temp, div#wort-temp{
 			<iframe id="mwa" name="selmemiframe"style="border: none; width: 100%;height: 280px;" src="<%= request.getContextPath()%>/approval/memberList.up"></iframe>
 		</div>
 	</div>
-	
-	
-  
    
    
    
@@ -1518,31 +1541,14 @@ div#dayoff-temp, div#wort-temp{
 	      </div>
 	     
 	      <div class="modal-body " style="padding: 30px;overflow: auto;">
-	      	  
 	      	   <div id="mysavedline">
-	      	  
-		      	 
-		      	  
-			      	  
-		      	  
 	      	  	</div> 
-	      	  
-	      	  
-	      	  	
             </div>
-
           </div>
         </div>
     </div> 
     
     
-    
-    
-     
-     
-     
-     
-     
     
     
     <%-- ****************** 결재선 라인 저장 모달창 시작 ********************* --%>
