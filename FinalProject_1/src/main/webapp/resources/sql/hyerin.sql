@@ -1534,5 +1534,12 @@ from
     where to_char(startdate,'yyyy') = '2022'
     and lower(E.name_kr) like '%'||lower('지은')||'%'
     and to_date(to_char(startdate,'yyyy-mm-dd')) between to_date('2022-12-19') and to_date('2022-12-19')
+    and fk_department_no = '10'
 )
 where rno between 1 and 10
+
+
+
+select * from tab;
+
+

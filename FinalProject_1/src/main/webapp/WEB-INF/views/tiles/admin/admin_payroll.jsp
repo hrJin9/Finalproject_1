@@ -93,7 +93,6 @@ td[rowspan] + td{
 .flatpickr-input {
 	font-size: 10pt;
 	color: rgb(77, 79, 83) !important;
-	font-weight: 500;
     position: relative;
     right: 10px;
 }
@@ -329,7 +328,7 @@ border: none!important;
 		
 		//클릭시 오프캔버스 나타남
 		$(".ap-table tbody tr").click(function(e){
-			if($(e.target).is("input:checkbox")) return;
+			if($(e.target).is("td:first-child, td:first-child *")) return;
 			$('.offcanvas').offcanvas('show');
 		});
 		

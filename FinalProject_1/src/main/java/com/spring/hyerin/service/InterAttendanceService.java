@@ -20,7 +20,7 @@ public interface InterAttendanceService {
 	List<Map<String, String>> getAdUseList(Map<String, String> paraMap);
 	
 	// 사용목록 가져오기
-	List<EmployeeVO> getAdUseListAll(Map<String, String> paraMap);
+	List<EmployeeVO> getAdUseListAll(Map<String, String> paraMap);	
 	
 	// 연차사용목록 가져오기
 	List<Map<String, String>> getExcelAdUseListAll(Map<String, String> paraMap);
