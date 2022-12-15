@@ -185,7 +185,7 @@ $(document).ready(function(){
 function ms_check(itag){
 	itag.removeClass("icon-checkbox-unchecked");
 	itag.addClass("icon-checkbox-checked");
-	itag.css({"color":"#37A652","transition":"all .2s"});
+	itag.css({"color":"#4285f4","transition":"all .2s"});
 }
 
 function ms_uncheck(itag){

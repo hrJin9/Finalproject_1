@@ -64,8 +64,8 @@
 		left: 0.5%;
 		bottom: -1px;
 		width: 11%;
-		height: 2px;
-		background: #4d4f53;
+		height: 3px;
+		background: #4285f4;
 		transition: all .3s ease-in-out;
 		margin-right: 5%;
 	}
@@ -76,18 +76,12 @@
 	#subList a:nth-child(2).iscurrent ~ .subList_underline {
 		left: 13.5%; /* width랑 margin-left랑 합친거 */
 	}
-	#subList a:nth-child(3).iscurrent ~ .subList_underline {
-		left: 26.5%; 	
-	}
-	/* 
 	#subList a:nth-child(1):hover ~ .subList_underline {
-		left: 0;
+		left: 0.5%;
 	}
 	#subList a:nth-child(2):hover ~ .subList_underline {
-		left: 20%;
-		width: 16%;
+		left: 13.5%;
 	}
- */
 </style>
 
 <nav id="mainList" class="margin-container header-nav">

@@ -6,11 +6,10 @@
 <style>
 	.workingweek > table > tbody > tr > td:first-child{ padding-left: 20px; }
 	.meetingroom-recordbar{
-		width: 50%;
-		height: 20px;
+		height: 25px;
 		background-color: #04BFAD;
-		border-radius: 5px; 
-		position: absolute; top:46%; left:25%;
+		border-radius: 5px;
+		position: absolute;
 	}
 	
 	.meeting{
@@ -23,84 +22,126 @@
 	}
 	
 </style>
+
  
 <script>
-	$(document).ready(function(){
-		$("a#mettingroom-3").removeClass("iscurrent");
-		$("a#mettingroom-1").css("color","black");
-		$("a#mettingroom-1").addClass("iscurrent");
+
+$(document).ready(function(){
+	
+	var timearr = [{"starttime":"01:00","endtime":"07:00","meetingroom":"b"},
+					{"starttime":"12:00","endtime":"13:00","meetingroom":"b"},
+					{"starttime":"13:00","endtime":"15:00","meetingroom":"a"},
+					{"starttime":"10:00","endtime":"12:00","meetingroom":"d"}
+					];
+	
+	var defaultposition = 0;
+	$.each(timearr, function(index, item){
+		
+		var starttime_h = item.starttime.substr(0,2);
+		var starttime_m = item.starttime.substr(3,2);
+		var endtime_h = item.endtime.substr(0,2);
+		var endtime_m = item.endtime.substr(3,2);
+		
+		var startclass = Number(starttime_h) * 2;
+		var endclass = Number(endtime_h) * 2;
+		if(starttime_m == "30")
+			startclass++;
+		if(endtime_m == "30")
+			endclass++;
+		var toppx = $("."+item.meetingroom).eq(0).parent().attr("id");
+		toppx = defaultposition + Number(toppx);
+		
+		var width = ((endclass-startclass) > 0) ? (endclass-startclass) : 0;
+		var leftpx = 418;
+		leftpx += (startclass * 21.79);
+		var widthpx = width * 21.79;
 		
 		
-		//offcanvas
-	 	$(".workingweek > table > tbody > tr:first-child ~ tr").click(function(e){
-	 		$('.offcanvas').offcanvas('show');
-	 		
-	 		const meetingroom_name = $(e.target).parent().find("td:first-child").text();
-			$(".offcanvas-title").text(meetingroom_name);	 		
-	 	});
-		
-		 
-		// 날짜 플랫피커
-	 	flatpickr.localize(flatpickr.l10ns.ko);
-	 	flatpickr($(".mr-date"));
-		$(".mr-date").flatpickr({
-			dateFormat: "Y-m-d",
-			defaultDate: new Date(),
-			local: 'ko'
-		});
-		
-		
-		
-		// 오프캔버스 플랫피커
-	 	flatpickr.localize(flatpickr.l10ns.ko);
-	 	flatpickr($(".dateSelector"));
-		$(".dateSelector").flatpickr({
-			dateFormat: "Y-m-d H:i",
-			enableTime: true,
-			minuteIncrement: 30,
-			conjunction: " ~ ",
-			local: 'ko'
-		});
-		 
-	/* 	
-		// flatpickr에서 선택된 날짜 구하고 날짜를 넣어주기
-		getSelectedDate();
+		var html = "<div class='meetingroom-recordbar' style='display:inline-block; width:"+widthpx+"px; left:"+leftpx+"px; top:"+toppx+"px;'></div>";
+		$("#barcontainer-"+item.meetingroom).append(html);	
+	});
+	/* recodr-bar 용 */
+	
+	
+	
+	$("a#mettingroom-3").removeClass("iscurrent");
+	$("a#mettingroom-1").css("color","black");
+	$("a#mettingroom-1").addClass("iscurrent");
+	
+	
+	//offcanvas
+ 	$(".workingweek > table > tbody > tr:first-child ~ tr").click(function(e){
+ 		$('.offcanvas').offcanvas('show');
+ 		
+ 		const meetingroom_name = $(e.target).parent().find("td:first-child").text();
+		$(".offcanvas-title").text(meetingroom_name);	 		
+ 	});
+	
+	 
+	// 날짜 플랫피커
+ 	flatpickr.localize(flatpickr.l10ns.ko);
+ 	flatpickr($(".mr-date"));
+	$(".mr-date").flatpickr({
+		dateFormat: "Y-m-d",
+		defaultDate: new Date(),
+		local: 'ko'
+	});
+	
+	
+	
+	// 오프캔버스 플랫피커
+ 	flatpickr.localize(flatpickr.l10ns.ko);
+ 	flatpickr($(".dateSelector"));
+	$(".dateSelector").flatpickr({
+		dateFormat: "Y-m-d H:i",
+		enableTime: true,
+		minuteIncrement: 30,
+		conjunction: " ~ ",
+		local: 'ko'
+	});
+	
+	
+	
+	
+/* 	
+	// flatpickr에서 선택된 날짜 구하고 날짜를 넣어주기
+	getSelectedDate();
+	putDate();
+	putTodayDot();
+	// flatpickr 날짜 변경 이벤트 
+	$("dateSelector").change(function(){
+		getSelectedDate(); 
 		putDate();
 		putTodayDot();
-		// flatpickr 날짜 변경 이벤트 
-		$("dateSelector").change(function(){
-			getSelectedDate(); 
-			putDate();
-			putTodayDot();
-		}); 
+	}); 
+	
+	 */ 
+	
+	//종일 체크시
+$("#mr-write-allday").change(function(e){
+	if($(this).is(":checked")){
+		$("#mr-enddate").attr("disabled", true);
+		$("#mr-enddate").css("cursor","not-allowed");
 		
-		 */ 
-		
-		//종일 체크시
-		$("#mr-write-allday").change(function(e){
-			if($(this).is(":checked")){
-				$("#mr-enddate").attr("disabled", true);
-				$("#mr-enddate").css("cursor","not-allowed");
-				
-				const allday_date = $("#mr-startdate").val().substr(0,10);
-				$("#mr-startdate").val(allday_date);
-			}
-			else{
-				$("#mr-enddate").attr("disabled", false); 
-				$("#mr-enddate").css("cursor","");
-			}
-		});
-		
-		$("#mr-startdate").change(function(e){
-			if($("#mr-write-allday").is(":checked")){
-				const allday_date = $("#mr-startdate").val().substr(0,10);
-				$("#mr-startdate").val(allday_date);
-			}
-			else{
-				$("#mr-enddate").attr("disabled", false);
-			}
-		});
-		
+		const allday_date = $("#mr-startdate").val().substr(0,10);
+		$("#mr-startdate").val(allday_date);
+	}
+	else{
+		$("#mr-enddate").attr("disabled", false); 
+		$("#mr-enddate").css("cursor","");
+	}
+});
+
+$("#mr-startdate").change(function(e){
+	if($("#mr-write-allday").is(":checked")){
+		const allday_date = $("#mr-startdate").val().substr(0,10);
+		$("#mr-startdate").val(allday_date);
+	}
+	else{
+		$("#mr-enddate").attr("disabled", false);
+	}
+});
+	
 		
 		
 <%-- 		
@@ -406,46 +447,56 @@
 						<td colspan="2">${i}</td>
 					</c:forEach>
 				</tr>
-				<tr>
+				<tr id="206">
 					<td>가 회의실(20명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td></td>
+						<td id="${i}" class="a"></td>
 					</c:forEach>
-					<div class="meetingroom-recordbar"></div>
 				</tr>
-				<tr>
+				<tr id="260">
 					<td>나 회의실(30명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td></td>
+						<td id="${i}" class="b"></td>
 					</c:forEach>
 				</tr>
-				<tr>
+				<tr id="313">
 					<td>다 회의실(15명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td></td>
+						<td id="${i}" class="c"></td>
 					</c:forEach>
 				</tr>
-				<tr>
+				<tr id="365">
 					<td>라 회의실(10명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td></td>
+						<td id="${i}" class="d"></td>
 					</c:forEach>
 				</tr>
-				<tr>
+				<tr id="418">
 					<td>마 회의실(8명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td></td>
+						<td id="${i}" class="e"></td>
 					</c:forEach>
 				</tr>
-				<tr>
+				<tr id="472">
 					<td>바 회의실(8명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td></td>
+						<td id="${i}" class="f"></td>
 					</c:forEach>
 				</tr>
 			</table>
 			 
-			
+			<div id="barcontainer-a" style="float:left; margin-left: 262px;">
+			</div>
+			<div id="barcontainer-b" style="float:left; margin-left: 262px;">
+			</div>
+			<div id="barcontainer-c" style="float:left; margin-left: 262px;">
+			</div>
+			<div id="barcontainer-d" style="float:left; margin-left: 262px;">
+			</div>
+			<div id="barcontainer-e" style="float:left; margin-left: 262px;">
+			</div>
+			<div id="barcontainer-f" style="float:left; margin-left: 262px;">
+			</div>
 			
 			<!-- 오프캔버스 시작 -->
 			<div class="offcanvas offcanvas-end meetingroom-offcanvas" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">

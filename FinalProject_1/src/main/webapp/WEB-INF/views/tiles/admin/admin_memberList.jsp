@@ -27,6 +27,14 @@ div#alert {
     right: 38%;
     box-shadow: 1px 1px 1px 1.3px rgb(0 0 0 / 20%);
 }
+
+.membtn {
+	opacity: 0.8;
+}
+
+.membtn:hover{
+	opacity:1;
+}
 </style>
 
 <script type="text/javascript">
@@ -245,31 +253,31 @@ function getExcelEmp(status){
 	<div class="contentsmargin" style="clear: both;">
 		<div style="float:left;">
 			<div style="display: inline-block;">
-			    <a href="<%= request.getContextPath()%>/admin_memberAdd.up" id="memberadd" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
+			    <a href="<%= request.getContextPath()%>/admin_memberAdd.up" id="memberadd" class="btn membtn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#333333; font-weight: 600;">
 			       	<span><i class="fas fa-plus"></i></span>
 			       	<span>구성원추가</span>
 		       	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a id="memberdelete" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
+	      	 	<a id="memberdelete" class="btn membtn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#333333; font-weight: 600;">
 			       	<span><i class="fas fa-times"></i></span>
 			       	<span>계정중지</span>
 	      	 	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a id="memberupdate" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#4d4f53; font-weight: 600;">
+	      	 	<a id="memberupdate" class="btn membtn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 18px; border-color:white; background-color:#f5f5f5; color:#333333; font-weight: 600;">
 			       	<span><i class="fas fa-pencil-alt"></i></span>
 			       	<span>정보수정</span>
 	      	 	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a id="listdownload" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #d9d9d9; border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
+	      	 	<a id="listdownload" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid rgba(0,0,0,0.1); border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
 			       	<span><i class="fa-solid fa-download"></i></span>
 			       	<span>선택 다운로드</span>
 	      	 	</a>
 	      	 </div>
 			<div style="display: inline-block;">
-	      	 	<a id="listdownloadAll" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid #d9d9d9; border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
+	      	 	<a id="listdownloadAll" class="btn" style="font-size: 10pt; vertical-align: middle; padding: 6.5px 17px; border: 1px solid rgba(0,0,0,0.1); border-radius:5px; background-color:white; color:#4d4f53; margin-left: 3px; font-weight: 600;">
 			       	<span><i class="fa-solid fa-download"></i></span>
 			       	<span>모두 다운로드</span>
 	      	 	</a>
@@ -282,7 +290,7 @@ function getExcelEmp(status){
 				<div class=" mr-2">
 					<div class="form-group">
 						<div class="form-field">
-							<select name="sc" id="searchCondition" style="font-size: 9pt; padding:6.7px 6px;">
+							<select name="sc" id="searchCondition" style="font-size: 10pt; padding:8px 6px; font-weight: 500; color: #4d4f53;">
 								<option value="name_kr">이름</option>
 								<option value="email">이메일</option>
 								<option value="mobile">연락처</option>
@@ -293,19 +301,19 @@ function getExcelEmp(status){
 				<div>
 					<div class="form-group">
 						<div class="form-field" style="padding-left:5px; margin-right: 14px;">
-							<input id="searchVal" type="text" class="form-control" name="sv" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;">
+							<input id="searchVal" type="text" class="form-control" name="sv" placeholder="검색" style="width:105%; font-size: 9pt; padding:6px 6px;  font-weight: 500; color: #4d4f53;">
 						</div>
 					</div>
 				</div>
 				<div class="align-items-end mt-1 mr-4">
 					<div class="form-group seachIcon" style="font-size: 10pt; margin-bottom:0;">
-						<a href="#" class="btn icon icon-search" style="color:#76787a; background-color: white; font-size: 0.8rem; padding: 0.375rem; position: absolute; right: 10.5%;"></a>
+						<a href="#" class="btn icon icon-search" style="color:#76787a;font-size: 10pt; padding: 0.375rem; position: absolute; right: 9.2%; top:22.8%;"></a>
 					</div>
 				</div>
 				<div class=" mr-2">
 					<div class="form-group">
 						<div class="form-field" style="padding-right:10px;">
-							<select name="sp" id="cntselect" style="font-size: 9pt; padding:6.7px 12px;">
+							<select name="sp" id="cntselect" style="font-size: 10pt; padding:8px 12px; font-weight: 500; color: #4d4f53;">
 								<option value="20">20</option>
 								<option value="40">40</option>
 								<option value="80">80</option>
@@ -318,12 +326,14 @@ function getExcelEmp(status){
 		
 		<%-- 전체 구성원 --%>
 		<div style="margin-bottom: 15px; clear:both;">
-			<table class="table custom-table" id="memberList">   
+			<table class="custom-table my-3" id="memberList">   
 		    	<thead>   
 		            <tr >
-		              <th><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th> 
-		              <th class="boardth" width="11%" scope="col" id="namearray"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">이름<span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span></button></th>
-		              <th class="boardth" width="12%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
+		              <th width="3%" scope="col"><input type="checkbox" id="memberAll" onClick="allCheckBox();" /></th> 
+		              <th class="boardth" width="10%" scope="col" id="namearray"><div data-bs-toggle="dropdown" style="border: none;">이름
+		              <!-- <span style="margin-left: 10px; color: #b3b3b3; font-size: 16px; font-weight: bold; position:relative; top: 3.5px;"><ion-icon name="swap-vertical-outline"></ion-icon></span> -->
+		              </div></th>
+		              <th class="boardth" width="12%" scope="col"><div data-bs-toggle="dropdown" style="border: none;">소속<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>  
 						  <div id="department_name" class="dropdown-menu">
 					  			<a id="" class="dropdown-item" href="#">전체</a>
 						  		<c:forEach var="dvo" items="${requestScope.dvoList}">
@@ -350,7 +360,7 @@ function getExcelEmp(status){
 						       -->
 						  </div>
 					  </th>
-		              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button> 
+		              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none;">직위<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div> 
 						  <div id="position" class="dropdown-menu">
 						  		<a id="" class="dropdown-item" href="#">전체</a>
 						  		<c:forEach var="position" items="${requestScope.pList}">
@@ -379,7 +389,7 @@ function getExcelEmp(status){
 						       -->
 						  </div>
 					  </th>
-		              <th class="boardth" width="10%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">고용형태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+		              <th class="boardth" width="10%" scope="col"><div data-bs-toggle="dropdown" style="border: none;">고용형태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>
 						  <div id="employmenttype" class="dropdown-menu">
 						  		<a id="" class="dropdown-item" href="#">전체</a>
 						  		<c:forEach var="jointype" items="${requestScope.jtList}">
@@ -399,16 +409,16 @@ function getExcelEmp(status){
 						       --> 
 						  </div>
 		              </th>  
-		              <th class="boardth" width="16%"scope="col"><span>이메일</span></th> 
+		              <th class="boardth" width="20%"scope="col"><span>이메일</span></th> 
 		              <th class="boardth" width="14%"scope="col"><span>연락처</span></th> 
-		              <th class="boardth" width="10%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">권한<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+		              <th class="boardth" width="10%" scope="col"><div data-bs-toggle="dropdown" style="border: none;">권한<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>
 						  <div id="authority" class="dropdown-menu">
 						      <a id="" class="dropdown-item" href="#">전체</a>
 						      <a id="1" class="dropdown-item" href="#">일반</a>
 						      <a id="0" class="dropdown-item" href="#">관리</a>
 						  </div>
 		              </th>  
-		              <th class="boardth" width="11%" scope="col"><button type="button" data-bs-toggle="dropdown" style="border: none; background-color: #ffff;">계정상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>
+		              <th class="boardth" width="11%" scope="col"><div data-bs-toggle="dropdown" style="border: none;">계정상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></div>
 						  <div id="status" class="dropdown-menu">
 						      <a id="" class="dropdown-item" href="#">전체</a>
 						      <a id="1" class="dropdown-item" href="#">정상</a>

@@ -40,18 +40,16 @@
 
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'> 
   
+<!-- pretendard-font -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css" />
+
+  
 <style type="text/css">
 
-	@font-face {
-	    font-family: 'Pretendard-Regular';
-	    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-	    font-weight: 400;
-	    font-style: normal;
-	}
-	
 	*{
-		font-family: Pretendard-Regular;	
-		color: #404040;
+		font-family: 'Pretendard';
+		font-weight: 600;	
+		color:	#595959;
 	}
 	
 	.pwdFindFrm {
@@ -69,8 +67,11 @@
 	}
 	
 	input:focus {
-		border: 1.8px solid #4285f4;
-    	outline: none;
+		outline: none;
+		border: 1.8px solid transparent;
+		background-image: linear-gradient(white, white), linear-gradient(60deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+    	background-origin: border-box;
+    	background-clip: padding-box, border-box;
 	}
 	
 	label {
@@ -83,13 +84,12 @@
 	}
 	
 	#btnFind {
-	    border: 1px solid #4285f4;
-		width: 67%; 
-		margin-top: 10px;
-		background-color: #4285f4;
+		width: 66%; 
+		border: rgb(0 101 204) 1px solid;
+		background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
 		color: white;
 		font-size: 12pt;
-		border-radius: 30px;
+		border-radius: 5px;
 	}
 	
 	#btnFind:hover {
@@ -99,7 +99,7 @@
 	
 	.error {
 		font-size: 9pt;
-		color: #4285f4;
+		color: rgb(0 101 204);
 	    margin-left: 26.3%;
 	    margin-top: 5px;
 	}
@@ -107,10 +107,19 @@
 	#emailcheckBtn{
 		border: solid 1px #cccccc;
 		background-color: white;
-		padding: 5px 10px;
-		color: #666666;
-		font-size: 11pt;
+		padding: 6px 10px;
+		color: rgba(36, 42, 48, 0.48);
+		font-size: 10pt;
 	}
+	
+	#btnReset{
+	    border: solid 1px #dbdbdb;
+	    font-size: 11pt;
+	    color: rgba(36, 42, 48, 0.48);
+	    width: 15%;
+	    margin: 0px 10px 0 22px;
+	}
+	
 	
 </style>
   
@@ -131,6 +140,12 @@ $(document).ready(function(){
 		location.href= "<%= ctxPath%>/login/pwdFind_update.up"; 
 	});
 	 --%>
+	
+	$("#btnReset").click(function(){
+		$("#pwdFindClose",parent.document).trigger("click");
+	});
+	 
+	 
 });// end of $(document).ready(function(){})---------------
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,13 +280,14 @@ function checkEmailCode(){
 	    </li>
 	</ul>
 
-	<div class="text-center">
+	<div class="text-center" style="margin-top: 25px;">
+		<button type="reset" class="btn" id="btnReset">취소</button>
 		<button type="button" class="btn" id="btnFind" onclick="employeeInfo()">인증</button>
     </div>
     
     <div class="my-3" id="div_findResult">
 		<p class="text-center">
-			<span id="emailAlert" style="color: #4285f4; font-size: 11pt;"></span>
+			<span id="emailAlert" style="color: rgb(0 101 204); font-size: 11pt;"></span>
 		<%-- 
 			// get으로 들어올 경우
 			<c:if test="${requestScope.isUserExist eq false}">

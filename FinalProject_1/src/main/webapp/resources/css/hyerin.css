@@ -1481,7 +1481,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mgList-info > span > span {
 	margin-left: 1px;
-	color: #37A652;
+	color: #4285f4;
 	font-weight: bold;
 }
 
@@ -1574,9 +1574,8 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mg-checkmenu > span {
 	margin: auto 0;
-	text-align: right;
-	width: 290px;
-	color: #37A652;
+	margin-left: auto;
+	color: #4285f4;
 	font-weight: 600;
 }
 
