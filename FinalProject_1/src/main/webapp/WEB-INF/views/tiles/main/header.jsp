@@ -49,5 +49,5 @@
 	<a id="main_todo" href="<%= request.getContextPath()%>/main_todo.up" class="header-nonsub">요청사항</a>
 	<div class="list_underline"></div>
 </nav>
-<hr class="HRhr" style="margin-top: 0px;"/>
+<hr class="HRhr" style="margin-top: 0px; margin-bottom: 0;"/>
 

@@ -1540,6 +1540,14 @@ where rno between 1 and 10
 
 
 
-select * from tab;
+select * from TBL_MEETINGROOM;
+
+
+
+
+desc tbl_meetingroom
+
+
+
 
 
