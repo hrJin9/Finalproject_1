@@ -44,10 +44,7 @@
 <!-- 혜린style.css -->
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hyerin.css?after">
 
-<!-- calendar CSS, js -->
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/calendar.css">
 
-<script src='<%= ctxPath%>/resources/js/calendar.js'></script>
 
 <!-- flatpickr -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">

@@ -103,17 +103,19 @@ where fk_lgcatgono = 1 and smcatgoname = #{com_smcatgoname}
 
 
 
-
-
+insert into tbl_meetingroom(roomno) 
+values(6)
+ 
+select * from tbl_meetingroom;
 
 
 
 --- 회의실 ---- 
 create table tbl_meetingroom
 (roomno            number       not null      -- 회의실 번호
-,room_name         varchar2(20) not null      -- 회의실 명
-,room_info         varchar2(20) not null      -- 회의실 정보
-,room_status       number       not null      -- 회의실 상태 
+,room_name         varchar2(20)               -- 회의실 명
+,room_info         varchar2(20)               -- 회의실 정보
+,room_status       number                     -- 회의실 상태  
 ,constraint PK_roomno_roomno primary key(roomno)
 );
 -- Table TBL_CONFERENCE이(가) 생성되었습니다.
@@ -149,12 +151,12 @@ nocache;
 
 
 
-insert into tbl_meetingroom_reservation(reserno, r_startdate, r_enddate, r_content, fk_employee_no) 
-values(seq_reserno.nextval, to_date(#{r_startdate}, 'yyyymmddhh24miss'), to_date(#{r_enddate}, 'yyyymmddhh24miss'), #{r_content}, #{fk_employee_no})
- 
+insert into tbl_meetingroom_reservation(reserno, startdate, enddate, r_content, fk_employee_no, fk_roomno) 
+values(seq_reserno.nextval, to_date(#{r_startdate}, 'yyyymmddhh24miss'), to_date(#{r_enddate}, 'yyyymmddhh24miss'), #{r_content}, #{fk_employee_no}, #{fk_roomno})
+  
 
-insert into tbl_meetingroom_reservation(reserno, r_startdate, r_enddate, r_content, fk_employee_no) 
-values(seq_reserno.nextval, to_date(20221212111511, 'yyyymmddhh24miss'), to_date(20221212121511, 'yyyymmddhh24miss'), '예약헙니다', 100011)
+insert into tbl_meetingroom_reservation(reserno, startdate, enddate, r_content, fk_employee_no, fk_roomno) 
+values(seq_reserno.nextval, to_date(20221212111511, 'yyyymmddhh24miss'), to_date(20221212121511, 'yyyymmddhh24miss'), '예약헙니다', 100011, 5)
          
         
 select *

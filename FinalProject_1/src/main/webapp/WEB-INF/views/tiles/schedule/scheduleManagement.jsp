@@ -54,6 +54,14 @@
     border-radius: 22px;  
     padding: 7px 0 18px 0;  
  }    
+ 
+   .calendar-side:hover{ 
+    border-bottom-style: groove;
+ }    
+ 
+  
+ 
+ 
 
 div#wrapper1{ 
 	float: right;   
@@ -506,12 +514,12 @@ function showCompanyCal(){
 						 html += "<td style='width:60%; padding: 3px 0px;'><input type='checkbox' name='com_smcatgono' class='calendar_checkbox com_smcatgono' style='margin-right: 3px;' value='"+item.smcatgono+"' checked id='com_smcatgono_"+index+"'/><label for='com_smcatgono_"+index+"'>"+item.smcatgoname+"</label></td>";  
 						 
 						 <%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다. 
-						 if("${sessionScope.loginuser.fk_pcode}" =='3' && "${sessionScope.loginuser.fk_dcode}" == '4') { 
-						 <%-- 여기여기 if("${sessionScope.loginuser.gradelevel}" =='10') {
+						 if("${sessionScope.loginuser.fk_pcode}" =='3' && "${sessionScope.loginuser.fk_dcode}" == '4') { --%> 
+						 if("${sessionScope.loginuser.position == '과장'}") {
 							 html += "<td style='width:20%; padding: 3px 0px;'><button class='btn_edit' data-target='editCal' onclick='editComCalendar("+item.smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-edit'></i></button></td>";  
 							 html += "<td style='width:20%; padding: 3px 0px;'><button class='btn_edit delCal' onclick='delCalendar("+item.smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-trash'></i></button></td>";
-						 }
-						 여기까지--%> 
+						 }  
+						
 						 html += "</tr>";
 					 });
 				 	 
@@ -757,11 +765,17 @@ function delCalendar(smcatgono, smcatgoname){ // smcatgono => 캘린더 소분�
 				<input type="checkbox" id="allComCal" class="calendar_checkbox" checked/>&nbsp;&nbsp;<label for="allComCal">사내 캘린더</label> 
 			</div>  
 			 
+		<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.  	
+		     <c:if test="${sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }"> --%>
+		     <c:if test="${sessionScope.loginuser.position == '과장'}">   
+			 	<button class="btn_edit" style="float: right;" onclick="addComCalendar()"><i class='fas'>&#xf055;</i></button>
+			 </c:if> 
+		<%-- </c:if>	--%>  
 			 <%-- 사내 캘린더를 보여주는 곳 --%>
 			<div id="companyCal" class="accordion-collapse collapse" style="margin-left: 50px; margin-bottom: 10px;"></div>
 		</div>
 		
-		  
+		   
 		<div class="calendar-side">        
 			 	  	        
 			<div class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#shareCal" style="width: 88%; text-align: inherit; margin-left: 18px;">  
@@ -773,12 +787,6 @@ function delCalendar(smcatgono, smcatgoname){ // smcatgono => 캘린더 소분�
 		</div>
 		
 	
-	<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.  	
-	     <c:if test="${sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }"> --%>
-	     <c:if test="${sessionScope.loginuser.employee_no}">  
-		 	<button class="btn_edit" style="float: right;" onclick="addComCalendar()"><i class='fas'>&#xf055;</i></button>
-		 </c:if> 
-	<%-- </c:if>	--%>  
 	    
 	   
 		

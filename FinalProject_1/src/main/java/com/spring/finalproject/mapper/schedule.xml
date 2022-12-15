@@ -64,9 +64,9 @@
     </select>
     
     
-    <!-- 공유자를 찾기 위한 특정글자가 들어간 회원명단 불러오기 -->
+    <!-- 공유자를 찾기 위한 특정글자가 들어간 회원명단 불러오기 -->  
     <select id="searchJoinUserList" parameterType="String" resultType="com.spring.hyerin.model.EmployeeVO"> 
-    	select employee_no, name_kr
+    	select employee_no, name_kr, position, role
 		from tbl_employee 
 		where lower(name_kr) like '%'|| lower(#{joinUserName}) ||'%'
     </select>

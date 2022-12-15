@@ -186,7 +186,9 @@ public class ScheduleController {
 			for(EmployeeVO mvo : joinUserList) {
 				JSONObject jsObj = new JSONObject();
 				jsObj.put("employee_no", mvo.getEmployee_no());
-				jsObj.put("name_kr", mvo.getName_kr());   
+				jsObj.put("name_kr", mvo.getName_kr());    
+				jsObj.put("position", mvo.getPosition());   
+				jsObj.put("role", mvo.getRole());    
 				
 				jsonArr.put(jsObj);
 			}
