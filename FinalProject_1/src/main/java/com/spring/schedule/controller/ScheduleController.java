@@ -422,7 +422,7 @@ public class ScheduleController {
 			
 		return jsObj.toString();
 	}
-	
+	 
 	 
 	 
 	// === (사내캘린더 또는 내캘린더)속의 소분류 카테고리인 서브캘린더 수정하기 === 

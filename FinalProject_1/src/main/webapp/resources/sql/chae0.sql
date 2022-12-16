@@ -47,10 +47,15 @@ nocache;
 insert into tbl_calendar_small_category(smcatgono, fk_lgcatgono, smcatgoname,fk_employee_no)
 values(seq_smcatgono.nextval, 1, '하이', '100011');
 
+update tbl_calendar_small_category set smcatgoname = '읏짜' 
+where smcatgono = 10
+
 
 select *
 from tbl_calendar_small_category
 order by smcatgono desc;
+
+commit;
 
 create table tbl_calendar_schedule 
 (calno           number                 -- 일정관리 번호(캘린더번호)
@@ -103,16 +108,14 @@ where fk_lgcatgono = 1 and smcatgoname = #{com_smcatgoname}
 
 
 
-insert into tbl_meetingroom(roomno) 
-values(6)
  
 select * from tbl_meetingroom;
 
-
+commit;
 
 --- 회의실 ---- 
-create table tbl_meetingroom
-(roomno            number       not null      -- 회의실 번호
+create table tbl_meetingroom 
+(roomno            varchar2(20) not null      -- 회의실 번호
 ,room_name         varchar2(20)               -- 회의실 명
 ,room_info         varchar2(20)               -- 회의실 정보
 ,room_status       number                     -- 회의실 상태  
@@ -120,6 +123,8 @@ create table tbl_meetingroom
 );
 -- Table TBL_CONFERENCE이(가) 생성되었습니다.
 
+ 
+ 
  
 --- 회의실 예약 ----   
 create table tbl_meetingroom_reservation 
@@ -156,7 +161,7 @@ values(seq_reserno.nextval, to_date(#{r_startdate}, 'yyyymmddhh24miss'), to_date
   
 
 insert into tbl_meetingroom_reservation(reserno, startdate, enddate, r_content, fk_employee_no, fk_roomno) 
-values(seq_reserno.nextval, to_date(20221212111511, 'yyyymmddhh24miss'), to_date(20221212121511, 'yyyymmddhh24miss'), '예약헙니다', 100011, 5)
+values(seq_reserno.nextval, to_date(20221212111511, 'yyyymmddhh24miss'), to_date(20221212121511, 'yyyymmddhh24miss'), '예약헙니다', 100011, 'a')
          
         
 select *

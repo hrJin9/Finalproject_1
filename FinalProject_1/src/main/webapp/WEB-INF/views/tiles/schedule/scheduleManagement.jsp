@@ -430,12 +430,16 @@ $(document).ready(function(){
     
   // 모달 창에서 입력된 값 초기화 시키기 //
   $("button.modal_close").on("click", function(){
+	    
+	  $('.modal').modal('hide'); // 모달 숨기기   
+	  
 	  var modal_frmArr = document.querySelectorAll("form[name=modal_frm]");
 	  for(var i=0; i<modal_frmArr.length; i++) {
 		  modal_frmArr[i].reset();
-	  }
+	  } 
+	   
   });
-  
+   
       
 }); // end of $(document).ready(function(){})==============================
 
@@ -552,7 +556,7 @@ function goEditComCal(){
   		  return;
   	}
   	else{
-		$.ajax({
+		$.ajax({  
 			url:"<%= ctxPath%>/schedule/editCalendar.up", 
 			type: "post",
 			data:{"smcatgono":$("input.edit_com_smcatgono").val(), 
@@ -566,9 +570,9 @@ function goEditComCal(){
    					alert($("input.edit_com_smcatgoname").val()+"은(는) 이미 존재하는 캘린더 명입니다.");
    					return;
    				 }
-				if(json.n == 1){
-					$('#modal_editComCal').modal('hide'); // 모달 숨기기
-					alert("사내 캘린더명을 수정하였습니다.");
+				if(json.n == 1){ 
+					$('.modal').modal('hide'); // 모달 숨기기 
+   					alert($("input.edit_com_smcatgoname").val()+" (으)로 수정 완료했습니다.");      
 					showCompanyCal();
 				}
 			},
@@ -616,6 +620,7 @@ function goAddMyCal(){
  					 
  					 $("input.add_my_smcatgoname").val("");
  				 	 showmyCal(); // 내 캘린더 소분류 보여주기
+ 				 	 
  				 }
  			 },
  			 error: function(request, status, error){
@@ -677,23 +682,23 @@ function goEditMyCal(){
 	}
   	else{
 		 $.ajax({
-			url:"<%= ctxPath%>/schedule/editCalendar.up", 
+			url:"<%= ctxPath%>/schedule/editCalendar.up",  
 			type: "post",
 			data:{"smcatgono":$("input.edit_my_smcatgono").val(), 
 				  "smcatgoname": $("input.edit_my_smcatgoname").val(), 
-				  "fk_employee_no":"${sessionScope.loginuser.employee_no}", 
-				  "caltype":"1"  // 내캘린더
+				  "fk_employee_no":"${sessionScope.loginuser.employee_no}",  
+				  "caltype":"1"  // 내캘린더 
 				  },
 			dataType:"json",
 			success:function(json){
 				if(json.n == 0){
-					alert($("input.edit_com_smcatgoname").val()+"은(는) 이미 존재하는 캘린더 명입니다.");
-   					return;
+					alert($("input.edit_my_smcatgoname").val()+"은(는) 이미 존재하는 캘린더 명입니다.");  
+   					return; 
    				 }
-				if(json.n == 1){
-					$('#editMyCal').modal('hide'); // 모달 숨기기
-					alert("내캘린더명을 수정하였습니다.");
-					showmyCal(); 
+				if(json.n == 1){   
+					$('.modal').modal('hide'); // 모달 숨기기  
+					alert($("input.edit_my_smcatgoname").val()+" (으)로 수정 완료했습니다.");    
+					showmyCal();   
 				}
 			},
 			 error: function(request, status, error){

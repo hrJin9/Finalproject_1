@@ -274,13 +274,13 @@
 	<c:set var="v_loginuser_employee_no" value="${sessionScope.loginuser.employee_no}"/> 
 	 
  
-	<div style="float: right;margin-right: 15.5%;">   
+	<div style="float: right;margin-right: 15.5%;">     
 		<c:if test="${not empty requestScope.listgobackURL_schedule}">
 	    <%--     
-	               일정이 사내캘린더 인데, 로그인한 사용자가 4번 부서에 근무하는 3직급을 가진 사용자 이라면 
+	               일정이 사내캘린더 인데, 로그인한 사용자가 4번 부서에 근무하는 3직급을 가진 사용자 이라면    
 	        <c:if test="${v_fk_lgcatgono eq '2' && sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }">  
 	    --%>
-			<c:if test="${v_fk_lgcatgono eq '2' && sessionScope.loginuser.position == '과장'}"> 
+			<c:if test="${v_fk_lgcatgono eq '2' && sessionScope.loginuser.position == 과장}"> 
 				<button type="button" id="edit" class="btn_normal" onclick="editSchedule('${requestScope.map.calno}')">수정</button> 
 				<button type="button" id="del_register" class="btn_normal" onclick="delSchedule('${requestScope.map.calno}')">삭제</button>
 			</c:if>
@@ -296,7 +296,7 @@
 	               일정이 사내캘린더 인데, 로그인한 사용자가 4번 부서에 근무하는 3직급을 가진 사용자 이라면 
 	        <c:if test="${v_fk_lgcatgono eq '2' && sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }">  
 	    --%> 
-	        <c:if test="${v_fk_lgcatgono eq '2' && sessionScope.loginuser.position == '과장'}">
+	        <c:if test="${v_fk_lgcatgono eq '2' && sessionScope.loginuser.position == 과장}">
 				<button type="button" id="edit" class="btn_normal" onclick="editSchedule('${requestScope.map.calno}')">수정</button> 
 				<button type="button" id="del_register" class="btn_normal" onclick="delSchedule('${requestScope.map.calno}')">삭제</button>
 			</c:if>

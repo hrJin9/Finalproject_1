@@ -158,9 +158,9 @@
 	<!-- 수정된 (사내캘린더 또는 내캘린더)속의 소분류 카테고리명이 이미 해당 사용자가 만든 소분류 카테고리명으로 존재하는지 유무 알아오기 -->
 	<select id="existsCalendar" parameterType="HashMap" resultType="int">
 	    select count(*)
-		from tbl_calendar_small_category
+		from tbl_calendar_small_category 
 		where fk_lgcatgono = #{caltype} 
-		and fk_employee_no = #{EMPLOYEE_NO}  
+		and fk_employee_no = #{fk_employee_no}   
 		and smcatgoname = #{smcatgoname}
 	</select>
 	

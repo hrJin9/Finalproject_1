@@ -28,11 +28,12 @@
 
 $(document).ready(function(){
 	
+	/* 
 	var timearr = [{"starttime":"01:00","endtime":"07:00","meetingroom":"b"},
 					{"starttime":"12:00","endtime":"13:00","meetingroom":"b"},
 					{"starttime":"13:00","endtime":"15:00","meetingroom":"a"},
 					{"starttime":"10:00","endtime":"12:00","meetingroom":"d"}
-					];
+					]; 
 	
 	var defaultposition = 0;
 	$.each(timearr, function(index, item){
@@ -47,6 +48,46 @@ $(document).ready(function(){
 		if(starttime_m == "30")
 			startclass++;
 		if(endtime_m == "30")
+			endclass++;
+		var toppx = $("."+item.meetingroom).eq(0).parent().attr("id");
+		toppx = defaultposition + Number(toppx);
+		
+		var width = ((endclass-startclass) > 0) ? (endclass-startclass) : 0;
+		var leftpx = 418;
+		leftpx += (startclass * 21.79);
+		var widthpx = width * 21.79;
+		
+		
+		var html = "<div class='meetingroom-recordbar' style='display:inline-block; width:"+widthpx+"px; left:"+leftpx+"px; top:"+toppx+"px;'></div>";
+		$("#barcontainer-"+item.meetingroom).append(html);	
+	});
+	
+	 */
+	
+	
+	
+	
+	
+	 
+	
+	
+	
+	var timearr = [{"startdate":"${requestScope.map.startdate}","enddate":"${requestScope.map.enddate}","meetingroom":"${requestScope.map.fk_roomno}"}]; 
+	
+	 
+	var defaultposition = 0;
+	$.each(timearr, function(index, item){ 
+		
+		var startdate_h = item.startdate.substr(0,2);
+		var startdate_m = item.startdate.substr(3,2);
+		var enddate_h = item.enddate.substr(0,2);
+		var enddate_m = item.enddate.substr(3,2);
+		
+		var startclass = Number(startdate_h) * 2;
+		var endclass = Number(enddate_h) * 2;
+		if(startdate_m == "30")
+			startclass++;
+		if(enddate_m == "30")
 			endclass++;
 		var toppx = $("."+item.meetingroom).eq(0).parent().attr("id");
 		toppx = defaultposition + Number(toppx);
@@ -319,113 +360,7 @@ $("#mr-startdate").change(function(e){
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// function declaration
  		
-<%-- 		
-		// flatpickr에 선택된 날짜를 구하는 함수
-		var thisWeek = []; // 주차 데이터 넣는 용
-		var thisWeekArr = []; //오늘날짜 dot 검사용
-		function getSelectedDate(){
-			//flatpickr에 선택된 날짜 구하기
-		 	var selected_date = $(".dateSelector").val(); 
-		 	var selected_yy = selected_date.substr(0,4);
-		 	var selected_mm = selected_date.substr(6,2);
-		 	
-		 	var selected_dd = selected_date.substr(10,2);
-		 	var valDate = new Date(selected_yy, selected_mm-1, selected_dd);
-		 	//console.log("selected_date : " +selected_date); // 2022. 12. 07
 
-		 	// 주차 구하기
-			var currentDay = new Date(valDate);
-			var theYear = currentDay.getFullYear();
-			var theMonth = currentDay.getMonth();
-			var theDate  = currentDay.getDate();
-			var theDayOfWeek = currentDay.getDay();
-			//console.log("theDate : " +theDate); // 7일(현재날짜)
-			//console.log("theDayOfWeek : " +theDayOfWeek); // 이번주 세번째인 수요일 => 3
-			
-			
-			for(var i=1; i<8; i++) {
-				var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
-				var yyyy = resultDay.getFullYear();
-				var mm = Number(resultDay.getMonth()) + 1;
-				var dd = resultDay.getDate();  // 이번주 일요일 날짜 => 11
-				//console.log("resultDay : " +resultDay);
-				//console.log("yyyy : " +yyyy);
-				//console.log("mm : " +mm);
-				//console.log("dd : " +dd);
-				
-				mm = String(mm).length === 1 ? '0' + mm : mm;
-				dd = String(dd).length === 1 ? '0' + dd : dd;
-				
-				thisWeek[i] = yyyy + '. ' + mm + '. ' + dd;
-				thisWeekArr[i] = new Date(yyyy, mm-1, dd);
-			}
-		}//end of getSelectedDate()
-		
-		
-		// 선택된 날짜를 넣어주는 함수(메인★)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		function putDate(){
-			$(".date").each(function(index, item){
-				$(item).html(thisWeek[index+1]);
-				
-				//console.log("thisWeek[index+1] >>>"+thisWeek[index+1]);
-				thisWeekDate = thisWeek[index+1];
-				
-				// 총 근무시간 및 시작,종료시간 조회해오기
-				$.ajax({
-					url:"<%= request.getContextPath()%>/getworkTimebyDay.up",
-					traditional: true,
-					data:{"thisWeekDate":thisWeekDate},
-					//type:"POST",
-					async:false,
-					dataType:"JSON",  
-					success:function(json){ 
-						console.log(JSON.stringify(json));  // 배열타입도 모두 찍을 수 있다.
-						//console.log("JSON.workTime : "+json[0].workTime);
-						//console.log("JSON.workMin : "+json[0].workMin);
-						
-						if(json.length <= 0){
-							$("#workTime"+index).css("display","none");
-						} else {
-							if(json[0].workTime != 0 && json[0].workMin != 0) {
-								$("#workTime"+index+"> span").text(json[0].workTime+"시간 "+json[0].workMin+"분"); // json에서 받은 배열 리스트는 한행이므로 [0] 번째 인덱스에 모두 저장되있음.
-							} else if(json[0].workTime != 0 && json[0].workMin == 0) {
-								$("#workTime"+index+"> span").text(json[0].workTime+"시간");
-							}
-						}
-						
-						// 총 근무시간 합 구하기
-						
-					},
-					error: function(request, status, error){
-			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			        }					
-				});
-				
-				
-			});
-			 
-			
-		}//end of putDate()
-		
-		// 선택된 날짜가 오늘날짜와 같으면 오늘날짜 dot를 넣어주는 함수
-		function putTodayDot(){
-			html = '<div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>';
-			//같은 날짜인지 비교하는 함수
-			const isSameDate = (date1, date2) => {
-				return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
-			}
-			var nowdate = new Date();
-			thisWeekArr.forEach(function(item, index, array){
-				if(isSameDate(nowdate, item)){ //같은 날짜라면
-					$("#datedot"+index).html(html);
-					return; //반복문 종료
-				} else{
-					$("#datedot"+index).html("");
-				}
-				 
-			});
-		}//end of putTodayDot()
-		 --%>
 		  
 		
 </script>
@@ -446,12 +381,12 @@ $("#mr-startdate").change(function(e){
 					<c:forEach var="i" begin="0" end="23">
 						<td colspan="2">${i}</td>
 					</c:forEach>
-				</tr>
-				<tr id="206">
+				</tr>  
+				<tr id="206"> 
 					<td>가 회의실(20명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td id="${i}" class="a"></td>
-					</c:forEach>
+						<td id="${i}" class="a"></td> 
+					</c:forEach> 
 				</tr>
 				<tr id="260">
 					<td>나 회의실(30명)</td>
