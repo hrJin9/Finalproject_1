@@ -107,11 +107,16 @@ public class MeetingroomController {
 		String fk_employee_no = request.getParameter("fk_employee_no");
 		System.out.println("확인용 fk_employee_no => " + fk_employee_no);   
 		
+		String fk_roomno = request.getParameter("fk_roomno");
+		System.out.println("확인용 fk_roomno => " + fk_roomno);   
+		
+		
 		Map<String,String> paraMap = new HashMap<String, String>();
 		paraMap.put("startdate", startdate);
 		paraMap.put("enddate", enddate);
 		paraMap.put("r_content", r_content); 
 		paraMap.put("fk_employee_no", fk_employee_no);
+		paraMap.put("fk_roomno", fk_roomno);
 		
 		int n = service.meetingroom_add(paraMap);
  

@@ -16,9 +16,7 @@
 	  position: relative;
 	  display: flex;
 	  width: 640px;
-	  margin: 4em auto;
 	  font-size: 12pt;
-	  margin: 0 0 0 8px;
 	  font-weight: 700;
 	}
 	
@@ -27,7 +25,7 @@
 		width: 12%;
 		padding: .75em 0;
 		text-decoration: none;
-		text-align: center;
+		text-align: left;
 		color: #D2D6D9;
 	}
 	
@@ -35,11 +33,10 @@
 		position: absolute;
 		left: 0;
 		bottom: 0px;
-		width: 8%;
+		width: 9%;
 		height: 2px;
-		background: #4d4f53;
+		background: #556372;
 		transition: all .3s ease-in-out;
-		margin-left: 2%;
 	}
 	
 	#boardList a:nth-child(1).boardList_iscurrent ~ .boardList_underline {
@@ -48,23 +45,12 @@
 	#boardList a:nth-child(2).boardList_iscurrent ~ .boardList_underline {
 	  left: 12%; /* a태그의 width랑 margin-left랑 합친거 */
 	}
-	#boardList a:nth-child(3).boardList_iscurrent ~ .boardList_underline {
-	  left: 24%; /* width랑 margin-left랑 합친거 */
-	}
-	#boardList a:nth-child(4).boardList_iscurrent ~ .boardList_underline {
-	  left: 36%; /* width랑 margin-left랑 합친거 */
-	}
 	#boardList a:nth-child(1):hover ~ .boardList_underline {
 	  left: 0;
 	}
 	#boardList a:nth-child(2):hover ~ .boardList_underline {
 	  left: 12%;
-	}
-	#boardList a:nth-child(3):hover ~ .boardList_underline {
-	  left: 24%;
-	}
-	#boardList a:nth-child(4):hover ~ .boardList_underline {
-	  left: 36%;
+	  width: 11%;
 	}
 	
 	#today{
@@ -166,18 +152,14 @@
 	}
 	
 	#board{
-		margin-top : 20px;
-		margin-left : 70px;
+		margin-top : 10px;
 		font-size : 12pt;
-		height: 400px;
-		border: 1px solid rgba(0,0,0,0.1);
-		box-shadow: 5px 5px 5px #F3F4F6;
-		border-radius : 10px;
-		padding-top: 10px;
+		margin-left: 5%;
+		width: 90%;
 	}
 	
 	.boardTr:hover{
-		background-color: #F2F2F2;
+		background-color: rgba(249,250,250);
 		cursor: pointer;
 		border-radius: 10%;	
 	}
@@ -340,4 +322,142 @@
   .fc-daygrid-day-number{
   	color: #4d4f53 !important;
   }
+  
+  
+  .mainheader{
+  	height: 35px;
+  	background-color: rgba(249,250,250);
+  	border-bottom: solid 1px rgba(240,240,240);
+  	color: #8d96a1;
+  	font-size: 10pt;
+  	display: flex;
+  }
+  
+  .mainheader > div{
+  	margin: auto 0 auto 5%;
+  }
+  
+  
+  .fc-header-toolbar{
+  	height: 5px !important;
+  }
+  
+  .Ad-c {
+  	color: #556372;
+  	font-size: 11pt;
+  }
+ 	
+ 	.At-container{
+ 	}
+	 
+  .Adtable {
+	/* 
+	border-collapse: collapse;
+	border-radius: 5px;
+	border-style: hidden;
+	box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+	*/
+	color: #556372;
+	font-size: 10pt;
+  }
+  
+  .Adtable td {
+  	padding: 2px 5px 2px 0;
+  }
+  
+  .ad-sumheader{
+  	font-size: 10pt;
+  	font-weight: 800;
+  }
+  
+  .main-iconindex{
+  	margin-top: 3px;
+  	border: solid 1px rgba(220,220,220);
+  	border-radius: 15px;
+  	height: 45px; width: 45px;
+  }
+  
+  .todayAd{
+  	padding: 13px 0;
+  }
+  
+  .todayAd > div {
+  	display:inline-block;
+  
+  }
+  
+  
+ .main-iconindex img{
+  	position: relative;
+    left: 9px;
+    top: 9px;
+  }
+  
+  .AdtimeSub{
+  	background-color: #DCF2F0;
+    font-size: 8pt;
+    color: #025951;
+    padding: 1px 5px;
+    border-radius: 5px;
+    font-weight: 600;
+  }
+  
+  .todayAd > div:last-child{
+  	float: right;
+    margin-right: 30px;
+    margin-top: 15px;
+    color: rgba(210,210,210);
+  }
+  
+  #goav{
+	background-color: rgba(245,245,245);
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 9pt;
+    font-weight: 500;
+    color: #8d96a1;
+  }
+  
+  #goav:hover{
+  	background-color: rgba(240,240,240);
+  }
+  
+  
+  .headerMore{
+	background-color: transparent;
+    border: none;
+    color: #8d96a1;
+    border-radius: 5px;
+    margin-right: 30px;
+  }
+  
+  .headerMore:hover{
+  	background-color: rgba(240,240,240);
+  }
+  
+  .apContent{
+  	display: flex;
+  }
+  
+  .apContent > *{
+  	margin: auto;
+  }
+  
+  .apContent > span:first-child{
+  	font-weight: 600; font-size: 10pt; color: #4d4d4d; padding-right: 20px;
+  }
+  
+  .apContent > span:nth-child(2){
+  	font-weight: 600; font-size: 8pt; color: #8d96a1;
+  }
+  
+  
+  .apContent > div {
+  	display: inline-block; float: right;
+  }
+  
+  
+  
+  
   

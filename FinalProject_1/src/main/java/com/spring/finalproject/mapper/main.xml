@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main">
+	
+	<select id="getTodayStarttime" parameterType="String" resultType="com.spring.yeeun.model.AttendanceVO">
+		select fk_employee_no, adcatgo, to_char(starttime,'hh24:mi') as starttime, to_char(endtime,'hh24:mi') as endtime
+		from tbl_attendance
+		where fk_employee_no = #{employee_no} and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
+		order by starttime
+	</select>
+	
+	<select id="getTodayWorkingtime" parameterType="String" resultType="String">
+		select sum((endtime - starttime)*24*60)
+		from tbl_attendance 
+		where fk_employee_no = #{employee_no} and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
+		group by (fk_employee_no,to_char(sysdate,'yyyy-mm-dd'))
+	</select>
+	
+	<select id="getWeekWorkingTime" parameterType="String" resultType="String">
+		select sum((endtime - starttime)*24*60)
+		from tbl_attendance 
+		where fk_employee_no = #{employee_no} and starttime between TRUNC(sysdate,'iw') and TRUNC(sysdate,'iw')+6
+		group by (fk_employee_no,to_char(sysdate,'yyyy-mm-dd'))
+	</select>
+
+	
+	<resultMap type="HashMap" id="getAvMy_Map">
+		<result property="title" column="title" javaType="String"/>
+		<result property="writeday" column="writeday" javaType="String"/>
+		<result property="profile_systemfilename" column="profile_systemfilename" javaType="String"/>
+		<result property="name_kr" column="name_kr" javaType="String"/>
+	</resultMap>
+	<select id="getAvMy" parameterType="String" resultMap="getAvMy_Map">
+		select title, writeday, profile_systemfilename, name_kr
+		from
+		(
+			select row_number() over(order by writeday desc) as rno, fk_empno, profile_systemfilename, substr(title,0,8)||'..' as title, round((sysdate - writeday)*24*60*2) as writeday, A.name_kr
+			from tbl_approval A
+			join tbl_approval_sign aps
+			on A.ano = aps.fk_ano
+			join tbl_employee
+			on employee_no = A.fk_empno
+			where signdate is null and fk_sign_empno = #{employee_no}
+		)
+		where rno in (1,2)
+	</select>
+	
+</mapper>
+
