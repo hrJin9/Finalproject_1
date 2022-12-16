@@ -110,16 +110,17 @@
 	input#joinUserName:focus{
 		outline: none;
 	}
-	
+	  
 	span.plusUser{
 			float:left; 
-			background-color:#737373; 
+			background-color:#5f98f6;  
 			color:white;
-			border-radius: 10%;
+			border-radius: 32px; 
 			padding: 8px;
 			margin: 3px;
 			transition: .8s;
 			margin-top: 6px;
+			font-size: smaller; 
 	}
 	
 	span.plusUser > i {
@@ -339,16 +340,16 @@
 					dataType:"json",
 					success : function(json){
 						var joinUserArr = [];
-				
+				 
 				//		console.log("이:"+json.length);
 						if(json.length > 0){
 							 
-							$.each(json, function(index,item){
-								var name = item.name;
-								if(name.includes(joinUserName)){ // name 이라는 문자열에 joinUserName 라는 문자열이 포함된 경우라면 true , 
+							$.each(json, function(index,item){  
+								var name_kr = item.name_kr;
+								if(name_kr.includes(joinUserName)){ // name 이라는 문자열에 joinUserName 라는 문자열이 포함된 경우라면 true , 
 									                             // name 이라는 문자열에 joinUserName 라는 문자열이 포함되지 않은 경우라면 false 
-								   joinUserArr.push(name+"("+item.userid+")");
-								}
+								   joinUserArr.push(name_kr+"("+item.position+", "+item.role+")");
+								} 
 							});
 							
 							$("input#joinUserName").autocomplete({  // 참조 https://jqueryui.com/autocomplete/#default
@@ -548,13 +549,13 @@
 			
 			
 			<tr>
-				<th>캘린더선택</th>
+				<th>캘린더선택</th> 
 				<td> 
 					<select class="calType schedule" name="fk_lgcatgono">
 					<c:choose> 
 						<%-- 일정등록시 사내캘린더 등록은 loginuser.gradelevel =='10' 인 사용자만 등록이 가능하도록 한다. --%> 
-						<c:when test="${sessionScope.loginuser.employee_no}">  
-							<option value="">선택하세요</option>
+						<c:when test="${sessionScope.loginuser.position == '과장'}">  
+							<option value="">선택하세요</option> 
 							<option value="1">내 캘린더</option>
 							<option value="2">사내 캘린더</option>
 						</c:when> 

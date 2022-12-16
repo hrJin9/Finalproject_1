@@ -97,16 +97,17 @@
 	input#joinUserName:focus{
 		outline: none;
 	}
-	
+	 
 	span.plusUser{
 			float:left; 
-			background-color:#737373; 
+			background-color:#5f98f6;  
 			color:white;
-			border-radius: 10%;
+			border-radius: 32px; 
 			padding: 8px;
 			margin: 3px;
 			transition: .8s;
 			margin-top: 6px;
+			font-size: smaller; 
 	}
 	
 	span.plusUser > i {
@@ -231,7 +232,7 @@
 		// 공유자 추가하기
 		$("input#joinUserName").bind("keyup",function(){
 				var joinUserName = $(this).val();
-			//	console.log("확인용 joinUserName : " + joinUserName);
+			//	console.log("확인용 joinUserName : " + joinUserName); 
 				$.ajax({
 					url:"<%= ctxPath%>/schedule/insertSchedule/searchJoinUserList.up",
 					data:{"joinUserName":joinUserName},
@@ -240,18 +241,18 @@
 						var joinUserArr = [];
 				    
 					//  input태그 공유자입력란에 "이" 를 입력해본 결과를 json.length 값이 얼마 나오는지 알아본다. 
-					//	console.log(json.length);
+					//	console.log(json.length); 
 					
-						if(json.length > 0){
+						if(json.length > 0){ 
 							
-							$.each(json, function(index,item){
-								var name = item.name;
-								if(name.includes(joinUserName)){ // name 이라는 문자열에 joinUserName 라는 문자열이 포함된 경우라면 true , 
+							$.each(json, function(index,item){ 
+								var name_kr = item.name_kr;
+								if(name_kr.includes(joinUserName)){ // name 이라는 문자열에 joinUserName 라는 문자열이 포함된 경우라면 true , 
 									                             // name 이라는 문자열에 joinUserName 라는 문자열이 포함되지 않은 경우라면 false 
-								   joinUserArr.push(name+"("+item.employee_no+")"); 
+								   joinUserArr.push(name_kr+"("+item.position+", "+item.role+")");    
 								}
-							});
-							
+							}); 
+							 
 							$("input#joinUserName").autocomplete({  // 참조 https://jqueryui.com/autocomplete/#default
 								source:joinUserArr,
 								select: function(event, ui) {       // 자동완성 되어 나온 공유자이름을 마우스로 클릭할 경우 
@@ -365,7 +366,7 @@
 			var joinUserArr = new Array();
 			
 			plusUser_elm.forEach(function(item,index,array){
-			//	console.log(item.innerText.trim());
+// 				console.log(item.innerText.trim());
 				/*
 					이순신(leess) 
 					아이유1(iyou1) 
@@ -374,8 +375,8 @@
 				joinUserArr.push(item.innerText.trim());
 			});
 			
-			var joinuser = joinUserArr.join(",");
-		//	console.log("공유자 => " + joinuser);
+			var joinuser = joinUserArr.join(",");  
+// 				console.log("공유자 => " + joinuser);
 			// 이순신(leess),아이유1(iyou1),설현(seolh) 
 			
 			$("input[name=joinuser]").val(joinuser);
@@ -461,10 +462,10 @@
 							<option value="">선택하세요</option>
 							<option value="1">내 캘린더</option>
 							<option value="2">사내 캘린더</option>
-						</c:when>
+						</c:when> 
 					--%>  
 					<%-- 일정등록시 사내캘린더 등록은 loginuser.gradelevel =='10' 인 사용자만 등록이 가능하도록 한다. --%>  
-						<c:when test="${loginuser.manager_no =='10'}">  
+						<c:when test="${sessionScope.loginuser.position == '과장'}">  
 							<option value="">선택하세요</option>
 							<option value="1">내일정</option> 
 							<option value="2">부서일정</option> 

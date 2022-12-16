@@ -186,7 +186,9 @@ public class ScheduleController {
 			for(EmployeeVO mvo : joinUserList) {
 				JSONObject jsObj = new JSONObject();
 				jsObj.put("employee_no", mvo.getEmployee_no());
-				jsObj.put("name_kr", mvo.getName_kr());   
+				jsObj.put("name_kr", mvo.getName_kr());    
+				jsObj.put("position", mvo.getPosition());   
+				jsObj.put("role", mvo.getRole());    
 				
 				jsonArr.put(jsObj);
 			}
@@ -420,7 +422,7 @@ public class ScheduleController {
 			
 		return jsObj.toString();
 	}
-	
+	 
 	 
 	 
 	// === (사내캘린더 또는 내캘린더)속의 소분류 카테고리인 서브캘린더 수정하기 === 
