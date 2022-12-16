@@ -1543,11 +1543,56 @@ where rno between 1 and 10
 select * from TBL_MEETINGROOM;
 
 
+select * from tbl_attendance
+
+-- 오늘의 출근 시간 알아오기
+select fk_employee_no, adcatgo, to_char(starttime,'hh24:mi') as starttime, to_char(endtime,'hh24:mi') as endtime
+from tbl_attendance
+where fk_employee_no = 100006 and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
+order by starttime
 
 
-desc tbl_meetingroom
+-- 오늘 총근무시간 알아오기
+select sum((endtime - starttime)*24*60)
+from tbl_attendance 
+where fk_employee_no = 100006 and to_char(starttime,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
+group by (fk_employee_no,to_char(sysdate,'yyyy-mm-dd'))
 
 
 
+-- 이번주 총근무시간 알아오기
+select sum((endtime - starttime)*24*60)
+from tbl_attendance 
+where fk_employee_no = 100006 and starttime between TRUNC(sysdate,'iw') and TRUNC(sysdate,'iw')+6
+group by (fk_employee_no,to_char(sysdate,'yyyy-mm-dd'))
 
 
+
+select * from tbl_approval
+
+select 
+from
+
+
+-- 결재요청온 것 처리하기
+select rno, title, writeday, profile_systemfilename, name_kr
+from
+(
+select row_number() over(order by writeday desc) as rno, fk_empno, profile_systemfilename, substr(title,0,8)||'..' as title, round((sysdate - writeday)*24*60*2) as writeday, A.name_kr
+from tbl_approval A
+join tbl_approval_sign aps
+on A.ano = aps.fk_ano
+join tbl_employee
+on employee_no = A.fk_empno
+where signdate is null and fk_sign_empno = 100021
+)
+where rno < 3
+
+select * from tbl_approval
+
+
+select row_number() over(order by writeday desc) as rno, substr(title,0,8)||'..' as title, writeday, name_kr
+from tbl_approval
+join tbl_approval_sign
+on ano = fk_ano
+where signdate is null and fk_sign_empno = 100021

@@ -22,9 +22,8 @@
 		display: block;
 		width: 17%;
 		padding: .75em 0;
-		color: #333;
 		text-decoration: none;
-		color: #D2D6D9;
+		color: #4d4f53;
 	}
 	
 	
@@ -46,7 +45,9 @@
 
 <nav id="list" class="margin-container">
 	<a id="main" href="<%= request.getContextPath()%>/" class="header-nonsub">내 피드</a>
+	<%-- 
 	<a id="main_todo" href="<%= request.getContextPath()%>/main_todo.up" class="header-nonsub">요청사항</a>
+	 --%>
 	<div class="list_underline"></div>
 </nav>
 <hr class="HRhr" style="margin-top: 0px; margin-bottom: 0;"/>

@@ -16,9 +16,7 @@
 	  position: relative;
 	  display: flex;
 	  width: 640px;
-	  margin: 4em auto;
 	  font-size: 12pt;
-	  margin: 0 0 0 8px;
 	  font-weight: 700;
 	}
 	
@@ -27,7 +25,7 @@
 		width: 12%;
 		padding: .75em 0;
 		text-decoration: none;
-		text-align: center;
+		text-align: left;
 		color: #D2D6D9;
 	}
 	
@@ -35,11 +33,10 @@
 		position: absolute;
 		left: 0;
 		bottom: 0px;
-		width: 8%;
+		width: 9%;
 		height: 2px;
-		background: #4285f4;
+		background: #556372;
 		transition: all .3s ease-in-out;
-		margin-left: 2%;
 	}
 	
 	#boardList a:nth-child(1).boardList_iscurrent ~ .boardList_underline {
@@ -48,23 +45,12 @@
 	#boardList a:nth-child(2).boardList_iscurrent ~ .boardList_underline {
 	  left: 12%; /* a태그의 width랑 margin-left랑 합친거 */
 	}
-	#boardList a:nth-child(3).boardList_iscurrent ~ .boardList_underline {
-	  left: 24%; /* width랑 margin-left랑 합친거 */
-	}
-	#boardList a:nth-child(4).boardList_iscurrent ~ .boardList_underline {
-	  left: 36%; /* width랑 margin-left랑 합친거 */
-	}
 	#boardList a:nth-child(1):hover ~ .boardList_underline {
 	  left: 0;
 	}
 	#boardList a:nth-child(2):hover ~ .boardList_underline {
 	  left: 12%;
-	}
-	#boardList a:nth-child(3):hover ~ .boardList_underline {
-	  left: 24%;
-	}
-	#boardList a:nth-child(4):hover ~ .boardList_underline {
-	  left: 36%;
+	  width: 11%;
 	}
 	
 	#today{
@@ -166,10 +152,10 @@
 	}
 	
 	#board{
-		margin-top : 20px;
-		margin-left : 70px;
+		margin-top : 10px;
 		font-size : 12pt;
-		height: 400px;
+		margin-left: 5%;
+		width: 90%;
 	}
 	
 	.boardTr:hover{
@@ -372,15 +358,16 @@
 	box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
 	*/
 	color: #556372;
+	font-size: 10pt;
   }
   
   .Adtable td {
-  	padding: 2px 10px 2px 0;
+  	padding: 2px 5px 2px 0;
   }
   
   .ad-sumheader{
-  	font-size: 11pt;
-  	font-weight: 700;
+  	font-size: 10pt;
+  	font-weight: 800;
   }
   
   .main-iconindex{
@@ -391,7 +378,7 @@
   }
   
   .todayAd{
-  	margin-top: 2%;
+  	padding: 13px 0;
   }
   
   .todayAd > div {
@@ -405,4 +392,72 @@
     left: 9px;
     top: 9px;
   }
+  
+  .AdtimeSub{
+  	background-color: #DCF2F0;
+    font-size: 8pt;
+    color: #025951;
+    padding: 1px 5px;
+    border-radius: 5px;
+    font-weight: 600;
+  }
+  
+  .todayAd > div:last-child{
+  	float: right;
+    margin-right: 30px;
+    margin-top: 15px;
+    color: rgba(210,210,210);
+  }
+  
+  #goav{
+	background-color: rgba(245,245,245);
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 9pt;
+    font-weight: 500;
+    color: #8d96a1;
+  }
+  
+  #goav:hover{
+  	background-color: rgba(240,240,240);
+  }
+  
+  
+  .headerMore{
+	background-color: transparent;
+    border: none;
+    color: #8d96a1;
+    border-radius: 5px;
+    margin-right: 30px;
+  }
+  
+  .headerMore:hover{
+  	background-color: rgba(240,240,240);
+  }
+  
+  .apContent{
+  	display: flex;
+  }
+  
+  .apContent > *{
+  	margin: auto;
+  }
+  
+  .apContent > span:first-child{
+  	font-weight: 600; font-size: 10pt; color: #4d4d4d; padding-right: 20px;
+  }
+  
+  .apContent > span:nth-child(2){
+  	font-weight: 600; font-size: 8pt; color: #8d96a1;
+  }
+  
+  
+  .apContent > div {
+  	display: inline-block; float: right;
+  }
+  
+  
+  
+  
   
