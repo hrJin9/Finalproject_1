@@ -323,23 +323,23 @@
 		update tbl_approval set status = 0 
 		where ano = #{ano}
 	</update>
-	<update id="updatecancelmyapproval" parameterType="String">
+	<update id="updatecancelmyapproval" parameterType="com.spring.jieun.model.ApprovalVO">
 		update tbl_approval set final_signyn = 3, final_signdate = sysdate 
 		where ano = #{ano}
 	</update>
-	<update id="updaterequestedapprove" parameterType="HashMap">
-		update tbl_approval_sign set signyn = 1, signdate = sysdate
-		where fk_ano = #{ano} and fk_sign_empno = #{employee_no} 
+	<update id="updaterequestedapprove" parameterType="com.spring.jieun.model.ApprovalVO">
+		update tbl_approval_sign set signyn = 1, signdate = sysdate, feedback = #{feedback}
+		where fk_ano = #{ano} and fk_sign_empno = #{fk_sign_empno} 
 	</update>
-	<update id="updateapprovedoc" parameterType="String">
+	<update id="updateapprovedoc" parameterType="com.spring.jieun.model.ApprovalVO">
 		update tbl_approval set final_signyn = 1, final_signdate = sysdate
 		where ano = #{ano} 
 	</update>
 	<!-- 내가 해당 문서에 대해 마지막 결재자인지 확인하기 -->
-	<select id="checkmymaxstep" parameterType="HashMap" resultType="String">
+	<select id="checkmymaxstep" parameterType="com.spring.jieun.model.ApprovalVO" resultType="String">
 		select fk_ano
 		from tbl_approval_sign
-		where fk_sign_empno =#{employee_no}
+		where fk_sign_empno =#{fk_sign_empno}
 		and (signstep, fk_ano) = (select max(signstep) as maxsignstep, fk_ano
 		                            from tbl_approval_sign
 		                            where fk_ano =#{ano}
@@ -348,11 +348,11 @@
 	
 	
 	<!-- 문서 반려하기 -->
-	<update id="updaterequestedreject" parameterType="HashMap">
-		update tbl_approval_sign set signyn = 2, signdate = sysdate
+	<update id="updaterequestedreject" parameterType="com.spring.jieun.model.ApprovalVO">
+		update tbl_approval_sign set signyn = 2, signdate = sysdate, feedback = #{feedback}
 		where fk_ano = #{ano} and fk_sign_empno = #{employee_no} 
 	</update>
-	<update id="updateapprovalreject" parameterType="HashMap">
+	<update id="updateapprovalreject" parameterType="com.spring.jieun.model.ApprovalVO">
 		update tbl_approval set final_signyn = 2, final_signdate = sysdate
 		where ano = #{ano} 
 	</update>

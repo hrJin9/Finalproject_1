@@ -54,14 +54,50 @@
 	
 	<style>
 		body{font-family: 'Pretendard'; font-weight: 500; }
+		.cursno:hover{
+			background-color: transparent;
+		}
+		.hi-container td{
+			 padding: 10px 15px;
+			color: #797979;
+    		font-size: 10pt;
+			 /* font-size: 8pt; */
+		}
+		.hi-container tr:nth-child(1)~ :hover{
+			 background-color:#f5f5f5;
+			 cursor: pointer;
+			 /* font-size: 8pt;  */
+		}
+		.hi-container td:last-child, .hi-container td:last-child > i {
+		    color: #cdcdcd;
+		    font-size: 8pt;
+		    /* display: none; */
+		}
+		.hi-container th{
+			 padding: 10px 15px;
+		}
+		#alldel{
+			border-radius: 5px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+		#alldel :hover{
+			background-color:#f5f5f5;
+		}
 	</style>
 	
 	<script>
 		$(document).ready(function(){
-			
+			$("td:last-child").hide();
 			
 			
 			$(".ss-table tr").hover(function(){
+				$(this).find("td:last-child").show();
+			}, function(){
+				$(this).find("td:last-child").hide();
+			});
+			
+			$(".hi-container tr").hover(function(){
 				$(this).find("td:last-child").show();
 			}, function(){
 				$(this).find("td:last-child").hide();
@@ -113,6 +149,23 @@
 				<td><i class="icon icon-pencil2"></i></td>
 				<td>게시판 검색</td>
 				<td><i class="fas fa-angle-right"></i></td>
+			</tr>
+			<!-- <tr class="cursno">
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr> -->
+		</table>
+		<!-- <br> -->
+		<table class="hi-container mt-3">			
+			<th style="font-weight: 500;font-size:5pt;cursor: default;"colspan="3" height="15px">
+				<span style="color: rgb(85, 99, 114);float: left;cursor: default;">최근 검색</span>
+				<span id="alldel"style="float: right;color: #d4d4d4;cursor: pointer;">전체 삭제</span>
+			</th>
+			<tr>
+				<td width="5%"><i style="color: #cdcdcd;"class="icon icon-search"></i></td>
+				<td width="90%">게시판 검색</td>
+				<td width="5%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M12 13.2728L17.0205 18.2933L18.2932 17.0205L13.2728 12L18.2932 6.97954L17.0205 5.70675L12 10.7272L6.97954 5.70675L5.70675 6.97954L10.7272 12L5.70675 17.0205L6.97954 18.2932L12 13.2728Z" fill="#cdd2d6"></path></svg></td>
 			</tr>
 		</table>
 	</div>

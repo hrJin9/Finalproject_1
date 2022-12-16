@@ -11,106 +11,197 @@
 		border-right: solid 1px rgba(235,235,235);
 	}
 </style>
-
+<!-- sockJS -->
+<%-- <script type="text/javascript" src="<%= request.getContextPath()%>/resources/js/sockjs-0.3.min.js"></script> --%>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript">
 
-	$(document).ready(function(){
-		
-		//사이드바 체크여부검사
-		if(localStorage.getItem("sidebar_yn") != null){
+//전역변수 설정
+var socket  = null;
+
+$(document).ready(function(){
+	
+	//사이드바 체크여부검사
+	if(localStorage.getItem("sidebar_yn") != null){
+		$("#side-expandcx").prop("checked",true);
+		$("#menuicon").prop("checked",true);
+		$("div#mycontent").css({'width':'88%','margin':'0 auto'});
+		$(".sidebar *").css({"transition":"all 0s !important"});
+		$("#side-expand").css({"background-color":"#4285f4"});
+	}
+   
+	
+	$(".profile2").click(function(){  // 내프로필 클릭시
+		if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
+		  $(".myprofile").fadeIn(100);
+		  $(".news").fadeOut(100);
+		} else {
+		  $(".myprofile").fadeOut(100);
+		}
+	});
+	
+	$("li#newsIcon").click(function(){ // 새로운 소식 클릭시
+		if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
+		  $(".news").fadeIn(100);  // 보이기
+		  $(".myprofile").fadeOut(100);  // 숨기기
+		} else {
+		  $(".news").fadeOut(100);
+		}
+	});
+
+     
+	// 비밀번호 변경창 닫기 버튼 클릭 시
+	$("button.pwdChangeClose").click(function() {
+	   const iframe_pwdChange = document.getElementById("iframe_pwdChange"); // 대상 아이프레임 선택
+	   const iframe_window = iframe_pwdChange.contentWindow;
+	
+	   iframe_window.func_form_reset_empty();
+	});
+     
+     
+	<%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
+	$("input#menuicon").change(function(){
+	    if($("#menuicon").is(":checked")){
+	        $("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
+	    }else{
+	        $("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
+	    }
+	});
+     
+     
+	// 서치모달 닫힐 때 초기화
+	$('#sideSearch').on('hidden.bs.modal', function () {
+		 $('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up');
+		 $("#se-searchicon").removeClass("fas"); $("#se-searchicon").removeClass("fa-chevron-left");
+		 $("#se-searchicon").addClass("icon"); $("#se-searchicon").addClass("icon-search");
+	});
+     
+       
+	//넓게보기 클릭 이벤트
+	$("#side-expand-a").click(function(){
+	
+		if($("#side-expandcx").is(":checked")){
+			$("#side-expandcx").prop("checked",false);
+			$("#menuicon").prop("checked",false);
+			$("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
+			$("#side-expand").css({"background-color":"","transition":"all 0.5s"});
+			localStorage.removeItem("sidebar_yn");
+		} else {
 			$("#side-expandcx").prop("checked",true);
 			$("#menuicon").prop("checked",true);
-			$("div#mycontent").css({'width':'88%','margin':'0 auto'});
-			$(".sidebar *").css({"transition":"all 0s !important"});
-			$("#side-expand").css({"background-color":"#4285f4"});
+			$("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
+			$("#side-expand").css({"background-color":"#4285f4","transition":"all 0.5s"});
+			localStorage.setItem("sidebar_yn","1");
 		}
-	   
-		
-		$(".profile2").click(function(){  // 내프로필 클릭시
-			if($(".myprofile").css('display') == 'none' || $(".myprofile").css('display') == '') {
-			  $(".myprofile").fadeIn(100);
-			  $(".news").fadeOut(100);
-			} else {
-			  $(".myprofile").fadeOut(100);
+       	
+       	
+       	
+       	<%-- 
+       	//입력값을 session에 저장하기
+   		$.ajax({
+   			url: "<%=ctxPath%>/sbcheck.up",
+   			type:"post",
+   			data:{"sidebar_yn":sidebar_yn},
+   			dataType:"json",
+   			success:function(json){
+   			},
+   			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 			}
-		});
-		
-		$("li#newsIcon").click(function(){ // 새로운 소식 클릭시
-			if($(".news").css('display') == 'none' || $(".news").css('display') == '') {
-			  $(".news").fadeIn(100);  // 보이기
-			  $(".myprofile").fadeOut(100);  // 숨기기
-			} else {
-			  $(".news").fadeOut(100);
-			}
-		});
-
-      
-		// 비밀번호 변경창 닫기 버튼 클릭 시
-		$("button.pwdChangeClose").click(function() {
-		   const iframe_pwdChange = document.getElementById("iframe_pwdChange"); // 대상 아이프레임 선택
-		   const iframe_window = iframe_pwdChange.contentWindow;
-		
-		   iframe_window.func_form_reset_empty();
-		});
-      
-      
-		<%-- 메뉴창 커질때 컨텐트 내용물 사이즈 줄어들게 하기 --%>
-		$("input#menuicon").change(function(){
-		    if($("#menuicon").is(":checked")){
-		        $("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
-		    }else{
-		        $("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
-		    }
-		});
-      
-      
-		// 서치모달 닫힐 때 초기화
-		$('#sideSearch').on('hidden.bs.modal', function () {
-			 $('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up');
-			 $("#se-searchicon").removeClass("fas"); $("#se-searchicon").removeClass("fa-chevron-left");
-			 $("#se-searchicon").addClass("icon"); $("#se-searchicon").addClass("icon-search");
-		});
-      
-        
-		//넓게보기 클릭 이벤트
-		$("#side-expand-a").click(function(){
-		
-			if($("#side-expandcx").is(":checked")){
-				$("#side-expandcx").prop("checked",false);
-				$("#menuicon").prop("checked",false);
-				$("div#mycontent").css({'width':'94.6%','transition':'all 0.5s'});
-				$("#side-expand").css({"background-color":"","transition":"all 0.5s"});
-				localStorage.removeItem("sidebar_yn");
-			} else {
-				$("#side-expandcx").prop("checked",true);
-				$("#menuicon").prop("checked",true);
-				$("div#mycontent").css({'transition':'all 0.5s','width':'88%','margin':'0 auto'});
-				$("#side-expand").css({"background-color":"#4285f4","transition":"all 0.5s"});
-				localStorage.setItem("sidebar_yn","1");
-			}
-        	
-        	
-        	
-        	<%-- 
-        	//입력값을 session에 저장하기
-    		$.ajax({
-    			url: "<%=ctxPath%>/sbcheck.up",
-    			type:"post",
-    			data:{"sidebar_yn":sidebar_yn},
-    			dataType:"json",
-    			success:function(json){
-    			},
-    			error: function(request, status, error){
-					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				}
-    			
-    		});//end of ajax
-    		 --%>
-		});
-        
-        
-        
+   			
+   		});//end of ajax
+   		 --%>
+	});
+       
+       
+	
+	 /* === 실시간알림 받아오기 === */
+	 connectWs();
+	 setTimeout(function(){connectWs();} , 1000); 
+	 // 데이터를 전달 받았을때 
+		 //sock.onmessage = onMessage; // toast 생성
+ 
 	});// end of $(document).ready(function(){})---------------
+	 
+	  function connectWs(){
+		  /* sock = new SockJS("http:localhost:9090/thumbsup/alarm"); */
+		  const url = window.location.host;// 웹브라우저의 주소창의 포트까지 가져옴 
+//		alert("url : " + url);
+		// url : 172.30.1.22:9090
+		
+		const pathname = window.location.pathname; // 최초 '/' 부터 오른쪽에 있는 모든 경로
+//		alert("pathname : " + pathname);
+		// pathname : /board/chatting/multichat.action
+		
+		const appCtx = pathname.substring(0, pathname.lastIndexOf("/") );
+//		alert("appCtx : " + appCtx);
+		// appCtx : /board/chatting
+
+		
+		const root = url + appCtx;
+//		alert("결과값 root : " + root);
+		//  결과값 root : 172.30.1.22:9090/board/chatting
+		
+		//const wsUrl = "http://"+ root + "/alarm.up";
+//		alert("결과값 wsUrl : " + wsUrl);
+//		ws://localhost:9090/thumbsup/alarm.up
+		    const wsUrl = "http://localhost:9090/thumbsup/echo.up";
+		   sock = new SockJS(wsUrl); 
+		   //sock = new SockJS( "<c:url value="/echo"/>"); 
+		
+/* 		   sock = new SockJS("<c:url value="/alarm.up"/>");  */
+		   	socket = sock;
+			
+		   	//커넥션이 연결되었을때 서버 호출
+		   	sock.onopen = function() {
+		           console.log('info: connection opened.');
+		     };
+
+		     //메세지를 보냈을때 호출
+		    //socket.addEventListener('message', function (evt) {
+		    socket.onmessage = function(evt){
+			 	var data = evt.data;
+			   	console.log("ReceivMessage : " + data + "\n");
+
+			   	/* $.ajax({ // 알림 갯수 알아오는 ajax
+					url : '/mentor/member/countAlarm',
+					type : 'POST',
+					dataType: 'text',
+					success : function(data) {
+						if(data == '0'){
+						}else{
+							$('#alarmCountSpan').addClass('bell-badge-danger bell-badge')
+							$('#alarmCountSpan').text(data);
+						}
+					},
+					error : function(err){
+						alert('err');
+					}
+			   	}); */
+
+			   	// 모달 알림
+			   	var toastTop = app.toast.create({
+		            text: "알림 : " + data + "\n",
+		            position: 'top',
+		            closeButton: true,
+		          });
+		          toastTop.open();
+//		    });
+		    };
+		    
+		    
+			//서버가 끊겼을때 호출
+		    sock.onclose = function() {
+		      	console.log('connect close');
+		      	
+		    };
+			//에러가 발생했을때 호출
+		    sock.onerror = function (err) {console.log('Errors : ' , err);};
+
+		   }
+	
+	
+	
 	
 	$(document).mouseup(function(e){
 		if( !(($(".news").has(e.target).length))){
@@ -153,6 +244,7 @@
    
 </script>
 
+ <div id="app" class="app" name="app" ></div>
 <input type="checkbox" id="menuicon">
   <label for="menuicon">
     <span></span>
@@ -160,7 +252,6 @@
     <span></span>
   </label>
   <div class="sidebar" style="z-index: 100;">
-
     <div class="profile profile2" href="#" style="margin-top: 29px; margin-bottom:30px;">
       	<c:if test="${empty sessionScope.loginuser.profile_systemfilename }">
 	      <span class="pic sbpics">
@@ -202,7 +293,7 @@
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_memberList.up'"><a><span class="icon icon-user-tie"></span><span class="menu-text">구성원관리</span></a></li>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_payroll.up'"><a><span class="icon icon-magic-wand"></span><span class="menu-text">급여정산</span></a></li>
 	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_attendanceList_holding.up'"><a><span class="icon icon-briefcase"></span><span class="menu-text">근태관리</span></a></li>
-     		</div>
+     	</div>
       </ul> 
     </div>
   </div>
@@ -234,7 +325,7 @@
             <span class="newred2"></span>
             <span class="icon icon-bell" style="color: #ffffff; position: absolute; left: 0px; bottom: 9px; font-size: 9pt;"></span>
          </span>
-         <span style="padding-left:15px; position:relative; top:1px;">
+         <span id="news" style="padding-left:15px; position:relative; top:1px;">
             <span style="font-size:8pt; font-weight:bold; color:#595959; display: inline-block;">'비품신청'의 승인이 완료되었어요.<br>
             <span style="font-size:6pt; font-weight:bold; color: #a6a6a6;">7일 전</span></span>
          </span>

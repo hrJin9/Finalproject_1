@@ -46,14 +46,14 @@ public interface InterApprovalDAO {
 	List<ApprovalVO> requestedtodoListPaging(Map<String, String> paraMap);
 
 	
-	int updaterequestedapprove(Map<String, String> paraMap);
+	int updaterequestedapprove(ApprovalVO apvo);
 
-	String checkmymaxstep(Map<String, String> paraMap);
+	String checkmymaxstep(ApprovalVO apvo);
 
-	int updateapprovedoc(String ano);
+	int updateapprovedoc(ApprovalVO apvo);
 
-	int updaterequestedreject(Map<String, String> paraMap);
-	int updateapprovalreject(Map<String, String> paraMap);
+	int updaterequestedreject(ApprovalVO apvo);
+	int updateapprovalreject(ApprovalVO apvo);
 
 	// 검색어 입력시 자동글 완성하기
 	List<String> wordSearchShow(Map<String, String> paraMap);

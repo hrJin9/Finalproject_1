@@ -2,7 +2,6 @@ package com.spring.jieun.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.hyerin.model.EmployeeVO;
 
 public class ApprovalVO {
 
@@ -35,10 +34,16 @@ public class ApprovalVO {
 	private String usedayoffcnt; 		// 피드백갯수 
 //	private String leftdayoffcnt; 		// 피드백갯수 
 	
-	
-	
-	
-	 private MultipartFile attach;
+//	private String appendchx;
+//	
+//	
+//	 public String getAppendchx() {
+//		return appendchx;
+//	}
+//	public void setAppendchx(String appendchx) {
+//		this.appendchx = appendchx;
+//	}
+	private MultipartFile attach;
 	 private String afno; 				// 결재문서 첨부파일 시퀀스 
 	private String ap_systemfilename; 	// 파일서버에 업로드되어지는 실제 제품설명서 파일명 (파일명이 중복되는 것을 피하기 위해서 중복된 파일명이 있으면 파일명뒤에 숫자가 자동적으로 붙어 생성됨)
 	 private String ap_originfilename; 	// 웹클라이언트의 웹브라우저에서 파일을 업로드 할때 올리는 제품설명서 파일명 
@@ -390,17 +395,6 @@ public class ApprovalVO {
 		this.signstep = signstep;
 	}
 	public String getSignyn() {
-		switch (this.signyn) {
-		case "0":
-			signyn = "진행중";
-			break;
-		case "1":
-			signyn = "승인";
-			break;
-		case "2":
-			signyn = "반려";
-			break;
-		}
 		return signyn;
 	}
 	public void setSignyn(String signyn) {

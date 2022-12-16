@@ -49,10 +49,8 @@ public interface InterApprovalService {
 	List<ApprovalVO> requestedtodoListPaging(Map<String, String> paraMap);
 
 	// 결재 승인으로 업댓
-	int updaterequestedapprove(Map<String, String> paraMap);
+	int updaterequestedapprove(ApprovalVO apvo);
 
-	// 결재 반려로 업댓 
-	int updaterequestedreject(Map<String, String> paraMap);
 
 	// 검색어 입력시 자동글 완성하기 (Ajax)
 	List<String> wordSearchShow(Map<String, String> paraMap);

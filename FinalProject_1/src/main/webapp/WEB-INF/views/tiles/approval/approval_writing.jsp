@@ -727,7 +727,7 @@ div#dayoff-temp, div#wort-temp{
 	         frm.submit();  
 		});
 		
-		
+		 
 		
 		/* 결재라인 호버효과 */
 		$(document).on({

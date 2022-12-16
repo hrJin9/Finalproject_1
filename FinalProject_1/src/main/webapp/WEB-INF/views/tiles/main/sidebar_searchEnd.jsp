@@ -95,9 +95,97 @@
 			});
 			
 			
+			// 구성원 정보 불러오기
+			showEmpList();
 			
+			//검색어 입력할때마다 구성원정보 가져오기
+			$(document).on('keyup',"#searchVal",function(e){
+				$("#memberAll").prop("checked",false);
+				$("input:checkbox[name='memberChx']").prop("checked",false);
+				show_noncheckmenu();
+				showEmpList();
+			});//end of keyup
+			
+			
+			// 한 줄 클릭시 해당 팀원의 상세보기로 이동
+			$(document).on("click",".mem-tr",function(e){
+				if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
+				var empno = $(this).attr("id");
+				console.log(empno);
+				location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
+			});
 			
 		});//end of ready
+		
+		//구성원을 구하는 ajax
+		function showEmpList(teamVal){
+			
+			const searchCondition = $("#searchCondition").val();
+			const searchVal = $("#searchVal").val();
+			
+			$.ajax({
+				url: "<%= ctxPath%>/showEmpList.up",
+				data: {"searchCondition":searchCondition,
+						"searchVal":searchVal,
+						"teamVal":teamVal},
+				type: "post",
+				dataType:"json",
+				success:function(json){
+					//console.log(JSON.stringify(json));
+					
+					let html = '';
+					if(json.length > 0 ){ //불러올 구성원목록이 있는 경우
+						
+						$.each(json,function(index,item){
+							
+							html += '<tr id="'+item.employee_no+'" class="mem-tr">'+
+										'<td><input type="checkbox" name="memberChx" class="'+item.department_name+'" id="'+item.name_kr+'" value="'+item.employee_no+'"/></td>'+
+										'<td>'+
+											'<div class="profile" href="#" style="padding: 1px;">';
+							if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
+								
+							} else { // 프로필사진이 없는 경우
+								html += '<span class="pic"><span>지은</span></span>';
+							}
+												
+							html +=	'<span class="my">'+
+													'<span class="name" style="font-size: 10.8pt;">'+item.name_kr+'</span><br>'+
+													'<span class="role" style="font-size: 9pt;">'+item.role+'</span>'+
+												'</span>'+
+											'</div>'+
+										'</td>'+
+										'<td>';
+							if(item.employee_no == 1){ //사장(대표)인 경우
+								html +=	'<span class="positionIcon">'+
+													'<span>'+item.position+'</span>'+
+												'</span>'+
+											'</td>'+
+										'</tr>';
+								
+							} else{
+								html +=	'<span class="positionIcon">'+
+												'<span>'+item.department_name+' '+item.team_name+'&nbsp;|&nbsp;'+item.position+'</span>'+
+											'</span>'+
+										'</td>'+
+									'</tr>';
+							}
+						});//end of each
+						
+						
+					} else {
+						html = '<tr><td width="100%" style="font-size: 11pt; border-bottom: none;">조회된 구성원이 없습니다.</td></tr>';
+					}
+					
+					$("#empList").html(html);
+					totalChx();
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});//end of ajax
+		}//end of showEmpList
+
 	</script>
 </head>
 <body>
@@ -105,7 +193,7 @@
 		<!-- 구성원 검색 -->
 		<table class="sse-member">
 			<tr class="not-active"><td colspan="3">구성원</td></tr>
-			<c:forEach var="i" begin="1" end="5">
+			<c:forEach var="dept" items="${requestScope.deptvoList}">
 				<tr>
 					<td width="10%">
 						<span class="pic"><span>지은</span></span>
@@ -117,11 +205,28 @@
 					<td width="5%"><i class="fas fa-angle-right"></i></td>
 				</tr>
 			</c:forEach>
+			
+			<div id="" class="orgmenu" style="font-size: 11pt;font-weight: 700; color: #4C4E54; margin-bottom: 5px;">전체</div>
+			<c:forEach var="dept" items="${requestScope.deptvoList}">
+				<details>
+					<summary class="summary">${dept.department_name}</summary>
+				   	<ul id="${dept.department_no}" class="deptno">
+				   		<c:forEach var="dt" items="${requestScope.dtList}">
+				   			<c:if test="${dept.department_no == dt.department_no}">
+				   				<li><a id="${dt.team_no}" class="orgmenu">${dt.team_name}</a>
+				   				<span id="cntbadge" ><span id="newCnt">${dt.total}</span></span></li>
+				   			</c:if>
+				   		</c:forEach>
+				    </ul>
+				</details>
+			</c:forEach>
+			</div>
+			
 		</table>
 		<!-- 전자결재 검색 -->
 		<table class="sse-approval">
 			<tr class="not-active"><td colspan="3">결재문서</td></tr>
-			<c:forEach var="i" begin="1" end="5">
+			<c:forEach var="i" begin="1" end="5" >
 				<tr>
 					<td width="10%">
 						<div style="display: flex; padding:6px; border-radius: 10px; border: solid 1px rgba(0,0,0,0.3); background-color: #FAF2E1;">

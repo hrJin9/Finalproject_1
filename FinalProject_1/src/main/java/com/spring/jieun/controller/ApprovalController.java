@@ -1374,45 +1374,27 @@ public class ApprovalController {
 		mav.setViewName("approval/approval_requested_refered.tiles");
 		return mav;
 	}
-	@RequestMapping(value = "/approval/goapprove.up")
-	public ModelAndView goapprove(HttpServletRequest request,HttpServletResponse response,ModelAndView mav) {
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
-		String employee_no = loginuser.getEmployee_no();
+	@RequestMapping(value = "/approval/goapprove.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public ModelAndView goapprove(HttpServletRequest request,HttpServletResponse response,ModelAndView mav,ApprovalVO apvo) {
+		apvo.setFeedback(MyUtil.secureCode(apvo.getFeedback())); // 시큐어코드
 		
-		String anostring = request.getParameter("ano");
-		String[] anoarr = anostring.split(",");
 		int n = 0;
- 	 	for(String ano:anoarr) {
- 	 		System.out.println("컨트롤러 ano =>"+ano);
- 	 		Map<String,String> paraMap = new HashMap<>();
- 	 		paraMap.put("ano", ano);
- 	 		paraMap.put("employee_no", employee_no);
- 	 		n = service.updaterequestedapprove(paraMap); // 결재 승인으로 업댓 
- 	 	}
+		String anostring = request.getParameter("appendchx"); // 체크박스로 체크해서 넘어온 문서번호 
+		if("".equals(apvo.getAno())) { // 체크박스로 넘어온애라면 
+			String[] anoarr = anostring.split(",");
+			for(String ano:anoarr) {
+				if(ano != "") {
+					apvo.setAno(ano);
+					apvo.setSignyn("1");// 체크박스로 넘어온 애들은 모두 승인
+					apvo.setFeedback("");
+				}
+			}
+		}
+			
+		n = service.updaterequestedapprove(apvo); // 결재 승인으로 업댓
+		
  	 	String message = "";
- 	 	message = n==1?"결재승인이 완료되었습니다!":"결재승인을 실패했습니다.";
-		String loc ="";
-		loc = request.getContextPath()+"/approval/requested.up";
-		mav.addObject("message", message);
-		mav.addObject("loc", loc);
-		mav.setViewName("msg");  
-		return mav;
-	}
-	@RequestMapping(value = "/approval/goreject.up")
-	public ModelAndView goreject(HttpServletRequest request,HttpServletResponse response,ModelAndView mav) {
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
-		String employee_no = loginuser.getEmployee_no();
-		String ano = request.getParameter("ano");
-		
-		Map<String,String> paraMap = new HashMap<>();
-		paraMap.put("ano", ano);
-		paraMap.put("employee_no", employee_no);
-		
-		int n = service.updaterequestedreject(paraMap); // 결재 반려로 업댓 
-		String message = "";
-		message = n==1?"결재반려가 완료되었습니다!":"결재반려를 실패했습니다.";
+ 	 	message = n==1?"결재가 완료되었습니다!":"결재를 실패했습니다.";
 		String loc ="";
 		loc = request.getContextPath()+"/approval/requested.up";
 		mav.addObject("message", message);
@@ -1532,7 +1514,7 @@ public class ApprovalController {
 	}
 	
 		
-	
+//	*** 결재문서 작성 메소드 *** //
 	@RequestMapping(value = "/approval/add.up")
 	public ModelAndView add(Map<String,String> paraMap, HttpServletResponse response, MultipartFile[] attaches,ModelAndView mav, ApprovalVO approvalvo, MultipartHttpServletRequest mrequest) throws Exception{
 		
@@ -1555,7 +1537,8 @@ public class ApprovalController {
 		else {
 			message = "신청이 실패되었습니다!";
 		}
-				
+				// 수신자들, 결재종류,
+		// 새로운 알림 테이블 vo만들고 거기에 데이터 저장후 오브젝트 넘겨주기 
 		mav.addObject("message", message);
 		mav.addObject("loc", loc);
 		mav.setViewName("msg");

@@ -130,28 +130,30 @@ public class ApprovalService implements InterApprovalService {
 
 	// 결재 승인으로 업댓
 	@Override
-	public int updaterequestedapprove(Map<String, String> paraMap) {
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = {Throwable.class})
+	public int updaterequestedapprove(ApprovalVO apvo) {
 		// 내가 해당 문서에 대해 마지막 결재자인지 확인하고 마지막결재자일경우 두테이블에 업댓 
-		String chk_ano = dao.checkmymaxstep(paraMap);
-		int n = 0;
-		String ano = paraMap.get("ano");
-		if(chk_ano != null) {//마지막 결재자일경우  
-			n = dao.updateapprovedoc(ano);
-		}else {//마지막 결재자가 아닐 경우
-			n = 1;
-		}
-		int result = 0;
-		result = n==1?dao.updaterequestedapprove(paraMap): 0 ;
-		return result;
-	}
-
-	// 결재 반려로 업댓 
-	@Override
-	public int updaterequestedreject(Map<String, String> paraMap) {
-		int result = 0;
 		
-		int n = dao.updaterequestedreject(paraMap);
-		result = n==1? dao.updateapprovalreject(paraMap) : 0;
+		int result = 0;
+		if("1".equals(apvo.getSignyn())){ // 승인 일경우
+			String chk_ano = dao.checkmymaxstep(apvo);
+//			System.out.println("chk_ano =>"+chk_ano);
+			int n = 0;
+//			String ano = paraMap.get("ano");
+			if(chk_ano != null) {	//마지막 결재자일경우  
+				n = dao.updateapprovedoc(apvo);// tbl_approval 업데이트
+			}else {	//마지막 결재자가 아닐 경우
+				n = 1;
+			}
+//			System.out.println("n => "+n);
+			
+			if(n==1) result=dao.updaterequestedapprove(apvo); // tbl_approval_sign 업데이트
+//			System.out.println("result => "+result);
+			
+		}else if("2".equals(apvo.getSignyn())){ // 반려 일경우 
+			int n = dao.updaterequestedreject(apvo); // tbl_approval_sign 업데이트 
+			result = n==1? dao.updateapprovalreject(apvo) : 0; // tbl_approval final_signyn 업데이트 
+		}
 		
 		return result;
 	}
