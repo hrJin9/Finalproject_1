@@ -50,4 +50,35 @@ public class FinalprojectService implements InterFinalprojectService {
 		List<Map<String, String>> apList = dao.getAvMy(employee_no);
 		return apList;
 	}
+
+	@Override
+	public int getNbtotal() {
+		int total = dao.getNbtotal();
+		return total;
+	}
+
+	@Override
+	public List<Map<String, String>> getNbList(Map<String, String> paraMap) {
+		List<Map<String, String>> boardList = dao.getNbList(paraMap);
+		return boardList;
+	}
+
+	@Override
+	public int getFbtotal() {
+		int total = dao.getFbtotal();
+		return total;
+	}
+
+	@Override
+	public List<Map<String, String>> getFbList(Map<String, String> paraMap) {
+		List<Map<String, String>> boardList = dao.getFbList(paraMap);
+		return boardList;
+	}
+	
+	// 결재요청 처리하기 (승인/반려)
+	@Override
+	public int updateMainAvStatus(Map<String, String> paraMap) {
+		int result = dao.updateMainAvStatus(paraMap);
+		return result;
+	}
 }

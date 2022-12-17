@@ -86,11 +86,13 @@ function addProfile(){
 		success:function(response){
 			// 기존에 있던 pic 시스템에서 삭제하기
 			var systemfn = $(".profileimg").attr("src");
-			systemfn = systemfn.split("/");
-			systemfn = systemfn.reverse()[0];
-			
-			//시스템에서 기존 이미지 삭제하기
-			delImg(systemfn);
+			if(systemfn != null){
+				systemfn = systemfn.split("/");
+				systemfn = systemfn.reverse()[0];
+				
+				//시스템에서 기존 이미지 삭제하기
+				delImg(systemfn);
+			}
 			
 			// 로그인한 유저라면 이미지를 바꿔주기
 			if("${sessionScope.loginuser.employee_no}" == "${requestScope.evo.employee_no}"){
