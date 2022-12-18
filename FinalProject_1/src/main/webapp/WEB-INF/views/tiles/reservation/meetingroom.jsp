@@ -63,18 +63,13 @@ $(document).ready(function(){
 	});
 	
 	 */
-	
-	
-	
-	
-	
+	 
+	 
 	 
 	
+	var timearr = [{"startdate":"01:00","enddate":"07:00","meetingroom":"b"}];      
 	
-	
-	var timearr = [{"startdate":"${requestScope.map.startdate}","enddate":"${requestScope.map.enddate}","meetingroom":"${requestScope.map.fk_roomno}"}]; 
-	
-	 
+	  
 	var defaultposition = 0;
 	$.each(timearr, function(index, item){ 
 		
@@ -382,7 +377,7 @@ $("#mr-startdate").change(function(e){
 						<td colspan="2">${i}</td>
 					</c:forEach>
 				</tr>  
-				<tr id="206"> 
+				<tr id="206">  
 					<td>가 회의실(20명)</td>
 					<c:forEach var="i" begin="0" end="47">
 						<td id="${i}" class="a"></td> 
@@ -390,7 +385,7 @@ $("#mr-startdate").change(function(e){
 				</tr>
 				<tr id="260">
 					<td>나 회의실(30명)</td>
-					<c:forEach var="i" begin="0" end="47">
+					<c:forEach var="i" begin="0" end="47"> 
 						<td id="${i}" class="b"></td>
 					</c:forEach>
 				</tr>
