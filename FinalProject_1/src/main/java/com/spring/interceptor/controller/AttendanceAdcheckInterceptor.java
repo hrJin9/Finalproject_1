@@ -21,7 +21,7 @@ public class AttendanceAdcheckInterceptor implements HandlerInterceptor{
 		if(loginuser == null) {
 			String loc = request.getContextPath() + "/login.up";
 			request.setAttribute("loc", loc);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/message.jsp");
 			try {
 				dispatcher.forward(request, response);
 			} catch (ServletException | IOException e) {
@@ -45,11 +45,11 @@ public class AttendanceAdcheckInterceptor implements HandlerInterceptor{
 			
 			if (!flag) {
 				String message = "접근 권한이 없습니다.";
-				String loc = request.getContextPath();
+				String loc = "javascript:history.back()";
 				
 				request.setAttribute("message", message);
 				request.setAttribute("loc", loc);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/message.jsp");
 				try {
 					dispatcher.forward(request, response);
 				} catch (ServletException | IOException e) {

@@ -169,7 +169,7 @@ function getboard(kind, curpage){
 						if(item.nbno != null){
 							html += '<tr id="'+item.nbno+'" class="boardTr" onclick="javascript:location.href=\'<%=ctxPath%>/notice/view.up?nbno='+item.nbno+'\'">';
 						} else {
-							html += '<tr id="'+item.fbno+'" class="boardTr" onclick="javascript:location.href=\'<%=ctxPath%>/free/view.up?nbno='+item.fbno+'\'">';
+							html += '<tr id="'+item.fbno+'" class="boardTr" onclick="javascript:location.href=\'<%=ctxPath%>/fboard/view.up?fbno='+item.fbno+'\'">';
 						}
 							html +=	'<td class="py-1 pl-2" style="font-weight: 500; font-size:11pt;">'+
 										'<div>'+item.subject+'</div>'+
@@ -205,15 +205,20 @@ function pagebar(kind, total, curpage){
 	
 	if(Number(total) > 0){
 		const blockSize = 10;
-		let loop = 1;
 		if(typeof curpage == "string"){
 			curpage = Number(curpage);
 		}
 		let pageNo = Math.floor((curpage - 1)/blockSize) * blockSize + 1;
-		let pageBarHTML = '<nav style="position: relative; left: 340px;">'+
-							"<a aria-label='이전' href='javascript:getboard(\""+kind+"\", "+(pageNo)+")'><span aria-hidden='true'><i class='fa-solid fa-angle-left' style='font-size:10pt;'></i></span></a>"+
-							"<a aria-label='다음' href='javascript:getboard(\""+kind+"\", "+(pageNo+1)+")'><span aria-hidden='true'><i class='fa-solid fa-angle-right' style='font-size:10pt;'></i></span></a>"+
-							"</nav>";
+		
+		let pageBarHTML = "<nav style='position: relative; left: 340px;'>"+
+							"<a aria-label='이전' href='javascript:getboard(\""+kind+"\", "+(pageNo)+")'><span aria-hidden='true'><i class='fa-solid fa-angle-left' style='font-size:10pt;'></i></span></a>";
+		if(pageNo == curpage){
+			pageBarHTML += "<a aria-label='다음' ><span aria-hidden='true' style='cursor:not-allowed;'><i class='fa-solid fa-angle-right' style='font-size:10pt;'></i></span></a>";
+		} else {
+			pageBarHTML += "<a aria-label='다음' href='javascript:getboard(\""+kind+"\", "+(pageNo+1)+")'><span aria-hidden='true'><i class='fa-solid fa-angle-right' style='font-size:10pt;'></i></span></a>";
+		}
+		pageBarHTML += "</nav>";
+		
 		
 		$("#boardPagingArrow").html(pageBarHTML);
 		
