@@ -85,8 +85,9 @@
 	
 	#btnFind {
 		width: 66%; 
-		border: rgb(0 101 204) 1px solid;
-		background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+		/* border: rgb(0 101 204) 1px solid;
+		background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%); */
+		background-color: #0d6efd;
 		color: white;
 		font-size: 12pt;
 		border-radius: 5px;

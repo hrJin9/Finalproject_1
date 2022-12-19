@@ -41,7 +41,7 @@
 			on A.ano = aps.fk_ano
 			join tbl_employee
 			on employee_no = A.fk_empno
-			where signdate is null and fk_sign_empno = #{employee_no}
+			where signyn = 0 and fk_sign_empno = #{employee_no}
 		)
 		where rno in (1,2)
 	</select>
@@ -111,7 +111,7 @@
 	<!-- 결재요청 처리하기 (승인/반려) -->
 	<update id="updateMainAvStatus" parameterType="HashMap">
 		update tbl_approval_sign
-		set signdate = sysdate, signyn = #{signyn}, signemp_name_kr = #{name_kr}
+		set signyn = #{signyn}, signemp_name_kr = #{name_kr}
 		where asno = #{asno}
 	</update>
 	
