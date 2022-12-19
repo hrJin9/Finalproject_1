@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.finalproject.service.InterFinalprojectService;
 import com.spring.hyerin.model.EmployeeVO;
 import com.spring.jieun.model.ApprovalVO;
+import com.spring.schedule.model.Calendar_schedule_VO;
 import com.spring.yeeun.model.AttendanceVO;
 
 @Controller
@@ -240,6 +241,46 @@ public class FinalprojectController {
 		return mav;
 	}
 	
+	
+	
+	
+	////////////////////////////////////
+	// === 모든 캘린더(사내캘린더, 내캘린더, 공유받은캘린더)를 불러오는것 ===
+		@ResponseBody
+		@RequestMapping(value="/selectMainSchedule.up", produces="text/plain;charset=UTF-8")
+		public String selectMainSchedule(HttpServletRequest request) {
+			
+			// 등록된 일정 가져오기
+			
+			String fk_employee_no = request.getParameter("fk_employee_no");
+			
+					
+			List<Calendar_schedule_VO> scheduleList = service.selectMainSchedule(fk_employee_no);
+			
+			JSONArray jsArr = new JSONArray();
+			
+			if(scheduleList != null && scheduleList.size() > 0) {
+				
+				for(Calendar_schedule_VO svo : scheduleList) {
+					JSONObject jsObj = new JSONObject();
+					jsObj.put("subject", svo.getSubject());
+					jsObj.put("startdate", svo.getStartdate());
+					jsObj.put("enddate", svo.getEnddate());
+					jsObj.put("color", svo.getColor()); 
+					jsObj.put("calno", svo.getCalno()); 
+					jsObj.put("fk_lgcatgono", svo.getFk_lgcatgono());
+					jsObj.put("fk_smcatgono", svo.getFk_smcatgono()); 
+					jsObj.put("fk_employee_no", svo.getFk_employee_no());
+					jsObj.put("joinuser", svo.getJoinuser());
+					
+					jsArr.put(jsObj);
+				}// end of for-------------------------------------
+			
+			}
+			
+			return jsArr.toString();
+		}
+	 
 	
 	
 	

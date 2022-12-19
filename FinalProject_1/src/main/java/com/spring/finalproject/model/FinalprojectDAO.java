@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.spring.jieun.model.ApprovalVO;
+import com.spring.schedule.model.Calendar_schedule_VO;
 import com.spring.yeeun.model.AttendanceVO;
 
 @Repository
@@ -75,4 +76,20 @@ public class FinalprojectDAO implements InterFinalprojectDAO {
 		int result = sqlsession.update("main.updateMainAvStatus", paraMap);
 		return result;
 	}
+
+	
+	
+	
+	 
+	//////////////////////////
+	// 캘린더 불러오기	
+	@Override
+	public List<Calendar_schedule_VO> selectMainSchedule(String fk_employee_no) {
+		List<Calendar_schedule_VO> scheduleList = sqlsession.selectList("main.selectMainSchedule", fk_employee_no);
+		return scheduleList;
+	}
+	
+	
+	
+	
 }
