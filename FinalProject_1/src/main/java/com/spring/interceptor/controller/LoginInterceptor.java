@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
-public class LogincheckInterceptor implements HandlerInterceptor{
+public class LoginInterceptor implements HandlerInterceptor{
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -20,7 +20,11 @@ public class LogincheckInterceptor implements HandlerInterceptor{
 			
 			String loc = request.getContextPath() + "/login.up";
 			request.setAttribute("loc", loc);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+			
+			
+			System.out.println("로그아웃 후 에도 오는건가");
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/message.jsp");
 			try {
 				dispatcher.forward(request, response);
 			} catch (ServletException | IOException e) {
