@@ -646,6 +646,8 @@ public class ApprovalController {
 		//System.out.println("anoval => "+ano);
 		String ap_type = request.getParameter("ap_type");
 		//System.out.println("ap_type => "+ap_type);
+		if(ap_type == null) ap_type="";
+		
 		
 		ApprovalVO aprvo = null; 
 		// 결재문서타입이 연차와 업무문서일경우 해당테이블과 결재테이블에서 정보를 가져와야한다. 
@@ -706,7 +708,7 @@ public class ApprovalController {
 	public String approval_viewline(HttpServletRequest request,HttpServletResponse response) {
 		
 		String ano = request.getParameter("ano");
-		System.out.println("anoval => "+ano);
+		//System.out.println("anoval => "+ano);
 		
 		// 한문서에 대해 결재라인리스트 가져오기 
 		List<ApprovalVO> approvalList = service.getapprovalLine(ano);
@@ -749,22 +751,19 @@ public class ApprovalController {
 	
 	
 	// 내문서 결재취소하기 
+	@ResponseBody
 	@RequestMapping(value = "/approval/mycancel.up")
-	public ModelAndView approval_mycancel(HttpServletRequest request,ModelAndView mav) {
+	public String approval_mycancel(HttpServletRequest request) {
 		String ano = request.getParameter("ano");
-		System.out.println("ano=>"+ano);
+		//System.out.println("ano=>"+ano);
+		
 		int n = service.updatecancelmyapproval(ano);
 		
-		String message = "";
-		String loc ="";
+		JSONObject jsonobj = new JSONObject();
 		
-		message = n==1?"결재신청이 취소 되었습니다!":"결재신청 취소를 실패했습니다."; 
+		jsonobj.put("result", n);
 		
-		loc = request.getContextPath()+"/approval.up";
-		mav.addObject("message", message);
-		mav.addObject("loc", loc);
-		mav.setViewName("msg");  
-		return mav;
+		return jsonobj.toString();
 	}
 	// 내문서 수정하기 
 	@RequestMapping(value = "/approval/myedit.up")

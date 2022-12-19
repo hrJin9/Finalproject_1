@@ -30,12 +30,12 @@ public class SearchController {
 	@RequestMapping(value = "/searchEmpList.up", method = {RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
 	public String showEmpList(HttpServletRequest request, ModelAndView mav) {
 		
-		String searchVal = request.getParameter("searchVal");
-		if(searchVal == null) searchVal = "";
+		String searchWord_side = request.getParameter("searchWord_side");
+		if(searchWord_side == null) searchWord_side = "";
 		
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
-		paraMap.put("searchVal",searchVal); // ''
+		paraMap.put("searchWord_side",searchWord_side); // ''
 		
 		//구성원 목록을 읽어오기
 		List<EmployeeVO> empvoList = service.getEmpList(paraMap);
@@ -71,11 +71,11 @@ public class SearchController {
 		String employee_no= emp.getEmployee_no();
 		
 		// 검색정보 가져오기
-		String searchVal = request.getParameter("searchVal");
-		if(searchVal == null) searchVal = ""; 
+		String searchWord_side = request.getParameter("searchWord_side");
+		if(searchWord_side == null) searchWord_side = ""; 
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
-		paraMap.put("searchVal", searchVal);
+		paraMap.put("searchWord_side", searchWord_side);
 		paraMap.put("employee_no",employee_no);
 		
 		// 메시지리스트 검색 
@@ -111,11 +111,11 @@ public class SearchController {
 		String employee_no= emp.getEmployee_no();
 		
 		// 검색정보 가져오기
-		String searchVal = request.getParameter("searchVal");
-		if(searchVal == null) searchVal = ""; 
+		String searchWord_side = request.getParameter("searchWord_side");
+		if(searchWord_side == null) searchWord_side = ""; 
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
-		paraMap.put("searchVal", searchVal);
+		paraMap.put("searchWord_side", searchWord_side);
 		paraMap.put("employee_no",employee_no);
 		
 		// 결재문서 리스트 검색 
