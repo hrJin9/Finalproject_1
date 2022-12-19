@@ -308,7 +308,7 @@ public class MemberController {
 		
 		mav.addObject("message", message);
 		mav.addObject("loc", loc);
-		mav.setViewName("msg");
+		mav.setViewName("message");
 		return mav;
 	}
 	
