@@ -33,8 +33,8 @@ public class MeetingroomDAO implements InterMeetingroomDAO {
 
 	// 회의실 예약 불러오기  
 	@Override
-	public List<Meetingroom_reservationVO> selectMeetingroom(String fk_roomno) {
-		List<Meetingroom_reservationVO> meetingList = sqlsession.selectList("meetingroom.selectMeetingroom", fk_roomno);
+	public List<Meetingroom_reservationVO> selectMeetingroom(String startdate) {
+		List<Meetingroom_reservationVO> meetingList = sqlsession.selectList("meetingroom.selectMeetingroom", startdate);
 		return meetingList;  
 	} 
 

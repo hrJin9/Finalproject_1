@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.spring.finalproject.common.MyUtil;
+
 public class LoginInterceptor implements HandlerInterceptor{
 	
 	@Override
@@ -21,11 +23,9 @@ public class LoginInterceptor implements HandlerInterceptor{
 			String loc = request.getContextPath() + "/login.up";
 			request.setAttribute("loc", loc);
 			
-			
-			System.out.println("로그아웃 후 에도 오는건가");
-			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/message.jsp");
 			try {
+				session.setAttribute("goBackURL", MyUtil.getCurrentURL(request));
 				dispatcher.forward(request, response);
 			} catch (ServletException | IOException e) {
 				e.printStackTrace();

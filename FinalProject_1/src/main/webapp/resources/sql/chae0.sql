@@ -157,14 +157,14 @@ nocache;
 
 
 insert into tbl_meetingroom_reservation(reserno, startdate, enddate, r_content, fk_employee_no, fk_roomno) 
-values(seq_reserno.nextval, to_date(#{r_startdate}, 'yyyymmddhh24miss'), to_date(#{r_enddate}, 'yyyymmddhh24miss'), #{r_content}, #{fk_employee_no}, #{fk_roomno})
+values(seq_reserno.nextval, to_date(#{startdate}, 'yyyymmdd hh24:mi:ss'), to_date(#{enddate}, 'yyyymmdd hh24:mi:ss'), #{r_content}, #{fk_employee_no}, #{fk_roomno})
   
-
+   
 insert into tbl_meetingroom_reservation(reserno, startdate, enddate, r_content, fk_employee_no, fk_roomno) 
-values(seq_reserno.nextval, to_date(20221212111511, 'yyyymmddhh24miss'), to_date(20221212121511, 'yyyymmddhh24miss'), '예약헙니다', 100011, 'a')
+values(seq_reserno.nextval, to_date('2022-12-18 10:11:22', 'yyyy-mm-dd hh24:mi:ss'), to_date('2022-12-18 12:20:00', 'yyyy-mm-dd hh24:mi:ss'), '멀라', 100011, '나')
          
         
-select *
+select to_char(startdate, 'yyyy-mm-dd hh24:mi:ss'), to_char(enddate, 'yyyy-mm-dd hh24:mi:ss'), r_content, fk_employee_no, fk_roomno
 from tbl_meetingroom_reservation;
 
 
@@ -174,7 +174,7 @@ where fk_roomno = #{fk_roomno};
 
 select startdate, enddate, r_content, fk_employee_no, fk_roomno
 from tbl_meetingroom_reservation
-where fk_roomno = #{fk_roomno};
+where fk_roomno = 'a';
 
         
 
