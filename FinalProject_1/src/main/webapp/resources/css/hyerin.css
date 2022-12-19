@@ -6,19 +6,19 @@ body::-webkit-scrollbar {
 
 body::-webkit-scrollbar-thumb {
     height: 30%; /* 스크롤바의 길이 */
-	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+   background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
     border-radius: 10px;
 }
 
 body::-webkit-scrollbar-track {
-	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+   background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
 }
 
 .dropdown-toggle::after{display: none !important;}
 
 hr.HRhr{
-	background-color: rgba(0,0,0, .3) !important;
-	border: none; height: 1px;
+   background-color: rgba(0,0,0, .3) !important;
+   border: none; height: 1px;
 }
 
 
@@ -73,13 +73,13 @@ hr.HRhr{
 .font-bold{font-weight:bold;}
 
 .attendance-container{
-	width: 95%;
-	position: relative;/* position: absolute의 기준점 */
+   width: 95%;
+   position: relative;/* position: absolute의 기준점 */
 }
 
 
 .datebox {
-	height: 30px;
+   height: 30px;
 }
 
 div.datebox > span {position:relative; right:6px; font-size: 11pt;}
@@ -88,30 +88,30 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .datearrow {
-	height: 30px; width: 30px;
-	background-color: transparent;
-	border: solid 1px rgba(0, 0, 0, .1);
-	border-radius: 5px;
-	margin: 0;
+   height: 30px; width: 30px;
+   background-color: transparent;
+   border: solid 1px rgba(0, 0, 0, .1);
+   border-radius: 5px;
+   margin: 0;
 }
 
 
 
 .attendance-dateSelector {
-	height: 30px; width: 85%;
-	display: inline-block;
-	border: solid 1px rgba(0, 0, 0, .1);
-	border-radius: 5px;
-	margin: 0;
-	width: 124px !important;
-	color: rgba(0,0,0,0.7);
-	font-weight: 500;
-	padding: 0 15px;
+   height: 30px; width: 85%;
+   display: inline-block;
+   border: solid 1px rgba(0, 0, 0, .1);
+   border-radius: 5px;
+   margin: 0;
+   width: 124px !important;
+   color: rgba(0,0,0,0.7);
+   font-weight: 500;
+   padding: 0 15px;
 }
 
 .ad-datesel {
-	border: none;
-	width: 130px;
+   border: none;
+   width: 130px;
 }
 
 
@@ -120,7 +120,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .ui-datepicker .ui-datepicker-header {position: relative;padding: 10px 0;}
 .ui-state-default, .ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover,html .ui-button.ui-state-disabled:active {border: 0px solid #c5c5c5;background-color: transparent;font-weight: normal;color: #454545;text-align: center;}
 .ui-datepicker .ui-datepicker-title {margin: 0 0em;line-height: 16px;text-align: center;font-size: 14px;padding: 0px;font-weight: bold;}
-.ui-datepicker {display: none;background-color: #fff;	border-radius: 4px;	margin-top: 10px;margin-left: 0px;margin-right: 0px;padding: 20px;padding-bottom: 10px;width: 300px;box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.1);}
+.ui-datepicker {display: none;background-color: #fff;   border-radius: 4px;   margin-top: 10px;margin-left: 0px;margin-right: 0px;padding: 20px;padding-bottom: 10px;width: 300px;box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.1);}
 .ui-widget.ui-widget-content {border: 1px solid #eee;}
 #datepicker:focus>.ui-datepicker {display: block;}
 .ui-datepicker-prev, .ui-datepicker-next {cursor: pointer;}
@@ -132,11 +132,11 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .ui-datepicker-calendar>tbody>tr>td>a {color: #000;font-size: 12px !important;font-weight: bold !important;text-decoration: none;}
 .ui-datepicker-calendar>tbody>tr>.ui-state-disabled:hover {cursor: auto;background-color: #fff;}
 .ui-datepicker-calendar>tbody>tr>td {border-radius: 100%;width: 44px;height: 30px;cursor: pointer;padding: 5px;font-weight: 100;text-align: center;font-size: 12px;}
-.ui-datepicker-calendar>tbody>tr>td:hover {	background-color: transparent;opacity: 0.6;}
+.ui-datepicker-calendar>tbody>tr>td:hover {   background-color: transparent;opacity: 0.6;}
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus,.ui-button:hover, .ui-button:focus {border: 0px solid #cccccc;background-color: transparent;font-weight: normal;color: #2b2b2b;}
 .ui-widget-header .ui-icon {background-image: url('./btns.png');}
 .ui-icon-circle-triangle-e {background-position: -20px 0px;background-size: 36px;}
-.ui-icon-circle-triangle-w {background-position: -0px -0px;	background-size: 36px;}
+.ui-icon-circle-triangle-w {background-position: -0px -0px;   background-size: 36px;}
 .ui-datepicker-calendar>tbody>tr>td:first-child a {color: red !important;}
 .ui-datepicker-calendar>tbody>tr>td:last-child a {color: #0099ff !important;}
 .ui-datepicker-calendar>thead>tr>th:first-child {color: red !important;}
@@ -145,65 +145,65 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .inp {padding: 10px 10px;background-color: #f1f1f1;border-radius: 4px;border: 0px;}
 .inp:focus {outline: none;background-color: #eee;}
 
-.today{	
-	border: solid 1px rgba(0, 0, 0, .1);
-	border-radius: 5px;
-	background-color: transparent;
-	height: 30px; width: 50px;
-	font-size: 10pt;
-	position: relative; bottom: 1px; right:1%;
-	font-weight: 500;
-	color: rgba(0,0,0,0.7);
-	padding: 0;
+.today{   
+   border: solid 1px rgba(0, 0, 0, .1);
+   border-radius: 5px;
+   background-color: transparent;
+   height: 30px; width: 50px;
+   font-size: 10pt;
+   position: relative; bottom: 1px; right:1%;
+   font-weight: 500;
+   color: rgba(0,0,0,0.7);
+   padding: 0;
 }
 
 .workingweek-sum{
-	margin-top: 20px;
+   margin-top: 20px;
 }
 
 .workingweek-info{
-	display: inline-block;
+   display: inline-block;
 }
 
 .workingiweek-infobox{
-	height: 110px; width: 180px;
-	border-radius : 10px;
-	box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
-	background-color: #566573;
-	position: absolute; left: 90px; bottom: 460px; 
-	z-index: 100;
+   height: 110px; width: 180px;
+   border-radius : 10px;
+   box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
+   background-color: #566573;
+   position: absolute; left: 90px; bottom: 460px; 
+   z-index: 100;
 }
 
 .workingiweek-infobox > table{
-	color: #B1B5B9;
-	font-size: 9pt;
-	width: 90%;
-	position: relative; left: 7px; top: 7px;
+   color: #B1B5B9;
+   font-size: 9pt;
+   width: 90%;
+   position: relative; left: 7px; top: 7px;
 }
 .workingiweek-infobox > table tr > td:nth-child(2) {
-	float:right;
+   float:right;
 }
 
 .workingweek-total{
-	color:#04BFAD;
+   color:#04BFAD;
 }
 .workingweek-sumbar{
-	display: inline-block;
-	background-color: rgba(0, 0, 0, .1);
-	height: 10px;
-	width: 75%;
-	border-radius: 10px;
-	float: right;
-	position: relative; right: 20px; top: 10px;
+   display: inline-block;
+   background-color: rgba(0, 0, 0, .1);
+   height: 10px;
+   width: 75%;
+   border-radius: 10px;
+   float: right;
+   position: relative; right: 20px; top: 10px;
 }
 
 .workingweek-sumbar-default{
-	background-color: #04BFAD;
-	height: 10px;
-	width: 0%;
-	/* max-width: 70%; */
-	border-radius: 10px 0 0 10px;
-	float: left;
+   background-color: #04BFAD;
+   height: 10px;
+   width: 0%;
+   /* max-width: 70%; */
+   border-radius: 10px 0 0 10px;
+   float: left;
 }
 
 .workingweek-sumbar-add {
@@ -219,106 +219,106 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workingweek-sumbar-goal{
-	height: 20px; width:9px;
-	background-color: #04BFAD;
-	border: solid 1px white;
-	border-radius: 10px;
-	position: relative; bottom: 15px; left: 77%;
-	z-index: 2;
-	clear: both;
+   height: 20px; width:9px;
+   background-color: #04BFAD;
+   border: solid 1px white;
+   border-radius: 10px;
+   position: relative; bottom: 15px; left: 77%;
+   z-index: 2;
+   clear: both;
 }
 
 .workingweek-sumbar-infobox{
-	height: 90px; width: 150px;
-	border-radius : 10px;
-	box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
-	background-color: #566573;
-	position: absolute; bottom: 450px; left: 30%;
+   height: 90px; width: 150px;
+   border-radius : 10px;
+   box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
+   background-color: #566573;
+   position: absolute; bottom: 450px; left: 30%;
 }
 
 .workingweek-sumbar-infobox > table{
-	color: #B1B5B9;
-	font-size: 9pt;
-	width: 90%;
-	position: relative; left: 7px; top: 7px;
+   color: #B1B5B9;
+   font-size: 9pt;
+   width: 90%;
+   position: relative; left: 7px; top: 7px;
 }
 .workingweek-sumbar-infobox > table tr > td:nth-child(2) {
-	float:right;
+   float:right;
 }
 
 
 .workingweek-sumbar-goal-infobox{
-	height: 30px; width: 150px;
-	border-radius : 7px;
-	box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
-	background-color: #566573;
-	position: absolute; bottom: 450px; left: 73%;
+   height: 30px; width: 150px;
+   border-radius : 7px;
+   box-shadow: 3px 3px 10px 3px rgb(205,205,210, 0.5);
+   background-color: #566573;
+   position: absolute; bottom: 450px; left: 73%;
 }
 
 .workingweek-sumbar-goal-infobox > table{
-	color: #B1B5B9;
-	font-size: 9pt;
-	width: 90%;
-	position: relative; left: 7px; top: 5px;
+   color: #B1B5B9;
+   font-size: 9pt;
+   width: 90%;
+   position: relative; left: 7px; top: 5px;
 }
 .workingweek-sumbar-goal-infobox > table tr > td:nth-child(2) {
-	float:right;
-	color: white;
+   float:right;
+   color: white;
 }
 
 .workingweek{
-	margin-top : 20px;
+   margin-top : 20px;
 }
 
 .workingweek > table{
-	width: 100%;
-	border-collapse: collapse;
+   width: 100%;
+   border-collapse: collapse;
 }
 
 .workingweek > table td:first-child {
-	border-left: none;
+   border-left: none;
 }
 
 .workingweek > table td{
-	border: solid 1px rgba(0, 0, 0, .1);
+   border: solid 1px rgba(0, 0, 0, .1);
 }
 
 .workingweek > table > tbody > tr > td:last-child{
-	border-right: none;
+   border-right: none;
 }
 
 .workinghour td{
-	border-top: none;
+   border-top: none;
 }
 .workinghour{
-	background-color: rgba(242, 242, 242, .2);
-	color: rgba(0, 0, 0, .3);
+   background-color: rgba(242, 242, 242, .2);
+   color: rgba(0, 0, 0, .3);
 }
 
 .workinghour > td:first-child{
-	width: 17.9%;
+   width: 17.9%;
 }
 
 .workinghour td {
-	padding: 10px 0 10px 5px;
-	font-size: 9pt;
+   padding: 10px 0 10px 5px;
+   font-size: 9pt;
 }
 
 .workinghour > td:first-child ~ td {
-	width: 2.98%;
+   width: 2.98%;
 }
 
 
 .working-recordbar{
-	width: 50%;
-	height: 20px;
-	background-color: #04BFAD;
-	border-radius: 5px;
-	position: absolute; top:32%; left:20%;
+   width: 50%;
+   height: 20px;
+   background-color: #04BFAD;
+   border-radius: 5px;
+   position: absolute; top:32%; left:20%;
 }
 
 .workinghour ~ tr td {
-	padding: 15px 0 15px 5px;
+   padding: 15px 0 15px 5px;
 }
 
 .workingweek > table > tbody > tr:first-child ~ tr:hover {
@@ -330,23 +330,23 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .workingweek > tr:first-child ~ tr > td{
-	padding: 20px;
+   padding: 20px;
 }
 
 .date{
-	margin: 0 5px 0 35px;
+   margin: 0 5px 0 35px;
 }
 
 .font-red{
-	color: #BF2604;	
+   color: #BF2604;   
 }
 
 .todaydot{
-	display:inline-block;
-	height: 8px; width: 8px;
-	border-radius: 50%;
-	background-color: green;
-	margin-left: 10px;
+   display:inline-block;
+   height: 8px; width: 8px;
+   border-radius: 50%;
+   background-color: green;
+   margin-left: 10px;
 }
 
 
@@ -370,34 +370,34 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workingtotalhourByday > span{
-	margin-left: 4px;
+   margin-left: 4px;
 }
 
 
 .headeroffcanvas{
-	font-weight: bold;
-	font-size: 12pt;
+   font-weight: bold;
+   font-size: 12pt;
 }
 
 .offcanvas{
-	box-shadow: 5px 5px 20px 3px rgb(205,205,210, 0.8);
+   box-shadow: 5px 5px 20px 3px rgb(205,205,210, 0.8);
 }
 
 .offcanvas-header, .offcanvas-body{
-	padding: 25px !important;
+   padding: 25px !important;
 }
 
 .offcanvas-end{
-	border-left: none !important;
+   border-left: none !important;
 }
 /* 
 .btn-close{
-	position: relative; left: 10px;
+   position: relative; left: 10px;
 }
  */
 
 .line{
-	display: inline-block;
+   display: inline-block;
     background-color: rgba(242, 242, 242);
     height: 1.4px;
     width: 217px;
@@ -408,7 +408,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workStatusbox{
-	width: 40px !important; 
+   width: 40px !important; 
 }
 
 .todayworkStatus-container{
@@ -419,70 +419,70 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .workwirte-container{
-	border: solid 1px rgba(0, 0, 0, .1);
-	width: 100%; height: 60px;
-	border-radius: 10px;
-	display: flex;
+   border: solid 1px rgba(0, 0, 0, .1);
+   width: 100%; height: 60px;
+   border-radius: 10px;
+   display: flex;
 }
 
 .workwrite-container div {margin: auto;}
 
 .workwirte-container div, .workwirte-container ul{
-	font-size: 11pt;
-	margin: auto;
+   font-size: 11pt;
+   margin: auto;
 }
 
 
 .workwritebox:hover{
-	background-color: rgba(230, 230, 230, 0.5);
+   background-color: rgba(230, 230, 230, 0.5);
 }
 .dropdown-toggle::after{
-	display:none;
+   display:none;
 }
 
 .dropdown-menu{
-	border-radius: 10px;
-	border: none !important;
-	box-shadow: 5px 5px 20px 3px rgb(205,205,210, 0.8);
+   border-radius: 10px;
+   border: none !important;
+   box-shadow: 5px 5px 20px 3px rgb(205,205,210, 0.8);
 }
 
 .workStatusbox li {
-	height: 40px;
+   height: 40px;
 }
 
 .workStatusbox img {
-	margin-right:5px;
+   margin-right:5px;
 }
 
 .workStatusbox li a{
-	padding: 10px 15px;
+   padding: 10px 15px;
 }
 
 .workStatusbox li a:hover{
-	border-radius: 7px;
-	background-color: rgba(230, 230, 230, 0.5);
+   border-radius: 7px;
+   background-color: rgba(230, 230, 230, 0.5);
 }
 
 .workStartbox, .workEndbox{
-	display: flex;
+   display: flex;
 }
 
 .workStartbox, .workEndbox{
-	padding: 7px 2%;
-	border-radius: 5px;
+   padding: 7px 2%;
+   border-radius: 5px;
 }
 
 .workStartbox:hover, .workEndbox:hover{
-	background-color: rgba(230, 230, 230, 0.5);
+   background-color: rgba(230, 230, 230, 0.5);
 }
 
 
 .workstarttime, .workendtime{
-	height: 150px;
-	width: 100px;
-	overflow: scroll;
-	overflow-x : hidden;
-	
+   height: 150px;
+   width: 100px;
+   overflow: scroll;
+   overflow-x : hidden;
+   
 }
 
 .workstarttime::-webkit-scrollbar, .workendtime::-webkit-scrollbar {
@@ -491,11 +491,11 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .workstarttime::-webkit-scrollbar-thumb, .workendtime::-webkit-scrollbar-thumb{
     height: 30%; /* 스크롤바의 길이 */
-	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+   background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
     border-radius: 10px;
 }
 .workstarttime::-webkit-scrollbar-track, .workendtime::-webkit-scrollbar-track{
-	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+   background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
 }
 
 
@@ -508,48 +508,48 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workadd:hover{
-	background-color: rgba(230, 230, 230);
-	border: solid 1px rgba(150, 150, 150);
-	cursor: pointer;
+   background-color: rgba(230, 230, 230);
+   border: solid 1px rgba(150, 150, 150);
+   cursor: pointer;
 }
 
 .workadd > div {
-	font-size: 11pt;
-	margin: auto;
+   font-size: 11pt;
+   margin: auto;
 }
 
 
 .workstatus-buttoncontainer{
-	margin-top: 20px;
+   margin-top: 20px;
 }
 
 .workstatus-del{
-	border: solid 1px rgba(0, 0, 0, 0.1);
-	width: 50px; height: 40px;
-	border-radius: 10px;
-	background-color: white;
+   border: solid 1px rgba(0, 0, 0, 0.1);
+   width: 50px; height: 40px;
+   border-radius: 10px;
+   background-color: white;
 }
 
 .workstatus-cancel{
-	font-size: 11pt;
-	border: solid 1px rgba(0, 0, 0, 0.1);
-	border-radius : 10px;
-	width: 60px; height: 40px;
-	background-color: white;
-	margin-right: 10px;
-	float: right;
-	font-weight: 600;
+   font-size: 11pt;
+   border: solid 1px rgba(0, 0, 0, 0.1);
+   border-radius : 10px;
+   width: 60px; height: 40px;
+   background-color: white;
+   margin-right: 10px;
+   float: right;
+   font-weight: 600;
 }
 
 .workstatus-save{
-	font-size: 11pt;
-	float:right;
-	border: none;
-	border-radius : 10px;
-	width: 90px; height: 40px;
-	color: white;
-	float: right;
-	font-weight: 600;
+   font-size: 11pt;
+   float:right;
+   border: none;
+   border-radius : 10px;
+   width: 90px; height: 40px;
+   color: white;
+   float: right;
+   font-weight: 600;
 }
 
 
@@ -559,98 +559,98 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 /* dayoff.jsp */
 .dayoff-container{
-	margin-top: 50px;
+   margin-top: 50px;
 }
 
 .dayoff-sum-container{
-	display: flex;	
+   display: flex;   
 }
 
 .dayoff-sum{
-	margin: auto;
-	display: flex;
-	border: solid 1px rgba(150, 150, 150, 0.5);
-	border-radius: 15px;
-	height: 100px; width: 60%;
-	padding: 0 20px;
+   margin: auto;
+   display: flex;
+   border: solid 1px rgba(150, 150, 150, 0.5);
+   border-radius: 15px;
+   height: 100px; width: 60%;
+   padding: 0 20px;
 }
 
 .dayoff-sum > div{
-	margin: auto;
+   margin: auto;
 }
 
 .dayoff-sum > div > div:first-child{
-	font-size: 11pt;
-	color: rgba(150, 150, 150);
+   font-size: 11pt;
+   color: rgba(150, 150, 150);
 }
 .dayoff-sum > div > div:nth-child(2){
-	font-size: 20pt;
-	color: rgba(150, 150, 150);
+   font-size: 20pt;
+   color: rgba(150, 150, 150);
 }
 
 .longer-verticalline{
-	height: 99px;
-	background-color: rgba(150, 150, 150, 0.5); 
-	width: 1px;
+   height: 99px;
+   background-color: rgba(150, 150, 150, 0.5); 
+   width: 1px;
 }
 .verticalline{
-	height: 50px;
-	background-color: rgba(0,0,0, .1); 
-	width: 1px;
+   height: 50px;
+   background-color: rgba(0,0,0, .1); 
+   width: 1px;
 }
 
 
 .dayoff-searchcontainer{
-	display: block;
-	font-size: 11pt;
-	margin: 20px 0 0 50px;
+   display: block;
+   font-size: 11pt;
+   margin: 20px 0 0 50px;
 }
 
 
 
 /* dayoff_index.jsp */
 .dayoff-index-container{
-	width: 96%;
-	margin-bottom: 50px;
+   width: 96%;
+   margin-bottom: 50px;
 }
 
 .dayoff-write > div:first-child
 {
-	font-weight: bold;
-	font-size: 12pt;
-	margin-top: 30px; margin-bottom: 20px;
+   font-weight: bold;
+   font-size: 12pt;
+   margin-top: 30px; margin-bottom: 20px;
 }
 
 .dayoff-write > div:nth-child(2) > div{
-	width: 32.4%;
+   width: 32.4%;
 }
 
 .dayoff-box{
-	border: solid 1px rgba(0,0,0,.1);
-	border-radius: 12px;
-	height: 150px;
-	display: inline-block;
-	margin-right: 0.33%;
-	padding: 20px 20px;
+   border: solid 1px rgba(0,0,0,.1);
+   border-radius: 12px;
+   height: 150px;
+   display: inline-block;
+   margin-right: 0.33%;
+   padding: 20px 20px;
 }
 
 .dayoff-box:hover{
-	background-color: rgba(200,200,200,.1);
-	transition: all 0.2s;
-	cursor: pointer;
+   background-color: rgba(200,200,200,.1);
+   transition: all 0.2s;
+   cursor: pointer;
 }
 
 .dayoff-box > div {
-	margin-top: 40px;
+   margin-top: 40px;
 }
 
 .dayoff-box > div > div:nth-child(1){
-	font-size: 11pt; 
-	font-weight: 600;
+   font-size: 11pt; 
+   font-weight: 600;
 }
 .dayoff-box > div > div:nth-child(2){
-	font-size: 11pt;
-	color: rgba(0,0,0,.6);
+   font-size: 11pt;
+   color: rgba(0,0,0,.6);
 }
 
 
@@ -658,8 +658,8 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-detail > div > div:nth-child(2),
 .payroll-dateSelect
 {
-	float: right;
-	position: relative; right: 0.25%;
+   float: right;
+   position: relative; right: 0.25%;
 }
 
 .dayoff-record > div > div, .dayoff-record > div > div:nth-child(2) div,
@@ -667,8 +667,8 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mettingroom-date > div > div, .mettingroom-date > div > div:nth-child(2) div,
 .payroll-dateSelect div
 {
-	
-	display: inline-block;
+   
+   display: inline-block;
 }
 
 .dayoff-record > div > div:nth-child(2) div,
@@ -676,9 +676,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mettingroom-date > div > div:nth-child(2) div,
 .payroll-dateSelect div
 {
-	border: solid 1px rgba(0,0,0, .1);
-	border-radius: 5px;
-	height: 30px; width: 30px;
+   border: solid 1px rgba(0,0,0, .1);
+   border-radius: 5px;
+   height: 30px; width: 30px;
 }
 
 .dayoff-record > div > div:nth-child(2) div:hover,
@@ -686,9 +686,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mettingroom-date > div > div:nth-child(2) div:hover,
 .payroll-dateSelect div:hover
 {
-	background-color: rgba(200,200,200, .2);
-	border: solid 1px rgba(0,0,0, .2);
-	cursor: pointer;
+   background-color: rgba(200,200,200, .2);
+   border: solid 1px rgba(0,0,0, .2);
+   cursor: pointer;
 }
 
 .dayoff-record > div > div:nth-child(2) div i,
@@ -696,7 +696,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mettingroom-date > div > div:nth-child(2) div i,
 .payroll-dateSelect div i
 {
-	margin: 7px 0 0 9px;
+   margin: 7px 0 0 9px;
 }
 
 .dayoff-record > div > div input,
@@ -704,46 +704,46 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .mettingroom-date > div > div input,
 .payroll-dateSelect input
 {
-	border: solid 1px rgba(0,0,0, 0.1);
-	font-size: 11pt;
-	border-radius: 5px;
-	height: 30px;
+   border: solid 1px rgba(0,0,0, 0.1);
+   font-size: 11pt;
+   border-radius: 5px;
+   height: 30px;
 }
 
 .dayoff-none{
-	border: solid 1px rgba(0,0,0, 0.1);
-	background-color: rgba(250,250,250,.5);
-	height: 200px; width: 100%;
-	border-radius: 5px;
+   border: solid 1px rgba(0,0,0, 0.1);
+   background-color: rgba(250,250,250,.5);
+   height: 200px; width: 100%;
+   border-radius: 5px;
 }
 
 .dayoff-none{
-	display: flex !important;
+   display: flex !important;
 }
 
 .dayoff-none > div{
-	margin: auto;
-	font-size: 11pt;
-	color: rgba(0,0,0,0.5);
+   margin: auto;
+   font-size: 11pt;
+   color: rgba(0,0,0,0.5);
 }
 
 .dayoff-none > div > i{
-	margin-left : 50px;
+   margin-left : 50px;
 }
 
 .dayoff-exist{
-	width: 100%;
-	border-radius: 10px;
+   width: 100%;
+   border-radius: 10px;
 }
 
 .dayoff-count{
-	color: #37A652;
-	font-size: 12pt; font-weight: bold;
-	margin-left: 3px;
+   color: #37A652;
+   font-size: 12pt; font-weight: bold;
+   margin-left: 3px;
 }
 
 .dayoff-recordtable {
-	width: 100%;
+   width: 100%;
 }
 
 .dayoff-recordtable td:first-child { border-top-left-radius: 10px; }
@@ -752,20 +752,20 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-recordtable td:last-child { border-bottom-right-radius: 10px; }
 
 .dayoff-recordtable tr:hover{
-	background-color: rgba(200,200,200, 0.2);
-	cursor: pointer;
+   background-color: rgba(200,200,200, 0.2);
+   cursor: pointer;
 }
 
 .dayoff-recordtable td{
-	padding: 5px 5px;
-	font-size: 11pt;	
+   padding: 5px 5px;
+   font-size: 11pt;   
 }
 
 .dayoff-recordtable td:first-child > div{
-	border: solid 1px rgba(0,0,0,0.1);
-	border-radius: 10px;
-	background-color : white;
-	padding: 8px 10px;
+   border: solid 1px rgba(0,0,0,0.1);
+   border-radius: 10px;
+   background-color : white;
+   padding: 8px 10px;
 }
 
 .dayoff-line{
@@ -780,137 +780,137 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 
 .dayoff-cntinfo {
-	margin-left: 10px;
-	border-radius: 5px;
-	background-color: #EAE4F2;
-	color: #594673;
-	width: 30px;
-	height: 20px;
-	font-size: 8pt;
-	display: flex;
-	text-align: center;
+   margin-left: 10px;
+   border-radius: 5px;
+   background-color: #EAE4F2;
+   color: #594673;
+   width: 30px;
+   height: 20px;
+   font-size: 8pt;
+   display: flex;
+   text-align: center;
 }
 
 .dayoff-cntinfo > div {opacity: 1; margin: auto;}
 
 .dayoff-more{
-	width: 40px;height: 40px;
-	border-radius: 10px;
+   width: 40px;height: 40px;
+   border-radius: 10px;
 }
 
 .dayoff-more:hover{
-	background-color: rgba(230,230,230,0.5);
+   background-color: rgba(230,230,230,0.5);
 }
 
 
 
 .dayoff-offcanvas {
-	width: 40%;
+   width: 40%;
 }
 
 
 .do-oc-header{
-	float: left;
-	display: inline-block;
-	width: 100%;
-	font-size: 11pt;
-	display: flex;
+   float: left;
+   display: inline-block;
+   width: 100%;
+   font-size: 11pt;
+   display: flex;
 }
 
 .do-oc-header > div{
-	display: inline-block;
+   display: inline-block;
 }
 
 .do-oc-header > div:nth-child(2) {
-	width: 80%;
-	margin-left: 10px;
+   width: 80%;
+   margin-left: 10px;
 }
 
 .do-oc-date{
-	font-size: 8pt;
+   font-size: 8pt;
 }
 
 .do-oc-tablecontainer{
-	margin: 15px 0;
-	border: solid 1px rgba(0,0,0,0.1);
-	border-radius: 10px;
-	font-size: 11pt;
+   margin: 15px 0;
+   border: solid 1px rgba(0,0,0,0.1);
+   border-radius: 10px;
+   font-size: 11pt;
 }
 
 .do-oc-table{
-	width: 100%;
-	margin: 15px 0;
+   width: 100%;
+   margin: 15px 0;
 }
 .do-oc-table td{
-	padding: 6px 20px;
+   padding: 6px 20px;
 }
 
 
 .do-oc-cancel{
-	border: solid 1px #BF2604;
-	border-radius: 10px;
-	height: 40px;
-	color: #BF2604;
-	font-size: 11pt;
-	width: 100px;
-	background-color: white;
-	float: right;
+   border: solid 1px #BF2604;
+   border-radius: 10px;
+   height: 40px;
+   color: #BF2604;
+   font-size: 11pt;
+   width: 100px;
+   background-color: white;
+   float: right;
 }
 
 .do-oc-cancel:hover{
-	background-color: #F2E6E4;
+   background-color: #F2E6E4;
 }
 
 
 
 /* dayoff_detail.jsp */
 .dayoff-detail-container{
-	width: 90%;
+   width: 90%;
 }
 
-.dayoff-subject{	
-	font-weight: bold;
-	font-size: 12pt;
-	margin: 38px 0 20px 0;
+.dayoff-subject{   
+   font-weight: bold;
+   font-size: 12pt;
+   margin: 38px 0 20px 0;
 }
 
 
 .dayoff-detail-sumbox{
-	height: 110px; width: 100%;
-	border: solid 1px rgba(0,0,0,.1);
-	border-radius: 5px;
-	display: flex;
-	padding: 20px 40px;
+   height: 110px; width: 100%;
+   border: solid 1px rgba(0,0,0,.1);
+   border-radius: 5px;
+   display: flex;
+   padding: 20px 40px;
 }
 
 .dayoff-detail-sumbox > div{
-	margin: auto;
+   margin: auto;
 }
 
 
 .dayoff-detail-sumbox > div > div:nth-child(1){
-	height: 13px; width: 2px;
-	display: inline-block;
+   height: 13px; width: 2px;
+   display: inline-block;
 }
 
 .dayoff-detail-sumbox > div > span{
-	font-size: 9pt;	
-	position: relative; bottom: 2px; left: 2px;
+   font-size: 9pt;   
+   position: relative; bottom: 2px; left: 2px;
 }
 
 .dayoff-detail-sumbox > div > div:nth-child(3){
-	font-size: 12pt; font-weight: bold;
+   font-size: 12pt; font-weight: bold;
 }
 
 
 .sumbox-verticalline{
-	height: 109px; width: 1px;
-	background-color: rgba(0,0,0,.1);
-	position: relative; bottom: 20px; 
+   height: 109px; width: 1px;
+   background-color: rgba(0,0,0,.1);
+   position: relative; bottom: 20px; 
 }
 
 .sumbox-verticalline:first-child{
-	position: relative; bottom: 25px;
+   position: relative; bottom: 25px;
 }
 
 .dayoff-plus{color:green;}
@@ -918,45 +918,45 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-minus{color:#BF2604;}
 
 .dayoff-adjustmentbox > table{
-	margin-top: 20px;
-	width: 100%;
-	border-collapse: collapse;
-	border-radius: 5px;
-	border-style: hidden;
-	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-	font-size: 11pt;
+   margin-top: 20px;
+   width: 100%;
+   border-collapse: collapse;
+   border-radius: 5px;
+   border-style: hidden;
+   box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+   font-size: 11pt;
 }
 
 .dayoff-adjustmentbox > table > thead {
-	text-align: right;
+   text-align: right;
 }
 
 .dayoff-adjustmentbox > table > thead > tr{
-	background-color: rgba(250,250,250,.3)
+   background-color: rgba(250,250,250,.3)
 }
 
 .dayoff-adjustmentbox > table > thead > tr > td{
-	padding: 15px 10px;
-	border-right: solid 1px rgba(0,0,0,.1);
-	border-bottom: solid 1px rgba(0,0,0,.1);
+   padding: 15px 10px;
+   border-right: solid 1px rgba(0,0,0,.1);
+   border-bottom: solid 1px rgba(0,0,0,.1);
 }
 
 .dayoff-adjustmentbox > table > tbody > tr > td:first-child ~ td{
-	text-align: right;
+   text-align: right;
 }
 
 .dayoff-adjustmentbox > table > tbody > tr > td{
-	padding: 10px 15px;
-	border-right: solid 1px rgba(0,0,0,.1);
-	border-bottom: solid 1px rgba(0,0,0,.1);
+   padding: 10px 15px;
+   border-right: solid 1px rgba(0,0,0,.1);
+   border-bottom: solid 1px rgba(0,0,0,.1);
 }
 
 .dayoff-adjustmentbox > table > thead > tr > td:first-child {
-	width: 20%;	
+   width: 20%;   
 }
 
 .dayoff-adjustmentbox > table > thead > tr > td:first-child ~ td {
-	width: auto;
+   width: auto;
 }
 
 
@@ -965,255 +965,255 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 /* meetingroom-1.jsp */
 .mettingroom-container{
-	width: 90%;
+   width: 90%;
 }
 
 .meetingroom-info{
-	margin: 0 0 10px 0;
-	border: solid 1px rgba(0,0,0, 0.1);
-	background-color: rgba(250,250,250,.5);
-	height: 100px;
-	width: 100%;
-	border-radius: 5px;
-	padding: 20px 20px;
-	color: rgba(0,0,0,0.5);
-	font-size: 11pt;
+   margin: 0 0 10px 0;
+   border: solid 1px rgba(0,0,0, 0.1);
+   background-color: rgba(250,250,250,.5);
+   height: 100px;
+   width: 100%;
+   border-radius: 5px;
+   padding: 20px 20px;
+   color: rgba(0,0,0,0.5);
+   font-size: 11pt;
 }
 .meetingroom-info > div{
-	font-size: 9pt;
+   font-size: 9pt;
 }
 
 .mettingroom-date {
-	margin: 30px 0;
+   margin: 30px 0;
 }
 
 .mettingroom-date > div > div:first-child {
-	font-weight: bold;
+   font-weight: bold;
 }
 
 .mettingroom-date > div > div:nth-child(2) {
-	float: right;
+   float: right;
 }
 
 .mettingroom-date > div > div > input {
-	position: relative; bottom: 1px;
+   position: relative; bottom: 1px;
 }
 
 
 .meetingroom-offcanvas{
-	width: 40%;
+   width: 40%;
 }
 
 .meetingroom-offcanvas-body > table {
-	font-size: 11pt;
-	border-collapse: collapse;
-	border-radius: 5px;
-	border-style: hidden;
-	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-	width : 100%;
+   font-size: 11pt;
+   border-collapse: collapse;
+   border-radius: 5px;
+   border-style: hidden;
+   box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+   width : 100%;
 }
 
 .meetingroom-offcanvas-body > table td{
-	padding: 10px 20px;
+   padding: 10px 20px;
 }
 
 
 .meetingroom-allday-chx, meetingroom-annonymous-chx{
-	margin-left: 5px;
-	border: solid 1px rgba(0,0,0, 0.2) !important;
-	border-radius: 5px !important;
-	width: 13px;
-	position: relative; top: 15px;
+   margin-left: 5px;
+   border: solid 1px rgba(0,0,0, 0.2) !important;
+   border-radius: 5px !important;
+   width: 13px;
+   position: relative; top: 15px;
 }
 
 .meetingroom-allday-chx ~ label {
-	font-size: 9pt;
+   font-size: 9pt;
 }
 
 .meetingrrom-purpose{
-	width: 100%;
+   width: 100%;
 }
 
 
 
 .mr-write-container{
-	font-size: 11pt;
-	margin: 30px 0;
+   font-size: 11pt;
+   margin: 30px 0;
 }
 
 .mr-write-container > div:first-child ~ div{
 }
 
 .mr-write-container > div:nth-child(2) {
-	border: solid 1px rgba(0, 0, 0, .1);
-	border-radius: 5px;
-	width: 90%; height: 40px;
-	padding: 0 2%;
-	margin: 10px 0;
+   border: solid 1px rgba(0, 0, 0, .1);
+   border-radius: 5px;
+   width: 90%; height: 40px;
+   padding: 0 2%;
+   margin: 10px 0;
 }
 
 .mr-write-container > div:nth-child(2) > div{
-	width: 45%;
+   width: 45%;
 }
 
 .mr-write-container > div:nth-child(2) input{
-	border: none;
-	width: 100%; height: 36px;
+   border: none;
+   width: 100%; height: 36px;
 }
 
 
 .mr-write-container > div:nth-child(2) div {
-	display: inline-block;
+   display: inline-block;
 }
 
 .mr-writedetail-container > div:nth-child(2){
-	border: solid 1px rgba(0, 0, 0, .1);
-	border-radius: 5px;
-	width: 100%; height: 100px;
-	padding: 0 2%;
-	margin: 10px 0;
+   border: solid 1px rgba(0, 0, 0, .1);
+   border-radius: 5px;
+   width: 100%; height: 100px;
+   padding: 0 2%;
+   margin: 10px 0;
 }
 
 
 .mr-writemessage-container{
-	width: 100%;
-	margin: 15px 0;
+   width: 100%;
+   margin: 15px 0;
 }
 
 .mr-write-allday-container{
-	display: flex;
-	width: 7%;
-	position: absolute;
-	left: 88%; top: 37%;
-	font-size: 9pt;
+   display: flex;
+   width: 7%;
+   position: absolute;
+   left: 88%; top: 37%;
+   font-size: 9pt;
 }
 
 .mr-write-allday-container > label{
-	position: relative; top: 6px; margin-left: 2px;	
+   position: relative; top: 6px; margin-left: 2px;   
 }
 
 
 .mr-write{
-	width: 100%;
-	height: 80px !important;
-	font-size: 11pt;
-	padding: 10px;
-	vertical-align: baseline;
-	resize: none;
-	border: solid 1px rgba(0,0,0,0.1);
-	border-radius: 5px;
+   width: 100%;
+   height: 80px !important;
+   font-size: 11pt;
+   padding: 10px;
+   vertical-align: baseline;
+   resize: none;
+   border: solid 1px rgba(0,0,0,0.1);
+   border-radius: 5px;
 }
 
 
 
 /* payroll.jsp */
 .payroll-dateSelect{
-	position: absolute; top: 60px; right: 4%;
+   position: absolute; top: 60px; right: 4%;
 }
 
 
 .payroll-container {
-	width: 90%;
-	margin-left: 5%;
-	margin-right: 4%;
+   width: 90%;
+   margin-left: 5%;
+   margin-right: 4%;
 }
 
 .payroll-none{
-	border: solid 1px rgba(0,0,0, 0.1);
-	border-radius: 5px;
-	width: 100%; height: 200px;
-	display: flex;
-	font-size: 11pt;
-	background-color: rgba(250,250,250, 0.5);
-	color: rgba(0,0,0,0.5);
+   border: solid 1px rgba(0,0,0, 0.1);
+   border-radius: 5px;
+   width: 100%; height: 200px;
+   display: flex;
+   font-size: 11pt;
+   background-color: rgba(250,250,250, 0.5);
+   color: rgba(0,0,0,0.5);
 }
 
 .payroll-none > div {
-	margin: auto;
+   margin: auto;
 }
 
 .payroll-none > div > i {
-	margin-left: 50px;
+   margin-left: 50px;
 }
 
 .payroll-index{
-	display: flex;
+   display: flex;
 }
 
 .payroll-index > div{
-	display: inline-block;
+   display: inline-block;
 }
 
 .payroll-index > div:nth-child(1){
-	font-size: 15pt; font-weight: bold;
-	position: relative; bottom: 5px;
+   font-size: 15pt; font-weight: bold;
+   position: relative; bottom: 5px;
 }
 
 .payroll-index > div:nth-child(2){
-	height: 25px; width: 1px;
-	background-color: rgba(0,0,0,0.1);
-	margin: 0 10px;
+   height: 25px; width: 1px;
+   background-color: rgba(0,0,0,0.1);
+   margin: 0 10px;
 }
 
 .payroll-index > div:nth-child(3){
-	font-size: 8pt;
+   font-size: 8pt;
 }
 
 
 .payroll-download{
-	border: solid 1px rgba(0,0,0, 0.1);
-	padding: 5px 15px;
-	border-radius: 10px;
-	position:relative; left: 10%; bottom: 10%;
+   border: solid 1px rgba(0,0,0, 0.1);
+   padding: 5px 15px;
+   border-radius: 10px;
+   position:relative; left: 10%; bottom: 10%;
 }
 
 .payroll-download:hover{
-	background-color: rgba(240,240,240, 0.5);
-	border: solid 1px rgba(0,0,0, 0.3);
-	cursor: pointer;
+   background-color: rgba(240,240,240, 0.5);
+   border: solid 1px rgba(0,0,0, 0.3);
+   cursor: pointer;
 }
 
 
 .payroll-download > div{
-	display: inline-block;
-	font-size: 10pt;
+   display: inline-block;
+   font-size: 10pt;
 }
 
 
 .payroll-detail{
-	font-size: 11pt;
+   font-size: 11pt;
 }
 
 .payroll-payment, .payroll-payment2, .payroll-deduction{
-	margin-bottom: 30px;
+   margin-bottom: 30px;
 }
 
 .payroll-payment > div:last-child{
-	float: right;
+   float: right;
 }
 
 .payroll-payment > div:first-child ~ div{
-	position: relative; top: 13px;
+   position: relative; top: 13px;
 }
 
 .payroll-payment > div, .payroll-payment2 > div > div,
 .payroll-deduction > div > div,
 .payroll-statistics > div > div
 {
-	display: inline-block;
+   display: inline-block;
 }
 
 
 .payroll-payment2 > div {
-	display: inline-block;
-	width: 100%;
-	margin: 0;
+   display: inline-block;
+   width: 100%;
+   margin: 0;
 }
 
 .payroll-payment2 > div > div, .payroll-payment2 > div > div > hr,
 .payroll-deduction > div > div, .payroll-deduction > div > div > hr
 {
-	margin: 0;
+   margin: 0;
 }
 
 
@@ -1222,20 +1222,20 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .payroll-statistics > div > div:nth-child(1),
 .payroll-payment > div:nth-child(1)
 {
-	width: 13%;
+   width: 13%;
 }
 
 .payroll-payment2 > div > div:nth-child(2),
 .payroll-deduction > div > div:nth-child(2),
 .payroll-payment > div:nth-child(2)
 {
-	width: 65.7%;
+   width: 65.7%;
 }
 
 .payroll-payment2 > div > div:nth-child(3),
 .payroll-deduction > div > div:nth-child(3),
 .payroll-payment > div:last-child{
-	width: 20%;
+   width: 20%;
 }
 
 
@@ -1245,7 +1245,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .payroll-payment2 > div:first-child > div:last-child,
 .payroll-deduction > div:first-child > div:last-child
 {
-	text-align: right;
+   text-align: right;
 }
 
 
@@ -1259,17 +1259,17 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 {width: 40%;}
 
 .payroll-detail-table td:last-child, .payroll-payment > div:last-child {
-	text-align: right;
+   text-align: right;
 }
 
 .payroll-detail-table td{
-	border-bottom: solid 1px rgba(0,0,0,0.1);
-	padding: 15px 10px 5px 10px;
+   border-bottom: solid 1px rgba(0,0,0,0.1);
+   padding: 15px 10px 5px 10px;
 }
 
 .payroll-detail-table td[rowspan]{
-	border: none !important;
-	padding: 10px 0 !important;
+   border: none !important;
+   padding: 10px 0 !important;
 }
 
 
@@ -1277,22 +1277,22 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .payroll-statistics table {height: 90px;}
 
 .payroll-st-graph > div{
-	float: right;
-	border: solid 1px rgba(0,0,0,0.1);
-	border-radius: 10px;
-	background-color: rgba(240,240,240, 0.1);
-	margin-bottom: 20px;
-	font-size: 8pt;
-	color: rgba(0,0,0, 0.5);
+   float: right;
+   border: solid 1px rgba(0,0,0,0.1);
+   border-radius: 10px;
+   background-color: rgba(240,240,240, 0.1);
+   margin-bottom: 20px;
+   font-size: 8pt;
+   color: rgba(0,0,0, 0.5);
 }
 
 .payroll-st-graph > div:nth-child(1), .payroll-st-graph > div:nth-child(2) {
-	margin-right : 0.5%;
+   margin-right : 0.5%;
 }
 
 .payroll-st-graph > div:nth-child(2), .payroll-st-graph > div:nth-child(3) {
-	height: 150px;
-	margin-bottom: 100px;
+   height: 150px;
+   margin-bottom: 100px;
 }
 
 .payroll-st-graph > div:first-child{width: 80% !important;}
@@ -1300,105 +1300,105 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .payroll-st-graph > div:nth-child(3){width: 37% !important;}
 
 .payroll-st-total, .payroll-st-payment, .payroll-st-deduction {
-	padding: 10px 30px;	
+   padding: 10px 30px;   
 }
 
 .payroll-st-total > div:first-child ~ div{
-	display: inline-block;
-	width: 49.5%;
+   display: inline-block;
+   width: 49.5%;
 }
 
 .payroll-st-total > div:nth-child(3){
-	text-align: right;
+   text-align: right;
 }
 
 .payroll-st-deduction {
-	margin-right: 6%;
+   margin-right: 6%;
 }
 
 
 .payroll-st-totalbar{
-	width: 100%; height: 10px;
-	margin: 10px auto;
-	background-color: green;
-	border-radius: 10px;
+   width: 100%; height: 10px;
+   margin: 10px auto;
+   background-color: green;
+   border-radius: 10px;
 }
 
 
 .payroll-circle-graph{
-	height: 80px; width: 10%;
-	background-color: green;
+   height: 80px; width: 10%;
+   background-color: green;
 }
 
 
 .payroll-subject{
-	font-size: 14pt;
-	font-weight: bold;
-	z-index: 9999;
+   font-size: 14pt;
+   font-weight: bold;
+   z-index: 9999;
 }
 
 .payroll-sub{
-	font-size: 9pt;
-	color: rgba(0,0,0, 0.5);
+   font-size: 9pt;
+   color: rgba(0,0,0, 0.5);
 }
 
 
 .subject-underline{
-	height: 10px;
-	opacity: 0.6;
-	position: relative; bottom: 9px;
-	z-index: -1;
+   height: 10px;
+   opacity: 0.6;
+   position: relative; bottom: 9px;
+   z-index: -1;
 }
 
 
 .paryoll-exist-list{
-	margin-top: 30px;
+   margin-top: 30px;
 }
 
 .pr-table {
-	font-size: 11pt;
+   font-size: 11pt;
 }
 
 .pr-table tr:hover {
-	background-color: rgba(242, 242, 242, .5);
-	cursor: pointer;
+   background-color: rgba(242, 242, 242, .5);
+   cursor: pointer;
 }
 
 .pr-table td:first-child{
-	font-weight: bold;
+   font-weight: bold;
 }
 .pr-table td:first-child ~ td{
-	color: rgba(0,0,0,0.4);
-	font-size: 9pt;
-	font-weight: bold;
+   color: rgba(0,0,0,0.4);
+   font-size: 9pt;
+   font-weight: bold;
 }
 
 .pr-table td:nth-child(2) ~ td {
-	text-align: center;
+   text-align: center;
 }
 
 .pr-table td:last-child{
-	font-size: 10pt;
-	color: rgba(0,0,0,0.5);
+   font-size: 10pt;
+   color: rgba(0,0,0,0.5);
 }
 
 .pr-table td{
-	padding: 25px 10px;
-	border-bottom: solid 1px rgba(0,0,0,0.1);
+   padding: 25px 10px;
+   border-bottom: solid 1px rgba(0,0,0,0.1);
 }
 
 
 .pr-table td:nth-child(2) ~ td > span{
-	color: #4d4f53;
-	font-weight: normal;
+   color: #4d4f53;
+   font-weight: normal;
 }
 
 .pr-table td:nth-child(2) ~ td > span > span{
-	margin-left: 15px;
+   margin-left: 15px;
 }
 
 .pr-table td:nth-child(5) > span{
-	font-size: 11pt;
+   font-size: 11pt;
 }
 
 
@@ -1407,386 +1407,386 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 /* message_recieve.jsp */
 
 .message-container{
-	width: 95%;
-	font-size: 11pt;
+   width: 95%;
+   font-size: 11pt;
 }
 
 .message-container > div{
-	height: 600px;
+   height: 600px;
 }
 
 .message-container > div:first-child {
-	float: left;
-	width: 40%;
+   float: left;
+   width: 40%;
 }
 .message-container > div:nth-child(2) {
-	float: right;
-	width: 60%;
+   float: right;
+   width: 60%;
 }
 
 .mg-left-container{
-	border-right: solid 1px rgba(0,0,0,0.1);
+   border-right: solid 1px rgba(0,0,0,0.1);
 }
 
 .mgList-info{
-	padding: 10px 0;
-	margin-left: 13%;
-	color: #777777;
+   padding: 10px 0;
+   margin-left: 13%;
+   color: #777777;
 }
 
 #mg-filter{ 
-	float: right;
-	margin-right: 3%;
-	color: rgba(0,0,0,0.6);
-	border-radius: 5px;
-	padding: 6px 0 6px 10px;
-	font-size: 9pt;
-	font-weight: bold;
+   float: right;
+   margin-right: 3%;
+   color: rgba(0,0,0,0.6);
+   border-radius: 5px;
+   padding: 6px 0 6px 10px;
+   font-size: 9pt;
+   font-weight: bold;
 }
 
 #mg-filter:hover{
-	background-color: rgba(230,230,230,0.4);
-	cursor: pointer;
+   background-color: rgba(230,230,230,0.4);
+   cursor: pointer;
 }
 
 .mg-search{
-	display: inline-block;
-	float: right;
-	width: 53%;
+   display: inline-block;
+   float: right;
+   width: 53%;
 }
 
 .mg-form{
-	display: flex;
+   display: flex;
 }
 
 .mg-form .form-control {
-	
-	
+   
+   
 }
 
 .mgList-info > span{
-	display: inline-block;
-	margin-right: 10px;
-	padding: 5px 10px;
-	font-size: 10pt;
-	font-weight: 600;
+   display: inline-block;
+   margin-right: 10px;
+   padding: 5px 10px;
+   font-size: 10pt;
+   font-weight: 600;
 }
 
 .mgList-info > span:hover{
-	background-color: rgba(230,230,230, 0.4);
-	border-radius: 5px;
-	cursor: pointer;
+   background-color: rgba(230,230,230, 0.4);
+   border-radius: 5px;
+   cursor: pointer;
 }
 
 
 .mgList-info > span > span {
-	margin-left: 1px;
-	color: #4285f4;
-	font-weight: bold;
+   margin-left: 1px;
+   color: #4285f4;
+   font-weight: bold;
 }
 
 /* 
 .mg-selectchx + label{
-	border: solid 2px rgba(0,0,0,0.1);
-	border-radius: 5px;
-	width: 20px; height: 20px;
-	position: relative; top: 4px;
-	background-color: white;
+   border: solid 2px rgba(0,0,0,0.1);
+   border-radius: 5px;
+   width: 20px; height: 20px;
+   position: relative; top: 4px;
+   background-color: white;
 }
 
 .mg-selectchx + label:hover{
-	cursor: pointer;
+   cursor: pointer;
 }
 
 .mg-selectchx:checked + label{
-	background-color: #37A652;
-	transition: all 0.3s;
+   background-color: #37A652;
+   transition: all 0.3s;
 }
 
 .mg-selectchx:checked + label > i{
-	display: inherit;
-	position: relative; top: 2px; left: 1px;
+   display: inherit;
+   position: relative; top: 2px; left: 1px;
 }
 .mgList-contents .mg-selectchx:checked + label > i{
-	top: -3px; left: 2px;
+   top: -3px; left: 2px;
 }
  */
 
 
 .mg-selectchx-all ~ div.mg-noncheckmenu {
-	display: none;
-	transition: all 0.3s;
+   display: none;
+   transition: all 0.3s;
 }
 
 
 .mgList{
-	margin-left: 13%;
-	margin-top: 3%;
+   margin-left: 13%;
+   margin-top: 3%;
 }
 
 .mgList-menu {
-	display: flex;
+   display: flex;
 }
 
 .mgList-menu > div {
-	width: 100%;
+   width: 100%;
 }
 
 .mg-noncheckmenu > span {
-	position: relative; top: 3px;
+   position: relative; top: 3px;
 }
 
 .mg-noncheckmenu > span:first-child{
-	margin-left: 3%;
+   margin-left: 3%;
 }
 
 .mg-noncheckmenu > span:nth-child(2){
-	margin: 0 0.5%;
+   margin: 0 0.5%;
 }
 
 
 
 .mg-checkmenu {
-	display: flex;
-	margin-left: 3%;
-	width: 90%;
+   display: flex;
+   margin-left: 3%;
+   width: 90%;
 }
 
 .mg-checkmenu > button{
-	width: 30px; height: 30px;
-	background-color: white;
-	border: solid 1px rgba(0,0,0,0.1);
-	border-radius: 5px;
-	padding: 8px 10px;
-	color: rgba(0,0,0,0.7);
-	margin-right: 5px;
+   width: 30px; height: 30px;
+   background-color: white;
+   border: solid 1px rgba(0,0,0,0.1);
+   border-radius: 5px;
+   padding: 8px 10px;
+   color: rgba(0,0,0,0.7);
+   margin-right: 5px;
 }
 
 .mg-checkmenu > button:hover {
-	background-color: rgba(230,230,230,0.4);
-	cursor: pointer;
+   background-color: rgba(230,230,230,0.4);
+   cursor: pointer;
 }
 
 
 .mg-checkmenu > button > i {
-	position: relative; bottom: 5px; right: 3px;
+   position: relative; bottom: 5px; right: 3px;
 }
 
 .mg-checkmenu > span {
-	margin: auto 0;
-	margin-left: auto;
-	color: #4285f4;
-	font-weight: 600;
+   margin: auto 0;
+   margin-left: auto;
+   color: #4285f4;
+   font-weight: 600;
 }
 
 
 .mgList-contents{
-	height: 400px;
-	overflow-y: auto;
+   height: 400px;
+   overflow-y: auto;
 }
 
 .mgList-contents table {
-	width: 95%;
+   width: 95%;
 }
 
 .mgList-contents td:nth-child(3) > div:first-child > span:first-child{
-	font-size: 11pt;
-	font-weight: bold;
-	margin-right: 5px;
+   font-size: 11pt;
+   font-weight: bold;
+   margin-right: 5px;
 }
 
 
 .mgList-contents tr:hover {
-	background-color: rgba(230,230,230, 0.4);
-	cursor: pointer;
+   background-color: rgba(230,230,230, 0.4);
+   cursor: pointer;
 }
 
 .mgList-contents td:first-child {
-	border-bottom: solid 1px rgba(0,0,0,0.1);
-	padding-right: 10px;
+   border-bottom: solid 1px rgba(0,0,0,0.1);
+   padding-right: 10px;
 }
 
 .mgList-contents td:last-child{
-	text-align: right;
+   text-align: right;
 }
 
 .mgList-contents td:first-child ~ td{
-	border-bottom: solid 1px rgba(0,0,0,0.1);
-	padding: 15px 10px;
+   border-bottom: solid 1px rgba(0,0,0,0.1);
+   padding: 15px 10px;
 }
 
 
 .mgList-contents td div{
-	font-size: 9pt;
+   font-size: 9pt;
 }
 
 #check-star+ label > i{
-	font-size: 15pt; color: rgba(0,0,0,.1);
-	position: relative; top: 2px;
+   font-size: 15pt; color: rgba(0,0,0,.1);
+   position: relative; top: 2px;
 }
 
 .mg-unread{
-	color: #4d4f53 !important;
-	font-weight: 500 !important;
+   color: #4d4f53 !important;
+   font-weight: 500 !important;
 }
 
 .mg-read {
-	color: #D2D6D9 !important;
-	font-weight: 500 !important;
+   color: #D2D6D9 !important;
+   font-weight: 500 !important;
 }
 
 
 
 /* message_content.jsp */
 .mgc-container{
-	width: 95%;
-	margin-left: 2.5%;
-	margin-top: 3%;
-	color: #4d4f53;
+   width: 95%;
+   margin-left: 2.5%;
+   margin-top: 3%;
+   color: #4d4f53;
 }
 
 .mgc-header{
-	margin-bottom: 20px;
-	display: flex;
+   margin-bottom: 20px;
+   display: flex;
 }
 
 .mgc-header-left{
-	float: left;
-	width: 75%;
+   float: left;
+   width: 75%;
 }
 .mgc-header-right{
-	float: right;
-	width: 25%;
-	text-align: right;
+   float: right;
+   width: 25%;
+   text-align: right;
 }
 
 .mgc-writebtn{
-	border: none;
-	border-radius: 10px;
-	color: white;
-	height: 40px;
-	width: 110px;
-	font-weight: 600;
+   border: none;
+   border-radius: 10px;
+   color: white;
+   height: 40px;
+   width: 110px;
+   font-weight: 600;
 }
 
 .mgc-writebtn > span{
-	margin-right: 5px;
+   margin-right: 5px;
 }
 
 .mgc-subject > span {
-	font-size: 18pt;
+   font-size: 18pt;
 }
 
 .mgc-subject > span:first-child{
-	color: rgba(0,0,0,0.1);
-	position: relative; top: 2px;
+   color: rgba(0,0,0,0.1);
+   position: relative; top: 2px;
 }
 
 .mgc-subject > span:nth-child(2){
-	font-weight: 700;
-	margin-left: 10px;
+   font-weight: 700;
+   margin-left: 10px;
 }
 
 .mgc-subject > span:last-child {
-	font-size: 15pt;
-	margin-left: 20px;
+   font-size: 15pt;
+   margin-left: 20px;
 }
 
 .mgc-people {
-	display: flex;
-	margin-left: 8%;
-	margin-top: 10px;
+   display: flex;
+   margin-left: 8%;
+   margin-top: 10px;
 }
 
 .mgc-people > div:first-child{
-	margin-right: 20px;
-	font-weight: 700;
+   margin-right: 20px;
+   font-weight: 700;
 }
 
 
 .mgc-to {
-	margin-top: 5px;
+   margin-top: 5px;
 }
 
 #mgc-date {
-	margin-top: 10px;
-	color: rgba(0,0,0,0.7);
+   margin-top: 10px;
+   color: rgba(0,0,0,0.7);
 }
 
 .mgc-content {
-	height: 250px;
-	padding: 20px 0 20px 5%;
+   height: 250px;
+   padding: 20px 0 20px 5%;
 }
 
 .mgc-ac {
-	margin-left: 3%;
-	font-size: 10pt !important;
-	color: #4d4f53;
+   margin-left: 3%;
+   font-size: 10pt !important;
+   color: #4d4f53;
 }
 
 .mgc-ac button {
-	font-size: 11pt !important;
+   font-size: 11pt !important;
 }
 
 .mgc-ac button > div > span {
-	font-weight: 700;
+   font-weight: 700;
 }
 
 .mgc-ac button > div:first-child{
-	margin-right: 5px;
+   margin-right: 5px;
 }
 
 .mgc-ac .accordion-body {
-	padding: 0.25rem 2.25rem;
+   padding: 0.25rem 2.25rem;
 }
 
 .mgc-ac-content > div > span:first-child{
-	margin-right: 5px;
+   margin-right: 5px;
 }
 
 .mgc-ac-content > div {
-	padding: 10px 5px;
+   padding: 10px 5px;
 }
 
 .mgc-ac-content > div:hover {
-	cursor: pointer;
+   cursor: pointer;
 }
 
 .mgc-ac-content > div:hover > span:nth-child(2) {
-	text-decoration: underline;
+   text-decoration: underline;
 }
 
 .mgc-ac-ref > div > span:nth-child(2) {
-	display: inline-block;
-	width: 65%;
+   display: inline-block;
+   width: 65%;
 }
 
 .mgc-ac-ref > div > span:nth-child(3) {
-	font-size: 9pt;
-	color: rgba(0,0,0,0.7);
+   font-size: 9pt;
+   color: rgba(0,0,0,0.7);
 }
 
 
 .mgc-header-attach {
-	font-size: 15pt;
+   font-size: 15pt;
 }
 
 .mg-write{
-	float: right;
-	position: absolute; top: 6%; right: 5.5%;
+   float: right;
+   position: absolute; top: 6%; right: 5.5%;
 }
 
 .mg-writebtn{
-	border-radius: 10px;
-	height: 45px;
-	width: 140px;
-	border: none;
-	color: white;
-	font-weight: 600;
+   border-radius: 10px;
+   height: 45px;
+   width: 140px;
+   border: none;
+   color: white;
+   font-weight: 600;
 }
 
 .mg-writebtn > span:first-child {
-	margin-right: 5px;
+   margin-right: 5px;
 }
 
 
@@ -1796,16 +1796,16 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 .mgList-contents::-webkit-scrollbar-thumb {
     height: 30%; /* 스크롤바의 길이 */
-	background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
+   background-color: rgba(0,0,0, 0.3);  /* 스크롤바의 색상 */
     border-radius: 10px;
 }
 
 .mgList-contents::-webkit-scrollbar-track {
-	background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
+   background-color: rgba(242, 242, 242); /*스크롤바 뒷 배경 색상*/
 }
 
 .mg-now {
-	background-color: rgba(230,230,230, 0.4);
+   background-color: rgba(230,230,230, 0.4);
 }
 
 
@@ -1814,260 +1814,259 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 
 /* message_write.jsp */
 .mw-top, .mw-bottom{
-	margin-left: 5%;
-	width: 90%;
+   margin-left: 5%;
+   width: 90%;
 }
 
 .mw-container{
-	font-size: 11pt;
-	font-weight: 600;
+   font-size: 11pt;
+   font-weight: 600;
 }
 
 .mw-top-1 > span{
-	display: inline-block;
+   display: inline-block;
 }
 
 .mw-top-1 > span:first-child {
-	margin-right: 5px;
-	position: relative; bottom: 1px;
-	
+   margin-right: 5px;
+   position: relative; bottom: 1px;
+   
 }
 
 .mw-top-1 > span:first-child > i{
-	display: inline-block;
-	padding: 5px 10px;
-	border-radius: 5px;
+   display: inline-block;
+   padding: 5px 10px;
+   border-radius: 5px;
 }
 
 
 .mw-top-1 > span:first-child > i:first-child:hover{
-	background-color: rgba(230,230,230,0.4);
-	cursor: pointer;
+   background-color: rgba(230,230,230,0.4);
+   cursor: pointer;
 }
 
 
 .mw-top-right > span{
-	margin-left: 5px;
+   margin-left: 5px;
 }
 
 .mw-top-right > span > button{
-	border: none;
-	border-radius: 10px;
-	width: 70px;
-	height: 40px;
-	font-weight: 500;
+   border: none;
+   border-radius: 10px;
+   width: 70px;
+   height: 40px;
+   font-weight: 500;
 }
 
 #mw-cancel{
-	border: solid 1px rgba(0,0,0,0.1);
-	background-color: white;
-	color: rgba(0,0,0,0.7);
+   border: solid 1px rgba(0,0,0,0.1);
+   background-color: white;
+   color: rgba(0,0,0,0.7);
 }
 
 
 #mw-send{
-	width: 95px;
-	color: white;
-	font-weight: 700;
+   width: 95px;
+   color: white;
+   font-weight: 700;
 }
 
 #mw-send > span:first-child{
-	margin-right: 5px;
+   margin-right: 5px;
 }
 
 #mw-book{
-	border: solid 1px #2E83F2;
-	background-color: white;
-	color: #2E83F2;
+   border: solid 1px #2E83F2;
+   background-color: white;
+   color: #2E83F2;
 }
 
 #mw-book:hover{
-	background-color: #E7F1FF;
+   background-color: #E7F1FF;
 }
 
 .mw-bottom {
-	margin-top: 20px;
+   margin-top: 20px;
 }
 
 .mw-table td{
-	padding: 8px 10px;
+   padding: 8px 10px;
 }
 
 .mw-table td:first-child{
-	padding-top: 10px;
-	color: #444444;
+   padding-top: 10px;
+   color: #444444;
 }
 
 #mw-to, #mw-subject {
-	width: 100%;
-	border: none;
-	border-bottom: solid 1px rgba(0,0,0,0.1);
-	height: 35px;
-	padding: 0 5px;
+   width: 100%;
+   border: none;
+   border-bottom: solid 1px rgba(0,0,0,0.1);
+   height: 35px;
+   padding: 0 5px;
 }
 
 #mw-to:focus, #mw-subject:focus{
-	outline: none;
+   outline: none;
 }
 
 #mw-address{
-	height: 35px;
-	width: 65px;
-	font-size: 10pt;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	background-color: #4285f4;
+   height: 35px;
+   width: 65px;
+   font-size: 10pt;
+   color: white;
+   border: none;
+   border-radius: 5px;
+   background-color: #4285f4;
 }
 
 
 .mr-date {
-	font-size: 10pt;
-	padding: 10px 20px;
-	width: 140px;
-	height: 35px;
+   font-size: 10pt;
+   padding: 10px 20px;
+   width: 140px;
+   height: 35px;
 }
 
 .mr-downarrow{
-	font-size: 9pt;
-	position: absolute;
-	top: 118px; right: 5.5%;
+   font-size: 9pt;
+   position: absolute;
+   top: 118px; right: 5.5%;
 }
 
 
 .ad-downarrow{
-	position: relative;
-	right: 18%;
-	font-size: 9pt;
-	bottom: 2px;
+   position: relative;
+   right: 18%;
+   font-size: 9pt;
+   bottom: 2px;
 }
 
 .timeSelector{
-	border: none;
-	width: 100px;
-	height: 30px;
-	margin: auto;
+   border: none;
+   width: 100px;
+   height: 30px;
+   margin: auto;
 }
 
 
 .dayoff-datepicker{
-	width: 110px;
-	padding: 0 15px;
-	font-size: 10pt;
-	
+   width: 110px;
+   padding: 0 15px;
+   font-size: 10pt;
+   
 }
 
 .dayoff-datepicker + i {
-	font-size: 9pt;
-	position: relative;
-	right: 28px; bottom: 1px;
-	
+   font-size: 9pt;
+   position: relative;
+   right: 28px; bottom: 1px;
+   
 }
 /* 
 .do-more-cancel {
-	border: solid 1px rgba(0,0,0,0.1);
-	background-color: white;
-	height: 40px;
-	width: 120px;
-	color: #BF2604;
-	font-weight: 600;
-	border-radius: 10px;
-	display: flex;
-	box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
-	display: none;
+   border: solid 1px rgba(0,0,0,0.1);
+   background-color: white;
+   height: 40px;
+   width: 120px;
+   color: #BF2604;
+   font-weight: 600;
+   border-radius: 10px;
+   display: flex;
+   box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+   display: none;
 }
 
 .do-more-cancel > div{
-	margin: 3px auto;
-	width: 100px;
-	text-align: center;
-	padding: 5px 0;
+   margin: 3px auto;
+   width: 100px;
+   text-align: center;
+   padding: 5px 0;
 }
  */
 
 .dayoff-more{
-	padding: 8px 18px;
-	border: solid 1px rgba(0,0,0,0.1);
-	background-color: white;
-	height: 40px;
-	width: 120px;
-	color: #BF2604;
-	font-weight: 600;
-	border-radius: 10px;
-	display: flex;
-	box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
-	opacity: 0;
-	transition: all 0.2s;
-	z-index: 9999;
+   padding: 8px 18px;
+   border: solid 1px rgba(0,0,0,0.1);
+   background-color: white;
+   height: 40px;
+   width: 120px;
+   color: #BF2604;
+   font-weight: 600;
+   border-radius: 10px;
+   display: flex;
+   box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+   opacity: 0;
+   transition: all 0.2s;
+   z-index: 9999;
 }
 
 #ss-input{
-	border: none;
-	width: 385px;
-	padding: 10px 20px;
-	height: 35px;
-	font-weight: 500;
-	color: rgba(0,0,0,0.8);
-		
+   border: none;
+   width: 385px;
+   padding: 10px 20px;
+   height: 35px;
+   font-weight: 500;
+   color: rgba(0,0,0,0.8);
+      
 }
 
 #ss-input:focus{
-	outline: none;
+   outline: none;
 }
 
 .ss-table{
-	width: 100%;
-	font-weight: 600;
-	font-size: 10pt;
+   width: 100%;
+   font-weight: 600;
+   font-size: 10pt;
 }
 
 .ss-table td {
-	padding: 10px 15px;
+   padding: 10px 15px;
 }
 
 .ss-table tr:hover, .sse-container tr:not(.not-active):hover{
-	background-color: rgba(230,230,230, 0.4);
-	transition: all 0.1s;
-	cursor: pointer;
-	border-radius: 5px;
+   background-color: rgba(230,230,230, 0.4);
+   transition: all 0.1s;
+   cursor: pointer;
+   border-radius: 5px;
 }
 
 .ss-table td:last-child, .sse-container td:last-child > i{
-	color: rgba(0,0,0,0.3);
-	font-size: 8pt;
-	display: none;
+   color: rgba(0,0,0,0.3);
+   font-size: 8pt;
+   display: none;
 }
 
 
 
 .sse-container {
-	font-size: 10pt;
-	font-weight: 500;
+   font-size: 10pt;
+   font-weight: 500;
 }
 
 .sse-container table{
-	margin-bottom: 15px;
-	width: 100%;
+   margin-bottom: 15px;
+   width: 100%;
 }
 
 .sse-container td {
-	padding: 5px 10px;
+   padding: 5px 10px;
 }
 
 .sse-container td div:last-child {
-	font-size: 9pt;
-	color: rgba(0,0,0,0.5);
+   font-size: 9pt;
+   color: rgba(0,0,0,0.5);
 }
 
 .sse-container tr:first-child {
-	font-size: 9pt;
-	color: rgba(0,0,0,0.7);
-	font-weight: 600;
+   font-size: 9pt;
+   color: rgba(0,0,0,0.7);
+   font-weight: 600;
 }
 
 
 .page-link{
-	color: #4d4f53 !important;
-	
+   color: #4d4f53 !important;
+   
 }
-

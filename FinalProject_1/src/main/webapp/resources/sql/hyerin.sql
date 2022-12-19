@@ -1599,8 +1599,10 @@ where signdate is null and fk_sign_empno = 100021
 
 -- 승인
 update tbl_approval_sign
-set signdate = sysdate, sygnyn = #{sygnyn}, signemp_name_kr = #{name_kr} --1
-where asno = #{asno}
+set signdate = sysdate, signyn = 1, signemp_name_kr = '김지은1' --1
+where asno = 19
+
+select * from tbl_approval_sign
 
 -- 반려
 update tbl_approval_sign
@@ -1651,4 +1653,12 @@ select * from user_sequences
 commit;
 
 
+select * from tbl_employee
+
+
+select * from tbl_approval_sign
+where fk_sign_empno = 100021
+
+
+select * from tab;
 

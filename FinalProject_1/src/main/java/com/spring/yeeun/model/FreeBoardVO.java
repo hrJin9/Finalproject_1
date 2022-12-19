@@ -8,18 +8,22 @@ public class FreeBoardVO {
     private String fk_employee_no;    // 사원번호  
     private String name_kr;           // 작성자명
     private String position;          // 직위
-    private String subject;           // 글제목
-    private String content;           // 글내용   
-    private String readcnt;           // 글조회수
-    private String writedate;         // 작성일자
-    private String status;            // 글삭제여부 1:사용가능한 글,  0:삭제된글 
+    
+    private String subject;          // 글제목
+    private String content;          // 글내용
+    private String commentCheck;     // 댓글허용여부     1:댓글허용,  0:댓글불가
+    private String commentCount;     // 댓글개수
+    private String writedate;        // 작성일자
+    private String readcnt;          // 글조회수
+    private String status;           // 글삭제여부  1:사용가능한 글,  0:삭제된글
+   
+    private String bookmark;         // 북마크
+    private String heart;            // 좋아요
     
     private String previousseq;      // 이전글번호 (select 용)
 	private String previoussubject;  // 이전글제목
 	private String nextseq;          // 다음글번호
 	private String nextsubject;      // 다음글제목	
-    
-    private String commentCount;       // 댓글개수
     
     /*
     === #152. 파일을 첨부하도록 VO 수정하기
@@ -40,8 +44,9 @@ public class FreeBoardVO {
 	public FreeBoardVO() {}
 
 	public FreeBoardVO(String fbno, String fk_employee_no, String name_kr, String position, String subject,
-			String content, String readcnt, String writedate, String status, String commentCount,
-			String fb_systemfilename, String fb_originfilename, String file_size) {
+			String content, String commentCheck, String commentCount, String writedate, String readcnt, String status,
+			String bookmark, String heart, String previousseq, String previoussubject, String nextseq,
+			String nextsubject, MultipartFile attach, String fb_fileName, String fb_orgFilename, String fileSize) {
 		super();
 		this.fbno = fbno;
 		this.fk_employee_no = fk_employee_no;
@@ -49,9 +54,21 @@ public class FreeBoardVO {
 		this.position = position;
 		this.subject = subject;
 		this.content = content;
-		this.readcnt = readcnt;
+		this.commentCheck = commentCheck;
+		this.commentCount = commentCount;
 		this.writedate = writedate;
+		this.readcnt = readcnt;
 		this.status = status;
+		this.bookmark = bookmark;
+		this.heart = heart;
+		this.previousseq = previousseq;
+		this.previoussubject = previoussubject;
+		this.nextseq = nextseq;
+		this.nextsubject = nextsubject;
+		this.attach = attach;
+		this.fb_fileName = fb_fileName;
+		this.fb_orgFilename = fb_orgFilename;
+		this.fileSize = fileSize;
 	}
 
 	public String getFbno() {
@@ -102,12 +119,20 @@ public class FreeBoardVO {
 		this.content = content;
 	}
 
-	public String getReadcnt() {
-		return readcnt;
+	public String getCommentCheck() {
+		return commentCheck;
 	}
 
-	public void setReadcnt(String readcnt) {
-		this.readcnt = readcnt;
+	public void setCommentCheck(String commentCheck) {
+		this.commentCheck = commentCheck;
+	}
+
+	public String getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(String commentCount) {
+		this.commentCount = commentCount;
 	}
 
 	public String getWritedate() {
@@ -118,12 +143,36 @@ public class FreeBoardVO {
 		this.writedate = writedate;
 	}
 
+	public String getReadcnt() {
+		return readcnt;
+	}
+
+	public void setReadcnt(String readcnt) {
+		this.readcnt = readcnt;
+	}
+
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getBookmark() {
+		return bookmark;
+	}
+
+	public void setBookmark(String bookmark) {
+		this.bookmark = bookmark;
+	}
+
+	public String getHeart() {
+		return heart;
+	}
+
+	public void setHeart(String heart) {
+		this.heart = heart;
 	}
 
 	public String getPreviousseq() {
@@ -158,14 +207,6 @@ public class FreeBoardVO {
 		this.nextsubject = nextsubject;
 	}
 
-	public String getCommentCount() {
-		return commentCount;
-	}
-
-	public void setCommentCount(String commentCount) {
-		this.commentCount = commentCount;
-	}
-
 	public MultipartFile getAttach() {
 		return attach;
 	}
@@ -198,6 +239,10 @@ public class FreeBoardVO {
 		this.fileSize = fileSize;
 	}
 
+	
+
+
+	
 	
 	
 

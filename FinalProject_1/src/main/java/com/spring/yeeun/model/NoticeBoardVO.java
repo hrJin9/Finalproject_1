@@ -16,6 +16,9 @@ public class NoticeBoardVO {
     private String writedate;       // 작성일자
     private String readcnt;         // 글조회수
     private String status;          // 글삭제여부  1:사용가능한 글,  0:삭제된글
+   
+    private String bookmark;        // 북마크
+    private String heart;           // 좋아요
     
     private String previousseq;      // 이전글번호 (select 용)
 	private String previoussubject;  // 이전글제목
@@ -35,16 +38,16 @@ public class NoticeBoardVO {
 	        동일해야만 파일첨부가 가능해진다.!!!!
 	*/
 	
-    private String nb_fileName;     // 저장될 파일명   
-    private String nb_orgFilename;  // 오리지널파일명
+    private String nb_fileName;     // 저장될 파일명    (예: 20221028163107174865472508900.jpg)
+    private String nb_orgFilename;  // 오리지널파일명  (예: berkelekle심플라운드01.jpg)
     private String fileSize;        // 파일크기
 	
 	public NoticeBoardVO() {}
 
 	public NoticeBoardVO(String nbno, String fk_employee_no, String name_kr, String categoryTag, String subject,
-			String content, String priority, String writedate, String readcnt, String status, String previousseq,
-			String previoussubject, String nextseq, String nextsubject, MultipartFile attach, String nb_fileName,
-			String nb_orgFilename, String fileSize) {
+			String content, String priority, String writedate, String readcnt, String status, String bookmark,
+			String heart, String previousseq, String previoussubject, String nextseq, String nextsubject,
+			MultipartFile attach, String nb_fileName, String nb_orgFilename, String fileSize) {
 		super();
 		this.nbno = nbno;
 		this.fk_employee_no = fk_employee_no;
@@ -56,6 +59,16 @@ public class NoticeBoardVO {
 		this.writedate = writedate;
 		this.readcnt = readcnt;
 		this.status = status;
+		this.bookmark = bookmark;
+		this.heart = heart;
+		this.previousseq = previousseq;
+		this.previoussubject = previoussubject;
+		this.nextseq = nextseq;
+		this.nextsubject = nextsubject;
+		this.attach = attach;
+		this.nb_fileName = nb_fileName;
+		this.nb_orgFilename = nb_orgFilename;
+		this.fileSize = fileSize;
 	}
 
 	public String getNbno() {
@@ -138,6 +151,22 @@ public class NoticeBoardVO {
 		this.status = status;
 	}
 
+	public String getBookmark() {
+		return bookmark;
+	}
+
+	public void setBookmark(String bookmark) {
+		this.bookmark = bookmark;
+	}
+
+	public String getHeart() {
+		return heart;
+	}
+
+	public void setHeart(String heart) {
+		this.heart = heart;
+	}
+
 	public String getPreviousseq() {
 		return previousseq;
 	}
@@ -202,6 +231,8 @@ public class NoticeBoardVO {
 		this.fileSize = fileSize;
 	}
 
+	
+	
 	
 	
 	

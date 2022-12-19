@@ -32,6 +32,17 @@ public class MeetingroomController {
 	
 	@RequestMapping(value="/support/meetingroom.up")
 	public ModelAndView meetingroom(HttpServletRequest request, ModelAndView mav){
+		
+		String roomno = request.getParameter("roomno");
+		if(roomno == null) roomno = "";
+		
+//		System.out.println("확인용 roomno => " + roomno);   
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("roomno",roomno);  
+		
+		mav.addObject("paraMap",paraMap);
+		
 		mav.setViewName("reservation/meetingroom.tiles");
 		return mav;
 	}
@@ -94,6 +105,8 @@ public class MeetingroomController {
 		return jsonobj.toString();
 	}
 	*/ 
+	
+	
 	 
 	// === 회의실 예약하기 === 
 	@RequestMapping(value="/support/meetingroom_add.up", method = {RequestMethod.POST}) 
@@ -134,7 +147,7 @@ public class MeetingroomController {
 		
 		mav.addObject("loc", request.getContextPath()+"/support/meetingroom.up");
 		
-		mav.setViewName("msg");
+		mav.setViewName("message");
 		
 		return mav;
 	}
@@ -147,10 +160,10 @@ public class MeetingroomController {
 		 
 		// 등록된 예약정보 가져오기
 		
-		String fk_roomno = request.getParameter("fk_roomno");
+		String startdate = request.getParameter("startdate");
 		
 				
-		List<Meetingroom_reservationVO> meetingList = service.selectMeetingroom(fk_roomno);
+		List<Meetingroom_reservationVO> meetingList = service.selectMeetingroom(startdate);
 		 
 		JSONArray jsArr = new JSONArray();
 		
@@ -163,7 +176,7 @@ public class MeetingroomController {
 				jsObj.put("enddate", mvo.getEnddate());
 				jsObj.put("fk_roomno", mvo.getFk_roomno());
 				jsObj.put("fk_employee_no", mvo.getFk_employee_no()); 
-				
+				System.out.println(mvo.getR_content());
 				jsArr.put(jsObj);
 			}// end of for-------------------------------------
 		

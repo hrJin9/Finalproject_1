@@ -17,35 +17,35 @@ import org.springframework.stereotype.Component;
 import com.spring.finalproject.common.MyUtil;
 
 
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class HyerinAOP {
-	
-	// 로그인 필요한 메소드
-	@Pointcut("execution(public * com.spring..*Controller.rl_*(..) )")
-	public void requiredLogin() {}
-	
-	@Before("requiredLogin()")
-	public void loginCheck(JoinPoint joinpoint) {
-		joinpoint.getArgs(); // 주업무메소드의 파라미터를 모두 가져옴
-		HttpServletRequest request = (HttpServletRequest) joinpoint.getArgs()[0]; // 주업무메소드의 첫번째 파라미터를 가져옴
-		HttpServletResponse response = (HttpServletResponse) joinpoint.getArgs()[1]; // 주업무메소드의 두번째 파라미터를 가져옴
-		HttpSession session = request.getSession();
-		
-		if (session.getAttribute("loginuser") == null) {
-			String loc = request.getContextPath() + "/login.up";
-			request.setAttribute("loc", loc);
-			
-			//로그인 성공후 로그인전 페이지로 돌아가게 하기
-			String url = MyUtil.getCurrentURL(request);
-			session.setAttribute("goBackURL", url);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
-			try {
-				dispatcher.forward(request, response);
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}//end of loginCheck
-	
+//	
+//	// 로그인 필요한 메소드
+//	@Pointcut("execution(public * com.spring..*Controller.rl_*(..) )")
+//	public void requiredLogin() {}
+//	
+//	@Before("requiredLogin()")
+//	public void loginCheck(JoinPoint joinpoint) {
+//		joinpoint.getArgs(); // 주업무메소드의 파라미터를 모두 가져옴
+//		HttpServletRequest request = (HttpServletRequest) joinpoint.getArgs()[0]; // 주업무메소드의 첫번째 파라미터를 가져옴
+//		HttpServletResponse response = (HttpServletResponse) joinpoint.getArgs()[1]; // 주업무메소드의 두번째 파라미터를 가져옴
+//		HttpSession session = request.getSession();
+//		
+//		if (session.getAttribute("loginuser") == null) {
+//			String loc = request.getContextPath() + "/login.up";
+//			request.setAttribute("loc", loc);
+//			
+//			//로그인 성공후 로그인전 페이지로 돌아가게 하기
+//			String url = MyUtil.getCurrentURL(request);
+//			session.setAttribute("goBackURL", url);
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+//			try {
+//				dispatcher.forward(request, response);
+//			} catch (ServletException | IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}//end of loginCheck
+//	
 }

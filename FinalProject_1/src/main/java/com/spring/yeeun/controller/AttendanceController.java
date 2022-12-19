@@ -462,54 +462,50 @@ public class AttendanceController {
 		HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 		String fk_employee_no = loginuser.getEmployee_no();
+		String position = loginuser.getPosition();
 		
+		int dayoff_receiveCnt = 0;
+		if("사원".equals(position)) {
+			dayoff_receiveCnt = 12;
+		} else if("대리".equals(position)) {
+			dayoff_receiveCnt = 14;
+		} else if("과장".equals(position)) {
+			dayoff_receiveCnt = 16;
+		} else if("부장".equals(position)) {
+			dayoff_receiveCnt = 18;
+		} else if("대표".equals(position)) {
+			dayoff_receiveCnt = 20;
+		}
 		
 		List<DayoffVO> dayoffList = new ArrayList<DayoffVO>();
 		dayoffList = service.dayoffListView(fk_employee_no);
 		List<DayoffVO> comedayoff = new ArrayList<DayoffVO>();  // 예정연차
 		List<DayoffVO> lastdayoff = new ArrayList<DayoffVO>();  // 사용연차
 		
-		
 		for(DayoffVO list : dayoffList) {
 			// 현재 날짜 구하기
 			Date now = new Date();
-			//String nowTime = sdf.format(now);
-			//System.out.println("현재날짜 >>" + nowTime);
-			//System.out.println("now >>" + now);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
 			Date date = format.parse(list.getStartdate());
 			
 			int compare = now.compareTo(date);
-			
 			if(compare < 0) { // 예정연차
 				comedayoff.add(list);
 				
 			}else {  // 사용연차
 				lastdayoff.add(list);
 			}
-			
 		}
 		
 		double lastUsedays = 0;
-		double totalUsedays = 0;
 		for(DayoffVO lastdolist : lastdayoff) {
 			lastUsedays += Double.parseDouble(lastdolist.getUsedays()); // 올해 총 사용연차
 		}// end of for------------------
 		//System.out.println("lastUsedays >> "+ lastUsedays);
 		
-		
-		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
-		EmployeeVO evo = service.getempvo(fk_employee_no);
-		//System.out.println(evo.getDayoff_cnt());
-		mav.addObject("evo", evo);
-		
-		DecimalFormat format = new DecimalFormat("##.#");
-		totalUsedays = Double.parseDouble(evo.getDayoff_cnt()) + lastUsedays;
-		//System.out.println("totalUsedays >>>>"+totalUsedays);
-		//System.out.println("totalUsedays >>>>"+format.format(totalUsedays));
-		
-		mav.addObject("totalUsedays", format.format(totalUsedays)); // 올해 부여받은 총 연차
-	    //mav.addObject("dayoffList", dayoffList); // 구해온 값이 null이 아니라면 dayoffList를 dayoff_index.jsp 에 넘긴다.
+		DecimalFormat formatt = new DecimalFormat("##.#");
+		mav.addObject("lastUsedays", formatt.format(lastUsedays)); // 올해 총 사용연차
+		mav.addObject("dayoff_receiveCnt", dayoff_receiveCnt);    // 올해 부여받은 총 연차
 	    mav.addObject("comedayoff", comedayoff);   // 구해온 값이 null이 아니라면 comedayoff를 dayoff_index.jsp 에 넘긴다.
 	    mav.addObject("lastdayoff", lastdayoff);   // 구해온 값이 null이 아니라면 lastdayoff를 dayoff_index.jsp 에 넘긴다.
 		mav.setViewName("attendance/dayoff_index.tiles");
@@ -524,13 +520,11 @@ public class AttendanceController {
 	public String dayoff_index2(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
 		
 		String year = request.getParameter("year"); 
-		//System.out.println(year);
 		
 		// 로그인된 유저의 employee_no 알아오기
 		HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 		String fk_employee_no = loginuser.getEmployee_no();
-		
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("year", year);
@@ -557,8 +551,7 @@ public class AttendanceController {
 		return jsonArr.toString();
 	}	
 	
-	
-	
+
 	
 	
 	// ** 연차상세 ** //
@@ -569,6 +562,20 @@ public class AttendanceController {
 		HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 		String fk_employee_no = loginuser.getEmployee_no();
+		String position = loginuser.getPosition();
+		
+		int dayoff_defaultCnt = 0;
+		if("사원".equals(position)) {
+			dayoff_defaultCnt = 1;
+		} else if("대리".equals(position)) {
+			dayoff_defaultCnt = 3;
+		} else if("과장".equals(position)) {
+			dayoff_defaultCnt = 5;
+		} else if("부장".equals(position)) {
+			dayoff_defaultCnt = 7;
+		} else if("대표".equals(position)) {
+			dayoff_defaultCnt = 9;
+		}
 		
 		List<DayoffVO> dayoffList = new ArrayList<DayoffVO>();  // 예정 + 사용연차
 		dayoffList = service.dayoffListView(fk_employee_no);
@@ -582,7 +589,6 @@ public class AttendanceController {
 			Date date = format.parse(list.getStartdate());
 			
 			int compare = now.compareTo(date);
-			
 			if(compare > 0) { // 사용연차
 				lastdayoff.add(list);
 			}
@@ -590,8 +596,6 @@ public class AttendanceController {
 		}
 		
 		double lastUsedays = 0;
-		double totalUsedays = 0;
-		
 		double aa = 0;
 		double bb = 0;
 		double cc = 0;
@@ -653,21 +657,6 @@ public class AttendanceController {
 		}// end of for------------------
 		
 		DecimalFormat format = new DecimalFormat("##.#");
-		/*
-		System.out.println("aa :" +format.format(aa));
-		System.out.println("bb :" +format.format(bb));
-		System.out.println("cc :" +format.format(cc));
-		System.out.println("dd :" +format.format(dd));
-		System.out.println("ee :" +format.format(ee));
-		System.out.println("ff :" +format.format(ff));
-		System.out.println("gg :" +format.format(gg));
-		System.out.println("hh :" +format.format(hh));
-		System.out.println("ii :" +format.format(ii));
-		System.out.println("jj :" +format.format(jj));
-		System.out.println("kk :" +format.format(kk));
-		System.out.println("ll :" +format.format(ll));
-		*/
-		
 		List<Object> list =  new ArrayList<Object>();
 		list.add(format.format(aa));
 		list.add(format.format(bb));
@@ -687,20 +676,14 @@ public class AttendanceController {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM");  // 포맷 정의
         int thisyyyy = Integer.parseInt(formatter.format(now).substring(0, 4)); // 포맷팅 적용 => yyyy
         int thismm = Integer.parseInt(formatter.format(now).substring(5, 7)); // 포맷팅 적용 => mm
-		
 		//System.out.println("올해 총 사용연차 : "+ lastUsedays);
 		
 		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
-		EmployeeVO evo = service.getempvo(fk_employee_no);
-		//System.out.println("잔여연차 :"+evo.getDayoff_cnt());
+		//EmployeeVO evo = service.getempvo(fk_employee_no);
 		
-		totalUsedays = Double.parseDouble(evo.getDayoff_cnt()) + lastUsedays;
-		//System.out.println("올해 받은 총 연차 :"+totalUsedays);
-		//System.out.println("올해 받은 총 연차 :"+format.format(totalUsedays));
-		
-		mav.addObject("lastUsedays", format.format(lastUsedays));        // 올해 총 사용연차
-		mav.addObject("UnusedDays", evo.getDayoff_cnt()); // 잔여연차
-		mav.addObject("totalUsedays", format.format(totalUsedays));      // 올해 받은 총 연차
+		mav.addObject("lastUsedays", format.format(lastUsedays)); // 올해 총 사용연차
+		mav.addObject("dayoff_defaultCnt", dayoff_defaultCnt);    // 올해 1월 부여받은 연차
+		mav.addObject("dayoff_receiveCnt", dayoff_defaultCnt +11);    // 올해 부여받은 총 연차
 		mav.addObject("list", list);          // 월별 연차사용
 		mav.addObject("thisyyyy", thisyyyy);  // 이번년도
 		mav.addObject("thismm", thismm);      // 이번달
@@ -709,7 +692,7 @@ public class AttendanceController {
 	}
 	
 	
-	
+	/*
 	// 년도별 연차 상세 ajax로 보여주기
 	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
 	@RequestMapping(value="/dayoff/detail2.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
@@ -740,9 +723,6 @@ public class AttendanceController {
 				Date now = new Date();
 				SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
 				Date date = format.parse(list.getStartdate());
-				//System.out.println("오잉now:"+now);
-				//System.out.println("오잉list.getStartdate():"+list.getStartdate());
-				//System.out.println("오잉date:"+date);
 				
 				int compare = now.compareTo(date);
 				
@@ -820,7 +800,6 @@ public class AttendanceController {
 		}// end of for------------------
 		
 		DecimalFormat format = new DecimalFormat("##.#");
-		/*
 		System.out.println("aa :" +format.format(aa));
 		System.out.println("bb :" +format.format(bb));
 		System.out.println("cc :" +format.format(cc));
@@ -833,7 +812,6 @@ public class AttendanceController {
 		System.out.println("jj :" +format.format(jj));
 		System.out.println("kk :" +format.format(kk));
 		System.out.println("ll :" +format.format(ll));
-		*/
 		
 		List<Object> list =  new ArrayList<Object>();
 		list.add(format.format(aa));
@@ -866,192 +844,38 @@ public class AttendanceController {
 		jsonArr.put(jsonObj);
 		return jsonArr.toString();
 		
-	}
+	}*/
 	
 	
 	
-	
-	
-	
-	
-	// 매월 연차 +1 스프링 스케줄러
-	/*
-	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
-	@RequestMapping(value="/dayoffUpdate.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
-	public String dayoffUpdate(HttpServletRequest request) throws Throwable {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
-		
-		int n = 0;
-		try {
-			n = service.dayoffUpdate();
-			//System.out.println("n1 결과 >>" + n);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		if(n != 0) {
-			n = 1;
-			//mav.setViewName("attendance/dayoff_detail.tiles");
-		}
-		System.out.println("n 결과 >>" + n);
-		
-		JSONArray jsonArr = new JSONArray();  // []
-		/*
-		if(dayoffList != null) {
-			for(DayoffVO dovo : dayoffList) {
-				JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
-				jsonObj.put("fk_employee_no", dovo.getFk_employee_no());
-				jsonObj.put("docatgo", dovo.getDocatgo());
-				jsonObj.put("startdate", dovo.getStartdate());
-				jsonObj.put("startday", dovo.getStartday());
-				jsonObj.put("enddate", dovo.getEnddate());
-				jsonObj.put("endday", dovo.getEndday());
-				jsonObj.put("usedays", dovo.getUsedays());
-				jsonArr.put(jsonObj);
-			}// end of for------------------
-		}
-		
-		return jsonArr.toString();
-	}	*/
-	
-	
-	
-	/*
-	@RequestMapping(value="/dayoff/detail.up")  // Controller 에서는 URL 만 잡아주고, Service 단에서 특정 날짜 및 시각을 설정해준다.
-    public ModelAndView dayoffUpdatetest(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) throws Exception {
-		
-		// 현재 날짜 구하기
-		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM");  // 포맷 정의
-        String doaddDate = formatter.format(now); // 포맷팅 적용
-        //System.out.println("doaddDate >>"+doaddDate);
-        
-		int n = 0;
-		try {
-			n = service.dayoffUpdate();
-			//System.out.println("n1 결과 >>" + n);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		if(n != 0) {
-			n = 1;
-			//mav.setViewName("attendance/dayoff_detail.tiles");
-		}
-		System.out.println("n 결과 >>" + n);
-		
-    	mav.addObject("doaddResult", n);
-    	mav.addObject("doaddDate", doaddDate);
+    // 매년 1월 직급별 연차 업데이트 스프링 스케줄러
+    @RequestMapping(value="/dayoffUpdateInJanuary.up") 
+    public ModelAndView dayoffUpdateInJanuary(ModelAndView mav, HttpServletRequest request) {
     	
-    	
-    	///////////////////////////////////////////////
-    	
-    	// 로그인된 유저의 employee_no 알아오기
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
-		String fk_employee_no = loginuser.getEmployee_no();
+		String message = "올해 직급별 연차를 업데이트 완료했습니다.";
+		String loc = request.getContextPath()+"/main.up";
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		mav.setViewName("msg");
 		
-		List<DayoffVO> dayoffList = new ArrayList<DayoffVO>();
-		dayoffList = service.dayoffListView(fk_employee_no);
-		
-		List<DayoffVO> lastdayoff = new ArrayList<DayoffVO>();  // 사용연차
-		
-		for(DayoffVO list : dayoffList) {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
-			Date date = format.parse(list.getStartdate());
+    	return mav;
+    }		
+    
+	
+	// 매월 연차 업데이트 스프링 스케줄러
+    @RequestMapping(value="/dayoffUpdate.up")  // Controller 에서는 URL 만 잡아주고, Service 단에서 특정 날짜 및 시각을 설정해준다.
+    public ModelAndView dayoffUpdate(ModelAndView mav, HttpServletRequest request) {
 			
-			int compare = now.compareTo(date);
-			
-			if(compare > 0) { // 사용연차
-				lastdayoff.add(list);
-			}
-		}
+		String message = "이번달 모든 직원 연차를 업데이트 완료했습니다.";
+		String loc = request.getContextPath()+"/main.up";
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		mav.setViewName("msg");
 		
-		float lastUsedays_f = 0;
-		float thismmUsedays_f = 0;
-		int lastUsedays = 0;
-		int thismmUsedays = 0;
-		int totalUsedays = 0;
-		for(DayoffVO lastdolist : lastdayoff) {
-			int thismm = Integer.parseInt(formatter.format(now).substring(5, 7)); // 포맷팅 적용 => mm
-			//System.out.println("thismm >>"+ thismm);
-			int usemm =  Integer.parseInt(lastdolist.getStartdate().substring(6,8));
-			//System.out.println("usemm 111 >>"+ usemm);
-			
-			if(thismm == usemm) { // 올해 사용연차 중 월
-				thismmUsedays_f += Float.parseFloat(lastdolist.getUsedays()); // 올해 총 사용연차
-			}
-			
-			lastUsedays_f += Float.parseFloat(lastdolist.getUsedays()); // 올해 총 사용연차
-		}// end of for------------------
-		///////////////////////////////////////////////
-		    	
-		
-		thismmUsedays = (int)thismmUsedays_f;
-		//System.out.println("올해 이번달 총 사용연차 : "+ thismmUsedays);
-		
-		lastUsedays = (int)lastUsedays_f;
-		//System.out.println("올해 총 사용연차 : "+ lastUsedays);
-		
-		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
-		EmployeeVO evo = service.getempvo(fk_employee_no);
-		//System.out.println("잔여연차 :"+evo.getDayoff_cnt());
-		
-		totalUsedays = Integer.parseInt(evo.getDayoff_cnt()) + lastUsedays;
-		//System.out.println("올해 받은 총 연차 :"+totalUsedays);
-		
-		mav.addObject("thismmUsedays", thismmUsedays); // 올해 이번달 총 사용연차
-		mav.addObject("lastUsedays", lastUsedays);     // 올해 총 사용연차
-		mav.addObject("UnusedDays", evo.getDayoff_cnt()); // 잔여연차
-		mav.addObject("totalUsedays", totalUsedays);   // 올해 받은 총 연차
-    	mav.setViewName("attendance/dayoff_detail.tiles");
-		return mav;
-    }
-	*/
-	
-	
-	// 올해 연차내역 조회하기
-	/*
-	@RequestMapping(value="/dayoffListView.up", method= {RequestMethod.POST})  // 오로지 POST 방식만 허락하는 것임.  위에서는 GET 방식으로  "/login.action" 해주었기에, 이번에는 POST 방식으로 "/loginEnd.action" 해준다.
-	public ModelAndView dayoffListView(ModelAndView mav, HttpServletRequest request){
-		
-		
-		//로그인된 유저의 employee_no 알아오기
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
-		String fk_employee_no = loginuser.getEmployee_no();
-		
-		// 현재 날짜 구하기
-		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");  // 포맷 정의
-        String thisYear = formatter.format(now); // 포맷팅 적용
-        System.out.println("thisYear :"+thisYear);
-        
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("fk_employee_no", fk_employee_no);
-		paraMap.put("thisYear", thisYear);
-		// 올해 잔여개수 조회해와서 jsp 에서 뿌려주기
-		
-		
-		List<AttendanceVO> attendancedetail = service.atdetailView(paraMap);
-		
-			
-		mav.addObject("attendancedetail", attendancedetail);
-		mav.setViewName("attendance/dayoff_detail.tiles");
-		return mav;
-	}
-	*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    	return mav;
+    }	
+    
+
 	
 	
 	

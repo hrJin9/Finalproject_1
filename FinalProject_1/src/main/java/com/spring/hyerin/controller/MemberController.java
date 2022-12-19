@@ -121,6 +121,8 @@ public class MemberController {
 				evo.setMobile(aes.decrypt(evo.getMobile()));
 			} catch (Exception e) {	}
 			
+			
+			System.out.println("사번이 외... : " + evo.getName_kr());
 			mav.addObject("empno", empno);
 			mav.addObject("evo", evo);
 			mav.setViewName("member/memberInfo_hr.tiles");
@@ -306,7 +308,7 @@ public class MemberController {
 		
 		mav.addObject("message", message);
 		mav.addObject("loc", loc);
-		mav.setViewName("msg");
+		mav.setViewName("message");
 		return mav;
 	}
 	

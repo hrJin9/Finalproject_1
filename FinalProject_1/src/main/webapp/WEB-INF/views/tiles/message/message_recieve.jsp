@@ -382,7 +382,7 @@ function getMglist(tab, curpage){
 				
 			} else { //가져올 메시지목록이 없는 경우
 				html += '<tr>'+
-						'<td width="100%" id="nonmgList" >조회된 메시지가 없습니다.</td>'+
+						'<td width="100%" id="nonmgList" style="padding:10px 20px; text-align:center; color:rgba(0,0,0,0.7);">조회된 메시지가 없습니다.</td>'+
 						'</tr>';
 				$(".mgList-contents > table").html(html);
 				// 페이지 바 없애기

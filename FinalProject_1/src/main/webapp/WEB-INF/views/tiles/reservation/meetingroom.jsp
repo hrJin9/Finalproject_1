@@ -44,9 +44,9 @@ $(document).ready(function(){
 		var endtime_m = item.endtime.substr(3,2);
 		
 		var startclass = Number(starttime_h) * 2;
-		var endclass = Number(endtime_h) * 2;
-		if(starttime_m == "30")
-			startclass++;
+		var endclass = Number(endtime_h) * 2; 
+		if(starttime_m == "30") 
+			startclass++; 
 		if(endtime_m == "30")
 			endclass++;
 		var toppx = $("."+item.meetingroom).eq(0).parent().attr("id");
@@ -63,12 +63,12 @@ $(document).ready(function(){
 	});
 	
 	 */
+	   
 	 
-	 
-	 
+  	/*   
 	
-	var timearr = [{"startdate":"01:00","enddate":"07:00","meetingroom":"b"}];      
-	
+	var timearr = [{"startdate":"01:00","enddate":"07:00","meetingroom":"다"}];             
+	 
 	  
 	var defaultposition = 0;
 	$.each(timearr, function(index, item){ 
@@ -78,7 +78,7 @@ $(document).ready(function(){
 		var enddate_h = item.enddate.substr(0,2);
 		var enddate_m = item.enddate.substr(3,2);
 		
-		var startclass = Number(startdate_h) * 2;
+		var startclass = Number(startdate_h) * 2; 
 		var endclass = Number(enddate_h) * 2;
 		if(startdate_m == "30")
 			startclass++;
@@ -96,8 +96,10 @@ $(document).ready(function(){
 		var html = "<div class='meetingroom-recordbar' style='display:inline-block; width:"+widthpx+"px; left:"+leftpx+"px; top:"+toppx+"px;'></div>";
 		$("#barcontainer-"+item.meetingroom).append(html);	
 	});
-	/* recodr-bar 용 */
+	/* recodr-bar 용 */ 
 	
+	
+  
 	
 	
 	$("a#mettingroom-3").removeClass("iscurrent");
@@ -110,25 +112,26 @@ $(document).ready(function(){
  		$('.offcanvas').offcanvas('show');
  		
  		const meetingroom_name = $(e.target).parent().find("td:first-child").text();
-		$(".offcanvas-title").text(meetingroom_name);	 		
+		$(".offcanvas-title").text(meetingroom_name);	 // 가.희의실 		
  	});
 	
 	 
-	// 날짜 플랫피커
+ // 날짜피커
  	flatpickr.localize(flatpickr.l10ns.ko);
- 	flatpickr($(".mr-date"));
-	$(".mr-date").flatpickr({
-		dateFormat: "Y-m-d",
+ 	flatpickr($(".dateSelector"));
+	$(".dateSelector").flatpickr({
+		dateFormat: "Y. m. d",
 		defaultDate: new Date(),
+		//firstDay: 1, // 주의 시작일을 일요일로 하려면 0, 월요일은 1
 		local: 'ko'
 	});
 	
 	
-	
+/* 	
 	// 오프캔버스 플랫피커
  	flatpickr.localize(flatpickr.l10ns.ko);
- 	flatpickr($(".dateSelector"));
-	$(".dateSelector").flatpickr({
+ 	flatpickr($(".mr-date"));
+	$(".mr-date").flatpickr({
 		dateFormat: "Y-m-d H:i",
 		enableTime: true,
 		minuteIncrement: 30,
@@ -136,7 +139,7 @@ $(document).ready(function(){
 		local: 'ko'
 	});
 	
-	
+	 */
 	
 	
 /* 	
@@ -179,49 +182,7 @@ $("#mr-startdate").change(function(e){
 });
 	
 		
-		
-<%-- 		
-		// 저장하기 버튼 클릭시
-	 	$("#goSave").click(function(){
-	 		 
-	 		
-	 		var start = []; 
-	 		var end = [];
-	 		
-	 		var stimearr = $(".stime");
-			for (var y=0; y<stimearr.length; y++) { // 시작 시간
-				start.push($(".stime").eq(y).val());
-			}
-			
-	 		var etimearr = $(".etime"); 
-			for (var z=0; z<etimearr.length; z++) { // 종료시간
-				end.push($(".etime").eq(z).val());
-			}
-	 		
-	 		// 회의실 예약하기 
-	 		$.ajax({
-				url:"<%= request.getContextPath()%>/support/meetingroom.up", 
-				traditional: true, // 배열 넘겨줄때 필요
-				data:{"startTimeArr":start 
-					 ,"endTimeArr":end
-					 }, 
-				//type:"POST",
-				dataType:"JSON",   // AttendanceController.java 로 data 를 보낸다.
-				success:function(json){   // AttendanceController.java 에서 jsonObj.put() 한 json.name 을 받아옴.
-					console.log("startTimeArr : " +startTimeArr);
-					console.log("endTimeArr : " +endTimeArr); 
-					alert("근무 상태가 저장되었습니다.");
-					location.href="javascript:location.reload(true)"; // 현재 페이지로 이동(==새로고침) 서버에 가서 다시 읽어옴. 
-					
-				}, 
-				error: function(request, status, error){
-		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		        }					
-			});
-			
-	 	});// end of $("#goSave").click(function()----------
-		
- --%>		
+
 	
 	//=== ***(type="date")관련 시작 *** === // 
 	// 시작시간, 종료시간		
@@ -277,9 +238,29 @@ $("#mr-startdate").change(function(e){
 	}); 	
 	 	
 		
-	//저장 버튼 클릭  
+	//저장 버튼 클릭    
 	$("#goSave").click(function(){ 
 	
+		var roomno = $("#offcanvasScrollingLabel").text();      
+		roomno = roomno.substring(0,1); // 가 , 나, 다 
+		if(roomno == "가") { 
+			roomno == 'a';
+		} else if(roomno == "나") {
+			roomno == 'b';  
+		} else if(roomno == "다") {
+			roomno == 'c';
+		} else if(roomno == "라") {
+			roomno == 'd';
+		} else if(roomno == "마") {
+			roomno == 'e';
+		} else if(roomno == "바") {  
+			roomno == 'f'; 
+		}  
+		
+		console.log("roomno :" +roomno);  
+		 
+		
+		
 		// 일자 유효성 검사 (시작일자가 종료일자 보다 크면 안된다!!)
 		var startDate = $("input#startDate").val();	
 	 	var sArr = startDate.split("-");
@@ -335,99 +316,235 @@ $("#mr-startdate").change(function(e){
 		
 			  
 			var frm = document.meetingFrm; 
-			frm.action="<%= ctxPath%>/support/meetingroom_add.up";    
+			frm.action="<%= ctxPath%>/support/meetingroom_add.up";   
+			frm.fk_roomno.value = roomno;
 			frm.method="post"; 
 			frm.submit(); 
-			
-			
-			
-			
-	
+	 
 		});// end of $("button#register").click(function(){})--------------------
 	 	
-	 	
+		// flatpickr 날짜 변경 이벤트
+		$(".dateSelector").change(function(){
+			console.log($(this).val());
+			//getSelectedDate();
+			showmeetingroom($(this).val());
+			//thisWeekDate2 = [];
+			//putDate();
+			//putTodayDot();
+		});		
 		
+		
+		//console.log($(".mettingroom-date").html());
 
-		}); //end of ready
+		}); //end of ready 
+		
+		 
+		//showmeetingroom($("input.mr-date").val());
 		 
 		
+		// flatpickr 날짜 변경 이벤트 
+		/* $("input.mr-date").select(function(){
+			const val = $("input.mr-date").val();
+			showmeetingroom(val); 
+			$("input.mr-date").val()
+		}) */
 		
+	
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// function declaration
- 		
+		
+		
+			
+	// flatpickr에 선택된 날짜를 구하는 함수
+	var thisWeek = []; // 주차 데이터 넣는 용
+	var thisWeekArr = []; //오늘날짜 dot 검사용
+	function getSelectedDate(){
+		//flatpickr에 선택된 날짜 구하기
+	 	var selected_date = $(".dateSelector").val();
+	 	var selected_yy = selected_date.substr(0,4);  //선택된 년도
+	 	var selected_mm = selected_date.substr(6,2);  //선택된 월
+	 	
+	 	var selected_dd = selected_date.substr(10,2); //선택된 일자
+	 	var selected_week  = new Array("", "월", "화", "수", "목", "금", "토", "일");  // 아래 코드에서는 사용하지 않음
+	    // 보통 0~6 까지가 일~토로 표현된다 하지만 월요일부터 표현하기 위해 0번째를 공백처리
+	 	var currentDay = new Date(selected_yy, selected_mm-1, selected_dd);
+	 	//console.log("selected_date : " +selected_date); // 2022. 12. 11
 
-		  
+	 	// 주차 구하기
+	 	var theDayOfWeek = currentDay.getDay();
+	 	// 선택한 날이 일요일 일때 전주의 날짜를 담음
+		if(theDayOfWeek == 0){		 
+			var currentDay = new Date(selected_yy, selected_mm-1, selected_dd-7);  		 
+		}	 
+		var theYear = currentDay.getFullYear();
+		var theMonth = currentDay.getMonth();
+		var theDate  = currentDay.getDate();
+		//console.log("theDate : " +theDate); //11일(현재날짜)
+		//console.log("theDayOfWeek : " +theDayOfWeek); // 이번주 첫번째인 일요일 => 0
+		
+		
+		
+		for(var i=1; i<8; i++) {
+			var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
+			var yyyy = resultDay.getFullYear();
+			var mm = Number(resultDay.getMonth()) + 1;
+			var dd = resultDay.getDate(); // 이번주 일요일 날짜 => 11
+			var dd_nm = resultDay.getDay();
+			//console.log("resultDay : " +resultDay);
+			//console.log("yyyy : " +yyyy);
+			//console.log("mm : " +mm);
+			//console.log("dd : " +dd); // 12
+			//console.log("dd_nm : " +dd_nm);
+			
+			mm = String(mm).length === 1 ? '0' + mm : mm;
+			dd = String(dd).length === 1 ? '0' + dd : dd;
+			
+			thisWeek[i] = yyyy + '. ' + mm + '. ' + dd;  // 날짜 7일 넣어주기
+			if(i==1){
+			  // 검색기준 월요일
+		    }else if(i==7){
+			  // 검색기준 일요일
+		    }	  
+			 
+			thisWeekArr[i] = new Date(yyyy, mm-1, dd); // dot
+		}
+	}//end of getSelectedDate()
+			
+		
+		
+	function showmeetingroom(date){
+		
+		const frm = document.meetingFrm;
+		frm.action = "<%=ctxPath%>/support/meetingroom.up";
+		
+		
+		//frm.submit();
+		
+		
+	}//end showmeetingroom
+		
+ 		<%-- 
+ 	function showmeetingroom(startdate){ 
+ 		  
+ 		$.ajax({     
+      		url: '<%= ctxPath%>/support/selectMeetingroom.up',
+ 	        data:{"startdate":startdate},     
+ 	        dataType: "json",  
+ 	        success:function(json) { 
+				json.length >0){  
+				var timearr = [{"startdate":"01:00","enddate":"07:00","meetingroom":"다"}];                 
+				
+				r defaultposition = 0;
+				$.each(json, function(index, item){ 
+					console.log(item.startdate)
+				
+					var startdate_h = item.startdate.substr(0,2);
+					var startdate_m = item.startdate.substr(3,2);
+					var enddate_h = item.enddate.substr(0,2);
+					var enddate_m = item.enddate.substr(3,2);
+					
+					var startclass = Number(startdate_h) * 2; 
+					var endclass = Number(enddate_h) * 2;
+					if(startdate_m == "30")
+						startclass++;
+					if(enddate_m == "30")
+						endclass++;
+					var toppx = $("."+item.meetingroom).eq(0).parent().attr("id");
+					toppx = defaultposition + Number(toppx);
+					
+					var width = ((endclass-startclass) > 0) ? (endclass-startclass) : 0;
+					var leftpx = 418;
+					leftpx += (startclass * 21.79);
+					var widthpx = width * 21.79;
+					
+					
+					var html = "<div class='meetingroom-recordbar' style='display:inline-block; width:"+widthpx+"px; left:"+leftpx+"px; top:"+toppx+"px;'></div>";
+					$("#barcontainer-"+item.meetingroom).append(html);	
+				});  
+				
+					 	      
+		 	     	
+           },
+ 		  error: function(request, status, error){
+ 	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+ 	      }	
+ 	                                         
+ 	       }); // end of $.ajax()--------------------------------
+ 	       
+ 				
+	}
+		   --%>
 		
 </script>
-
+<form name="meetingFrm">  
 <div class="mettingroom-container margin-container">
 	<div class="mettingroom-date">
 		<div style="display: block;">
 			<div>예약현황</div>
 			<div>
-				<input type="text" class="mr-date"/>
+				<input type="text" class="dateSelector attendance-dateSelector"/>
 				<i class="fas fa-chevron-down mr-downarrow"></i>
 			</div>
 		</div>
-		<div class="workingweek" style="clear:both; display:block;">
+		<div class="workingweek" style="clear:both; display:block;"> 
 			<table class="fontsize-basic" style="border-collapse: collapse; border-radius: 5px; border-style: hidden; box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);">
 				<tr class="workinghour">
 					<td></td>
-					<c:forEach var="i" begin="0" end="23">
+					<c:forEach var="i" begin="0" end="23"> 
 						<td colspan="2">${i}</td>
 					</c:forEach>
-				</tr>  
+				</tr>    
 				<tr id="206">  
-					<td>가 회의실(20명)</td>
+					<td>가 회의실(20명)</td>  
 					<c:forEach var="i" begin="0" end="47">
-						<td id="${i}" class="a"></td> 
+						<td id="${i}" class="가" ></td>     
 					</c:forEach> 
-				</tr>
+				</tr>  
 				<tr id="260">
 					<td>나 회의실(30명)</td>
 					<c:forEach var="i" begin="0" end="47"> 
-						<td id="${i}" class="b"></td>
+						<td id="${i}" class="나"></td>
 					</c:forEach>
 				</tr>
 				<tr id="313">
 					<td>다 회의실(15명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td id="${i}" class="c"></td>
+						<td id="${i}" class="다"></td>
 					</c:forEach>
 				</tr>
 				<tr id="365">
 					<td>라 회의실(10명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td id="${i}" class="d"></td>
+						<td id="${i}" class="라"></td>
 					</c:forEach>
 				</tr>
 				<tr id="418">
 					<td>마 회의실(8명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td id="${i}" class="e"></td>
+						<td id="${i}" class="마"></td>
 					</c:forEach>
 				</tr>
-				<tr id="472">
+				<tr id="472">  
 					<td>바 회의실(8명)</td>
 					<c:forEach var="i" begin="0" end="47">
-						<td id="${i}" class="f"></td>
+						<td id="${i}" class="바"></td>
 					</c:forEach>
 				</tr>
 			</table>
 			 
-			<div id="barcontainer-a" style="float:left; margin-left: 262px;">
+			<div id="barcontainer-가" style="float:left; margin-left: 262px;">
 			</div>
-			<div id="barcontainer-b" style="float:left; margin-left: 262px;">
+			<div id="barcontainer-나" style="float:left; margin-left: 262px;">
 			</div>
-			<div id="barcontainer-c" style="float:left; margin-left: 262px;">
+			<div id="barcontainer-다" style="float:left; margin-left: 262px;">
 			</div>
-			<div id="barcontainer-d" style="float:left; margin-left: 262px;">
+			<div id="barcontainer-라" style="float:left; margin-left: 262px;">
 			</div>
-			<div id="barcontainer-e" style="float:left; margin-left: 262px;">
+			<div id="barcontainer-마" style="float:left; margin-left: 262px;">
 			</div>
-			<div id="barcontainer-f" style="float:left; margin-left: 262px;">
+			<div id="barcontainer-바" style="float:left; margin-left: 262px;">
 			</div>
-			
+			 
 			<!-- 오프캔버스 시작 -->
 			<div class="offcanvas offcanvas-end meetingroom-offcanvas" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 			  <div class="offcanvas-header">
@@ -436,18 +553,19 @@ $("#mr-startdate").change(function(e){
 			  </div>
 			  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 			  <div class="offcanvas-body">
-			  	<div class="meetingroom-offcanvas-body">
+			  	<div class="meetingroom-offcanvas-body"> 
 			  		<div>
 			  			<div class="meetingroom-info">
 							<i class="fa-solid fa-circle-info"></i>
 							<div>
-								<div>~에 위치한 회의실입니다. 예약 후 이용바랍니다.</div>
+<!-- 							<div>~에 위치한 회의실입니다. 예약 후 이용바랍니다.</div> --> 
+								<div>예약 후 이용바랍니다.</div>
 								<div>담당자 연락처 : 010-8828-4730</div>
 							</div>
 						</div> 
 			  		</div>
 			  		
-			  		<form name="meetingFrm">  
+			  		
 			  		<div class="mr-write-container">
 			  			<div style="font-weight: bold;">예약 일정·정보 입력</div>
 			  			<!-- 
@@ -476,6 +594,7 @@ $("#mr-startdate").change(function(e){
 								<input type="checkbox" id="allDay" style="width: 31%;"/>&nbsp;<label for="allDay" style="">종일</label>    
 							</div>
 							
+							<input type="hidden" name="fk_roomno"/> 
 							<input type="hidden" name="startdate"/>
 							<input type="hidden" name="enddate"/>
 						</div> 
@@ -486,7 +605,7 @@ $("#mr-startdate").change(function(e){
 		  			<button type="reset" class="workstatus-cancel text-reset" data-bs-dismiss="offcanvas" aria-label="Close">취소</button>
 	  			</div>
 	  			<input type="hidden" value="${sessionScope.loginuser.employee_no}" name="fk_employee_no"/> 
-	  		  </form>
+	  		 
 			  </div>
 			</div>
 			<!-- 오프캔버스 끝 -->
@@ -496,3 +615,4 @@ $("#mr-startdate").change(function(e){
 	</div>
 
 </div>
+ </form>

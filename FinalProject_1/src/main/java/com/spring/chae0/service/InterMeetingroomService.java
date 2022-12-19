@@ -14,7 +14,7 @@ public interface InterMeetingroomService {
 	int meetingroom_add(Map<String, String> paraMap) throws Throwable;
 
 	// 회의실 예약 불러오기	 
-	List<Meetingroom_reservationVO> selectMeetingroom(String fk_roomno);  
+	List<Meetingroom_reservationVO> selectMeetingroom(String startdate);  
 
 
 
