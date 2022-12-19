@@ -320,18 +320,14 @@ $("#mr-startdate").change(function(e){
 			frm.fk_roomno.value = roomno;
 			frm.method="post"; 
 			frm.submit(); 
-			
-			
-			
-			 
 	 
 		});// end of $("button#register").click(function(){})--------------------
 	 	
 		// flatpickr 날짜 변경 이벤트
 		$(".dateSelector").change(function(){
-			console.log($(this).val())
+			console.log($(this).val());
 			//getSelectedDate();
-			showmeetingroom($(this).val())
+			showmeetingroom($(this).val());
 			//thisWeekDate2 = [];
 			//putDate();
 			//putTodayDot();
@@ -416,50 +412,59 @@ $("#mr-startdate").change(function(e){
 			
 		
 		
+	function showmeetingroom(date){
+		
+		const frm = document.meetingFrm;
+		frm.action = "<%=ctxPath%>/support/meetingroom.up";
 		
 		
- 		
+		//frm.submit();
+		
+		
+	}//end showmeetingroom
+		
+ 		<%-- 
  	function showmeetingroom(startdate){ 
  		  
  		$.ajax({     
- 	              url: '<%= ctxPath%>/support/selectMeetingroom.up',
- 	              data:{"startdate":startdate},     
- 	              dataType: "json",  
- 	              success:function(json) { 
- 	            	if(json.length >0){  
-//  	            	 var timearr = [{"startdate":"01:00","enddate":"07:00","meetingroom":"다"}];                 
- 	            		
- 	            	 var defaultposition = 0;
- 	            		$.each(json, function(index, item){ 
- 	            			console.log(item.startdate)
-
- 	            			var startdate_h = item.startdate.substr(0,2);
- 	            			var startdate_m = item.startdate.substr(3,2);
- 	            			var enddate_h = item.enddate.substr(0,2);
- 	            			var enddate_m = item.enddate.substr(3,2);
- 	            			
- 	            			var startclass = Number(startdate_h) * 2; 
- 	            			var endclass = Number(enddate_h) * 2;
- 	            			if(startdate_m == "30")
- 	            				startclass++;
- 	            			if(enddate_m == "30")
- 	            				endclass++;
- 	            			var toppx = $("."+item.meetingroom).eq(0).parent().attr("id");
- 	            			toppx = defaultposition + Number(toppx);
- 	            			
- 	            			var width = ((endclass-startclass) > 0) ? (endclass-startclass) : 0;
- 	            			var leftpx = 418;
- 	            			leftpx += (startclass * 21.79);
- 	            			var widthpx = width * 21.79;
- 	            			
- 	            			
- 	            			var html = "<div class='meetingroom-recordbar' style='display:inline-block; width:"+widthpx+"px; left:"+leftpx+"px; top:"+toppx+"px;'></div>";
- 	            			$("#barcontainer-"+item.meetingroom).append(html);	
- 	            		});  
- 	            	}	
- 	            	 
- 	            		
- 	               },
+      		url: '<%= ctxPath%>/support/selectMeetingroom.up',
+ 	        data:{"startdate":startdate},     
+ 	        dataType: "json",  
+ 	        success:function(json) { 
+				json.length >0){  
+				var timearr = [{"startdate":"01:00","enddate":"07:00","meetingroom":"다"}];                 
+				
+				r defaultposition = 0;
+				$.each(json, function(index, item){ 
+					console.log(item.startdate)
+				
+					var startdate_h = item.startdate.substr(0,2);
+					var startdate_m = item.startdate.substr(3,2);
+					var enddate_h = item.enddate.substr(0,2);
+					var enddate_m = item.enddate.substr(3,2);
+					
+					var startclass = Number(startdate_h) * 2; 
+					var endclass = Number(enddate_h) * 2;
+					if(startdate_m == "30")
+						startclass++;
+					if(enddate_m == "30")
+						endclass++;
+					var toppx = $("."+item.meetingroom).eq(0).parent().attr("id");
+					toppx = defaultposition + Number(toppx);
+					
+					var width = ((endclass-startclass) > 0) ? (endclass-startclass) : 0;
+					var leftpx = 418;
+					leftpx += (startclass * 21.79);
+					var widthpx = width * 21.79;
+					
+					
+					var html = "<div class='meetingroom-recordbar' style='display:inline-block; width:"+widthpx+"px; left:"+leftpx+"px; top:"+toppx+"px;'></div>";
+					$("#barcontainer-"+item.meetingroom).append(html);	
+				});  
+				
+					 	      
+		 	     	
+           },
  		  error: function(request, status, error){
  	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
  	      }	
@@ -468,10 +473,10 @@ $("#mr-startdate").change(function(e){
  	       
  				
 	}
-		  
+		   --%>
 		
 </script>
-
+<form name="meetingFrm">  
 <div class="mettingroom-container margin-container">
 	<div class="mettingroom-date">
 		<div style="display: block;">
@@ -560,7 +565,7 @@ $("#mr-startdate").change(function(e){
 						</div> 
 			  		</div>
 			  		
-			  		<form name="meetingFrm">  
+			  		
 			  		<div class="mr-write-container">
 			  			<div style="font-weight: bold;">예약 일정·정보 입력</div>
 			  			<!-- 
@@ -600,7 +605,7 @@ $("#mr-startdate").change(function(e){
 		  			<button type="reset" class="workstatus-cancel text-reset" data-bs-dismiss="offcanvas" aria-label="Close">취소</button>
 	  			</div>
 	  			<input type="hidden" value="${sessionScope.loginuser.employee_no}" name="fk_employee_no"/> 
-	  		  </form>
+	  		 
 			  </div>
 			</div>
 			<!-- 오프캔버스 끝 -->
@@ -610,3 +615,4 @@ $("#mr-startdate").change(function(e){
 	</div>
 
 </div>
+ </form>

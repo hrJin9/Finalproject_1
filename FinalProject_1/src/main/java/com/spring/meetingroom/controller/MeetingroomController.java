@@ -147,7 +147,7 @@ public class MeetingroomController {
 		
 		mav.addObject("loc", request.getContextPath()+"/support/meetingroom.up");
 		
-		mav.setViewName("msg");
+		mav.setViewName("message");
 		
 		return mav;
 	}
