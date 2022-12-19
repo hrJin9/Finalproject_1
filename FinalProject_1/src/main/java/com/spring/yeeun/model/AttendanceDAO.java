@@ -101,17 +101,40 @@ public class AttendanceDAO implements InterAttendanceDAO {
 
 
 
+	// 매년 1월 직급별 연차 업데이트 스프링 스케줄러
+	@Override
+	public int addDayoffInJanuary1() { // 매년 1월 사원직급
+		int n = sqlsession.update("attendance.addDayoffInJanuary1");
+		return n;
+	}
+	@Override
+	public int addDayoffInJanuary2() { // 매년 1월 대리직급
+		int n = sqlsession.update("attendance.addDayoffInJanuary2");
+		return n;
+	}
+	@Override
+	public int addDayoffInJanuary3() { // 매년 1월 과장직급
+		int n = sqlsession.update("attendance.addDayoffInJanuary3");
+		return n;
+	}
+	@Override
+	public int addDayoffInJanuary4() { // 매년 1월 부장직급
+		int n = sqlsession.update("attendance.addDayoffInJanuary4");
+		return n;
+	}
+	@Override
+	public int addDayoffInJanuary5() { // 매년 1월 대표직급
+		int n = sqlsession.update("attendance.addDayoffInJanuary5");
+		return n;
+	}
+	
 	// 매월 연차 업데이트 스프링 스케줄러
 	@Override
 	public int addDayoff() { // 매년 2~12월(1월 제외)
 		int n = sqlsession.update("attendance.addDayoff");
 		return n;
 	}
-	@Override
-	public int addDayoffInJanuary() { // 매년 1월
-		int n = sqlsession.update("attendance.addDayoffInJanuary");
-		return n;
-	}
+	
 
 	// 년도별 연차 상세 보여주기
 	@Override

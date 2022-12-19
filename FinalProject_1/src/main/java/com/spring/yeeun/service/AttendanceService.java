@@ -1,5 +1,9 @@
 package com.spring.yeeun.service;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -106,28 +110,47 @@ public class AttendanceService implements InterAttendanceService {
 
 
 	
-	// 매월 연차 +1 스프링 스케줄러
-	/*
+	// 매년 1월 직급별 연차 업데이트 스프링 스케줄러
 	@Override
-	//@Scheduled(cron="0 30 4 1 * *")
-	@Scheduled(cron="0 13 16 * * *")
-	public int dayoffUpdate() throws Exception {
+	//@Scheduled(cron="0 20 21 * * *") ==> 시연시 필요!
+	@Scheduled(cron="0 30 4 1 1 *")  // 매년 1월
+	public int dayoffUpdateInJanuary() throws Exception {
 		
-		//dao.addDayoff();
-		int n = dao.addDayoff();
-		
-		if(n != 0) {
-			System.out.println("연차 업데이트가 완료되었습니다.");  
+		int n = 0;
+		try {
+			n = dao.addDayoffInJanuary1(); // 사원직급
+			System.out.println("올해 사원 기본연차가 업데이트 완료되었습니다.");  
+			n = dao.addDayoffInJanuary2(); // 대리직급
+			System.out.println("올해 대리 기본연차가 업데이트 완료되었습니다.");  
+			n = dao.addDayoffInJanuary3(); // 과장직급
+			System.out.println("올해 과장 기본연차가 업데이트 완료되었습니다.");  
+			n = dao.addDayoffInJanuary4(); // 부장직급
+			System.out.println("올해 부장 기본연차가 업데이트 완료되었습니다.");  
+			n = dao.addDayoffInJanuary5(); // 대표직급
+			System.out.println("올해 대표 기본연차가 업데이트 완료되었습니다.");  
 			n = 1;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		System.out.println("매년 1월 직급별 연차 업데이트 스프링 스케줄러 >>" + n);
+		
+		
+		// 특정 사이트의 웹페이지를 보여주기 위해 기본브라우저를 띄운다.
+	    try { 
+			Desktop.getDesktop().browse(new URI("http://localhost:9090/thumbsup/dayoffUpdateInJanuary.up")); // import java.net 으로 한다.
+			// WAS 컴퓨터에서만 특정 웹페이지를 실행시켜주는 것이지, WAS에 접속한 다른 클라이언트 컴퓨터에서는 특정 웹사이트를 실행시켜주지 않는다.
+		} catch (IOException e) { 
+		     e.printStackTrace(); 
+		} catch (URISyntaxException e) {
+		     e.printStackTrace(); 
+		}  
 		
 		return n;
-	} */
+	}
 	
 	
 	// 매월 연차 업데이트 스프링 스케줄러
 	@Override
-	//@Scheduled(cron="0 30 4 1 * *")
 	@Scheduled(cron="0 30 4 1 2-12 *")  // 매년 2~12월(1월 제외)
 	public int dayoffUpdate() throws Exception {
 		
@@ -139,28 +162,34 @@ public class AttendanceService implements InterAttendanceService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("n 결과 >>" + n);
+		System.out.println("매월 연차 업데이트 스프링 스케줄러 >>" + n);
+		
+		
+		// 특정 사이트의 웹페이지를 보여주기 위해 기본브라우저를 띄운다.
+	    try { 
+			Desktop.getDesktop().browse(new URI("http://localhost:9090/thumbsup/dayoffUpdate.up")); // import java.net 으로 한다.
+			// WAS 컴퓨터에서만 특정 웹페이지를 실행시켜주는 것이지, WAS에 접속한 다른 클라이언트 컴퓨터에서는 특정 웹사이트를 실행시켜주지 않는다.
+			
+		} catch (IOException e) { 
+		     e.printStackTrace(); 
+		} catch (URISyntaxException e) {
+		     e.printStackTrace(); 
+		}  
 		
 		return n;
-	}
-
-	@Override
-	//@Scheduled(cron="0 30 4 1 1 *")  // 매년 1월
-	@Scheduled(cron="0 53 12 * * *") 
-	public int dayoffUpdateInJanuary() throws Exception {
-		
-		int n = 0;
-		try {
-			n = dao.addDayoffInJanuary();
-			System.out.println("올해 기본연차 업데이트가 완료되었습니다.");  
-			n = 1;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println("n 결과 >>" + n);
-		
-		return n;
-	}
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	// 년도별 연차 상세 보여주기

@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
 
+
+	<!-- ******** 공지게시판 ******** -->
 	<!-- 파일첨부가 없는 글쓰기  --> 
 	<insert id="add" parameterType="com.spring.yeeun.model.NoticeBoardVO">
 		insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status)
@@ -17,23 +19,402 @@
 	<!-- 페이징 처리를 안한 검색어가 없는 전체 글목록 보여주기 -->
 	<!-- <select id="boardListNoSearch" resultType="com.spring.yeeun.model.NoticeBoardVO">
 	    select nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, 
-		       to_char(writedate, 'yyyy-mm-dd')as writedate, readcnt, status
+		       to_char(writedate, 'yyyy. mm. dd') as writedate, readcnt, status
 		from tbl_notice_board
 		where status = 1
 		order by nbno desc
     </select> -->
     
 	<!-- 페이징 처리를 안한 검색어가 있는 전체 글목록 보여주기 -->
-	<select id="boardListSearch" parameterType="HashMap" resultType="com.spring.yeeun.model.NoticeBoardVO">
-	select nbno, fk_employee_no, name_kr, categoryTag, subject, priority, 
-	       to_char(writedate, 'yyyy-mm-dd')as writedate, readcnt, status, nb_fileName
-	from tbl_notice_board
-	where status = 1
-	<if test='searchCondition != "" and searchVal != ""'>   <!-- 3. if test="key명"> <when test="key명"> 인 경우 "key명" -->
-	and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'   <!-- 2. 식별자(테이블명, 컬럼명)로 사용할때는 ${key명} -->  <!-- 1. HashMap 에 있는 데이터인 검색어는  #{key명} -->
-	</if>
-	order by nbno desc
+	<!-- <select id="boardListSearch" parameterType="HashMap" resultType="com.spring.yeeun.model.NoticeBoardVO">
+		select nbno, fk_employee_no, name_kr, categoryTag, subject, priority, bookmark
+		       to_char(writedate, 'yyyy. mm. dd') as writedate, readcnt, status, nb_fileName
+		from tbl_notice_board
+		where status = 1
+		<if test='searchCondition != "" and searchVal != ""'>   3. if test="key명"> <when test="key명"> 인 경우 "key명"
+		and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'   2. 식별자(테이블명, 컬럼명)로 사용할때는 ${key명}  1. HashMap 에 있는 데이터인 검색어는  #{key명}
+		</if>
+		order by priority desc, nbno desc
+	</select> -->
+	
+	<!-- 총 게시물 건수(totalCount) 구하기 -->
+	<select id="getTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_notice_board
+		where status = 1   <!-- 검색이 없을때 -->
+		<if test='searchCondition != "" and searchVal != "" '>  <!-- 또는 searchVal neq "" -->
+		and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+		</if>
 	</select>
+	
+	
+	<!-- 파일첨부가 있는 답변형 게시판의 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한 것) -->
+	<select id="boardListSearchWithPaging" parameterType="HashMap" resultType="com.spring.yeeun.model.NoticeBoardVO"> 
+		select nbno, fk_employee_no, name_kr, categoryTag, subject, priority, 
+		       writedate, readcnt, status, nb_fileName
+		from 
+		(
+		    select rownum AS rno,
+		          nbno, fk_employee_no, name_kr, categoryTag, subject, priority, 
+		          writedate, readcnt, status, nb_fileName
+		    from 
+		    (
+		        select nbno, fk_employee_no, name_kr, categoryTag, subject, priority,
+		               to_char(writedate, 'yyyy. mm. dd') as writedate, readcnt, status, nb_fileName
+		        from tbl_notice_board
+		        where status = 1
+		          <if test='searchCondition != "" and searchVal != "" '>     <!-- 또는 searchVal neq "" -->
+		          and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%' 
+		          </if>
+		        order by priority desc, nbno desc
+		    ) V
+		)T
+		where rno between #{startRno} and #{endRno}
+	</select>
+	
+	
+	
+	<!-- 북마크 추가 -->
+	<insert id="addbookmark" parameterType="HashMap">
+		insert into tbl_board_scrap(sno, fk_bno, btype, fk_employee_no)
+		values('sc-'||seq_board_scrap.nextval, #{fk_bno}, 0, #{fk_employee_no})
+	</insert>
+	
+	<!-- 북마크 삭제 -->
+	<insert id="deletebookmark" parameterType="HashMap">
+		delete from tbl_board_scrap
+		where fk_bno = #{fk_bno} and fk_employee_no = #{fk_employee_no}
+	</insert>
+	
+	<!-- 본인이 북마크한 글목록 가져오기 -->
+	<select id="bookmarkList" parameterType="String" resultType="com.spring.yeeun.model.BoardScrapVO"> 
+		select sno, fk_bno, btype, fk_employee_no
+		from tbl_board_scrap
+		where fk_employee_no = #{fk_employee_no}
+	</select>
+	
+	<!-- 선택한 게시물이 북마크한 게시물인지 조회하기 -->
+	<select id="selbookmarkNo" parameterType="HashMap" resultType="com.spring.yeeun.model.BoardScrapVO"> 
+		select sno, fk_bno, btype, fk_employee_no
+		from tbl_board_scrap
+		where fk_employee_no = #{fk_employee_no} and fk_bno = #{fk_bno}
+	</select>
+	
+	<!-- 글조회수 증가와 함께 글 1개를 조회해주는 것  -->
+	<select id="getView" parameterType="HashMap" resultType="com.spring.yeeun.model.NoticeBoardVO">
+	   select previousseq, previoussubject,
+		      nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, 
+		      writedate, readcnt, status, nb_fileName, nb_orgFilename, fileSize,
+		      nextseq, nextsubject
+		from 
+		(
+		   select lag(nbno, 1) over(order by nbno desc) AS previousseq,
+		          lag(subject, 1) over(order by nbno desc) AS previoussubject,
+		          nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority,
+		          to_char(writedate, 'yyyy. mm. dd  AM hh24:mi') as writedate,
+		          readcnt, status, nb_fileName, nb_orgFilename, TO_CHAR(fileSize, 'FM999,999,999') AS fileSize,
+		          lead(nbno, 1) over(order by nbno desc) AS nextseq,
+		          lead(subject, 1) over(order by nbno desc) AS nextsubject
+		   from tbl_notice_board
+		   where status = 1 
+		   <if test='searchCondition != "" and searchVal != ""'>
+		   and lower(${searchCondition}) like '%'|| lower(#{searchVal}) ||'%'
+		   </if>
+		) V
+		where V.nbno = #{nbno}
+    </select>
+
+	<!-- 게시물 작성자가 아니라면 글 조회수 1증가 하기 -->
+    <update id="setAddReadCnt" parameterType="String">
+	   update tbl_notice_board set readcnt = readcnt + 1
+	   where nbno = #{nbno}   
+    </update>
+	
+	
+	
+	<!-- 좋아요 추가 -->
+	<insert id="addheart" parameterType="HashMap">
+		insert into tbl_heart(hno, fk_bno, btype, fk_employee_no)
+		values('ht-'||seq_tbl_heart.nextval, #{fk_bno}, 0, #{fk_employee_no})
+	</insert>
+	
+	<!-- 좋아요 삭제 -->
+	<insert id="deleteheart" parameterType="HashMap">
+		delete from tbl_heart
+		where fk_bno = #{fk_bno} and fk_employee_no = #{fk_employee_no}
+	</insert>
+	
+	<!-- 본인이 좋아요한 글목록 가져오기 -->
+	<!-- <select id="heartList" parameterType="String" resultType="com.spring.yeeun.model.BoardHeartVO"> 
+		select hno, fk_bno, btype, fk_employee_no
+		from tbl_heart
+		where fk_employee_no = #{fk_employee_no}
+	</select> -->
+	
+	<!-- 좋아요한 게시물인지 조회하기 -->
+	<select id="selHeartaddNo" parameterType="HashMap" resultType="com.spring.yeeun.model.BoardHeartVO"> 
+		select hno, fk_bno, btype, fk_employee_no
+		from tbl_heart
+		where fk_employee_no = #{fk_employee_no} and fk_bno = #{fk_bno}
+	</select>
+	
+	
+	<!-- 게시글 1개의 좋아요 개수 알아오기 -->
+	<select id="heartCntbyView" parameterType="String" resultType="int"> 
+		select count(*)
+		from tbl_heart
+		where fk_bno = #{fk_bno}
+	</select>
+	
+	<!-- 게시글 1개에서 좋아요 여부 확인 -->
+	<select id="heartCheck" parameterType="HashMap" resultType="int"> 
+		select count(*)
+		from tbl_heart
+		where fk_employee_no = #{fk_employee_no} and fk_bno = #{nbno}
+	</select>
+	
+	<!-- 게시글 1개에서 북마크 여부 확인 -->
+	<select id="bookmarkCheck" parameterType="HashMap" resultType="int"> 
+		select count(*)
+		from tbl_board_scrap
+		where fk_employee_no = #{fk_employee_no} and fk_bno = #{nbno}
+	</select>
+	
+	<!-- 게시글 수정하기 ===  --> 
+	<update id="boardEdit" parameterType="com.spring.yeeun.model.NoticeBoardVO">
+		update tbl_notice_board set categoryTag = #{categoryTag}
+	                              , subject = #{subject}
+	                              , content = #{content}
+	                              , priority = #{priority}
+		where nbno = #{nbno}
+	</update>
+	
+	<!-- 게시글 삭제하기 --> 
+	<delete id="boardDel" parameterType="HashMap">
+		delete from tbl_notice_board
+		where nbno = #{nbno}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- ******** 자유게시판 ******** -->
+	<!-- 파일첨부가 없는 글쓰기  --> 
+	<insert id="fb_add" parameterType="com.spring.yeeun.model.FreeBoardVO">
+		insert into tbl_free_board(fbno, fk_employee_no, name_kr, position, subject, content, commentCheck, commentCount, writedate, readcnt, status) 
+		values(seq_tbl_fboard.nextval, #{fk_employee_no}, #{name_kr}, #{position}, #{subject}, #{content}, #{commentCheck}, default, default, default, default) 
+	</insert>
+	
+	<!-- 파일첨부가 있는 글쓰기 ===  -->
+    <insert id="fb_add_withFile" parameterType="com.spring.yeeun.model.FreeBoardVO">
+		insert into tbl_free_board(fbno, fk_employee_no, name_kr, position, subject, content, commentCheck, commentCount, writedate, readcnt, status, fb_fileName, fb_orgFilename, fileSize) 
+		values(seq_tbl_fboard.nextval, #{fk_employee_no}, #{name_kr}, #{position}, #{subject}, #{content}, #{commentCheck}, default, default, default, default, #{fb_fileName}, #{fb_orgFilename}, #{fileSize}) 
+	</insert>
+	
+	
+	<!-- 총 게시물 건수(totalCount) 구하기 -->
+	<select id="getfnTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_free_board
+		where status = 1   <!-- 검색이 없을때 -->
+		<if test='searchCondition != "" and searchVal != "" '>  <!-- 또는 searchVal neq "" -->
+		and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%'
+		</if>
+	</select>
+	
+	
+	<!-- 파일첨부가 있는 답변형 게시판의 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한 것) -->
+	<select id="fboardListSearchWithPaging" parameterType="HashMap" resultType="com.spring.yeeun.model.FreeBoardVO"> 
+		select fbno, fk_employee_no, name_kr, position, subject, commentCheck,
+		       commentCount, writedate, readcnt, status, fb_fileName
+		from 
+		(
+		    select rownum AS rno,
+		           fbno, fk_employee_no, name_kr, position, subject, commentCheck,
+		           commentCount, writedate, readcnt, status, fb_fileName
+		    from 
+		    (
+		        select fbno, fk_employee_no, name_kr, position, subject, commentCheck, commentCount,
+		               to_char(writedate, 'yyyy. mm. dd') as writedate, readcnt, status, fb_fileName
+		        from tbl_free_board
+		        where status = 1
+	            <if test='searchCondition != "" and searchVal != "" '>     <!-- 또는 searchVal neq "" -->
+	           	   and lower(${searchCondition}) like '%'||lower(#{searchVal})||'%' 
+	            </if>
+		        order by fbno desc
+		    ) V
+		)T
+		where rno between #{startRno} and #{endRno}
+	</select>
+	
+	
+	<!-- 북마크 추가 -->
+	<insert id="fn_addbookmark" parameterType="HashMap">
+		insert into tbl_board_scrap(sno, fk_bno, btype, fk_employee_no)
+		values('sc-'||seq_board_scrap.nextval, #{fk_bno}, 1, #{fk_employee_no})
+	</insert>
+	
+	<!-- 북마크 삭제 -->
+	<insert id="fn_deletebookmark" parameterType="HashMap">
+		delete from tbl_board_scrap
+		where fk_bno = #{fk_bno} and fk_employee_no = #{fk_employee_no}
+	</insert>
+	
+	<!-- 본인이 북마크한 글목록 가져오기 -->
+	<select id="fn_bookmarkList" parameterType="String" resultType="com.spring.yeeun.model.BoardScrapVO"> 
+		select sno, fk_bno, btype, fk_employee_no
+		from tbl_board_scrap
+		where fk_employee_no = #{fk_employee_no}
+	</select>
+	
+	<!-- 선택한 게시물이 북마크한 게시물인지 조회하기 -->
+	<select id="fb_selbookmarkNo" parameterType="HashMap" resultType="com.spring.yeeun.model.BoardScrapVO"> 
+		select sno, fk_bno, btype, fk_employee_no
+		from tbl_board_scrap
+		where fk_employee_no = #{fk_employee_no} and fk_bno = #{fk_bno}
+	</select>
+	
+	<!-- 글조회수 증가와 함께 글 1개를 조회해주는 것  -->
+	<select id="getfn_View" parameterType="HashMap" resultType="com.spring.yeeun.model.FreeBoardVO">
+		select previousseq, previoussubject,
+		       fbno, fk_employee_no, name_kr, position, subject, content, commentCheck,
+		       commentCount, writedate, readcnt, status, fb_fileName, fb_orgFilename, fileSize,
+		       nextseq, nextsubject
+		from 
+		(
+		   select lag(fbno, 1) over(order by fbno desc) AS previousseq,
+		          lag(subject, 1) over(order by fbno desc) AS previoussubject,
+		          fbno, fk_employee_no, name_kr, position, subject, content, commentCheck,
+		          commentCount, to_char(writedate, 'yyyy. mm. dd  AM hh24:mi')as writedate,
+		          readcnt, status, fb_fileName, fb_orgFilename, TO_CHAR(fileSize, 'FM999,999,999') AS fileSize,
+		          lead(fbno, 1) over(order by fbno desc) AS nextseq,
+		          lead(subject, 1) over(order by fbno desc) AS nextsubject
+		   from tbl_free_board
+		   where status = 1 
+		   <if test='searchCondition != "" and searchVal != ""'>
+		   and lower(${searchCondition}) like '%'|| lower(#{searchVal}) ||'%'
+		   </if>
+		) V
+		where V.fbno = #{fbno}
+    </select>
+
+	<!-- 게시물 작성자가 아니라면 글 조회수 1증가 하기 -->
+    <update id="setfn_AddReadCnt" parameterType="String">
+	   update tbl_free_board set readcnt = readcnt + 1
+	   where fbno = #{fbno}   
+    </update>
+	
+	<!-- 좋아요 추가 -->
+	<insert id="fn_addheart" parameterType="HashMap">
+		insert into tbl_heart(hno, fk_bno, btype, fk_employee_no)
+		values('ht-'||seq_tbl_heart.nextval, #{fk_bno}, 1, #{fk_employee_no})
+	</insert>
+	
+	<!-- 좋아요 삭제 -->
+	<insert id="fn_deleteheart" parameterType="HashMap">
+		delete from tbl_heart
+		where fk_bno = #{fk_bno} and fk_employee_no = #{fk_employee_no}
+	</insert>
+	
+	<!-- 좋아요한 게시물인지 조회하기 -->
+	<select id="fn_selHeartaddNo" parameterType="HashMap" resultType="com.spring.yeeun.model.FreeBoardVO"> 
+		select hno, fk_bno, btype, fk_employee_no
+		from tbl_heart
+		where fk_employee_no = #{fk_employee_no} and fk_bno = #{fk_bno}
+	</select>
+	
+	<!-- 게시글 1개의 좋아요 개수 알아오기 -->
+	<select id="fn_heartCntbyView" parameterType="String" resultType="int"> 
+		select count(*)
+		from tbl_heart
+		where fk_bno = #{fk_bno}
+	</select>
+	
+	<!-- 게시글 1개에서 좋아요 여부 확인 -->
+	<select id="fn_heartCheck" parameterType="HashMap" resultType="int"> 
+		select count(*)
+		from tbl_heart
+		where fk_employee_no = #{fk_employee_no} and fk_bno = #{fbno}
+	</select>
+	
+	<!-- 게시글 1개에서 북마크 여부 확인 -->
+	<select id="fn_bookmarkCheck" parameterType="HashMap" resultType="int"> 
+		select count(*)
+		from tbl_board_scrap
+		where fk_employee_no = #{fk_employee_no} and fk_bno = #{fbno}
+	</select>
+	
+	
+	<!-- 게시글 수정하기 ===  --> 
+	<update id="fn_boardEdit" parameterType="com.spring.yeeun.model.FreeBoardVO">
+		update tbl_free_board set subject = #{subject}
+		                        , content = #{content}
+		                        , commentCheck = #{commentCheck}
+		where fbno = #{fbno}
+	</update>
+	
+	<!-- 게시글 삭제하기 --> 
+	<delete id="fn_boardDel" parameterType="HashMap">
+		delete from tbl_free_board
+		where fbno = #{fbno}
+	</delete>
+	
+	
+	
+	
+
+	<!-- ******** 자유게시판 ★댓글★작성 ******** -->
+	<!-- 댓글테이블에 insert -->
+	<insert id="addComment" parameterType="com.spring.yeeun.model.Fb_CommentVO">
+		insert into tbl_fb_comment(cno, fk_employee_no, name_kr, position, content, writedate, fk_fbno, status)
+		values(seq_tbl_fbcomment.nextval, #{fk_employee_no}, #{name_kr}, #{position}, #{content}, default, #{fk_fbno}, default)
+	</insert>
+	
+	<!-- 자유게시판 테이블 댓글개수 컬럼 1증가하기 -->
+	<update id="upadateCommentCount" parameterType="String">
+		update tbl_free_board set commentCount = commentCount + 1
+		where fbno = #{fk_fbno} 
+	</update>
+	
+	<!-- 원게시물의 댓글을 페이징 처리해서 조회해오기(Ajax 처리) -->
+	<select id="getCommentListPaging" parameterType="HashMap" resultType="com.spring.yeeun.model.Fb_CommentVO">
+		<!-- 첨부파일이 없는 경우 -->
+		select name_kr, position, content, writedate
+		from
+		(
+		    select row_number() over(order by cno desc) AS rno, name_kr, position, content  
+		         , to_char(writedate, 'yyyy-mm-dd hh24:mi') AS writedate, fk_fbno, status 
+		    from tbl_fb_comment
+		    where status = 1 and fk_fbno = #{fk_fbno}
+		) V
+		where rno between #{startRno} and #{endRno}
+	</select>
+	
+	
+	
+	<!-- 하나의 게시물당 댓글의 totalPage 수 알아오기(Ajax 처리) -->
+	<select id="commentTotalPage" parameterType="HashMap" resultType="int">
+		select ceil(count(*)/#{sizePerPage})
+		from tbl_fb_comment
+		where status = 1 and fk_fbno = #{fk_fbno}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

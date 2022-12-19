@@ -172,7 +172,7 @@
 				<div>
 					<div>연차 신청</div>
 					<%-- <div><span>${requestScope.evo.dayoff_cnt}</span>일 / <span>20</span>일</div> --%>
-					<div><span>${requestScope.evo.dayoff_cnt}</span>일 / <span>${requestScope.totalUsedays}</span>일</div>
+					<div><span>${requestScope.dayoff_receiveCnt - requestScope.lastUsedays}</span>일 / <span>${requestScope.dayoff_receiveCnt}</span>일</div>
 				</div>			
 			</div>
 			<div class="dayoff-box sick" onclick="javascript:location.href='<%=ctxPath%>/approval/writing.up?type=sick'">

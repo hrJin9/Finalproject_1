@@ -43,13 +43,21 @@ public interface InterAttendanceDAO {
 	List<DayoffVO> dayoffListViewByYear(Map<String, String> paraMap);
 
 
+	// 매년 1월 직급별 연차 업데이트 스프링 스케줄러
+	int addDayoffInJanuary1();  // 매년 1월 사원직급
+	int addDayoffInJanuary2();  // 매년 1월 대리직급
+	int addDayoffInJanuary3();  // 매년 1월 과장직급
+	int addDayoffInJanuary4();  // 매년 1월 부장직급
+	int addDayoffInJanuary5();  // 매년 1월 대표직급
 	
 	// 매월 연차 업데이트 스프링 스케줄러
-	int addDayoff();
-	int addDayoffInJanuary();
+	int addDayoff();  // 매년 2월~12월(1월 제외)
+	
 	
 	// 년도별 연차 상세 보여주기
 	List<DayoffVO> dayoffDetailViewByYear(Map<String, String> paraMap);
+
+
 
 
 
