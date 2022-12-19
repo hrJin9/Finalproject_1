@@ -685,11 +685,6 @@
 		    }
 		});
 
-		// 모든 조직 펼치기
-		$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
-			$(".summary").click();      // 모든 조직의 summary 클릭
-		});
-		
 		<%-- 내게시물 nav바 --%>
 		$("a.mainlist").click(function(){
 			if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
@@ -1012,7 +1007,7 @@
 					   		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
 				   		</c:if>
 				   	</div>  
-					<div class="fb-info" style="width: 70%;">
+					<div class="fb-info" style="width: 55%;">
 						<div style="display: inline-block; width: 13%; margin-left: -1%;">
 							<span class="username">${boardvo.name_kr}&nbsp;${boardvo.position}</span>
 						</div>
