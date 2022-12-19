@@ -133,8 +133,7 @@ function getImg(empno){
 		dataType:"json",
 		success:function(json){
 			var html = '<span><img class="profileimg" src="<%=ctxPath%>/resources/files/'+json.profile_systemfilename+'" width="150px" height="150px"/></span>';
-			var sbsrc = '<%=ctxPath%>/resources/files/'+json.profile_systemfilename;
-			$(".sbpics > img").attr("src", sbsrc);
+			$(".sbpics").html('<img src="<%=ctxPath%>/resources/files/'+json.profile_systemfilename+'" width="38px" height="38px" style="border-radius: 13px; border: solid 1px rgba(0,0,0,0.1);">');
 			$(".profiles").removeClass("pic");
 			$(".profiles").html(html);
 			

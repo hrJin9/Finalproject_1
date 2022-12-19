@@ -457,5 +457,18 @@
 	</update>
 	
 	
+	<!-- employee_no의 비밀번호 알아오기 -->
+	<select id="getMyPassword" parameterType="String" resultType="String">
+		select passwd
+		from tbl_employee
+		where employee_no = #{employee_no}
+	</select>
+	
+	
+	<!-- 비밀번호 업데이트해주기 -->
+	<update id="updateMyPwd" parameterType="HashMap">
+		update tbl_employee set passwd = #{newPasswd} 
+		where employee_no = #{employee_no}
+	</update>
 	
 </mapper>

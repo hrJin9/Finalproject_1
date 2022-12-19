@@ -92,8 +92,8 @@
 	#btnChange {
 	    border: 1px solid #4285f4;
 		width: 70%; 
-		margin-left: 15px;
-		margin-top: 90px;
+		margin-right: 10px;
+		margin-top: 20px;
 	    padding: 5px;
 		background-color: #4285f4;
 		color: white;
@@ -119,11 +119,22 @@
 		/* right: 81px; */
 		box-shadow: 1px 1px 1px 1.3px rgba(0, 0, 0, 0.2);
 	}
+	
+	.alerts{
+		margin-left: 135px;
+		margin-top: 5px;
+		font-weight: 600;
+		color:rgb(0 101 204);
+		font-size: 8pt;
+	}
+	
 </style>
   
   
 <script type="text/javascript">
-
+var pwdchxflag = false;
+var newpwdflag = false;
+var newpwdchxflag = false;
 	$(document).ready(function(){
 	    
 		$(".pwdAlert").hide();
@@ -143,6 +154,18 @@
 			$(".pwdAlert").hide();
 		}); */
 		
+		$("#password").focusout(function(){
+			getMyPassword();
+		});
+		
+		$("#newPassword").focusout(function(){
+			confirmNewpwd();
+		});
+		
+		$("#newPasswordCheck").focusout(function(){
+			
+		});
+		
 		
 	});// end of $(document).ready(function(){})-------------------------------------
 	
@@ -152,28 +175,114 @@
 		$(".pwdAlert").hide();
 	}
 
+	
+function getMyPassword(){
+	
+	var inputpasswd = $("#password").val();
+	
+	if(inputpasswd.trim() == "") return;
+	
+	$.ajax({
+		url:"<%=ctxPath%>/getMyPassword.up",
+		data:{"employee_no":"${sessionScope.loginuser.employee_no}",
+			"inputpasswd":inputpasswd},
+		dataType:"json",
+		success:function(json){
+			var html = '';
+			if(json.n == 0){
+				inputpasswd.focus();
+				html = '<div style="color:rgb(0 101 204); font-weight: 600; font-size: 9pt;">암호가 일치하지 않습니다.</div>';
+				$("#password").parent().find(".alerts").html(html);
+			} else {
+				$("#password").parent().find(".alerts").html("");
+				pwdchxflag = true;
+			}
+		}
+		
+		
+	});
+	
+}//end getMyPassword
+
+
+function confirmNewpwd(){
+	const pwdReg = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/
+	const pwd = $("#newPassword").val().trim();
+	if(!pwdReg.test(pwd)){
+		$("#newPassword").focus();
+		$("#newPassword").parent().find(".alerts").html("영문,숫자,특수문자를 사용하여 8~15자 이내로 입력하여주세요.");
+		return;
+	} else {
+		$("#newPassword").parent().find(".alerts").html("");
+		newpwdflag = true;
+	}
+	
+}//end confirmNewpwd
+
+
+function confirmpwdTotal(){
+	if($("#newPasswordCheck").val().trim() != $("#newPassword").val().trim()){
+		$("#newPasswordCheck").focus();
+		$("#newPasswordCheck").parent().find(".alerts").html("입력한 암호와 일치하지 않습니다.");
+	} else {
+		$("#newPasswordCheck").parent().find(".alerts").html("");
+		newpwdchxflag = true;
+	}
+}
+
+function updateMyPwd(){
+	getMyPassword();
+	confirmNewpwd();
+	confirmpwdTotal();
+	
+	if(!(pwdchxflag && newpwdflag && newpwdchxflag)) {
+		return;
+	} else {
+		
+		$.ajax({
+			url: "<%=ctxPath%>/updateMyPwd.up",
+			data: $("#pwdChangeFrm").serialize(),
+			type:"post",
+			dataType:"json",
+			success:function(json){
+				if(json.n == 1){
+					alert("비밀번호가 변경되었습니다.");
+					$("#pwdFindClose",parent.document).trigger("click");
+					$("#iframe_pwdChange",parent.document).attr("src",'<%= request.getContextPath()%>/pwdChange.up');
+				} else {
+					alert('비밀번호 변경이 실패되었습니다.');
+				}
+			}
+		});
+	}
+	
+}//end updateMyPwd
+
 </script>    
 </head>
-<body>    
-<form name="pwdChangeFrm">
+<body style="margin-top: 20px;">    
+<form id="pwdChangeFrm" name="pwdChangeFrm">
 	<ul style="list-style-type: none">
 	    <li style="margin: 10px 0 7px 0">
 	       <label for="password" style="display: inline-block; width: 90px; margin-left: 18px;">비밀번호</label>
 	       <input type="password" name="password" id="password" size="25" placeholder="현재 비밀번호 입력" autocomplete="off" required />  <!-- label 태그의 for값 == input 태그의 id값 -->
+	       <div class="alerts"></div>
 		   <hr>
 	    </li>
 	    <li style="margin: 10px 0 6px 0;">
 	       <label for="password">새 비밀번호</label>
 	       <input type="password" class="newPassword" name="newPasswd" id="newPassword" size="25" placeholder="새 비밀번호" autocomplete="off" required />
+	       <div class="alerts"></div>
 	    </li>
 	    <li>
 	       <label for="password"></label>
 	       <input type="password" name="newPasswdCheck" id="newPasswordCheck" size="25" placeholder="새 비밀번호 확인" autocomplete="off" required />
+	       <div class="alerts"></div>
 	    </li>
    </ul>
-
+	<input type="hidden" name="employee_no" value="${sessionScope.loginuser.employee_no}"/>
 	<div class="text-center">
-		<button type="button" class="btn btn-success" id="btnChange">변경하기</button>
+		<button type="button" class="btn btn-success" id="btnChange" onclick="updateMyPwd()">변경하기</button>
     </div>
 </form>
 
