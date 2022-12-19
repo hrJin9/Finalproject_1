@@ -394,6 +394,7 @@
 		on v.signpath_no = d.fk_signpath_no
 		LEFT JOIN V_employee E
 		on d.sign_empno = e.employee_no
+		where signpath_no > 0
 		order by adddate desc, step, name_kr
 	</select>
 	
@@ -477,4 +478,8 @@
 		from tbl_departments
 		order by department_name asc
 	</select>
+	
+	<delete id="delsavedline" parameterType="String">
+		delete tbl_signpath where signpath_no = ${signpath_no}
+	</delete>
 </mapper>

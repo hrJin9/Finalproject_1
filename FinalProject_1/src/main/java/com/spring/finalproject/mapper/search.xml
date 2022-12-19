@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="search">
+	<!-- 전체검색 구성원 목록 가져오기 -->
+	<select id="getEmpList" parameterType="HashMap" resultType="com.spring.hyerin.model.EmployeeVO">
+		select employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, delete_status, role, position, authority, employmenttype
+		from
+		(
+		    select row_number() over(order by employee_no desc) as rno, employee_no, fk_department_no, department_name, fk_team_no, team_name, name_kr, jointype, email, mobile, delete_status, role, position, authority,employmenttype
+		    from v_employee
+		    where 1 = 1
+		    <if test="searchVal != ''">
+			    and (lower(name_kr) like '%'||lower(#{searchVal})||'%'
+    			or lower(role) like '%'||lower(#{searchVal})||'%'
+    			or lower(position) like '%'||lower(#{searchVal})||'%')
+		    </if>
+		)
+	</select>
+	
+	<!-- 받은 메시지목록 불러오기 -->
+	<resultMap type="HashMap" id="getmvoList_Map">
+		<result property="mno" column="mno" javaType="String"/>
+		<result property="writer" column="writer" javaType="String"/>
+		<result property="w_name" column="w_name" javaType="String"/>
+		<result property="r_name" column="r_name" javaType="String"/>
+		<result property="reno" column="reno" javaType="String"/>
+		<result property="subject" column="subject" javaType="String"/>
+		<result property="sendtime_d" column="sendtime_d" javaType="String"/>
+		<result property="sendtime_y" column="sendtime_y" javaType="String"/>
+	</resultMap>
+	<!-- 메시지검색 -> 작성자이름, 제목 , 보낸사람이름으로 검색  -->
+	<select id="getMsgList" parameterType="HashMap" resultMap="getmvoList_Map">
+	with v as
+	(
+	    select   writer, mno, subject,to_char(sendtime,'yyyy-mm-dd') as sendtime_y,to_char(sendtime,'yyyy. mm. dd') as sendtime_d, receiver_name as r_name,w_name
+	    from
+	    (
+	        select row_number() over(order by sendtime desc) as rno, mno, writer, name_kr as w_name, department_name as w_deptname, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, TM.delete_status, depthno, TM.scrap_status, filecnt
+	        from
+	        (
+	            select mno, writer, receiver, mgroup, reno, subject, content, sendtime, ms_checktime, depthno, MS.scrap_status, MS.delete_status, filecnt
+	            from tbl_message M
+	            join tbl_message_send MS
+	            on M.mno = MS.fk_mno
+	            left join
+	            (select distinct fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno) F
+	            on mno = F.fk_mno
+	            where receiver =  #{employee_no} and M.delete_status = 1
+	        ) TM
+	        left join v_employee E
+	        on E.employee_no = writer
+	        where 1=1
+	    ) TMM
+	    left join v_employee
+	    on employee_no = receiver
+	UNION ALL
+		select writer, mno, subject,to_char(sendtime,'yyyy-mm-dd') as sendtime_y,to_char(sendtime,'yyyy. mm. dd') as sendtime_d, receiver_name as r_name,w_name
+		from 
+	    (
+	    select row_number() over(order by sendtime desc) as rno, writer, mno, mgroup, reno, subject, sendtime, receiver_name, name_kr as w_name
+	    from
+	    (
+	        select writer, mno, mgroup, reno, subject, M.delete_status, sendtime, depthno, M.scrap_status, 
+	                LISTAGG(name_kr,',') WITHIN GROUP (ORDER BY name_kr) AS receiver_name, filecnt
+	        from tbl_message M
+	        left join tbl_message_send MS
+	        on mno = fk_mno
+	        left join v_employee
+	        on receiver = employee_no
+	        left join ( select fk_mno, count(*) as filecnt from tbl_message_file group by fk_mno ) F
+	        on F.fk_mno = mno
+	        group by (writer, mno, mgroup, reno, subject, M.delete_status, sendtime, depthno, M.scrap_status, filecnt)
+	    ) M
+	    left join v_employee E
+	    on E.employee_no = writer
+	    where writer =  #{employee_no} and M.delete_status = 1
+	    )
+	)
+	select writer, mno, subject, sendtime_y,sendtime_d, r_name,w_name
+	from v
+	where 1=1 
+	<if test="searchVal != ''">
+    	and( lower(subject) like '%'||lower(#{searchVal})||'%'
+    	or lower(w_name) like '%'||lower(#{searchVal})||'%'
+    	or lower(r_name) like '%'||lower(#{searchVal})||'%'
+    	) 
+   	</if>
+	 order by mno desc
+	</select>
+	<!-- 보낸 메시지목록 알아오기 -->
+	
+	
+	<resultMap type="HashMap" id="getAppList_Map">
+		<result property="ano" column="ano" javaType="String"/>
+		<result property="fk_empno" column="fk_empno" javaType="String"/>
+		<result property="ap_type" column="ap_type" javaType="String"/>
+		<result property="writeday_y" column="writeday_y" javaType="String"/>
+		<result property="writeday_d" column="writeday_d" javaType="String"/>
+		<result property="name_kr" column="name_kr" javaType="String"/>
+	</resultMap>
+	<select id="getAppList" parameterType="HashMap" resultMap="getAppList_Map">
+	with v as
+	(
+    select rno, ano, fk_empno, ap_type, title, writeday_y, writeday_d, name_kr
+    from             
+    (
+    select rno, ano, fk_empno, ap_type, title,  writeday_y, writeday_d
+    from
+    (
+      select row_number() over (order by ano desc) as rno, ano, fk_empno, bookmark
+           , ap_type, title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn
+           , to_char(writeday,'yyyy-mm-dd') as writeday_y, to_char(writeday,'yyyy. mm. dd') as writeday_d
+      from tbl_approval
+      where status = 1 and fk_empno =  #{employee_no}
+    ) V 
+    )A left join v_employee E
+    on A.fk_empno = E.employee_no
+	UNION ALL
+    select rno, ano, fk_empno, ap_type, title, writeday_y,writeday_d, name_kr
+    from             
+    (
+    select rno, ano, fk_empno, ap_type, title, content, final_signyn, writeday_y,writeday_d
+    from
+    (
+      select row_number() over (order by ano desc) as rno, ano, fk_empno, bookmark
+           , ap_type, title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn
+           , to_char(writeday,'yyyy-mm-dd') as writeday_y, to_char(writeday,'yyyy. mm. dd') as writeday_d
+      from tbl_approval
+      where status = 1 and ano in(select fk_ano
+                         from tbl_approval_sign
+                         where fk_sign_empno =  #{employee_no})
+    ) V 
+    )A left join v_employee E
+    on A.fk_empno = E.employee_no
+	)
+	select rno, ano, fk_empno, ap_type, title, writeday_y, writeday_d, name_kr
+	from v
+	where 1=1 
+	<if test="searchVal != ''">
+        and( lower(title) like '%'||lower('${searchVal}')||'%' 
+        or lower(name_kr) like '%'||lower('${searchVal}')||'%' 
+        or lower(ap_type) like '%'||lower('${searchVal}')||'%' )
+   </if>
+	order by ano desc
+	</select>
+</mapper>

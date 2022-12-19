@@ -88,4 +88,7 @@ public interface InterApprovalDAO {
 	// 부서명 가져오기 
 	List<String> getdeptname();
 
+	// 저장된 내 결재라인 삭제하기 (Ajax)
+	int delsavedline(String signpath_no);
+
 }

@@ -20,22 +20,40 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<!-- #196. 웹채팅관련6 
-			/WEB-INF/spring/config/websocketContext.xml 을 추가해준다
-			-->
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml,
 						 /WEB-INF/spring/config/websocketContext.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-		
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<!-- === #13. URL 패턴에서 확장자 .action 인 것으로 요청을 하면 appServlet 서블릿이 받아서 처리를 해준다. === --> 
-		<url-pattern>*.up</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
+
+  	 <servlet>
+      <servlet-name>up</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+         <param-name>contextConfigLocation</param-name>
+         <!-- #196. 웹채팅관련6 
+         /WEB-INF/spring/config/websocketContext.xml 을 추가해준다
+         -->
+         <param-value>/WEB-INF/spring/appServlet/servlet-context.xml,
+                   /WEB-INF/spring/config/websocketContext.xml
+         </param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+      
+   <servlet-mapping>
+      <servlet-name>up</servlet-name>
+      <!-- === #13. URL 패턴에서 확장자 .action 인 것으로 요청을 하면 appServlet 서블릿이 받아서 처리를 해준다. === --> 
+      <url-pattern>*.up</url-pattern>
+   </servlet-mapping>
+  	
+  	
+  	
 	
 	<!-- === #14. POST 방식으로 요청시 데이터 인코딩처리(UTF-8)를 위한 필터추가 -->
 	<filter>

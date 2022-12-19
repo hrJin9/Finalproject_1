@@ -80,6 +80,13 @@ public interface InterApprovalService {
 	List<String> getdeptname();
 
 	
+	// 마지막 결재자인지 알아보기
+	String checkmymaxstep(ApprovalVO apvo);
+
+	// 저장된 내 결재라인 삭제하기 (Ajax)
+	int delsavedline(String signpath_no);
+
+	
 //	int cancelmyapproval(String ano);
 
 

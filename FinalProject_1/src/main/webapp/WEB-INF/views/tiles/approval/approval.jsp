@@ -892,7 +892,7 @@ let searchWord = "";
       	              		+ '<td class="title"><div id="writername">'+item.name_kr+'</div>'
       	              		+ '<div id="writerday">'+item.writeday+'</div>'
       		              	+ '<div id="writertitle">'+item.title+'</div></td>'
-      	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div>'
+      	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div style="margin-top: 15px;">'
       	              if(item.final_signyn == "승인"){
  		              		html += '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
  		               }
@@ -1335,7 +1335,7 @@ let searchWord = "";
 		              <div id="writertitle">${approvalvo.title}</div></td>
 	              <td class="ap_type"><div>${approvalvo.ap_type}</div></td>
 	              <td>
-	              	<div>
+	              	<div style="margin-top: 15px;">
 	              		<c:if test="${approvalvo.final_signyn=='승인'}">
 		              		<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>
 	              		</c:if>

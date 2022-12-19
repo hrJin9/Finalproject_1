@@ -136,7 +136,7 @@ public class ApprovalService implements InterApprovalService {
 		
 		int result = 0;
 		if("1".equals(apvo.getSignyn())){ // 승인 일경우
-			String chk_ano = dao.checkmymaxstep(apvo);
+			String chk_ano = checkmymaxstep(apvo); // 마지막 결재자인지 알아보기
 //			System.out.println("chk_ano =>"+chk_ano);
 			int n = 0;
 //			String ano = paraMap.get("ano");
@@ -157,6 +157,15 @@ public class ApprovalService implements InterApprovalService {
 		
 		return result;
 	}
+	
+	// 마지막 결재자인지 알아보기
+	@Override
+	public String checkmymaxstep(ApprovalVO apvo) {
+		String chk_ano = dao.checkmymaxstep(apvo); 
+		return chk_ano ;
+	}
+	
+	
 
 	// 검색어 입력시 자동글 완성하기
 	@Override
@@ -183,31 +192,29 @@ public class ApprovalService implements InterApprovalService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = {Throwable.class})
 	public int savemyline(Map<String, String> paraMap) throws Exception {
-		int result = 0;
+		// 1단계 000, ***   / 2단계 ### 
+		
 		
 		String signstep = paraMap.get("signstep");
 		String signpatharr = paraMap.get("signpatharr");
+		System.out.println("signpatharr =>"+signpatharr );// 1단계 000, ***   
+		System.out.println("signstep =>"+signstep );
+		
 		String[] arr = signpatharr.split(",");
 
-		int n = 0;
-		if("1".equals(signstep) ) {
-			for(int i =0; i<=arr.length; i++) {
-				System.out.println("arr "+i+"=>" +arr[i]);
-				if(i==0) { // 한번만 tbl_signpath 에 넣기 
-					n = dao.insertsignpath(paraMap);
-				}
-				break;
-			}
+		int n=0,m=0;
+		
+		if("1".equals(signstep) && n==0) { // 1단계에서 한번만 tbl_signpath 에 넣기 
+			n = dao.insertsignpath(paraMap);
 		}
 		
 		for(String signpath : arr) {
 			paraMap.put("sign_empno", signpath);
-			n = dao.insertdetailsignpath(paraMap);
-			n *= n ;
+			m = dao.insertdetailsignpath(paraMap);
 		}
 		
-		result = n;
-		return result;
+		
+		return m;
 	}
 
 
@@ -351,6 +358,13 @@ public class ApprovalService implements InterApprovalService {
 	public List<String> getdeptname() {
 		List<String> dept = dao.getdeptname();
 		return dept;
+	}
+
+	// 저장된 내 결재라인 삭제하기 (Ajax)
+	@Override
+	public int delsavedline(String signpath_no) {
+		int n = dao.delsavedline(signpath_no); 
+		return n;
 	}
 
 

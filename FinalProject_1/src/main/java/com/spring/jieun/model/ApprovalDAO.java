@@ -250,5 +250,11 @@ public class ApprovalDAO implements InterApprovalDAO{
 		return dept;
 	}
 
+	@Override
+	public int delsavedline(String signpath_no) {
+		int n = sqlsession.delete("approval.delsavedline", signpath_no); 
+		return n;
+	}
+
 	
 }
