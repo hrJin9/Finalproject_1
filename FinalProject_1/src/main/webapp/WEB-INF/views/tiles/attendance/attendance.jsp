@@ -958,7 +958,7 @@
 				  		<span>총 근무</span>
 				  		<!-- <div class="workingtotalhourByday ml-2"><span class="ml-1" id="workTime">0</span>시간 <span class="ml-1" id="workMin"></span>분</div> -->
 				  		<div class="workingtotalhourByday ml-2"><span class="ml-1" id="workTime"></span></div>
-				  		<div class="atnotice">(휴게시간 포함)</div>
+				  		<div class="atnotice">(휴게시간 1시간 포함하여 등록해주세요)</div>
 				  		<div class="line"></div>
 			  		</div>
 			  		<!-- 근무 1개  -->

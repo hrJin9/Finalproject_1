@@ -50,10 +50,9 @@
 		// ** selectbox 최근 5년으로 기간 설정 끝 ** //
 		
 		
-		
 		// 연차 상세현황 datepicker 년도 설정
 		//const year = $("input.dayoff-datepicker").val();
-		$("select#selyear").change(function(e) {
+		<%-- $("select#selyear").change(function(e) {
 			const year = $("select#selyear").val();
 			console.log(year);
 			
@@ -116,24 +115,12 @@
 			     		}); 
 			     		
 		            }
-		     		
-			       /*  else {
-			        	html += '<div class="dayoff-none"><div>'
-				        	        + '<i class="fa-solid fa-circle-info" style="display: block; margin-bottom: 5px;"></i>'
-				        	        + '연차 기록이 없습니다.'
-			        	        + '</div></div>';
-			        } */
-	           	
-	   	         	
 				},
 				error: function(request, status, error){
 		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		        }					
 			});
-		});// end of $("select#selyear").change--------------
-		
-		
-		
+		}); // end of $("select#selyear").change--------------  --%>
 		
 	});// end of $(document).ready(function(){})----------------
 	
@@ -164,19 +151,19 @@
 			<div style="position: relative; top:25px; left: 12px;">
 				<!-- <input type="text" class="dayoff-datepicker"/>
 				<i class="fas fa-chevron-down"></i> -->
-				<select name="selyear" id="selyear">
-					<!-- <option value="2019">2019년</option>
+				<!-- <select name="selyear" id="selyear">
+					<option value="2019">2019년</option>
 					<option value="2020">2020년</option>
 					<option value="2021">2021년</option>
-					<option value="2022" selected>2022년</option> -->
-				</select>
+					<option value="2022" selected>2022년</option>
+				</select> -->
 			</div>
 		</div>
 		<div class="dayoff-detail-sumbox">
 			<div>
 				<div style="background-color:green;"></div>
 				<span>자동 부여</span>
-				<div class="dayoff-plus">+ ${requestScope.totalUsedays}일</div>
+				<div class="dayoff-plus">+ ${requestScope.dayoff_receiveCnt}일</div>
 			</div>
 			<div class="sumbox-verticalline"></div>
 			<div>
@@ -206,7 +193,7 @@
 						<td>자동 소멸</td>
 						<td>조정</td>
 						<td>사용</td>
-						<!-- <td>잔여</td> -->
+						<!-- <td>잔여</td>  -->
 						<!-- <td><div>잔여</div><div style="font-size:8pt;">전년도이월 0</div></td> -->
 					</tr>
 				</thead>
@@ -224,12 +211,26 @@
 							<c:choose>
 								<c:when test="${i.count < 10}">
 									<td>${requestScope.thisyyyy}. 0${i.count}</td>
-									<c:if test="${i.count == 1}">
-										<td>+${requestScope.totalUsedays - 11}일</td>
+									
+									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '사원'}">
+										<td>+1일</td>
+									</c:if>
+									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '대리'}">
+										<td>+3일</td>
+									</c:if>
+									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '과장'}">
+										<td>+5일</td>
+									</c:if>
+									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '부장'}">
+										<td>+7일</td>
+									</c:if>
+									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '대표'}">
+										<td>+9일</td>
 									</c:if>
 									<c:if test="${i.count != 1}">
 										<td>+1일</td>
 									</c:if>
+									
 									<td></td>
 									<td></td>
 									<c:if test="${dovo == '0'}">
@@ -241,14 +242,10 @@
 									<!-- <td></td> -->
 								</c:when>
 								
-								<c:otherwise>
+								
+								<c:otherwise> <%-- 10 ~ 12월 --%>
 									<td>${requestScope.thisyyyy}. ${i.count}</td>
-									<c:if test="${i.count == 1}">
-										<td>+${requestScope.totalUsedays - 11}일</td>
-									</c:if>
-									<c:if test="${i.count != 1}">
-										<td>+1일</td>
-									</c:if>
+									<td>+1일</td>
 									<td></td>
 									<td></td>
 									<c:if test="${dovo == '0'}">

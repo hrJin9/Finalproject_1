@@ -268,7 +268,34 @@
 	</select>
 
 
-	<!-- 매월 연차 +1 스프링 스케줄러 -->
+
+	<!-- 매년 1월 직급별 연차 업데이트 스프링 스케줄러 -->
+	<update id="addDayoffInJanuary1">
+		update tbl_employee set dayoff_cnt = dayoff_cnt+1
+		where position = '사원'
+	</update>
+	
+	<update id="addDayoffInJanuary2">
+		update tbl_employee set dayoff_cnt = dayoff_cnt+3
+		where position = '대리'
+	</update>
+	
+	<update id="addDayoffInJanuary3">
+		update tbl_employee set dayoff_cnt = dayoff_cnt+5
+		where position = '과장'
+	</update>
+	
+	<update id="addDayoffInJanuary4">
+		update tbl_employee set dayoff_cnt = dayoff_cnt+7
+		where position = '부장'
+	</update>
+	
+	<update id="addDayoffInJanuary5">
+		update tbl_employee set dayoff_cnt = dayoff_cnt+9
+		where position = '대표'
+	</update>
+	
+	<!-- 매월 연차 업데이트 스프링 스케줄러 -->
 	<update id="addDayoff">
 		update tbl_employee set dayoff_cnt = dayoff_cnt+1
 		where employee_no != 99
@@ -276,8 +303,6 @@
 	
 	
 	
-	
-
 
 	<!-- 년도별 연차 상세 보여주기 -->
 	<select id="dayoffDetailViewByYear" parameterType="HashMap" resultType="com.spring.yeeun.model.DayoffVO">

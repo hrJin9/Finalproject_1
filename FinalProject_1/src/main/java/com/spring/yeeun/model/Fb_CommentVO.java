@@ -1,10 +1,11 @@
 package com.spring.yeeun.model;
 
-public class FB_CommentVO {
+public class Fb_CommentVO {
 	
 	private String cno;             // 댓글번호
     private String fk_employee_no;  // 사원번호  
     private String name_kr;         // 작성자명
+    private String position;        // 직위
     private String content;         // 댓글내용   
     private String writedate;       // 작성일자
     private String fk_fbno;         // 원게시물 자유게시물번호
@@ -32,19 +33,19 @@ public class FB_CommentVO {
 	     답변글이 아닌 원글일 경우 0 을 가지도록 한다. 
 	*/
     
-    
-	public FB_CommentVO() {}
+	public Fb_CommentVO() {}
 
-	public FB_CommentVO(String cno, String fk_employee_no, String name_kr, String content, String writedate,
-			String status, String fk_fbno, String groupno, String fk_cno, String depthno) {
+	public Fb_CommentVO(String cno, String fk_employee_no, String name_kr, String position, String content,
+			String writedate, String fk_fbno, String status, String groupno, String fk_cno, String depthno) {
 		super();
 		this.cno = cno;
 		this.fk_employee_no = fk_employee_no;
 		this.name_kr = name_kr;
+		this.position = position;
 		this.content = content;
 		this.writedate = writedate;
-		this.status = status;
 		this.fk_fbno = fk_fbno;
+		this.status = status;
 		this.groupno = groupno;
 		this.fk_cno = fk_cno;
 		this.depthno = depthno;
@@ -74,6 +75,14 @@ public class FB_CommentVO {
 		this.name_kr = name_kr;
 	}
 
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	public String getContent() {
 		return content;
 	}
@@ -90,20 +99,20 @@ public class FB_CommentVO {
 		this.writedate = writedate;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public String getFk_fbno() {
 		return fk_fbno;
 	}
 
 	public void setFk_fbno(String fk_fbno) {
 		this.fk_fbno = fk_fbno;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getGroupno() {
@@ -130,7 +139,6 @@ public class FB_CommentVO {
 		this.depthno = depthno;
 	}
 
-	
 	
 
 	

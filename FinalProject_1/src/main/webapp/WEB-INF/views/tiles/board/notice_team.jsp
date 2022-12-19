@@ -1245,7 +1245,7 @@ function goSearch(){
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">일반</span>
               		</div>
-              		<div style="display: inline-block; width: 16.5%;">
+              		<div style="display: inline-block; width: 17%;">
               			<span class="username">진혜린&nbsp;본부장</span>
               		</div>
               		<div style="display: inline-block; width: 10%;">
@@ -1272,7 +1272,7 @@ function goSearch(){
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">일반</span>
               		</div>
-              		<div style="display: inline-block; width: 16.5%;">
+              		<div style="display: inline-block; width: 17%;">
               			<span class="username">진혜린&nbsp;본부장</span>
               		</div>
               		<div style="display: inline-block; width: 10%;">
@@ -1300,7 +1300,7 @@ function goSearch(){
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">일반</span>
               		</div>
-              		<div style="display: inline-block; width: 16.5%;">
+              		<div style="display: inline-block; width: 17%;">
               			<span class="username">진혜린&nbsp;주임</span>
               		</div>
               		<div style="display: inline-block; width: 10%;">
@@ -1327,7 +1327,7 @@ function goSearch(){
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">인사</span>
               		</div>
-              		<div style="display: inline-block; width: 16.5%;">
+              		<div style="display: inline-block; width: 17%;">
               			<span class="username">진혜린&nbsp;부대표</span>
               		</div>
               		<div style="display: inline-block; width: 10%;">
@@ -1353,7 +1353,7 @@ function goSearch(){
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">경조사</span>
               		</div>
-              		<div style="display: inline-block; width: 16.5%;">
+              		<div style="display: inline-block; width: 17%;">
               			<span class="username">진혜린&nbsp;사원</span>
               		</div>
               		<div style="display: inline-block; width: 10%;">
@@ -1379,7 +1379,7 @@ function goSearch(){
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">경조사</span>
               		</div>
-              		<div style="display: inline-block; width: 16.5%;">
+              		<div style="display: inline-block; width: 17%;">
               			<span class="username">진혜린&nbsp;사원</span>
               		</div>
               		<div style="display: inline-block; width: 10%;">
@@ -1405,7 +1405,7 @@ function goSearch(){
               		<div style="display: inline-block; width: 11%;">
               			<span class="categorybadge">경조사</span>
               		</div>
-              		<div style="display: inline-block; width: 16.5%;">
+              		<div style="display: inline-block; width: 17%;">
               			<span class="username">진혜린&nbsp;사원</span>
               		</div>
               		<div style="display: inline-block; width: 10%;">
