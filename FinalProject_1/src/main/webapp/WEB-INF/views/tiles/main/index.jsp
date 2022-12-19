@@ -7,7 +7,17 @@
 <style type="text/css">
 </style>
 
+ 
+
+<!-- full calendar에 관련된 script -->
+<script src='<%=ctxPath %>/resources/fullcalendar_5.10.1/main.min.js'></script>
+<script src='<%=ctxPath %>/resources/fullcalendar_5.10.1/ko.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
 <script type="text/javascript">
+
+/* 
 //캘린더
 document.addEventListener('DOMContentLoaded', function() {
 	var calendarEl = document.getElementById('calendar');
@@ -47,8 +57,151 @@ document.addEventListener('DOMContentLoaded', function() {
 	calendar.render();
 
 });//end of calendar
+ 
+
+ */ 
+
+ 
+
 
 $(document).ready(function(){
+	
+	 
+	// ==== 풀캘린더와 관련된 소스코드 시작(화면이 로드되면 캘린더 전체 화면 보이게 해줌) ==== //
+	var calendarEl = document.getElementById('calendar');
+        
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+    	initialView: 'dayGridMonth',
+        locale: 'ko',
+        selectable: true, 
+  	   editable: false,
+  	   navLinks: true, // can click day/week names to navigate views
+  	   businessHours: true, // display business hours
+  	   headerToolbar: { 
+  	         left: 'prev,next today',  
+  	         center: 'title'  
+  	       }, 
+  	    dayMaxEventRows: true, // for all non-TimeGrid views 
+  	    views: {
+  	      timeGrid: {
+  	        dayMaxEventRows: 3 // adjust to 6 only for timeGridWeek/timeGridDay
+  	      } 
+	    }, 
+		 
+	    // ===================== DB 와 연동하는 법 시작 ===================== //
+    	events:function(info, successCallback, failureCallback) { 
+	
+    		
+	    	 $.ajax({   
+                 url: '<%= ctxPath%>/schedule/selectSchedule.up',
+                 data:{"fk_employee_no":"${sessionScope.loginuser.employee_no}"},
+                 dataType: "json",
+                 success:function(json) {
+                	 var events = [];
+                     if(json.length > 0){
+                         
+                             $.each(json, function(index, item) {
+                                    var startdate = moment(item.startdate).format('YYYY-MM-DD HH:mm:ss');
+                                    var enddate = moment(item.enddate).format('YYYY-MM-DD HH:mm:ss');
+                                    var subject = item.subject; 
+                              
+                                   // 사내 캘린더로 등록된 일정을 풀캘린더 달력에 보여주기 
+                                   // 일정등록시 사내 캘린더에서 선택한 소분류에 등록된 일정을 풀캘린더 달력 날짜에 나타내어지게 한다.
+                                   if( $("input:checkbox[name=com_smcatgono]:checked").length <= $("input:checkbox[name=com_smcatgono]").length ){
+	                                   
+	                                   for(var i=0; i<$("input:checkbox[name=com_smcatgono]:checked").length; i++){
+	                                	  
+	                                		   if($("input:checkbox[name=com_smcatgono]:checked").eq(i).val() == item.fk_smcatgono){
+	   			                               //  alert("캘린더 소분류 번호 : " + $("input:checkbox[name=com_smcatgono]:checked").eq(i).val());
+	                                			   events.push({
+	   			                                	            id: item.calno,
+	   			                                                title: item.subject,
+	   			                                                start: startdate,
+	   			                                                end: enddate,
+	   			                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.up?calno="+item.calno,
+	   			                                                cid: item.fk_smcatgono  // 사내캘린더 내의 서브캘린더 체크박스의 value값과 일치하도록 만들어야 한다. 그래야만 서브캘린더의 체크박스와 cid 값이 연결되어 체크시 풀캘린더에서 일정이 보여지고 체크해제시 풀캘린더에서 일정이 숨겨져 안보이게 된다. 
+	   			                                   }); // end of events.push({})--------- 
+	   		                                   }
+	                                	   
+	                                   }// end of for-------------------------------------
+	                                 
+                                   }// end of if------------------------------------------- 
+                                     
+                                  
+                                  // 내 캘린더로 등록된 일정을 풀캘린더 달력에 보여주기
+                                  // 일정등록시 내 캘린더에서 선택한 소분류에 등록된 일정을 풀캘린더 달력 날짜에 나타내어지게 한다.
+                                  if( $("input:checkbox[name=my_smcatgono]:checked").length <= $("input:checkbox[name=my_smcatgono]").length ){
+	                                    
+	                                   for(var i=0; i<$("input:checkbox[name=my_smcatgono]:checked").length; i++){
+	                                	  
+	                                		   if($("input:checkbox[name=my_smcatgono]:checked").eq(i).val() == item.fk_smcatgono && item.fk_employee_no == "${sessionScope.loginuser.employee_no}" ){
+	   			                               //  alert("캘린더 소분류 번호 : " + $("input:checkbox[name=my_smcatgono]:checked").eq(i).val());
+	                                			   events.push({
+	   			                                	            id: item.calno,
+	   			                                                title: item.subject, 
+	   			                                                start: startdate,
+	   			                                                end: enddate, 
+	   			                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.up?calno="+item.calno,
+	   			                                                cid: item.fk_smcatgono  // 내캘린더 내의 서브캘린더 체크박스의 value값과 일치하도록 만들어야 한다. 그래야만 서브캘린더의 체크박스와 cid 값이 연결되어 체크시 풀캘린더에서 일정이 보여지고 체크해제시 풀캘린더에서 일정이 숨겨져 안보이게 된다. 
+	   			                                   }); // end of events.push({})---------
+	   	                                    }
+	                                   }// end of for-------------------------------------
+                                   
+                                   }// end of if-------------------------------------------
+
+                                  
+                                  // 공유받은 캘린더(다른 사용자가 내캘린더로 만든 것을 공유받은 경우임)
+                                  if (item.fk_lgcatgono==1 && item.fk_employee_no != "${sessionScope.loginuser.employee_no}" && (item.joinuser).indexOf("${sessionScope.loginuser.employee_no}") != -1 ){  
+                                        
+  	                                   events.push({
+  	                                	   			id: "0",  // "0" 인 이유는  배열 events 에 push 할때 id는 고유해야 하는데 위의 사내캘린더 및 내캘린더에서 push 할때 id값으로 item.calno 을 사용하였다. item.calno 값은 DB에서 1 부터 시작하는 시퀀스로 사용된 값이므로 0 값은 위의 사내캘린더나 내캘린더에서 사용되지 않으므로 여기서 고유한 값을 사용하기 위해 0 값을 준 것이다. 
+  	                                                title: item.subject,
+  	                                                start: startdate,
+  	                                                end: enddate,    
+  	                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.up?calno="+item.calno,
+  	                                                cid: "0"  // "0" 인 이유는  공유받은캘린더 에서의 체크박스의 value 를 "0" 으로 주었기 때문이다.
+  	                                   }); // end of events.push({})--------- 
+  	                                   
+  	                           		}// end of if------------------------- 
+                                
+                             }); // end of $.each(json, function(index, item) {})-----------------------
+                         }                             
+                         
+                      // console.log(events);                       
+                         successCallback(events);                               
+                  },
+				  error: function(request, status, error){
+			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			      }	
+                                            
+          }); // end of $.ajax()--------------------------------
+        
+        }, // end of events:function(info, successCallback, failureCallback) {}---------
+        // ===================== DB 와 연동하는 법 끝 ===================== //
+        
+       	   
+      	  
+  }); 
+    
+  calendar.render();  // 풀캘린더 보여주기
+  
+ 
+  var arr_calendar_checkbox = document.querySelectorAll("input.calendar_checkbox"); 
+  // 사내캘린더, 내캘린더, 공유받은캘린더 에서의 체크박스임
+  
+  arr_calendar_checkbox.forEach(function(item) {
+	  item.addEventListener("change", function () {
+      // console.log(item);
+		 calendar.refetchEvents(); // 모든 소스의 이벤트를 다시 가져와 화면에 다시 표시합니다.
+    });
+  });
+  //==== 풀캘린더와 관련된 소스코드 끝(화면이 로드되면 캘린더 전체 화면 보이게 해줌) ==== //
+	
+	
+	
+	
+	
+	
 	
 	$(document).on("mouseover",".bg-light",function(){
 		$(this).find(".avbtn").css({"visibility":"visible","transition":"all .1s"});
@@ -317,7 +470,7 @@ function pagebar(kind, total, curpage){
 		</div>
 	</div>
 </div>
-<div style="width: 39.5%; float: right; border-left:solid 1px rgba(220,220,220); height: 640px;">
+<div style="width: 39.5%; float: right; border-left:solid 1px rgba(220,220,220); height: 189px;">  
 	<div class="mainheader">
 		<div style="width: 100%;">
 			<span>요청사항</span>
@@ -360,11 +513,11 @@ function pagebar(kind, total, curpage){
 				</div>
 			</c:forEach>
 		</c:if>		
-		 --%>
+		 --%> 
 		
 	</div>
 	<hr style="border:none; height:1px; background-color: rgba(220,220,220);"/>
-	<div class="schedule-c" style="margin: 0 20px;">
+<!-- 	<div class="schedule-c" style="margin: 0 20px;">
 		<div id="calendar" style=" margin: 30px 0 20px 0; padding: 0 30px; width: 512px; font-size: 9pt; color: #4d4f53; position:relative; right: 22px;">
 		<div id="calendar_header" style="width:100%;">
 			<i class="icon-chevron-left"></i>
@@ -373,7 +526,20 @@ function pagebar(kind, total, curpage){
 		<div id="calendar_weekdays" style="width:100%;"></div>
 		<div id="calendar_content" style="width:100%;"></div>
 	</div>
-	</div>
-	
-
+	</div> 
+	 -->
+  
 </div>
+<div style="width: 39.5%; float: right; border-left:solid 1px rgba(220,220,220); height: 640px;"> 
+	<div class="mainheader">
+		<div style="width: 100%;"> 
+			<span>캘린더</span> 
+			<span style="float:right;"><button type="button" class="headerMore" style="margin-right: 60px;" onclick="javascript:location.href='<%=ctxPath%>/schedule/scheduleManagement.up'">더보기</button></span>
+		</div>
+	</div>
+	 
+	<%-- 풀캘린더가 보여지는 엘리먼트  --%>	
+	<div id="calendar"></div>
+	
+ 
+</div> 
