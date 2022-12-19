@@ -1012,11 +1012,11 @@
 					   		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
 				   		</c:if>
 				   	</div>  
-					<div class="fb-info" style="width: 55%;">
-						<div style="display: inline-block; width: 15%; margin-left: -1%;">
+					<div class="fb-info" style="width: 70%;">
+						<div style="display: inline-block; width: 13%; margin-left: -1%;">
 							<span class="username">${boardvo.name_kr}&nbsp;${boardvo.position}</span>
 						</div>
-						<div style="display: inline-block; width: 12%;">
+						<div style="display: inline-block; width: 10%;">
 							<span class="writedate">${boardvo.writedate}</span>
 						</div>
 						<div style="display: inline-block; width: 30%;"> 
