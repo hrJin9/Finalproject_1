@@ -22,7 +22,7 @@ public class AttendanceDAO implements InterAttendanceDAO {
 		int n = sqlsession.insert("attendance.addAttendance", paraMap);
 		return n;
 	}
-	
+
 	// 저장한 근무상태 조회하기
 	@Override
 	public List<AttendanceVO> atdetailView(Map<String, String> paraMap) {

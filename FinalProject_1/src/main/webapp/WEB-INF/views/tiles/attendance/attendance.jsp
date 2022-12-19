@@ -649,7 +649,6 @@
 				//console.log(JSON.stringify(json));  // 배열타입도 모두 찍을 수 있다.
 				//console.log("JSON.realtotal_per : "+json.realtotal_per);
 
-				
 				// 막대바 색상변경
 				if(json.realtotal_per <= 77) {
 					var realtotal_per_default = json.realtotal_per+"%";
