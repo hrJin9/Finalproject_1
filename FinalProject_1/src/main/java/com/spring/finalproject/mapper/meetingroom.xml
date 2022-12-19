@@ -5,18 +5,18 @@
 	<!-- 회의실 예약하기  -->  
 	<insert id="meetingroom_add" parameterType="HashMap"> 
 		insert into tbl_meetingroom_reservation(reserno, startdate, enddate, r_content, fk_employee_no, fk_roomno)  
-		values(seq_reserno.nextval, to_date(#{startdate}, 'yyyymmddhh24miss'), to_date(#{enddate}, 'yyyymmddhh24miss'), #{r_content}, #{fk_employee_no}, #{fk_roomno}) 
+		values(seq_reserno.nextval, to_date(#{startdate}, 'yyyymmdd hh24:mi:ss'), to_date(#{enddate}, 'yyyymmdd hh24:mi:ss'), #{r_content}, #{fk_employee_no}, #{fk_roomno}) 
 	</insert> 
 
 
-	<!-- 회의실 예약 불러오기 --> 
+	<!-- 회의실 예약 불러오기 -->  
 	<select id="selectMeetingroom" resultType="com.spring.chae0.model.Meetingroom_reservationVO" parameterType="String">
-		select startdate, enddate, r_content, fk_employee_no, fk_roomno
-		from tbl_meetingroom_reservation
-		where fk_roomno = #{fk_roomno}
-	</select>
+		select to_char(startdate, 'hh24:mi') as startdate, to_char(enddate, 'hh24:mi') as enddate, fk_roomno 
+		from tbl_meetingroom_reservation 
+		where to_char(startdate,'yyyy-mm-dd') = to_char(#{startdate},'yyyy-mm-dd')
+	</select> 
 
-
+ 
 
 
 

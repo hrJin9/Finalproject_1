@@ -34,8 +34,8 @@ public class MeetingroomService implements InterMeetingroomService {
 
 	// 회의실 예약 불러오기 
 	@Override
-	public List<Meetingroom_reservationVO> selectMeetingroom(String fk_roomno) {
-		List<Meetingroom_reservationVO> meetingList = dao.selectMeetingroom(fk_roomno);
+	public List<Meetingroom_reservationVO> selectMeetingroom(String startdate) {
+		List<Meetingroom_reservationVO> meetingList = dao.selectMeetingroom(startdate);
 		return meetingList; 
 	}
 	  

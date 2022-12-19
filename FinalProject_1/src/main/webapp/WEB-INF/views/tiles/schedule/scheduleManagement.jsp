@@ -753,11 +753,11 @@ function delCalendar(smcatgono, smcatgoname){ // smcatgono => 캘린더 소분�
 		
 		 
 		<div class="calendar-side">      
-			 	  	        
+			 	  	         
 			<div class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#myCal" style="width: 88%; text-align: inherit; margin-left: 18px;">  
 				<input type="checkbox" id="allMyCal" class="calendar_checkbox" checked/>&nbsp;&nbsp;<label for="allMyCal">내 캘린더</label> <i class="fa-solid fa-user" style="margin-left: 2px;"></i>
+			<button class="btn_edit" style="float: right;opacity: 53%;" onclick="addMyCalendar()"><i class='fas'>&#xf055;</i></button>
 			</div>  
-			<button class="btn_edit" style="float: right;" onclick="addMyCalendar()"><i class='fas'>&#xf055;</i></button>
 			 
 			<%-- 내 캘린더를 보여주는 곳 --%>
 			<div id="myCal" class="accordion-collapse collapse show" style="margin-left: 50px; margin-bottom: 10px;"></div>  
@@ -767,15 +767,17 @@ function delCalendar(smcatgono, smcatgoname){ // smcatgono => 캘린더 소분�
 		<div class="calendar-side">      
 			 	  	        
 			<div class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#companyCal" style="width: 88%; text-align: inherit; margin-left: 18px;">  
-				<input type="checkbox" id="allComCal" class="calendar_checkbox" checked/>&nbsp;&nbsp;<label for="allComCal">사내 캘린더</label> 
-			</div>  
+				<input type="checkbox" id="allComCal" class="calendar_checkbox" checked/>&nbsp;&nbsp;<label for="allComCal">사내 캘린더</label>
+				 
+			<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.  	
+			     <c:if test="${sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }"> --%>
+			     <c:if test="${sessionScope.loginuser.position == '과장'}">   
+				 	<button class="btn_edit" style="float: right;opacity: 53%;" onclick="addComCalendar()"><i class='fas'>&#xf055;</i></button>
+				 </c:if> 
+			<%-- </c:if>	--%>   
+			
+			</div>   
 			 
-		<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.  	
-		     <c:if test="${sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }"> --%>
-		     <c:if test="${sessionScope.loginuser.position == '과장'}">   
-			 	<button class="btn_edit" style="float: right;" onclick="addComCalendar()"><i class='fas'>&#xf055;</i></button>
-			 </c:if> 
-		<%-- </c:if>	--%>  
 			 <%-- 사내 캘린더를 보여주는 곳 --%>
 			<div id="companyCal" class="accordion-collapse collapse" style="margin-left: 50px; margin-bottom: 10px;"></div>
 		</div>
