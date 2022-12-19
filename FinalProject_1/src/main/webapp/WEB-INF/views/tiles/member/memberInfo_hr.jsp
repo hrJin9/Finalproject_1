@@ -508,11 +508,13 @@ function getWorkinghour(){
 				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">남은연차</span>
 				<span style="font-size: 13pt;">${requestScope.evo.dayoff_cnt}일</span>  
 			</div><br> 
+			<%-- 
 			<div class="moreInfo" onclick="javascript:location.href='<%= ctxPath%>/payroll.up'">
 				<div style="padding-bottom: 21px;"><ion-icon name="server-outline"></ion-icon></div>
 				<span style="font-size: 9pt; color: #595959; margin-bottom: -9px; display: block;">급여</span>  
 				<span style="font-size: 13pt;">11월 급여명세서</span>  
 			</div><br> 
+			 --%>
 		</div>
        </c:if>
 	</form>

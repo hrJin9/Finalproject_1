@@ -13,7 +13,7 @@
 	
 	
    /* 실시간알림 */
-   div#alert {
+   div#alert_side {
 	   display:none;
        width: 273px;
        height: 35px;
@@ -170,10 +170,11 @@
 //전역변수 설정
 let socket  = null;
 
-var searchVal = '';
+var searchWord_side = '';
 var type = '';
 $(document).ready(function(){
-	$("td:last-child").hide();
+	//$("td:last-child").hide();
+	$(".news").css('display','none'); 
 	$("div.sse-container").css('display','none'); // 검색 div 숨기기 
 	$("div.sse-container table").css('display','none');;
 	
@@ -188,23 +189,6 @@ $(document).ready(function(){
 	}, function(){
 		$(this).find("td:last-child").hide();
 	});
-	
-	//console.log(searchVal);
-	
-	//검색어 입력할때마다 구성원정보 가져오기
-	$(document).on('keyup',"#ss-input",function(e){
-		showEmpList();
-	});//end of keyup
-	
-	
-	// 한 줄 클릭시 해당 팀원의 상세보기로 이동
-	$(document).on("click",".mem-tr",function(e){
-		if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
-		var empno = $(this).attr("id");
-		console.log(empno);
-		location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
-	});
-	
 	
 
 
@@ -227,7 +211,7 @@ $(document).ready(function(){
 	
 	$("span.newred").hide();
 	$("div.news").css('display','none');
-	$("#alert").css('display','none');
+	$("#alert_side").css('display','none');
 	$(".newAlarm").css('display','none');
 	alarmList(); // 알람리스트 
 	
@@ -340,6 +324,34 @@ $(document).ready(function(){
 	});
      
 	
+	/* 검색 해당 tr클릭시 url 이동  */
+	// 한 줄 클릭시 해당 결재문서 상세보기로 이동
+	
+	
+	
+	// 한 줄 클릭시 해당 팀원의 상세보기로 이동
+	<%-- $(".mem-tr").click(function(e){
+		//if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
+		var empno = $(this).attr("id");
+		console.log(empno);
+		location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
+	}); --%>
+	// 한 줄 클릭시 해당 메시지의 상세보기로 이동
+	$(".msg-tr").click(function(e){
+		//if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
+		var mno = $(this).attr("id");
+		console.log(mno);
+		location.href= "<%= ctxPath%>/message.up?mno="+mno;
+	});
+	
+	
+	/* $(document).on({
+		click: function(){
+			
+		}
+	}, '.app-tr'); */
+	
+	
 	
 	 /* === 실시간알림 받아오기 === */
 	   sock = new SockJS('<c:url value="/echo"/>');
@@ -354,13 +366,17 @@ $(document).ready(function(){
 	    // toast
 	    
 		$("#alertText").html(data)
-    	$("#alert").css('display','block');
+    	$("#alert_side").css('display','block');
 	     setTimeout(function(){
-	    	$("#alert").css('display','none');
+	    	$("#alert_side").css('display','none');
 	    }, 5000); 
 		 
 	    alarmList();
 	};	
+	
+	
+	
+	
 	
 	// 알람리스트 불러오기 함수 
 	function alarmList(){
@@ -511,9 +527,6 @@ $(document).ready(function(){
  }
 	
 	
-	
-	
-	
 	$(document).mouseup(function(e){
 		if( !(($(".news").has(e.target).length))){
 		    $(".news").fadeOut(100);
@@ -522,22 +535,8 @@ $(document).ready(function(){
 		     $(".myprofile").fadeOut(100);
 		}
 		
-
-		//검색어 입력할때마다
-		$(document).on('keyup',"#ss-input",function(e){
-			searchSrc();
-		});//end of keyup
-		
 	});
-   
-   
-	// 검색Modal에서 검색어를 입력할 때 get방식으로 검색어값을 보내기  
-	function searchSrc(){
-		//검색어 내용 알아오기
-		var inputval = $("#ss-input").val();
-		// iframe의 주소 변경
-		$('#mwa').attr('src', '<%= request.getContextPath()%>/side/search.up?searchVal='+inputval);
-	}//end of searchSrc
+	
 
 	
 	// sidebar_searchEnd.jsp 에서 아이콘을 바꾸기 위한 함수
@@ -566,24 +565,15 @@ $(document).ready(function(){
 	   $("#se-searchicon").css('display','none');
    }
    
-
-/* 	$(document).on('click',".ss-table > tr",function(e){
-		type = $(this).attr("id");
-		$("div.ss-container").show();
-		$("table.sse-"+type).show(); 
-	}); */
-	
-	
-	
 	
 	/*  === 실시간 검색 === */
 	
 	//구성원을 구하는 ajax
 	function showEmpList(){
-		const searchVal = $("#ss-input").val();
+		const searchWord_side = $("#ss-input").val();
 		$.ajax({
 			url: "<%= ctxPath%>/searchEmpList.up",
-			data: {"searchVal":searchVal},
+			data: {"searchWord_side":searchWord_side},
 			type: "get",
 			dataType:"json",
 			success:function(json){
@@ -613,7 +603,7 @@ $(document).ready(function(){
 				} else {
 					html = "<td colspan='5' style='text-align: center;display: block;margin-top: 60px;'><div style='display: flex;justify-content: flex-start;flex-direction: column;'>"
             	   		 +'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto;width: 48px; height: 48px; flex-shrink: 0;"><path d="M10.5956 3C6.40068 3 3 6.40068 3 10.5956C3 14.7906 6.40068 18.1913 10.5956 18.1913C12.3602 18.1913 13.9842 17.5896 15.2737 16.5801L19.6936 21L21 19.6936L16.5801 15.2737C17.5896 13.9842 18.1913 12.3602 18.1913 10.5956C18.1913 6.40068 14.7906 3 10.5956 3ZM4.84759 10.5956C4.84759 7.42107 7.42107 4.84759 10.5956 4.84759C13.7702 4.84759 16.3437 7.42107 16.3437 10.5956C16.3437 13.7702 13.7702 16.3437 10.5956 16.3437C7.42107 16.3437 4.84759 13.7702 4.84759 10.5956Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchVal+"에 대한 검색결과가 없어요.</div>"
+            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchWord_side+"에 대한 검색결과가 없어요.</div>"
             	   		 +"<div style='font-weight: 400;font-size: 13px;line-height: 21px;color: #556372;'>다른 검색어를 입력해주세요.</div></div>"
             	   		 +"<button onclick='emptysearchbar(event)'style='color: rgb(85, 99, 114);position: relative;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;font-weight: 700;outline: none;border: none;font-size: 13px;border-radius: 6px;background: transparent;box-shadow: none;padding-left: 10px;padding-right: 10px; margin-top: 15px;'>검색어 지우기</button></td>";
 				}
@@ -627,10 +617,10 @@ $(document).ready(function(){
 	}//end of showEmpList
 	//결재문서목록을 구하는 ajax
 	function showAppList(){ /* 보낸사람, 받는사람 결재신청서종류, 제목  */
-		const searchVal = $("#ss-input").val();
+		const searchWord_side = $("#ss-input").val();
 		$.ajax({
 			url: "<%= ctxPath%>/searchAppList.up",
-			data: {"searchVal":searchVal},
+			data: {"searchWord_side":searchWord_side},
 			type: "get",
 			dataType:"json",
 			success:function(json){
@@ -640,7 +630,7 @@ $(document).ready(function(){
 					html+='<tr><td colspan="3">결재문서</td></tr>';
 					$.each(json,function(index,item){
 						writeday_d = getDayOfWeek(item.writeday_d);			
-						html += '<tr><td width="10%">'
+						html += '<tr id="'+item.ano+'" class="app-tr"><td width="10%">'
 							+'<div style="display: flex; padding:6px; border-radius: 10px; border: solid 1px rgba(0,0,0,0.3); background-color: #FAF2E1;">'
 							+'<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/spiral-notepad_1f5d2-fe0f.png" width="15px" style="margin: 5px; margin:auto;"/>'
 							+'</div></td>'
@@ -653,7 +643,7 @@ $(document).ready(function(){
 				} else {
 					html = "<td colspan='5' style='text-align: center;display: block;margin-top: 60px;'><div style='display: flex;justify-content: flex-start;flex-direction: column;'>"
             	   		 +'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto;width: 48px; height: 48px; flex-shrink: 0;"><path d="M10.5956 3C6.40068 3 3 6.40068 3 10.5956C3 14.7906 6.40068 18.1913 10.5956 18.1913C12.3602 18.1913 13.9842 17.5896 15.2737 16.5801L19.6936 21L21 19.6936L16.5801 15.2737C17.5896 13.9842 18.1913 12.3602 18.1913 10.5956C18.1913 6.40068 14.7906 3 10.5956 3ZM4.84759 10.5956C4.84759 7.42107 7.42107 4.84759 10.5956 4.84759C13.7702 4.84759 16.3437 7.42107 16.3437 10.5956C16.3437 13.7702 13.7702 16.3437 10.5956 16.3437C7.42107 16.3437 4.84759 13.7702 4.84759 10.5956Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchVal+"에 대한 검색결과가 없어요.</div>"
+            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchWord_side+"에 대한 검색결과가 없어요.</div>"
             	   		 +"<div style='font-weight: 400;font-size: 13px;line-height: 21px;color: #556372;'>다른 검색어를 입력해주세요.</div></div>"
             	   		 +"<button onclick='emptysearchbar(event)'style='color: rgb(85, 99, 114);position: relative;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;font-weight: 700;outline: none;border: none;font-size: 13px;border-radius: 6px;background: transparent;box-shadow: none;padding-left: 10px;padding-right: 10px; margin-top: 15px;'>검색어 지우기</button></td>";
 				}
@@ -667,20 +657,20 @@ $(document).ready(function(){
 	}//end of showAppList(){
 	//메시지목록을 구하는 ajax
 	function showMsgList(){ /*  작성자이름, 제목 , 보낸사람이름 */
-		const searchVal = $("#ss-input").val();
+		const searchWord_side = $("#ss-input").val();
 		$.ajax({
 			url: "<%= ctxPath%>/searchMsgList.up",
-			data: {"searchVal":searchVal},
+			data: {"searchWord_side":searchWord_side},
 			type: "get",
 			dataType:"json",
 			success:function(json){
 				let html = '';
 				let sendtime_d = ''
-				if(json.length > 0 ){ //불러올 구성원목록이 있는 경우
+				if(json.length > 0 ){
 					html+='<tr class="not-active"><td colspan="3">메시지</td></tr>';
 					$.each(json,function(index,item){
 						sendtime_d = getDayOfWeek(item.sendtime_d);
-						html += '<tr><td width="10%">'
+						html += '<tr id="'+item.mno+'" class="msg-tr"><td width="10%">'
 							 +'<div style="display: flex; padding:6px; border-radius: 10px; border: solid 1px rgba(0,0,0,0.3); background-color: rgba(66, 133, 244, 0.2);">'
 									+'<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/envelope_2709-fe0f.png" width="15px" style="margin: 5px; margin:auto;"/>'
 								+'</div></td>'
@@ -693,7 +683,7 @@ $(document).ready(function(){
 				} else {
 					html = "<td colspan='5' style='text-align: center;display: block;margin-top: 60px;'><div style='display: flex;justify-content: flex-start;flex-direction: column;'>"
             	   		 +'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto;width: 48px; height: 48px; flex-shrink: 0;"><path d="M10.5956 3C6.40068 3 3 6.40068 3 10.5956C3 14.7906 6.40068 18.1913 10.5956 18.1913C12.3602 18.1913 13.9842 17.5896 15.2737 16.5801L19.6936 21L21 19.6936L16.5801 15.2737C17.5896 13.9842 18.1913 12.3602 18.1913 10.5956C18.1913 6.40068 14.7906 3 10.5956 3ZM4.84759 10.5956C4.84759 7.42107 7.42107 4.84759 10.5956 4.84759C13.7702 4.84759 16.3437 7.42107 16.3437 10.5956C16.3437 13.7702 13.7702 16.3437 10.5956 16.3437C7.42107 16.3437 4.84759 13.7702 4.84759 10.5956Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchVal+"에 대한 검색결과가 없어요.</div>"
+            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchWord_side+"에 대한 검색결과가 없어요.</div>"
             	   		 +"<div style='font-weight: 400;font-size: 13px;line-height: 21px;color: #556372;'>다른 검색어를 입력해주세요.</div></div>"
             	   		 +"<button onclick='emptysearchbar(event)'style='color: rgb(85, 99, 114);position: relative;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;font-weight: 700;outline: none;border: none;font-size: 13px;border-radius: 6px;background: transparent;box-shadow: none;padding-left: 10px;padding-right: 10px; margin-top: 15px;'>검색어 지우기</button></td>";
 				}
@@ -705,60 +695,22 @@ $(document).ready(function(){
 			}
 		});//end of ajax
 	}//end of showAppList(){
-	//게시판목록을 구하는 ajax
-	function showBrdList(){
-		const searchVal = $("#ss-input").val();
-		$.ajax({
-			url: "<%= ctxPath%>/searchBrdList.up",
-			data: {"searchVal":searchVal},
-			type: "get",
-			dataType:"json",
-			success:function(json){
-				let html = '';
-				if(json.length > 0 ){ //불러올 구성원목록이 있는 경우
-					html+='<tr class="not-active"><td colspan="3">게시판</td></tr>';
-				
-					$.each(json,function(index,item){
-						html += '<tr><td width="10%">'
-								+'<div style="display: flex; padding:6px; border-radius: 10px; border: solid 1px rgba(0,0,0,0.3); background-color: rgba(55, 166, 82, 0.2);">'
-									+'<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/pencil_270f-fe0f.png" width="15px" style="margin: 5px; margin:auto;"/>'
-								+'</div></td>'
-							+'<td width="85%">'
-								+'<div><span>'+item.name_kr+'</span>·<span>'+item.title+'</span></div>'
-								+'<div>2022. 11. 24(목)</div></td>'
-							+'<td width="5%"><i class="fas fa-angle-right"></i></td></tr>'
-					});//end of each
-					
-				} else {
-					html = "<td colspan='5' style='text-align: center;display: block;margin-top: 60px;'><div style='display: flex;justify-content: flex-start;flex-direction: column;'>"
-            	   		 +'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto;width: 48px; height: 48px; flex-shrink: 0;"><path d="M10.5956 3C6.40068 3 3 6.40068 3 10.5956C3 14.7906 6.40068 18.1913 10.5956 18.1913C12.3602 18.1913 13.9842 17.5896 15.2737 16.5801L19.6936 21L21 19.6936L16.5801 15.2737C17.5896 13.9842 18.1913 12.3602 18.1913 10.5956C18.1913 6.40068 14.7906 3 10.5956 3ZM4.84759 10.5956C4.84759 7.42107 7.42107 4.84759 10.5956 4.84759C13.7702 4.84759 16.3437 7.42107 16.3437 10.5956C16.3437 13.7702 13.7702 16.3437 10.5956 16.3437C7.42107 16.3437 4.84759 13.7702 4.84759 10.5956Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchVal+"에 대한 검색결과가 없어요.</div>"
-            	   		 +"<div style='font-weight: 400;font-size: 13px;line-height: 21px;color: #556372;'>다른 검색어를 입력해주세요.</div></div>"
-            	   		 +"<button onclick='emptysearchbar(event)'style='color: rgb(85, 99, 114);position: relative;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;font-weight: 700;outline: none;border: none;font-size: 13px;border-radius: 6px;background: transparent;box-shadow: none;padding-left: 10px;padding-right: 10px; margin-top: 15px;'>검색어 지우기</button></td>";
-				}
-				
-				$(".sse-member").html(html);
-			},
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			}
-		});//end of ajax
-	}//end of showBrdList(){
+
+	// 검색어 비우는 함수 
 	function emptysearchbar(e){
 		$("#ss-input").val(""); //검색어 비우기
 		const category = $(e.target).parent().parent().attr("class");
+		console.log("category => "+category)
+		
 		switch (category) { // 재검색 
 		case "sse-memeber":
-			showEmpList()
+			showEmpList();
 			break;
 		case "sse-approval":
-			showAppList()
+			showAppList();
 			break;
 		case "sse-message":
-			showMsgList()
-			break;
-		case "sse-board":
-			showBrdList()
+			showMsgList();
 			break;
 		default:
 			break;
@@ -770,6 +722,41 @@ $(document).ready(function(){
 	    const dayOfWeek = week[new Date(date).getDay()];
 	    return dayOfWeek;
 	}
+	
+	
+	
+
+	
+	// 한 줄 클릭시 해당 문서 메시지 팀원의 상세보기로 url 이동
+	$(document).on({
+		//if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
+		click: function(){
+			var empno = $(this).attr("id");
+			console.log(empno);
+			location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
+		}
+	},".mem-tr");
+	
+	$(document).on({
+		//if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
+		click: function(){
+			var appno = $(this).attr("id");
+			console.log(appno);
+			location.href= "<%= ctxPath%>/approval.up?ano="+appno;
+		}
+	},".app-tr");
+	
+	$(document).on({
+		//if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
+		click: function(){
+			var msgno = $(this).attr("id");
+			console.log(mno);
+			location.href= "<%= ctxPath%>/message.up?mno="+mno;
+		}
+	},".msg-tr");
+	
+	
+	
 	
 	
 	function memberSearch(){
@@ -784,18 +771,11 @@ $(document).ready(function(){
 			showEmpList();
 		});//end of keyup
 		
-		// 한 줄 클릭시 해당 팀원의 상세보기로 이동
-		$(".mem-tr").click(function(e){
-			if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
-			var empno = $(this).attr("id");
-			//console.log(empno);
-			location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
-		});
 	}//end of goMemberSearch()
 	
 	function approvalSearch(){
 		sse_changeIcon();
-		$("div.sse-container table").css('display','none');;
+		$("div.sse-container table").css('display','none');
 		$(".sse-approval").css('display','block');
 		showAppList()
 		
@@ -804,17 +784,11 @@ $(document).ready(function(){
 			showAppList()
 		});//end of keyup
 		
-		$(".mem-tr").click(function(e){
-			if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
-			var empno = $(this).attr("id");
-			//console.log(empno);
-			location.href= "<%= ctxPath%>/approval.up";
-		});
 	}//end of goApprovalSearch()
 	
 	function messageSearch(){
 		sse_changeIcon();
-		$("div.sse-container table").css('display','none');;
+		$("div.sse-container table").css('display','none');
 		$(".sse-message").css('display','block');
 		showMsgList()
 		
@@ -823,36 +797,11 @@ $(document).ready(function(){
 			showMsgList()
 		});//end of keyup
 		
-		$(".mem-tr").click(function(e){
-			if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
-			var empno = $(this).attr("id");
-			//console.log(empno);
-			location.href= "<%= ctxPath%>/message.up?empno="+empno;
-		});
 	}//end of messageSearch()
-	
-	function boardSearch(){
-		sse_changeIcon();
-		$("div.sse-container table").css('display','none');;
-		$(".sse-board").css('display','block');
-		showBrdList()
-		
-		//검색어 입력할때마다 구성원정보 가져오기
-		$("#ss-input").keyup(function(e){
-			showBrdList()
-		});//end of keyup
-		
-		$(".mem-tr").click(function(e){
-			if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
-			var empno = $(this).attr("id");
-			//console.log(empno);
-			location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
-		});
-	}//end of boardSearch()
 	
 </script>
 
- <div id="alert">
+ <div id="alert_side">
    <i class="fas fa-check-circle" style="color: #29a329; margin-right: 5px;margin-top: 10px;font-size: 11pt;"></i>
    <span id="alertText" style="bottom: 1px;font-size: 8.3pt;font-weight: 400;"></span>
 </div>
@@ -889,22 +838,31 @@ $(document).ready(function(){
 
         <div style="border: 0.1px solid #f2f2f2; margin:20px;width:120%;position:relative;left:-40px;"></div>
 		<div class="sidebar_content">
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/'"><a><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
-	        <li onclick="javascript:location.href='<%=request.getContextPath()%>/memberList.up'"><a><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/calendar.up'"><a><span class="icon icon-calendar"></span><span class="menu-text">캘린더</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/support/meetingroom.up'"><a><span class="far fa-handshake" style="margin-left: 10px;"></span><span class="menu-text" style="margin-left: 5px;">회의실예약</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/message.up'"><a><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/attendance.up'"><a><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/approval.up'"><a><span class="icon icon-file-text2"></span><span class="menu-text">결재</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/payroll.up'"><a><span class="icon icon-coin-dollar"></span><span class="menu-text">급여</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/board_all.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
-	        
-	        <%-- 관리자로 로그인했을경우에만 --%>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_insight.up'"><a><span class="icon icon-stats-dots"></span><span class="menu-text">인사이트</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-history"></span><span class="menu-text">로그관리</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_memberList.up'"><a><span class="icon icon-user-tie"></span><span class="menu-text">구성원관리</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_payroll.up'"><a><span class="icon icon-magic-wand"></span><span class="menu-text">급여정산</span></a></li>
-	        <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_attendanceList_holding.up'"><a><span class="icon icon-briefcase"></span><span class="menu-text">근태관리</span></a></li>
+	                   <li onclick="javascript:location.href='<%= request.getContextPath()%>/'"><a><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
+           <li onclick="javascript:location.href='<%=request.getContextPath()%>/memberList.up'"><a><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/calendar.up'"><a><span class="icon icon-calendar"></span><span class="menu-text">캘린더</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/support/meetingroom.up'"><a><span class="far fa-handshake" style="margin-left: 10px;"></span><span class="menu-text" style="margin-left: 5px;">회의실예약</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/message.up'"><a><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/attendance.up'"><a><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/approval.up'"><a><span class="icon icon-file-text2"></span><span class="menu-text">결재</span></a></li>
+           <%-- 
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/payroll.up'"><a><span class="icon icon-coin-dollar"></span><span class="menu-text">급여</span></a></li>
+            --%>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/board_all.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
+           
+           <%-- 관리자로 로그인했을경우에만 --%>
+           <c:set var="logat" value="${sessionScope.loginuser.authority}"/>
+           <c:if test="${logat==3 || logat==6 || logat==12 || logat==15 || logat==21 || logat==24 || logat==30 || logat==42 || logat==60 || logat==84 || logat==105 || logat==120 || logat==210 || logat==420 || logat==840 || logat==99}">
+              <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_memberList.up'"><a><span class="icon icon-user-tie"></span><span class="menu-text">구성원관리</span></a></li>
+           </c:if>
+           <c:if test="${logat==7 || logat==14 || logat==20 || logat==21 || logat==28 || logat==35 || logat==42 || logat==56 || logat==70 || logat==84 || logat==105 || logat==140 || logat==210 || logat==280 || logat==420 || logat==840 || logat==99}">
+              <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_attendanceList_holding.up'"><a><span class="icon icon-briefcase"></span><span class="menu-text">근태관리</span></a></li>
+           </c:if>
+           <%-- 
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_insight.up'"><a><span class="icon icon-stats-dots"></span><span class="menu-text">인사이트</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_login.up'"><a><span class="icon icon-history"></span><span class="menu-text">로그관리</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/admin_payroll.up'"><a><span class="icon icon-magic-wand"></span><span class="menu-text">급여정산</span></a></li>
+            --%>
      	</div>
       </ul> 
     </div>
@@ -1003,11 +961,6 @@ $(document).ready(function(){
 									<td style="background-color: transparent;">메시지 검색</td>
 									<td style="display: none; background-color: transparent;"><i class="fas fa-angle-right" aria-hidden="true"></i></td>
 								</tr>
-								<tr id="boardtr" onclick="boardSearch()">
-									<td style="background-color: transparent; border-top-left-radius: 10px; border-bottom-left-radius: 10px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;flex-shrink:0"><path d="M15.0958 3H16.4141L18.6111 5.20384V6.52616L8.00889 17.1612L7.57951 17.4063L4.63313 18.1579L3.5 17.0213L4.24933 14.0658L4.49359 13.6351L15.0958 3ZM15.6715 5.06731L13.2133 7.53302L14.0921 8.41449L16.5502 5.94878L15.6715 5.06731ZM12.7739 9.73686L11.8951 8.85534L5.99296 14.7757L5.69324 15.9579L6.87176 15.6572L12.7739 9.73686ZM20.5 19.1052L3.5 19.1052V21L20.5 21L20.5 19.1052Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></td>
-									<td style="background-color: transparent;">게시판 검색</td>
-									<td style="display: none; background-color: transparent; border-top-right-radius: 10px; border-bottom-right-radius: 10px;"><i class="fas fa-angle-right" aria-hidden="true"></i></td>
-								</tr>
 							</tbody>
 						</table>
 						<!-- <br> -->
@@ -1032,8 +985,6 @@ $(document).ready(function(){
 						
 						<!-- 메시지 검색 -->
 						<table class="sse-message"></table>
-						<!-- 게시판 검색 -->
-						<table class="sse-board"></table>
 					</div>
 				</div>
 				
@@ -1042,6 +993,5 @@ $(document).ready(function(){
 				
 			</div>
 					
-			<!-- </div> -->
 		</div>
 	</div>
