@@ -350,14 +350,14 @@ function goSend(){
 			</div>
 		</div>
 	
-		<input id="empno" type="text" name="receiver" value="">
-		<input id="empname" type="text" value="">
-		<input id="sendtime" type="text" name="sendtime" value="">
-		<input id="mgroup" type="text" name="mgroup" value="">
-		<input id="reno" type="text" name="reno" value="">
-		<input id="depthno" type="text" name="depthno" value="">
-		<input id="writer" type="text" name="writer" value="">
-		<input id="content" type="text" name="content" value="">
+		<input id="empno" type="hidden" name="receiver" value="">
+		<input id="empname" type="hidden" value="">
+		<input id="sendtime" type="hidden" name="sendtime" value="">
+		<input id="mgroup" type="hidden" name="mgroup" value="">
+		<input id="reno" type="hidden" name="reno" value="">
+		<input id="depthno" type="hidden" name="depthno" value="">
+		<input id="writer" type="hidden" name="writer" value="">
+		<input id="content" type="hidden" name="content" value="">
 	</form>
 	
 

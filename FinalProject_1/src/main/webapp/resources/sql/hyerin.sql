@@ -1660,3 +1660,5 @@ select * from tbl_approval_sign
 where fk_sign_empno = 100021
 
 
+select * from tab;
+
