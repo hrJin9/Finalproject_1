@@ -135,6 +135,7 @@ function getImg(empno){
 			var html = '<span><img class="profileimg" src="<%=ctxPath%>/resources/files/'+json.profile_systemfilename+'" width="150px" height="150px"/></span>';
 			var sbsrc = '<%=ctxPath%>/resources/files/'+json.profile_systemfilename;
 			$(".sbpics > img").attr("src", sbsrc);
+			$(".profiles").removeClass("pic");
 			$(".profiles").html(html);
 			
 			//세션 새로고침 해주기
@@ -245,7 +246,14 @@ function getWorkinghour(){
 	    			미지정
 	    		</c:if>
     		</span>
-	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role">직무</span>${requestScope.evo.role}</span>
+    		<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role"  style="padding-right: 10px;">직무</span>
+	    	<c:if test="${not empty requestScope.evo.role }">
+		    	${requestScope.evo.role}
+	    	</c:if>
+	    	<c:if test="${empty requestScope.evo.role }">
+		    	미지정
+	    	</c:if>
+	    	</span>
 	    	<button type="button" id="phone" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="${requestScope.evo.mobile}"><span><i class="fas fa-phone-alt" style="transform: scaleX(-1); transition: .3s; color: #666666;"></i></span></button>
 	    	<button type="button" id="message" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="메시지 보내기" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
 	    	<button type="button" id="status">
@@ -289,15 +297,36 @@ function getWorkinghour(){
 						</tr>
 						<tr>
 						   <td>입사일</td>   
-						   <td>${requestScope.evo.hire_date}</td>   
+						   <td>
+						   	<c:if test="${not empty requestScope.evo.hire_date}">
+							   ${requestScope.evo.hire_date}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.hire_date}">
+							   	미기입
+						   	</c:if>
+						   </td>   
 						</tr>
 						<tr>
 						   <td>입사 유형</td>   
-						   <td>${requestScope.evo.jointype}</td>   
+						   <td>
+						   	<c:if test="${not empty requestScope.evo.jointype}">
+							   ${requestScope.evo.jointype}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.jointype}">
+							   	미기입
+						   	</c:if>
+					   		</td>   
 						</tr>
 		                <tr>
 		                   <td>고용형태</td>   
-		                   <td>${requestScope.evo.employmenttype}</td>   
+		                   <td>
+		                   	<c:if test="${not empty requestScope.evo.employmenttype}">
+							   ${requestScope.evo.employmenttype}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.employmenttype}">
+							   	미기입
+						   	</c:if>
+	                   		</td>   
 		                </tr>
 			        </c:if>
 		                <tr>
@@ -320,11 +349,25 @@ function getWorkinghour(){
 		                </tr>
 		                <tr>
 		                   <td>직위</td>   
-		                   <td>${requestScope.evo.position}</td>   
+		                   <td>
+		                   	<c:if test="${not empty requestScope.evo.position}">
+							   ${requestScope.evo.position}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.position}">
+							   	미기입
+						   	</c:if>
+		                   	</td>   
 		                </tr>
 		                <tr>
 		                   <td>직무</td>   
-		                   <td>${requestScope.evo.role}</td>   
+		                   <td>
+		                   <c:if test="${not empty requestScope.evo.role}">
+							   ${requestScope.evo.role}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.role}">
+							   	미기입
+						   	</c:if>
+		                   	</td>   
 		                </tr>
 			          </tbody>
 				 	</table>
