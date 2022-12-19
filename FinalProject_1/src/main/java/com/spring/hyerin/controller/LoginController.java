@@ -54,7 +54,7 @@ public class LoginController {
 			String loc = "javascript:history.back()";
 			mav.addObject("message", message);
 			mav.addObject("loc", loc);
-			mav.setViewName("msg");
+			mav.setViewName("message");
 		} else { // 로그인성공시
 			loginuser.setEmail(aes.decrypt(loginuser.getEmail()) );
 			try {
@@ -99,7 +99,7 @@ public class LoginController {
 		}
 		
 		mav.addObject("loc", loc);
-		mav.setViewName("msg"); // WEB-INF/views/msg.jsp
+		mav.setViewName("message"); // WEB-INF/views/msg.jsp
 		return mav;
 	}// end of logout
 	

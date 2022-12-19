@@ -1653,6 +1653,10 @@ select * from user_sequences
 commit;
 
 
+select * from tbl_employee
+
 
 select * from tbl_approval_sign
 where fk_sign_empno = 100021
+
+
