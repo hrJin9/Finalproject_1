@@ -7,11 +7,11 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/resources/css/sidebar.css?after">
     
 <style type="text/css">
-	.sidebar{
-		border-right: solid 1px rgba(235,235,235);
-	}
-	
-	
+   .sidebar{
+      border-right: solid 1px rgba(235,235,235);
+   }
+   
+   
    /* 실시간알림 */
    div#alert_side {
       display:none;
