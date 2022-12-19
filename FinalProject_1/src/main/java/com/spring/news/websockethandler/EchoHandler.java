@@ -1,12 +1,20 @@
 package com.spring.news.websockethandler;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
@@ -134,10 +142,13 @@ public class EchoHandler extends TextWebSocketHandler{
 
 	
 	
-	private String getMemberId(WebSocketSession wsession) {
+	private String getMemberId(WebSocketSession wsession) throws Exception {
 		Map<String, Object> httpSession = wsession.getAttributes();
 		EmployeeVO loginUser = (EmployeeVO)httpSession.get("loginuser");
-		String m_id = loginUser.getEmployee_no();
+		String m_id = null;
+		if(loginUser != null) {
+			m_id = loginUser.getEmployee_no();
+		} 
 		//System.out.println("m_id => "+m_id);
 		return m_id==null? null: m_id;
 	}
