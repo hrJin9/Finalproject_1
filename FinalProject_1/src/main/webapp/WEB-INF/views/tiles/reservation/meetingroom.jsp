@@ -65,7 +65,7 @@ $(document).ready(function(){
 	 */
 	   
 	 
-  	 
+  	/*   
 	
 	var timearr = [{"startdate":"01:00","enddate":"07:00","meetingroom":"다"}];             
 	 
@@ -419,15 +419,15 @@ $("#mr-startdate").change(function(e){
 		
 		
  		
- 	function showmeetingroom(startdate){
+ 	function showmeetingroom(startdate){ 
  		  
  		$.ajax({     
  	              url: '<%= ctxPath%>/support/selectMeetingroom.up',
  	              data:{"startdate":startdate},     
- 	              dataType: "json", 
- 	              success:function(json) {
- 	            	 // var timearr = [{"startdate":"item.startdate","enddate":"item.enddate","meetingroom":"item.fk_roomno"}];                
- 	            	if(json.length >0){
+ 	              dataType: "json",  
+ 	              success:function(json) { 
+ 	            	if(json.length >0){  
+//  	            	 var timearr = [{"startdate":"01:00","enddate":"07:00","meetingroom":"다"}];                 
  	            		
  	            	 var defaultposition = 0;
  	            		$.each(json, function(index, item){ 
@@ -539,7 +539,7 @@ $("#mr-startdate").change(function(e){
 			</div>
 			<div id="barcontainer-바" style="float:left; margin-left: 262px;">
 			</div>
-			
+			 
 			<!-- 오프캔버스 시작 -->
 			<div class="offcanvas offcanvas-end meetingroom-offcanvas" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 			  <div class="offcanvas-header">
@@ -548,12 +548,13 @@ $("#mr-startdate").change(function(e){
 			  </div>
 			  <hr class="HRhr"style="margin: 0; border:none; height:1px; background-color: rgba(242, 242, 242);"/>
 			  <div class="offcanvas-body">
-			  	<div class="meetingroom-offcanvas-body">
+			  	<div class="meetingroom-offcanvas-body"> 
 			  		<div>
 			  			<div class="meetingroom-info">
 							<i class="fa-solid fa-circle-info"></i>
 							<div>
-								<div>~에 위치한 회의실입니다. 예약 후 이용바랍니다.</div>
+<!-- 							<div>~에 위치한 회의실입니다. 예약 후 이용바랍니다.</div> --> 
+								<div>예약 후 이용바랍니다.</div>
 								<div>담당자 연락처 : 010-8828-4730</div>
 							</div>
 						</div> 

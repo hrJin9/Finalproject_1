@@ -9,9 +9,9 @@
 	</insert> 
 
 
-	<!-- 회의실 예약 불러오기 -->  
+	<!-- 회의실 예약 불러오기 -->   
 	<select id="selectMeetingroom" resultType="com.spring.chae0.model.Meetingroom_reservationVO" parameterType="String">
-		select to_char(startdate, 'hh24:mi') as startdate, to_char(enddate, 'hh24:mi') as enddate, fk_roomno 
+		select to_char(startdate, 'hh24:mi') as startdate, to_char(enddate, 'hh24:mi') as enddate, fk_roomno, fk_employee_no 
 		from tbl_meetingroom_reservation 
 		where to_char(startdate,'yyyy-mm-dd') = to_char(#{startdate},'yyyy-mm-dd')
 	</select> 
