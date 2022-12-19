@@ -222,4 +222,43 @@
 	</beans:bean>
    
    
+   <!-- 로그인 여부 체크하는 인터셉터 등록 -->
+	<beans:bean id="loginCheckInterceptor" class="com.spring.interceptor.controller.LogincheckInterceptor" />
+	<!-- 로그인되어진 사용자가 구성원 관리자등급 인지 여부를 체크하는 인터셉터 등록 -->
+	<beans:bean id="MemAdcheckInterceptor" class="com.spring.interceptor.controller.MemAdcheckInterceptor" />
+	<!-- 로그인되어진 사용자가 근태 관리자등급 인지 여부를 체크하는 인터셉터 등록 -->
+	<beans:bean id="AttendanceAdcheckInterceptor" class="com.spring.interceptor.controller.AttendanceAdcheckInterceptor" />
+   
+   <mvc:interceptors>
+   		<mvc:interceptor>
+			<mvc:mapping path="/**"/>	<!-- 포함되는 url -->
+			<mvc:exclude-mapping path="/memberRegister.up"/>
+			<mvc:exclude-mapping path="/memberRegisterEnd.up"/> 
+			<mvc:exclude-mapping path="/login.up"/> 
+			<mvc:exclude-mapping path="/loginEnd.up"/> 
+			<mvc:exclude-mapping path="/pwdChange.up"/>
+			<mvc:exclude-mapping path="/mailCheck.up"/>
+			<mvc:exclude-mapping path="/mailPwdCheck.up"/> 
+			<mvc:exclude-mapping path="/login/*"/> 
+			<mvc:exclude-mapping path="/pwdFindEnd.up"/> 
+			<beans:ref bean="loginCheckInterceptor"/>		<!-- 회원 사용자인지 검사 -->
+		</mvc:interceptor>
+   		
+   		<mvc:interceptor>
+			<mvc:mapping path="/admin_memberList.up"/>	 <!-- 포함되는 url -->
+			<mvc:mapping path="/admin_memberAdd.up"/>	 <!-- 포함되는 url -->
+			<mvc:mapping path="/memAddEnd.up"/>	 <!-- 포함되는 url -->
+			<mvc:mapping path="/admin_memberUpdate.up"/>	 <!-- 포함되는 url -->
+			<mvc:mapping path="/memUpdateEnd.up"/>	 <!-- 포함되는 url -->
+			<beans:ref bean="MemAdcheckInterceptor"/>			 <!-- 회원 사용자인지 검사 -->
+		</mvc:interceptor>
+		
+   		<mvc:interceptor>
+			<mvc:mapping path="/admin_attendanceList_holding.up"/>	 <!-- 포함되는 url -->
+			<mvc:mapping path="/admin_attendanceList_usage.up"/>	 <!-- 포함되는 url -->
+			<beans:ref bean="AttendanceAdcheckInterceptor"/>			 <!-- 회원 사용자인지 검사 -->
+		</mvc:interceptor>
+   
+   </mvc:interceptors>
+   
 </beans:beans>
