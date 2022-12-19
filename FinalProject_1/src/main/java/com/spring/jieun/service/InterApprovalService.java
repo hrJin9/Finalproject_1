@@ -49,10 +49,8 @@ public interface InterApprovalService {
 	List<ApprovalVO> requestedtodoListPaging(Map<String, String> paraMap);
 
 	// 결재 승인으로 업댓
-	int updaterequestedapprove(Map<String, String> paraMap);
+	int updaterequestedapprove(ApprovalVO apvo);
 
-	// 결재 반려로 업댓 
-	int updaterequestedreject(Map<String, String> paraMap);
 
 	// 검색어 입력시 자동글 완성하기 (Ajax)
 	List<String> wordSearchShow(Map<String, String> paraMap);
@@ -80,6 +78,13 @@ public interface InterApprovalService {
 	ApprovalVO approvalfilestatus(Map<String, String> paraMap);
 
 	List<String> getdeptname();
+
+	
+	// 마지막 결재자인지 알아보기
+	String checkmymaxstep(ApprovalVO apvo);
+
+	// 저장된 내 결재라인 삭제하기 (Ajax)
+	int delsavedline(String signpath_no);
 
 	
 //	int cancelmyapproval(String ano);

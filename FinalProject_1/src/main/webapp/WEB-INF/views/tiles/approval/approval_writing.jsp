@@ -571,7 +571,23 @@ div#dayoff-temp, div#wort-temp{
 		      addImageBlobHook: function (blob, callback) {
 		        const formData = new FormData();
 		        formData.append("image", blob);
-		        formData.append("uri", window.location.pathname);
+		        const editor = new toastui.Editor({
+		  		  el: document.querySelector('#editor'),
+		  	      height: '500px',
+		  	      initialEditType:"wysiwyg",
+		  	      previewStyle: 'vertical',
+		  	      plugins: [colorSyntax],
+		  	      hooks: {
+		  		      addImageBlobHook: function (blob, callback) {
+		  		        const formData = new FormData();
+		  		        formData.append("image", blob);
+		  		        formData.append("uri", window.location.pathname);
+		  		        const imageURL = imageUpload(formData);
+		  		        callback(imageURL, "image");
+		  		      }
+		  		  }, 
+		  		  language: "ko-KR"
+		  		});
 		        const imageURL = imageUpload(formData);
 		        callback(imageURL, "image");
 		      }
@@ -727,7 +743,7 @@ div#dayoff-temp, div#wort-temp{
 	         frm.submit();  
 		});
 		
-		
+		 
 		
 		/* 결재라인 호버효과 */
 		$(document).on({
@@ -802,9 +818,10 @@ div#dayoff-temp, div#wort-temp{
 					
 					for (let i = 0; i < json.length; i++) {
 					    if(i==0 || json[i].signpath_no != json[i-1].signpath_no){
-					    	html += '<div onclick="picksavedline('+json[i].signpath_no+')" name="savedstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">'
-							 	+'<div style="margin-top: 0;"><span  id="savespan1" style="font-weight: 500;display: block;">'+json[i].signpath_name+'</span></div>'
-					      	  	+'<div style="margin-top: 5px;">'
+					    	html += '<div name="savedstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">'
+							 	+'<div style="margin-top: 0;display: flex;justify-content: space-between;"><span  id="savespan1" style="font-weight: 500;display: block;">'+json[i].signpath_name+'</span>'
+							 	+'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_savedMyline('+json[i].signpath_no+')" style="top: 6px;"></button></div>'
+					      	  	+'<div style="margin-top: 5px;" onclick="picksavedline('+json[i].signpath_no+')" >'
 					  				+'<div class="selectedmem" style="padding-bottom: 20px;">'
 							      	  	+'<div class="signli">'
 					    }
@@ -848,6 +865,7 @@ div#dayoff-temp, div#wort-temp{
 			dataType:"json",
 			success: function(json) {
 				let html = '';
+				aprCnt = json.length-1
 				if(json.length > 0){
 					
 					for (let i = 0; i < json.length; i++) {
@@ -899,8 +917,25 @@ div#dayoff-temp, div#wort-temp{
 		$('#myModal_saveSignLine').modal('hide');
 	}
 	
-	
-	
+	// 저장된 결재선 삭제 
+	function del_savedMyline(no){
+		$.ajax({
+			url: "<%= ctxPath%>/approval/delsavedline.up",
+			type:"GET",
+			data:{'signpath_no':no},	
+			dataType:"json",
+			success: function(json) {
+				if(json.result == 1){
+					alert("저장된 결재라인이 삭제되엇습니다.")
+					showmodal_mySignMade()
+				}
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    }
+		})
+		
+	}
 	
 	
 	
@@ -914,7 +949,8 @@ div#dayoff-temp, div#wort-temp{
 		}
 	}
 	function savemystep(){
-		if($("#signpath_name").val() != ""){ // 결재선 이름을 적었으면 
+		const val = $("#signpath_name").val();
+		if(val != "" || val.trim() != ""){ // 결재선 이름을 적었으면 
 			let n=0
 			let result = 0;
 			let spno = 0;
@@ -1017,6 +1053,7 @@ div#dayoff-temp, div#wort-temp{
 	 
 	// 앞에꺼 삭제하고 옵션창 열면 삭제전 값으로 num이 넘겨짐  
 	
+	let aprCnt = 1; // 박스 단계 넘버 
 	/* iframe 에서 선택한 멤버 append */
 	function get_memname(memInfo){
 		/* console.log(memInfo); */
@@ -1027,6 +1064,7 @@ div#dayoff-temp, div#wort-temp{
 		
 		//console.log("멤버append할때 num 값 =>"+num);
 		$("div#memcontent-iframe"+num).append(html);
+		
 		/* $("div#memcontent-iframe"+num).next(".selmembtn").css('display','none'); */
 	}
 	
@@ -1041,7 +1079,6 @@ div#dayoff-temp, div#wort-temp{
 	
 	
 	
-	let aprCnt = 1; // 박스 단계 넘버 
 	/* 승인단계 박스 단계추가 */
 	function approvalplus(){
 		++aprCnt;

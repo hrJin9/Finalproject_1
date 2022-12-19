@@ -814,7 +814,7 @@ td.title #writertitle{
     cursor: default;
     font-weight: bold !important;
     /* border-radius: 1.3em; */
-    margin-top: 12px !important;
+    /* margin-top: 12px !important; */
     border-radius: 0.8em;
 }
 
@@ -976,6 +976,41 @@ td.title #writertitle{
     cursor: pointer;
     padding: 1px 13px;
     text-align: initial;
+}
+
+textarea#feedback{
+	padding: 6px 16px 9px 16px;
+    padding-right: 30px;
+    background-color: #fafafa !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    border: 2px solid #e8e8e8 !important;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: calc(1.5 * 10px);
+    color: #484848;
+    resize: none;
+}
+a{
+	cursor: pointer;
+}
+div.dropdown-menu{
+	box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 3%), 0px 10px 14px rgb(0 0 0 / 6%), 0px 14px 32px rgb(0 0 0 / 12%);
+    border: none;
+}
+
+
+li.refer_opinion{
+	padding-left: 4px;
+    padding-right: 4px;
+    margin-left: -4px;
+    margin-right: -4px;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
 }
 </style>
 <nav id="mainList" class="margin-container header-nav">

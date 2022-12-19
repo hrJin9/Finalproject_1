@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.finalproject.common.FileManager;
 import com.spring.finalproject.common.MyUtil;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.jieun.model.AlarmVO;
 import com.spring.jieun.model.ApprovalVO;
 import com.spring.jieun.service.InterApprovalService;
 
@@ -633,8 +634,6 @@ public class ApprovalController {
 		String path = request.getContextPath();
 		int index = request.getRequestURL().indexOf(path);
 		String url = request.getRequestURL().substring(0, index);
-
-		// https://localhost:8080/bombom/resources/upload/파일이름
 
 		return url + request.getContextPath() + "/resources/upload/approval/" + newFileName;
 	}
@@ -1374,47 +1373,56 @@ public class ApprovalController {
 		mav.setViewName("approval/approval_requested_refered.tiles");
 		return mav;
 	}
-	@RequestMapping(value = "/approval/goapprove.up")
-	public ModelAndView goapprove(HttpServletRequest request,HttpServletResponse response,ModelAndView mav) {
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
-		String employee_no = loginuser.getEmployee_no();
+	@RequestMapping(value = "/approval/goapprove.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public ModelAndView goapprove(HttpServletRequest request,HttpServletResponse response,ModelAndView mav,ApprovalVO apvo) {
+		apvo.setFeedback(MyUtil.secureCode(apvo.getFeedback())); // 시큐어코드
 		
-		String anostring = request.getParameter("ano");
-		String[] anoarr = anostring.split(",");
 		int n = 0;
- 	 	for(String ano:anoarr) {
- 	 		System.out.println("컨트롤러 ano =>"+ano);
- 	 		Map<String,String> paraMap = new HashMap<>();
- 	 		paraMap.put("ano", ano);
- 	 		paraMap.put("employee_no", employee_no);
- 	 		n = service.updaterequestedapprove(paraMap); // 결재 승인으로 업댓 
- 	 	}
+		String anostring = request.getParameter("appendchx"); // 체크박스로 체크해서 넘어온 문서번호 
+		if("".equals(apvo.getAno())) { // 체크박스로 넘어온애라면 
+			String[] anoarr = anostring.split(",");
+			for(String ano:anoarr) {
+				if(ano != "") {
+					apvo.setAno(ano);
+					apvo.setSignyn("1");// 체크박스로 넘어온 애들은 모두 승인
+					apvo.setFeedback("");
+				}
+			}
+		}
+			
+		n = service.updaterequestedapprove(apvo); // 결재 승인으로 업댓
+		
  	 	String message = "";
- 	 	message = n==1?"결재승인이 완료되었습니다!":"결재승인을 실패했습니다.";
+ 	 	message = n==1?"결재가 완료되었습니다!":"결재를 실패했습니다.";
 		String loc ="";
 		loc = request.getContextPath()+"/approval/requested.up";
-		mav.addObject("message", message);
-		mav.addObject("loc", loc);
-		mav.setViewName("msg");  
-		return mav;
-	}
-	@RequestMapping(value = "/approval/goreject.up")
-	public ModelAndView goreject(HttpServletRequest request,HttpServletResponse response,ModelAndView mav) {
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
-		String employee_no = loginuser.getEmployee_no();
-		String ano = request.getParameter("ano");
 		
-		Map<String,String> paraMap = new HashMap<>();
-		paraMap.put("ano", ano);
-		paraMap.put("employee_no", employee_no);
 		
-		int n = service.updaterequestedreject(paraMap); // 결재 반려로 업댓 
-		String message = "";
-		message = n==1?"결재반려가 완료되었습니다!":"결재반려를 실패했습니다.";
-		String loc ="";
-		loc = request.getContextPath()+"/approval/requested.up";
+		
+		// 수신자들, 결재종류, 발신자명, 문서url 
+		// 새로운 알림 테이블 vo만들고 거기에 데이터 저장후 오브젝트 넘겨주기
+		AlarmVO alarmvo = new AlarmVO();
+
+		String chk_ano = service.checkmymaxstep(apvo); 	// 마지막 결재자인지 알아보기  
+		
+		String ctgy = "";
+		
+		if("2".equals(apvo.getSignyn())) { // 반려 구분 
+			ctgy = "2-3";
+		}
+		else {
+			ctgy = (chk_ano != null)?"2-2":""; // 마지막 결재자일경우 승인 구분 
+		}
+			
+		if(ctgy != "") { // 마지막결재자가 아니거나 반려가아니면 실시간알림 가지않도록 
+			alarmvo.setCtgy(ctgy);
+			alarmvo.setCtnt(apvo.getAp_type());//결재문서 타입 
+			alarmvo.setTo_empno(apvo.getApprovalline());//받은 사원번호
+			alarmvo.setLinkno(apvo.getAno());// 글번호(각테이블 pk)
+			
+			mav.addObject("alarmvo", alarmvo);
+		}
+		
 		mav.addObject("message", message);
 		mav.addObject("loc", loc);
 		mav.setViewName("msg");  
@@ -1486,6 +1494,21 @@ public class ApprovalController {
 	
 	
 	
+	// 저장된 내 결재라인 삭제하기 (Ajax)
+	@ResponseBody
+	@RequestMapping(value="/approval/delsavedline.up", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
+	public String delsavedline( HttpServletRequest request, HttpServletResponse response) {
+		
+		String signpath_no = request.getParameter("signpath_no");
+		
+		int n = service.delsavedline(signpath_no);
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("result", n);
+		
+		return jsonobj.toString(); // "[]" 또는 "[{},{},{}]"
+	}
+	
+	
 	// 내 결재라인 저장하기 (Ajax)
 	@ResponseBody
 	@RequestMapping(value="/approval/getspno.up", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
@@ -1504,15 +1527,10 @@ public class ApprovalController {
 		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
 		String employee_no = loginuser.getEmployee_no();
 		String signpath_name = request.getParameter("signpath_name");
+		if(signpath_name == null ) signpath_name = "";
 		String signstep = request.getParameter("signstep");
 		String signpath = request.getParameter("signpath");
 		String signpath_no = request.getParameter("signpath_no");
-		
-//		System.out.println("signpath_name => "+signpath_name);
-//		System.out.println("signpath => "+signpath); 
-//		System.out.println("signstep => "+signstep); 
-//		System.out.println("signpath_no => "+signpath_no); 
-		
 		
 		
 		Map<String,String> paraMap = new HashMap<>();
@@ -1532,7 +1550,7 @@ public class ApprovalController {
 	}
 	
 		
-	
+//	*** 결재문서 작성 메소드 *** //
 	@RequestMapping(value = "/approval/add.up")
 	public ModelAndView add(Map<String,String> paraMap, HttpServletResponse response, MultipartFile[] attaches,ModelAndView mav, ApprovalVO approvalvo, MultipartHttpServletRequest mrequest) throws Exception{
 		
@@ -1555,7 +1573,21 @@ public class ApprovalController {
 		else {
 			message = "신청이 실패되었습니다!";
 		}
-				
+		
+		
+		// 수신자들, 결재종류, 발신자명, 문서url 
+		// 새로운 알림 테이블 vo만들고 거기에 데이터 저장후 오브젝트 넘겨주기
+		AlarmVO alarmvo = new AlarmVO();
+		alarmvo.setCtgy("2-1");
+		alarmvo.setCtnt(approvalvo.getAp_type());//결재문서 타입
+		
+		String to_empstr = "";
+		to_empstr = (approvalvo.getApprovalline() != "")?approvalvo.getApprovalline() :approvalvo.getSign_empno();   
+		
+		alarmvo.setTo_empno(to_empstr);//받은 사원번호
+		alarmvo.setLinkno(approvalvo.getAno());// 글번호(각테이블 pk)
+		
+		mav.addObject("alarmvo", alarmvo);
 		mav.addObject("message", message);
 		mav.addObject("loc", loc);
 		mav.setViewName("msg");

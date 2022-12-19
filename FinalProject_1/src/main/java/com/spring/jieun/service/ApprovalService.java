@@ -130,31 +130,42 @@ public class ApprovalService implements InterApprovalService {
 
 	// 결재 승인으로 업댓
 	@Override
-	public int updaterequestedapprove(Map<String, String> paraMap) {
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = {Throwable.class})
+	public int updaterequestedapprove(ApprovalVO apvo) {
 		// 내가 해당 문서에 대해 마지막 결재자인지 확인하고 마지막결재자일경우 두테이블에 업댓 
-		String chk_ano = dao.checkmymaxstep(paraMap);
-		int n = 0;
-		String ano = paraMap.get("ano");
-		if(chk_ano != null) {//마지막 결재자일경우  
-			n = dao.updateapprovedoc(ano);
-		}else {//마지막 결재자가 아닐 경우
-			n = 1;
+		
+		int result = 0;
+		if("1".equals(apvo.getSignyn())){ // 승인 일경우
+			String chk_ano = checkmymaxstep(apvo); // 마지막 결재자인지 알아보기
+//			System.out.println("chk_ano =>"+chk_ano);
+			int n = 0;
+//			String ano = paraMap.get("ano");
+			if(chk_ano != null) {	//마지막 결재자일경우  
+				n = dao.updateapprovedoc(apvo);// tbl_approval 업데이트
+			}else {	//마지막 결재자가 아닐 경우
+				n = 1;
+			}
+//			System.out.println("n => "+n);
+			
+			if(n==1) result=dao.updaterequestedapprove(apvo); // tbl_approval_sign 업데이트
+//			System.out.println("result => "+result);
+			
+		}else if("2".equals(apvo.getSignyn())){ // 반려 일경우 
+			int n = dao.updaterequestedreject(apvo); // tbl_approval_sign 업데이트 
+			result = n==1? dao.updateapprovalreject(apvo) : 0; // tbl_approval final_signyn 업데이트 
 		}
-		int result = 0;
-		result = n==1?dao.updaterequestedapprove(paraMap): 0 ;
+		
 		return result;
 	}
-
-	// 결재 반려로 업댓 
+	
+	// 마지막 결재자인지 알아보기
 	@Override
-	public int updaterequestedreject(Map<String, String> paraMap) {
-		int result = 0;
-		
-		int n = dao.updaterequestedreject(paraMap);
-		result = n==1? dao.updateapprovalreject(paraMap) : 0;
-		
-		return result;
+	public String checkmymaxstep(ApprovalVO apvo) {
+		String chk_ano = dao.checkmymaxstep(apvo); 
+		return chk_ano ;
 	}
+	
+	
 
 	// 검색어 입력시 자동글 완성하기
 	@Override
@@ -181,31 +192,29 @@ public class ApprovalService implements InterApprovalService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = {Throwable.class})
 	public int savemyline(Map<String, String> paraMap) throws Exception {
-		int result = 0;
+		// 1단계 000, ***   / 2단계 ### 
+		
 		
 		String signstep = paraMap.get("signstep");
 		String signpatharr = paraMap.get("signpatharr");
+		System.out.println("signpatharr =>"+signpatharr );// 1단계 000, ***   
+		System.out.println("signstep =>"+signstep );
+		
 		String[] arr = signpatharr.split(",");
 
-		int n = 0;
-		if("1".equals(signstep) ) {
-			for(int i =0; i<=arr.length; i++) {
-				System.out.println("arr "+i+"=>" +arr[i]);
-				if(i==0) { // 한번만 tbl_signpath 에 넣기 
-					n = dao.insertsignpath(paraMap);
-				}
-				break;
-			}
+		int n=0,m=0;
+		
+		if("1".equals(signstep) && n==0) { // 1단계에서 한번만 tbl_signpath 에 넣기 
+			n = dao.insertsignpath(paraMap);
 		}
 		
 		for(String signpath : arr) {
 			paraMap.put("sign_empno", signpath);
-			n = dao.insertdetailsignpath(paraMap);
-			n *= n ;
+			m = dao.insertdetailsignpath(paraMap);
 		}
 		
-		result = n;
-		return result;
+		
+		return m;
 	}
 
 
@@ -349,6 +358,13 @@ public class ApprovalService implements InterApprovalService {
 	public List<String> getdeptname() {
 		List<String> dept = dao.getdeptname();
 		return dept;
+	}
+
+	// 저장된 내 결재라인 삭제하기 (Ajax)
+	@Override
+	public int delsavedline(String signpath_no) {
+		int n = dao.delsavedline(signpath_no); 
+		return n;
 	}
 
 

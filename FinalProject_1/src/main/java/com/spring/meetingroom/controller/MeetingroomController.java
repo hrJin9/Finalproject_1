@@ -1,12 +1,14 @@
 package com.spring.meetingroom.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.chae0.model.Meetingroom_reservationVO;
 import com.spring.chae0.service.InterMeetingroomService;
+import com.spring.finalproject.common.MyUtil;
 import com.spring.hyerin.model.EmployeeVO;
+import com.spring.schedule.model.Calendar_schedule_VO;
 
 @Controller
 public class MeetingroomController {
@@ -132,6 +137,39 @@ public class MeetingroomController {
 		mav.setViewName("msg");
 		
 		return mav;
+	}
+	
+	
+	// === 회의실 예약 불러오기 ===   
+	@ResponseBody
+	@RequestMapping(value="/support/selectMeetingroom.up", produces="text/plain;charset=UTF-8")
+	public String selectMeetingroom(HttpServletRequest request) {
+		 
+		// 등록된 예약정보 가져오기
+		
+		String fk_roomno = request.getParameter("fk_roomno");
+		
+				
+		List<Meetingroom_reservationVO> meetingList = service.selectMeetingroom(fk_roomno);
+		 
+		JSONArray jsArr = new JSONArray();
+		
+		if(meetingList != null && meetingList.size() > 0) {
+			
+			for(Meetingroom_reservationVO mvo : meetingList) {
+				JSONObject jsObj = new JSONObject(); 
+				jsObj.put("r_content", mvo.getR_content());
+				jsObj.put("startdate", mvo.getStartdate());
+				jsObj.put("enddate", mvo.getEnddate());
+				jsObj.put("fk_roomno", mvo.getFk_roomno());
+				jsObj.put("fk_employee_no", mvo.getFk_employee_no()); 
+				
+				jsArr.put(jsObj);
+			}// end of for-------------------------------------
+		
+		}
+		
+		return jsArr.toString();
 	}
 	
 		

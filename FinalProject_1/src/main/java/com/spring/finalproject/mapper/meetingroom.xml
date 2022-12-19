@@ -9,6 +9,13 @@
 	</insert> 
 
 
+	<!-- 회의실 예약 불러오기 --> 
+	<select id="selectMeetingroom" resultType="com.spring.chae0.model.Meetingroom_reservationVO" parameterType="String">
+		select startdate, enddate, r_content, fk_employee_no, fk_roomno
+		from tbl_meetingroom_reservation
+		where fk_roomno = #{fk_roomno}
+	</select>
+
 
 
 

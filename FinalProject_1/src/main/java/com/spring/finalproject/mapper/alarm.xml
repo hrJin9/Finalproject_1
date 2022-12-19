@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="alarm">
+	<!-- 알림테이블 추가 -->
+	<insert id="addAlarm">
+		insert into tbl_alarm (amno,from_empname ,to_empno, ctgy,linkno, ctnt) 
+		values (seq_tbl_alarm_amno.nextval,#{from_empname},#{to_empno}, #{ctgy}, #{linkno}, #{ctnt}) 
+	</insert>
+	<!-- 알림목록  -->
+	<select id="alarmList" resultType="com.spring.jieun.model.AlarmVO" parameterType="String">
+		select amno,from_empname,to_empno,ctgy,ctnt,linkno,readyn,to_char(registerdate,'yyyy-mm-dd hh24:mi')as registerdate
+		from (select * from tbl_alarm where to_empno = #{employee_no} order by amno desc)  
+		where rownum between 1 and 6 
+		order by amno desc
+	</select>
+	<update id="alarmRead" parameterType="String">
+		update tbl_alarm set readyn = 1
+		where amno = #{amno}
+	</update>
+</mapper>

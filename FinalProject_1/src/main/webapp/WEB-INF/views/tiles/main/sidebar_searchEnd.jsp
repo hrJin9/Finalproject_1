@@ -2,14 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% String ctxPath = request.getContextPath(); %>    
-<!DOCTYPE html>
-<html>
-<head>   
-	<title>Thumbs up</title>
 	<!-- Required meta tags -->
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	
 	<!-- Bootstrap CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	
@@ -95,33 +88,120 @@
 			});
 			
 			
+			// 구성원 정보 불러오기
+			showEmpList();
+			
+			//검색어 입력할때마다 구성원정보 가져오기
+			$(document).on('keyup',"#ss-input",function(e){
+				showEmpList();
+			});//end of keyup
+			
+			
+			// 한 줄 클릭시 해당 팀원의 상세보기로 이동
+			$(document).on("click",".mem-tr",function(e){
+				if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
+				var empno = $(this).attr("id");
+				console.log(empno);
+				location.href= "<%= ctxPath%>/memberInfo_hr.up?empno="+empno;
+			});
+			
+			
+
+
+			/* 행마다 마지막열 화살표 호버 */
+			$(document).on({
+				mouseenter: function(){
+					$(this).find("td:last-child").show();
+				},
+				mouseleave: function(){
+					$(this).find("td:last-child").hide();
+				}
+			}, '.sse-member tr');
 			
 			
 		});//end of ready
+		
+		//구성원을 구하는 ajax
+		function showEmpList(teamVal){
+			
+			const searchCondition = $("#searchCondition").val();
+//			const searchVal = $("#ss-input").val();
+			const searchVal = "${requestScope.searchVal}";
+			
+			$.ajax({
+				url: "<%= ctxPath%>/showEmpList.up",
+				data: {"searchCondition":searchCondition,
+						"searchVal":searchVal,
+						"teamVal":teamVal},
+				type: "post",
+				dataType:"json",
+				success:function(json){
+					//console.log(JSON.stringify(json));
+					
+					let html = '';
+					if(json.length > 0 ){ //불러올 구성원목록이 있는 경우
+						html+='<tr class="not-active"><td colspan="3">구성원</td></tr>';
+					
+						$.each(json,function(index,item){
+							
+							html += '<tr id="'+item.employee_no+'" class="mem-tr">'
+										+'<td width="10%">';
+											/* '<div class="profile"  style="padding: 1px;">'; */
+							if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
+								
+							} else { // 프로필사진이 없는 경우
+							}
+							html += '<span class="pic"><span style="font-size:8pt">'+item.name_kr.substr(1)+'</span></span>';
+							html += '</td>'			
+							html +=	'<td width="85%">'+
+												'<div>'+item.name_kr+'</div>'+
+												'<div><span>'+item.role+'</span><span> '+item.position+'</span></div>'+
+											'</span>'+
+										'</td>'+
+										'<td width="5%"><i class="fas fa-angle-right"></i></td></tr>';
+							/* if(item.employee_no == 1){ //사장(대표)인 경우
+								html +=	'<span class="positionIcon">'+
+													'<span>'+item.position+'</span>'+
+												'</span>'+
+											'</td>'+
+										'</tr>';
+								
+							} else{
+								html +=	'<span class="positionIcon">'+
+												'<span>'+item.department_name+' '+item.team_name+'&nbsp;|&nbsp;'+item.position+'</span>'+
+											'</span>'+
+										'</td>'+
+									'</tr>';
+							} */
+						});//end of each
+						
+						
+					} else {
+						html = "<td colspan='7' style='text-align: center;'><div style='margin-top: 150px;display: flex;justify-content: flex-start;flex-direction: column;'>"
+	            	   		 +'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto;width: 48px; height: 48px; flex-shrink: 0;"><path d="M10.5956 3C6.40068 3 3 6.40068 3 10.5956C3 14.7906 6.40068 18.1913 10.5956 18.1913C12.3602 18.1913 13.9842 17.5896 15.2737 16.5801L19.6936 21L21 19.6936L16.5801 15.2737C17.5896 13.9842 18.1913 12.3602 18.1913 10.5956C18.1913 6.40068 14.7906 3 10.5956 3ZM4.84759 10.5956C4.84759 7.42107 7.42107 4.84759 10.5956 4.84759C13.7702 4.84759 16.3437 7.42107 16.3437 10.5956C16.3437 13.7702 13.7702 16.3437 10.5956 16.3437C7.42107 16.3437 4.84759 13.7702 4.84759 10.5956Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
+	            	   		 +"<div style='font-weight: 700;font-size: 16px;line-height: 26px;color: #242a30;margin-top: 10px;'>"+searchWord+"에 대한 검색결과가 없어요.</div>"
+	            	   		 +"<div style='font-weight: 400;font-size: 13px;line-height: 21px;color: #556372;'>다른 검색어를 입력해주세요.</div></div>"
+	            	   		 +"<button onclick='emptysearchbar()'style='color: rgb(85, 99, 114);position: relative;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;font-weight: 700;outline: none;border: none;font-size: 13px;border-radius: 6px;background: transparent;box-shadow: none;padding-left: 10px;padding-right: 10px; margin-top: 15px;'><span>검색어 지우기</span></button></td>";
+					}
+					
+					$(".sse-member").html(html);
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});//end of ajax
+		}//end of showEmpList
+
 	</script>
-</head>
-<body>
 	<div class="sse-container">
 		<!-- 구성원 검색 -->
 		<table class="sse-member">
-			<tr class="not-active"><td colspan="3">구성원</td></tr>
-			<c:forEach var="i" begin="1" end="5">
-				<tr>
-					<td width="10%">
-						<span class="pic"><span>지은</span></span>
-					</td>
-					<td width="85%">
-						<div>김지은</div>
-						<div><span>개발자</span>·<span>차장</span></div>
-					</td>
-					<td width="5%"><i class="fas fa-angle-right"></i></td>
-				</tr>
-			</c:forEach>
 		</table>
+		
 		<!-- 전자결재 검색 -->
 		<table class="sse-approval">
 			<tr class="not-active"><td colspan="3">결재문서</td></tr>
-			<c:forEach var="i" begin="1" end="5">
+			<c:forEach var="i" begin="1" end="5" >
 				<tr>
 					<td width="10%">
 						<div style="display: flex; padding:6px; border-radius: 10px; border: solid 1px rgba(0,0,0,0.3); background-color: #FAF2E1;">
@@ -136,6 +216,7 @@
 				</tr>
 			</c:forEach>
 		</table>
+		
 		<!-- 메시지 검색 -->
 		<table class="sse-message">
 			<tr class="not-active"><td colspan="3">메시지</td></tr>
@@ -175,5 +256,3 @@
 		
 		</table>
 	</div>
-</body>
-</html>

@@ -119,32 +119,32 @@ public class ApprovalDAO implements InterApprovalDAO{
 	}
 
 	@Override
-	public int updaterequestedapprove(Map<String, String> paraMap) {
-		int n = sqlsession.update("approval.updaterequestedapprove",paraMap);
+	public int updaterequestedapprove(ApprovalVO approvalvo) {
+		int n = sqlsession.update("approval.updaterequestedapprove",approvalvo);
 		return n;
 	}
 
 	@Override
-	public String checkmymaxstep(Map<String, String> paraMap) {
-		String chk = sqlsession.selectOne("approval.checkmymaxstep",paraMap);
+	public String checkmymaxstep(ApprovalVO approvalvo) {
+		String chk = sqlsession.selectOne("approval.checkmymaxstep",approvalvo);
 		return chk;
 	}
 
 	@Override
-	public int updateapprovedoc(String ano) {
-		int n = sqlsession.update("approval.updateapprovedoc",ano);
+	public int updateapprovedoc(ApprovalVO approvalvo) {
+		int n = sqlsession.update("approval.updateapprovedoc",approvalvo);
 		return n;
 	}
 
 	
 	@Override
-	public int updaterequestedreject(Map<String, String> paraMap) {
-		int n = sqlsession.update("approval.updaterequestedreject",paraMap); 
+	public int updaterequestedreject(ApprovalVO approvalvo) {
+		int n = sqlsession.update("approval.updaterequestedreject",approvalvo); 
 		return n;
 	}
 	@Override
-	public int updateapprovalreject(Map<String, String> paraMap) {
-		int n = sqlsession.update("approval.updateapprovalreject",paraMap); 
+	public int updateapprovalreject(ApprovalVO approvalvo) {
+		int n = sqlsession.update("approval.updateapprovalreject",approvalvo); 
 		return n;
 	}
 
@@ -248,6 +248,12 @@ public class ApprovalDAO implements InterApprovalDAO{
 	public List<String> getdeptname() {
 		List<String> dept = sqlsession.selectList("approval.getdeptname"); 
 		return dept;
+	}
+
+	@Override
+	public int delsavedline(String signpath_no) {
+		int n = sqlsession.delete("approval.delsavedline", signpath_no); 
+		return n;
 	}
 
 	
