@@ -1575,10 +1575,10 @@ from
 
 
 -- 결재요청온 것 처리하기
-select rno, title, writeday, profile_systemfilename, name_kr
+select asno, title, writeday, profile_systemfilename, name_kr
 from
 (
-select row_number() over(order by writeday desc) as rno, fk_empno, profile_systemfilename, substr(title,0,8)||'..' as title, round((sysdate - writeday)*24*60*2) as writeday, A.name_kr
+select row_number() over(order by writeday desc) as rno, asno, fk_empno, profile_systemfilename, substr(title,0,8)||'..' as title, round((sysdate - writeday)*24*60*2) as writeday, A.name_kr
 from tbl_approval A
 join tbl_approval_sign aps
 on A.ano = aps.fk_ano
@@ -1591,8 +1591,64 @@ where rno < 3
 select * from tbl_approval
 
 
+
+
+select *
+from tbl_approval_sign
+where signdate is null and fk_sign_empno = 100021
+
+-- 승인
+update tbl_approval_sign
+set signdate = sysdate, sygnyn = #{sygnyn}, signemp_name_kr = #{name_kr} --1
+where asno = #{asno}
+
+-- 반려
+update tbl_approval_sign
+set signdate = sysdate, sygnyn = #{sygnyn}, signemp_name_kr = #{name_kr} --2
+where asno = #{asno}
+
+
+
 select row_number() over(order by writeday desc) as rno, substr(title,0,8)||'..' as title, writeday, name_kr
 from tbl_approval
 join tbl_approval_sign
 on ano = fk_ano
 where signdate is null and fk_sign_empno = 100021
+
+
+
+
+
+select * from tab;
+
+-- 공지사항 알아오기
+select nbno, name_kr, subject, content, writedate
+from
+(
+select row_number() over(order by writedate desc)as rno, nbno, name_kr, subject, content, to_char(writedate, 'yyyy.mm.dd hh24:mi') as writedate
+from tbl_notice_board
+)
+where rno between 1 and 5
+
+
+-- 자유게시판 조회
+select fbno, name_kr, department_name, subject, content, writedate 
+from
+(
+select row_number() over(order by writedate desc) as rno, fk_employee_no, fbno, F.name_kr, department_name, subject, content, to_char(writedate, 'yyyy.mm.dd hh24:mi') as writedate
+from tbl_free_board F
+join v_employee V
+on fk_employee_no = employee_no
+)
+where rno between 1 and 5
+
+
+select * from tbl_notice_board
+
+
+select * from user_sequences
+
+commit;
+
+
+

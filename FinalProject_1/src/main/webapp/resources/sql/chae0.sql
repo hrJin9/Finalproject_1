@@ -167,6 +167,15 @@ values(seq_reserno.nextval, to_date(20221212111511, 'yyyymmddhh24miss'), to_date
 select *
 from tbl_meetingroom_reservation;
 
+
+select startdate, enddate, r_content, fk_employee_no, fk_roomno
+from tbl_meetingroom_reservation
+where fk_roomno = #{fk_roomno};
+
+select startdate, enddate, r_content, fk_employee_no, fk_roomno
+from tbl_meetingroom_reservation
+where fk_roomno = #{fk_roomno};
+
         
 
 select smcatgono, fk_lgcatgono, smcatgoname

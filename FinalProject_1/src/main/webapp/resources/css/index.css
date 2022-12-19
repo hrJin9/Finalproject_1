@@ -33,7 +33,7 @@
 		position: absolute;
 		left: 0;
 		bottom: 0px;
-		width: 9%;
+		width: 10%;
 		height: 2px;
 		background: #556372;
 		transition: all .3s ease-in-out;
@@ -43,14 +43,13 @@
 	  left: 0;
 	}
 	#boardList a:nth-child(2).boardList_iscurrent ~ .boardList_underline {
-	  left: 12%; /* a태그의 width랑 margin-left랑 합친거 */
+	  left: 12.4%; /* a태그의 width랑 margin-left랑 합친거 */
 	}
 	#boardList a:nth-child(1):hover ~ .boardList_underline {
 	  left: 0;
 	}
 	#boardList a:nth-child(2):hover ~ .boardList_underline {
-	  left: 12%;
-	  width: 11%;
+	  left: 12.4%;
 	}
 	
 	#today{
@@ -438,6 +437,7 @@
   
   .apContent{
   	display: flex;
+  	height: 30px;
   }
   
   .apContent > *{
@@ -445,7 +445,8 @@
   }
   
   .apContent > span:first-child{
-  	font-weight: 600; font-size: 10pt; color: #4d4d4d; padding-right: 20px;
+  	font-weight: 600; font-size: 10pt; color: #4d4f53; padding-right: 20px;
+  	margin-left: 15px;
   }
   
   .apContent > span:nth-child(2){
@@ -458,6 +459,28 @@
   }
   
   
+  .profilepics{
+  	display: inline-block;
+  	background-color: #4285f4;
+  	height: 40px; width: 120px;
+	border-radius: 12px;  
+	color: white;
+	font-size: 9pt;
+	margin: auto;
+  }
+  
+  .profilepics > span {
+  	display: inline-block;
+  	margin-top: 11px;
+  }
   
   
+  .boardTr > td > div{
+  	color: #4d4f53;
+  }
+  
+  
+  .bg-light:hover{
+  	background-color: rgba(240,240,240) !important;
+  }
   

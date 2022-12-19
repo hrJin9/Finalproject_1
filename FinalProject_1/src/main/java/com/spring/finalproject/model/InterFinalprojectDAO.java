@@ -20,4 +20,15 @@ public interface InterFinalprojectDAO {
 	//결재요청 온 것 
 	List<Map<String, String>> getAvMy(String employee_no);
 
+	int getNbtotal();
+
+	List<Map<String, String>> getNbList(Map<String, String> paraMap);
+
+	int getFbtotal();
+
+	List<Map<String, String>> getFbList(Map<String, String> paraMap);
+	
+	// 결재요청 처리하기 (승인/반려)
+	int updateMainAvStatus(Map<String, String> paraMap);
+
 }

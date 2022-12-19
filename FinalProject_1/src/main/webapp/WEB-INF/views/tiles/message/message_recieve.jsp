@@ -14,10 +14,12 @@ $(document).ready(function(){
 	var tooltipel = $(".tp").tooltip();
 	
 	$("#mg-recieve").css("color","#4d4f53");
+	
 	// 첫로딩시 전체 보여주기
 	getMgCnt("all");
 	getMglist("all",1);
- 
+ 	
+	
 	// 전체, 안읽음, 중요 목록 읽어오기
 	$(".mgcatgo").click(function(){
 		$(".mgcatgo").removeClass("tab-now");
@@ -368,7 +370,12 @@ function getMglist(tab, curpage){
 				if(oncecnt > 0) return;
 				else {
 					var firstmno = $(".mgList-contents table tr:first-child").attr("id");
-					selectonemg(firstmno);
+					
+					if("${requestScope.paraMap.mno}" == ""){
+						selectonemg(firstmno);
+					} else {
+						selectonemg("${requestScope.paraMap.mno}");
+					}
 					oncecnt++;
 				}
 				

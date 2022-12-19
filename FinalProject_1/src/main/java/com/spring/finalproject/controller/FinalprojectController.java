@@ -7,9 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -101,22 +105,6 @@ public class FinalprojectController {
 			}
 		}
 		
-		
-		// 결재요청온것
-		List<Map<String,String>> apList = service.getAvMy(employee_no);
-		
-		for(Map<String,String> map : apList) {
-			int writetime = Integer.parseInt(map.get("writeday"));
-			int writeh = writetime / 60;
-			if(writeh > 1) {
-				map.put("writeday",writeh/24/2 + "일 전");
-			} else {
-				int wirtem = writetime % 60;
-				map.put("writeday",wirtem + "분 전");
-			}
-		}
-		
-		mav.addObject("apList",apList);
 		mav.addObject("overWt", overWt);
 		mav.addObject("regularWt",regularWt);
 		mav.addObject("starttime",starttime);
@@ -126,6 +114,110 @@ public class FinalprojectController {
 		mav.setViewName("main/index.tiles");
 		return mav;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getMainAvList.up")
+	public String getMainAvList(HttpServletRequest request) {
+		String employee_no = request.getParameter("employee_no");
+		// 결재요청온것
+		List<Map<String,String>> apList = service.getAvMy(employee_no);
+		
+		JSONArray jsonarr = new JSONArray();
+		if(apList != null) {
+			for(Map<String,String> map : apList) {
+				int writetime = Integer.parseInt(map.get("writeday"));
+				int writeh = writetime / 60;
+				if(writeh > 1) {
+					map.put("writeday",writeh/24/2 + "일 전");
+				} else {
+					int wirtem = writetime % 60;
+					map.put("writeday",wirtem + "분 전");
+				}
+				
+				JSONObject jsonobj = new JSONObject();
+				jsonobj.put("asno", map.get("asno"));
+				jsonobj.put("profile_systemfilename", map.get("profile_systemfilename"));
+				jsonobj.put("name_kr", map.get("name_kr"));
+				jsonobj.put("title", map.get("title"));
+				jsonobj.put("writeday", map.get("writeday"));
+				jsonarr.put(jsonobj);
+			}
+		}
+		
+		return jsonarr.toString();
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/updateMainAvStatus.up")
+	public String updateMainAvStatus(@RequestParam Map<String,String> paraMap, HttpServletRequest request) {
+		
+		// 결재요청 처리하기 (승인/반려)
+		int result = service.updateMainAvStatus(paraMap);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("result", result);
+		
+		return jsonobj.toString();
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/getMainBoardList.up")
+	public String getMainBoardList(@RequestParam Map<String,String> paraMap, HttpServletRequest request) {
+		
+		int sizePerPage = 5;
+		String curpage = paraMap.get("curpage");
+		if (curpage == null) curpage = "1";
+		int startRno = ((Integer.parseInt(curpage) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+		
+		
+		int total = 0;
+		List<Map<String,String>> boardList;
+		if("notice".equals(paraMap.get("kind"))) { //공지게시판 불러오기
+			// 총페이지수알아오기
+			total = service.getNbtotal();
+			// 리스트 가져오기
+			boardList = service.getNbList(paraMap);
+			
+		} else { //자유게시판일 경우
+			// 총페이지수알아오기
+			total = service.getFbtotal();
+			// 리스트 가져오기
+			boardList = service.getFbList(paraMap);
+		}
+		
+		JSONArray jsonarr = new JSONArray();
+		if(boardList != null) {
+			JSONObject jsonobj1 = new JSONObject();
+			jsonobj1.put("total", total);
+			jsonarr.put(jsonobj1);
+			
+			for(Map<String,String> map : boardList) {
+				JSONObject jsonobj = new JSONObject();
+				if("notice".equals(paraMap.get("kind"))){
+					jsonobj.put("nbno", map.get("nbno"));
+				} else {
+					jsonobj.put("fbno", map.get("fbno"));
+					jsonobj.put("department_name", map.get("department_name"));
+				}
+				jsonobj.put("name_kr", map.get("name_kr"));
+				jsonobj.put("subject", map.get("subject"));
+				jsonobj.put("content", map.get("content"));
+				jsonobj.put("writedate", map.get("writedate"));
+				
+				jsonarr.put(jsonobj);
+			}
+		}
+		
+		return jsonarr.toString();
+	}
+	
+	
 	
 	@RequestMapping(value = "/main_todo.up")
 	public ModelAndView index_todo(HttpServletRequest request, ModelAndView mav) {
