@@ -1008,10 +1008,10 @@
 				   		</c:if>
 				   	</div>  
 					<div class="fb-info" style="width: 55%;">
-						<div style="display: inline-block; width: 13%; margin-left: -1%;">
+						<div style="display: inline-block; width: 15%; margin-left: -1%;">
 							<span class="username">${boardvo.name_kr}&nbsp;${boardvo.position}</span>
 						</div>
-						<div style="display: inline-block; width: 10%;">
+						<div style="display: inline-block; width: 12%;">
 							<span class="writedate">${boardvo.writedate}</span>
 						</div>
 						<div style="display: inline-block; width: 30%;"> 

@@ -1434,30 +1434,17 @@ public class BoardController {
 		Map<String, String> paraMap = new HashMap<>();
 	    paraMap.put("fk_fbno", fk_fbno);
 	    paraMap.put("sizePerPage", sizePerPage);
-	    System.out.println("sizePerPage >>" +sizePerPage);
+	    //System.out.println("sizePerPage >>" +sizePerPage);
 	    
 	    // 원글 글번호(parentSeq)에 해당하는 댓글의 totalPage 수 알아오기
 	    int totalPage = service.commentTotalPage(paraMap);
-	    System.out.println("totalPage >>" +totalPage);
+	    //System.out.println("totalPage >>" +totalPage);
 	    
 	    JSONObject josnObj = new JSONObject();
 	    josnObj.put("totalPage", totalPage);
 	    
 		return josnObj.toString();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
