@@ -10,6 +10,7 @@ import com.spring.finalproject.common.FileManager;
 import com.spring.finalproject.common.AES256;
 import com.spring.finalproject.model.InterFinalprojectDAO;
 import com.spring.jieun.model.ApprovalVO;
+import com.spring.schedule.model.Calendar_schedule_VO;
 import com.spring.yeeun.model.AttendanceVO;
 
 @Service
@@ -81,4 +82,19 @@ public class FinalprojectService implements InterFinalprojectService {
 		int result = dao.updateMainAvStatus(paraMap);
 		return result;
 	}
+	
+	
+	
+
+	//////////////////////////
+	// 캘린더 불러오기
+	@Override
+	public List<Calendar_schedule_VO> selectMainSchedule(String fk_employee_no) { 
+		List<Calendar_schedule_VO> scheduleList = dao.selectMainSchedule(fk_employee_no);
+		return scheduleList;
+	}
+	
+	
+	
+	
 }
