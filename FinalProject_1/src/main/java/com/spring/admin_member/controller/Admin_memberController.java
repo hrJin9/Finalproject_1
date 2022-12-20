@@ -115,8 +115,12 @@ public class Admin_memberController {
 		List<EmployeeVO> evoList = service.getEmpList(paraMap);
 		
 		for(EmployeeVO evo : evoList) {
+			try {
 			evo.setEmail(aes.decrypt(evo.getEmail()));
-			evo.setMobile(aes.decrypt(evo.getMobile()));
+			} catch(NullPointerException e) { }
+			try {
+				evo.setMobile(aes.decrypt(evo.getMobile()));
+			} catch(NullPointerException e) { }
 		}
 		if("email".equals(searchCondition) || "mobile".equals(searchCondition)) searchVal = aes.decrypt(searchVal);
 		
