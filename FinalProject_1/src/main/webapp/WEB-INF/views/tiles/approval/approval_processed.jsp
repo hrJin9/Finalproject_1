@@ -134,7 +134,7 @@
 	}
 	td>*{
 		margin-top: 4px;
-	    display: flex;
+	    /* display: flex; */
     	justify-content: space-around;
 	}
 	tbody{

@@ -688,8 +688,8 @@ function goSubmit(){
 			 <button type="reset" class="workstatus-cancel btn" style="color: #4d4f53; width: 68px;">초기화</button><br><br><br><br>
 	      </div>
 	      
-	      <input id="mobile" type="text" name="mobile"/>
-	      <input id="authority" type="text" name="authority"/>
+	      <input id="mobile" type="hidden" name="mobile"/>
+	      <input id="authority" type="hidden" name="authority"/>
 	      
 	</form>
 </div>

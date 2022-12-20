@@ -310,7 +310,66 @@
    } 
    
    
-   
+   function goViewComment(currentShowPageNo) {  // currentShowPageNo 은 문서가 로딩되자마자 기본적으로 int타입 1값을 넘겨준다. 하지만, 페이징처리를 map 으로 해주어서  다른 페이지번호를 클릭 시 String 타입으로 바뀐다. (예: 2페이지 클릭시)
+	      
+	      $.ajax({
+	         url:"<%= request.getContextPath()%>/commentList.up",
+	         data:{"fk_fbno":"${requestScope.boardvo.fbno}",  // 읽고싶은 원글 번호     **seq 값이 문자/숫자가 섞여 있을 수 있으므로  쌍따옴표""를 밖에 써주는 것이 좋다.
+	              "currentShowPageNo":currentShowPageNo},    // 현재 보고있는 페이지번호  
+	         dataType:"JSON",  
+	         success:function(json){
+	            console.log(JSON.stringify(json));
+	            let html = "";
+	            
+	            if(json.length > 0) {
+	               $.each(json, function(index, item){
+	                  
+	                  html += "<tr style='height: 15px;'>"
+	                          + "<td style='border-right: none; padding-top: 19px;'>"
+	                              + "<div style='display: inline-block;width: 50px;position: relative;top: -13px'>"
+	                                 + "<span class='pic' id='picbox'><span id='name'>"+item.name_kr.substring(1,3)+"</span></span>"
+	                              + "</div>"
+	                              + "<span class='teamname'>"+item.name_kr+"</span>"
+	                              + "<span class='writedate'>"+item.writedate+"</span>"
+	                              + "<span class='reply icon icon-forward'></span>"
+	                                 
+	                              + "<div class='dropdown custom-dropdown text-left' style='position: inherit;display: inline-block;'>"
+	                              
+	                              + "<a class='bd_toolbar' id='delcmtbtn' onclick='cmtdel("+item.cno+")' style='color:#ea4335; position:relative; top:3.5px; left:6px;'>삭제</a>"
+	                              + "<input type='text' id='employee_no' class='employee_no' value='"+item.fk_employee_no+"' />"
+	                              
+	                              /* + "<button type='button' class='btn btn-badge' style='background-color: #17a6f21f;color: #06689c;'>삭제</button>" */
+	                                 /* + "<i class='fa-solid fa-xmark'></i>" */
+	                                 /* + "<a class='dropdown-link icon icon-flickr' role='button' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-offset='-70, 20'></a>"
+	                                + "<div class='dropdown-menu' aria-labelledby='dropdownMenuButton' style='min-width: 8rem;font-size: 10pt;' >"
+	                                 + "<a class='dropdown-item'>수정하기</a>"
+	                                 + "<a class='dropdown-item'>삭제하기</a>"
+	                                + "</div>" */
+	                              + "</div>"
+	                              + "<div id='cmtcontent'>"+item.content+"</div>"
+	                           + "</td>"
+	                        + "</tr>";
+	                  
+	                 });
+	            }
+	            /* else {
+	               html += "<tr>"+
+	                     "<td colspan='4' class='comment'>댓글이 없습니다</td>"+ // 첨부파일이 없는 경우
+	                          "<td colspan='6' class='comment'>댓글이 없습니다</td>"+       // 첨부파일이 있는 경우
+	                      "</tr>";
+	            } */
+	            
+	            $("#co_table").html(html);
+	            
+	            // 페이지바 함수 호출
+	            makeCommentPageBar(currentShowPageNo);
+	         },
+	         error: function(request, status, error){
+	               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	           }   
+	      });
+	      
+	   }// end of function goViewComment(currentShowPageNo)---------------
    
 </script>
 <div class="attendance-container">

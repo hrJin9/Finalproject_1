@@ -98,9 +98,10 @@
 		width: 29%;
 	    padding: 7.5px;
 	    /* border: 1px solid rgb(0 101 204); */
-	    background-image: linear-gradient(60deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
-	    border: solid 1px rgb(0 101 204);
+	    /* background-image: linear-gradient(60deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
+	    border: solid 1px rgb(0 101 204); */
 		/* background-color: rgb(0 101 204); */
+		background-color: #0d6efd;
 		color: white;
 		font-size: 13pt;
 		border-radius: 5px;

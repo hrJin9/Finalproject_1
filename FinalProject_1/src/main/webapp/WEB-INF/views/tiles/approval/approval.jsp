@@ -771,33 +771,33 @@ let searchWord = "";
 						
 						 if(index ==0){
 							
-							btncontent += `<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="문서 공유"><i style="color: #959ca7;background-color: white;" class="icon icon-share"></i></button>`
-										+`<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="히스토리"><i style="color: #959ca7;background-color: white;" class="icon icon-history"></i></button>`
-										+`<a style="margin-left: 5px;color: #c2c2c2;font-size: 0.5em;cursor: pointer;"class="dropdown-link icon icon-flickr" id="dropdownMenuButton2" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>`
+							btncontent += /* `<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="문서 공유"><i style="color: #959ca7;background-color: white;" class="icon icon-share"></i></button>`
+										+`<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="히스토리"><i style="color: #959ca7;background-color: white;" class="icon icon-history"></i></button>` */
+										`<a style="margin-left: 5px;color: #c2c2c2;font-size: 0.5em;cursor: pointer;"class="dropdown-link icon icon-flickr" id="dropdownMenuButton2" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>`
 						           		+`<div class="dropdown-menu" style="color:#d0d0d0;min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton2" >`
-						             	+`<a onclick="modifymyapp('`+item.signyn+`','`+item.ano+`')" class="dropdown-item" >문서 수정</a>`
+						             	/* +`<a onclick="modifymyapp('`+item.signyn+`','`+item.ano+`')" class="dropdown-item" >문서 수정</a>` */
 						             	+`<a class="dropdown-item" >인쇄하기</a>`
 						             	+`<a onclick="cancelmyapp('`+item.signyn+`','`+item.ano+`')"  class="dropdown-item" style="color:red;">문서 취소</a></div>`
 							} 
 						
 					
-						 switch (item.signyn) {
-							case "0"://진행중 
-								badge = '<button type="button" class="btn btn-badge statebadge" style="background-color:rgb(250, 179, 0);color: white;margin-left: 100px;margin-bottom: 12px;">대기중</button>'
-								break;
-							case "1"://승인
-								badge = '<button class="tp btn btn-badge statebadge" data-bs-toggle="tooltip" data-bs-placement="top" title="'+item.signdate+'"style="margin-left: 100px;margin-bottom: 12px;background-color: #D5FAF1;color: #65BAA5;">승인</button>'
-								break;
-							case "2"://반려
-								badge = '<button type="button" class="btn btn-badge statebadge tp" data-bs-toggle="tooltip" data-bs-placement="top" title="'+item.signdate+'"style="margin-left: 100px;margin-bottom: 12px;background-color: #FFD4D5;color: #D97881;">반려</button>'
-								break;
-							}
 						/* linecontent += '</div><div class="cell" style="padding-right: 16px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">결재자 / '+item.signemp_position+'('+item.signemp_deptname+')</div></div></div>'; */
                		});
 				
 					// 진행상태뱃지 분류하기
 				
 					for (let i = 0; i < json.length; i++) {
+						 switch (json[i].signyn) {
+							case "0"://진행중 
+								badge = '<button type="button" class="btn btn-badge statebadge" style="background-color:rgb(250, 179, 0);color: white;margin-left: 100px;margin-bottom: 12px;">대기중</button>'
+								break;
+							case "1"://승인
+								badge = '<button class="tp btn btn-badge statebadge" data-bs-toggle="tooltip" data-bs-placement="top" title="'+json[i].signdate+'"style="margin-left: 108px;margin-bottom: 12px;background-color: #D5FAF1;color: #59c4aa;">승인</button>'
+								break;
+							case "2"://반려
+								badge = '<button type="button" class="btn btn-badge statebadge tp" data-bs-toggle="tooltip" data-bs-placement="top" title="'+json[i].signdate+'"style="margin-left: 108px;margin-bottom: 12px;background-color: #FFD4D5;color: #D97881;">반려</button>'
+								break;
+							}
 					    if(i==0 || json[i].signstep != json[i-1].signstep){
 					    	linecontent += `<div class="signli" id="stepdiv`+json[i].step+`" name="approvalstep">`
 							 	+`<header class="signheader" style="background-color: transparent;">`
@@ -842,15 +842,15 @@ let searchWord = "";
 						$.each(json, function(index, item) {
 							
 								if(index==0){ // 한번만 나올거 
-									fbcontent+='<div class="ApvSection-header"><h2 class="ApvSection-title">의견('+fbcnt+')</h2></div>'
+									fbcontent+='<div class="ApvSection-header" style="display: inline-flex;"><i class="icon icon-bubble2" style=""></i><h2 class="ApvSection-title" style="margin-bottom: 0;margin-left: 5px;">의견('+fbcnt+')</h2></div>'
 									  		 +'<div class="ApvSection-body"><div><ul>'
 								}
 								if(typeof item.feedback !="undefined" ){
 									//console.log('item.feedback ->'+item.feedback);
 									fbcontent+='<li class="refer_opinion">'
 											+'<div class="profile" style="padding: 1px;"><input class="empno" hidden="" value="'+item.sign_empno+'">'
-											+'<span class="pic"><span>'+item.name_kr.substr(1)+'</span></span><span class="my"><span class="name" style="font-size: 10.8pt;">'+item .name_kr+'</span><span>'+item.signdate+'</span></span>'
-											+'<br><span>'+item.feedback+'</span>'
+											+'<span class="pic"><span>'+item.name_kr.substr(1)+'</span></span><span class="my"><span class="name" style="font-size: 10.8pt;">'+item .name_kr+'</span><br><span style="font-size: 8pt;color: #c2c9cf;">'+item.signdate+'</span></span>'
+											+'<br><span style="margin-left: 40px;">'+item.feedback+'</span>'
 											+'</div>'
 											+'</li>'
 									
@@ -1049,8 +1049,8 @@ let searchWord = "";
 	
 	// 내가쓴 문서 결재취소하기 (첫결재단계가 아직 결재를안했을경우만 )
 	function cancelmyapp(signyn,ano){
-		//console.log('cancelmyapp(signyn) =>'+signyn)
-		//console.log('cancelmyapp(ano) =>'+ano)
+		console.log('cancelmyapp(signyn) =>'+signyn)
+		console.log('cancelmyapp(ano) =>'+ano)
 		if(signyn!="0"){ // 첫번째 결재라인이 결재내렸으면 취소못하게 
 			alert("결재진행중이므로 취소불가합니다!");
 		}else{
@@ -1067,6 +1067,7 @@ let searchWord = "";
 						}else{
 							text = "결재신청 취소를 실패했습니다.";
 						}						
+						alert(text);
 					},
 					error: function(request, status, error){
 						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -1261,7 +1262,7 @@ let searchWord = "";
 	            <a class="dropdown-item" onclick="getDate(3,event)">지난 1개월<span class="icon icon-checkmark dropselchx"></span></a>
 	            <a class="dropdown-item" onclick="getDate(4,event)">지난 3개월<span class="icon icon-checkmark dropselchx"></span></a>
 	            <a class="dropdown-item" onclick="getDate(5,event)">지난 1년<span class="icon icon-checkmark dropselchx"></span></a>
-	            <a class="dropdown-item">직접 입력<span class="icon icon-checkmark dropselchx"></span></a>
+	            <!-- <a class="dropdown-item">직접 입력<span class="icon icon-checkmark dropselchx"></span></a> -->
 	            <a class="dropdown-item">
 		            <div class="search-period-wr" >
 		                <div class="js-search-pickr-layer" data-code="unlimit">
@@ -1466,8 +1467,8 @@ let searchWord = "";
 				  	  </div>
 					  
 					  <!-- 문서의견  -->
-					  <div class="pad-part">
-					  	<div id="fbsection"></div>
+					  <div class="pad-part" style="border-top: 1px solid #eaeaea;padding-top: 20px;margin-top: 50px;">
+					  	<div id="fbsection" style="font-size: 15px;font-weight: 400;color: #787878;"></div>
 				  	  </div>
 			  	</div>
 			  </div>

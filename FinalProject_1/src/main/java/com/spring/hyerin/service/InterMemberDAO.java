@@ -82,5 +82,11 @@ public interface InterMemberDAO {
 	
 	//해당 정보의 사원 가져오기
 	String getEmployeeInfo(EmployeeVO evo);
+	
+	// employee_no의 비밀번호 알아오기
+	String getMyPassword(String employee_no);
+	
+	// 비밀번호 업데이트해주기
+	int updateMyPwd(Map<String, String> paraMap);
 
 }

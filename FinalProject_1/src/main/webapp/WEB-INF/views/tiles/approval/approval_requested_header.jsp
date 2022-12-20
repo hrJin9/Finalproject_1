@@ -509,9 +509,10 @@ border-color: rgba(36, 42, 48, 0.04);"
 	});
 </script>
 <nav id="mainList" class="margin-container header-nav">
-	<a class="header-main list_iscurrent" id="send" href="<%= request.getContextPath()%>/approval.up">내 문서함</a>
-	<a class="header-main list_notcurrent" id="requested" href="<%= request.getContextPath()%>/approval/requested.up">결재하기</a>
+	<a class="header-main list_notcurrent" id="send" href="<%= request.getContextPath()%>/approval.up">상신함</a>
+	<a class="header-main list_iscurrent" id="requested" href="<%= request.getContextPath()%>/approval/requested.up">수신함</a>
 </nav>
+
 
  <div style="display: inline-block;position: relative;float: right;right: 90px;top: -49px;">
   	<a href="<%= request.getContextPath()%>/approval/writing.up" id="writebtn"class="btn"><span style="margin-top: -7px;font-weight: 100;margin-right: 5px;font-size: 24pt;display: flex;align-items: center;">+</span>작성하기</a>

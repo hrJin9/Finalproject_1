@@ -337,6 +337,42 @@ public class MemberController {
 	}//end of getEmployeeInfo
 	
 	
+	@ResponseBody
+	@RequestMapping(value="/getMyPassword.up")
+	public String getMyPassword(HttpServletRequest request, @RequestParam String employee_no, @RequestParam String inputpasswd) throws Throwable{
+		
+		// employee_no의 비밀번호 알아오기
+		String pwd = service.getMyPassword(employee_no);
+		
+		int n = 0;
+		if(Sha256.encrypt(inputpasswd).equals(pwd)) {
+			n = 1;
+		} 
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("n", n);
+		return jsonobj.toString();
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/updateMyPwd.up", method = RequestMethod.POST)
+	public String updateMyPwd(@RequestParam Map<String,String> paraMap, HttpServletRequest request) {
+		
+		
+		System.out.println("파라맵 newPasswd : " + paraMap.get("newPasswd"));
+		
+		paraMap.put("newPasswd", Sha256.encrypt(paraMap.get("newPasswd")));
+		// 비밀번호 업데이트해주기
+		int n = service.updateMyPwd(paraMap);
+		
+		
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("n", n);
+		return jsonobj.toString();
+	}
+	
 	
 	
 	

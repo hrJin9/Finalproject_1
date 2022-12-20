@@ -213,5 +213,21 @@ public class MemberDAO implements InterMemberDAO {
 	}
 	
 	
+	// employee_no의 비밀번호 알아오기
+	@Override
+	public String getMyPassword(String employee_no) {
+		String pwd = sqlsession.selectOne("member.getMyPassword",employee_no);
+		return pwd;
+	}
+
+	
+	// 비밀번호 업데이트해주기
+	@Override
+	public int updateMyPwd(Map<String, String> paraMap) {
+		int n = sqlsession.update("member.updateMyPwd",paraMap);
+		return n;
+	}
+	
+	
 	
 }

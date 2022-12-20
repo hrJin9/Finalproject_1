@@ -235,8 +235,8 @@ function getImg(empno){
 		dataType:"json",
 		success:function(json){
 			var html = '<span><img class="profileimg" src="<%=ctxPath%>/resources/files/'+json.profile_systemfilename+'" width="150px" height="150px"/></span>';
-			var sbsrc = '<%=ctxPath%>/resources/files/'+json.profile_systemfilename;
-			$(".sbpics > img").attr("src", sbsrc);
+			$(".sbpics").html('<img src="<%=ctxPath%>/resources/files/'+json.profile_systemfilename+'" width="38px" height="38px" style="border-radius: 13px; border: solid 1px rgba(0,0,0,0.1);">');
+			$(".profiles").removeClass("pic");
 			$(".profiles").html(html);
 			
 			//세션 새로고침 해주기
@@ -449,7 +449,14 @@ function updateMyInfo(){
 	    		</c:if>
 	    	
 	    	</span>
-	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role">직무</span>${requestScope.evo.role}</span>
+	    	<span style="font-size: 10pt; padding: 4px 0; display: block; margin-bottom: -2px;"><span id="role">직무</span>
+	    	<c:if test="${not empty requestScope.evo.role }">
+		    	${requestScope.evo.role}
+	    	</c:if>
+	    	<c:if test="${empty requestScope.evo.role }">
+		    	미지정
+	    	</c:if>
+	    	</span>
 	    	<button type="button" id="phone" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="${requestScope.evo.mobile}"><span><i class="fas fa-phone-alt" style="transform: scaleX(-1); transition: .3s; color: #666666;"></i></span></button>
 	    	<button type="button" id="message" class="tp" data-bs-toggle="tooltip" data-bs-placement="top" title="메시지 보내기" style="font-size: 9.5pt"><span><i class="far fa-envelope"></i></span></button>
 	    	<button type="button" id="status">
@@ -496,15 +503,36 @@ function updateMyInfo(){
 		                </tr>
 		                <tr>
 		                   <td>영문이름</td>   
-		                   <td>${requestScope.evo.name_en}</td>   
+		                   <td>
+		                   <c:if test="${not empty requestScope.evo.name_en}">
+							   ${requestScope.evo.name_en}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.name_en}">
+							   	미기입
+						   	</c:if>
+		                   </td>   
 		                </tr>
 		                <tr>
 		                   <td>이메일</td>   
-		                   <td>${requestScope.evo.email}</td>   
+		                   <td>
+		                   	<c:if test="${not empty requestScope.evo.email}">
+							   ${requestScope.evo.email}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.email}">
+							   	미기입
+						   	</c:if>
+		                   	</td>   
 		                </tr>
 		                <tr>
 		                   <td>연락처</td>   
-		                   <td>${requestScope.evo.mobile}</td>   
+		                   <td>
+		                   	<c:if test="${not empty requestScope.evo.mobile}">
+							   ${requestScope.evo.mobile}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.mobile}">
+							   	미기입
+						   	</c:if>
+		                   </td>   
 		                </tr>
 		                <!-- 생년원일부터는 본인/권한자만 -->
 		                <c:set var="at" value="${requestScope.evo.authority}"/>
@@ -513,6 +541,7 @@ function updateMyInfo(){
 						<tr>
 						  <td>생년월일</td>   
 						  <td style="float:left; margin-right:0;">
+						  	<c:if test="${not empty requestScope.evo.birthday }">
 						  		${requestScope.evo.birthday}&nbsp;<span style="padding-left: 5px;">/</span>
 							  <span style="padding-left: 5px;">
 								  <c:if test="${requestScope.evo.gender == 1}">
@@ -522,21 +551,46 @@ function updateMyInfo(){
 								  	여성
 								  </c:if>
 							  </span>
+							  </c:if>
+							  <c:if test="${empty requestScope.evo.birthday }">
+							  	미기입
+							  </c:if>
 						  </td>   
 						</tr>
 		                <tr>
 		                   <td style="padding-bottom: 22px;">주소</td>   
-		                   <td>${requestScope.evo.address}${requestScope.evo.extra_address}(${requestScope.evo.postcode})<br>
+		                   <td>
+	                   		<c:if test="${not empty requestScope.evo.address}">
+							  ${requestScope.evo.address}${requestScope.evo.extra_address}(${requestScope.evo.postcode})<br>
 		                   	   ${requestScope.evo.detail_address}<%-- 상세주소 --%>
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.address}">
+							   	미기입
+						   	</c:if>
+		                   	
 		                   </td>   
 		                </tr>
 		                <tr>
 		                   <td>최종학력</td>   
-		                   <td>${requestScope.evo.academic_ability}</td>   
+		                   <td>
+		                   	<c:if test="${not empty requestScope.evo.academic_ability}">
+							  ${requestScope.evo.academic_ability}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.academic_ability}">
+							   	미기입
+						   	</c:if>
+		                   	</td>   
 		                </tr>
 		                <tr>
 		                   <td>전공</td>   
-		                   <td>${requestScope.evo.major}</td>   
+		                   <td>
+		                   	<c:if test="${not empty requestScope.evo.major}">
+							  ${requestScope.evo.major}
+						   	</c:if>
+						   	<c:if test="${empty requestScope.evo.major}">
+							   	미기입
+						   	</c:if>
+							</td>   
 		                </tr>
 		                <tr>
 		                   <td>병역사항</td>   
