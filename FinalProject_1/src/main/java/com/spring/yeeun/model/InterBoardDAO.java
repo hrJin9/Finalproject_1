@@ -143,6 +143,9 @@ public interface InterBoardDAO {
 	// 하나의 게시물당 댓글의 totalPage 수 알아오기(Ajax 처리)
 	int commentTotalPage(Map<String, String> paraMap);
 
+	// 본인 댓글 삭제하기(Ajax 처리)
+	int delComment(String cno);
+
 	
 
 

@@ -1482,6 +1482,8 @@ values(seq_tbl_fbcomment.nextval, #{fk_employee_no}, #{name_kr}, #{position}, #{
 insert into tbl_fb_comment(cno, fk_employee_no, name_kr, position, content, writedate, fk_fbno, status)
 values(seq_tbl_fbcomment.nextval, '100016', '이예은1', '과장', '화이팅!', default, '13', default)
 
+insert into tbl_fb_comment(cno, fk_employee_no, name_kr, position, content, writedate, fk_fbno, status)
+values(seq_tbl_fbcomment.nextval, '99', '관리자', ' ', '화이팅!', default, '16', default)
 
 select name_kr, position, content, writedate
 from
@@ -1494,11 +1496,11 @@ from
 where rno between #{startRno} and #{endRno}
 
 
-select name_kr, position, content, writedate
+select name_kr, position, content, writedate, fk_employee_no, cno
 from
 (
     select row_number() over(order by cno desc) AS rno, name_kr, position, content  
-         , to_char(writedate, 'yyyy.mm.dd hh24:mi') AS writedate, fk_fbno, status 
+         , to_char(writedate, 'yyyy.mm.dd hh24:mi') AS writedate, fk_fbno, status, fk_employee_no, cno 
     from tbl_fb_comment
     where status = 1 and fk_fbno = 12
 ) V
@@ -1511,26 +1513,21 @@ SELECT TO_CHAR(SYSDATE-(3/(24*60)), 'HH24MISS') FROM DUAL
 
 select count(*)
 from tbl_fb_comment
-where fk_bno = #{fk_bno}
+where fk_fbno = 12
 
 
+select *
+from tbl_fb_comment
+
+desc tbl_employee
+
+select *
+from tbl_employee
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+delete from tbl_fb_comment
+where cno = 23;
+commit;
 
 
 

@@ -1011,15 +1011,13 @@
 						<div style="display: inline-block; width: 15%; margin-left: -1%;">
 							<span class="username">${boardvo.name_kr}&nbsp;${boardvo.position}</span>
 						</div>
-						<div style="display: inline-block; width: 12%;">
+						<div style="display: inline-block; width: 12.5%;">
 							<span class="writedate">${boardvo.writedate}</span>
 						</div>
 						<div style="display: inline-block; width: 30%;"> 
-							<c:if test="${boardvo.commentCheck =='1'}">
+							<c:if test="${boardvo.commentCheck =='1' && boardvo.commentCount != '0'}">
 								<span class="icon icon-bubble2" id="iconbubble" ></span>
-								<c:if test="${boardvo.commentCount != '0'}">
-							   		<span id="bubblecnt">${boardvo.commentCount}</span>
-						   		</c:if>
+						   		<span id="bubblecnt">${boardvo.commentCount}</span>
 					   		</c:if>
 						</div>
 					</div>	
@@ -1037,6 +1035,7 @@
 			</tr>
 			</c:forEach>
             </c:if>
+            
 	        <c:if test="${empty requestScope.boardList}">
 				<tr>
 					<td style="width: 100%; border: none;">

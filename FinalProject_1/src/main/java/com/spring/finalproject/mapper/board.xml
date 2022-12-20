@@ -383,17 +383,16 @@
 	<!-- 원게시물의 댓글을 페이징 처리해서 조회해오기(Ajax 처리) -->
 	<select id="getCommentListPaging" parameterType="HashMap" resultType="com.spring.yeeun.model.Fb_CommentVO">
 		<!-- 첨부파일이 없는 경우 -->
-		select name_kr, position, content, writedate
+		select name_kr, position, content, writedate, fk_employee_no, cno
 		from
 		(
 		    select row_number() over(order by cno desc) AS rno, name_kr, position, content  
-		         , to_char(writedate, 'yyyy-mm-dd hh24:mi') AS writedate, fk_fbno, status 
+		         , to_char(writedate, 'yyyy-mm-dd hh24:mi') AS writedate, fk_fbno, status, fk_employee_no, cno
 		    from tbl_fb_comment
 		    where status = 1 and fk_fbno = #{fk_fbno}
 		) V
 		where rno between #{startRno} and #{endRno}
 	</select>
-	
 	
 	
 	<!-- 하나의 게시물당 댓글의 totalPage 수 알아오기(Ajax 처리) -->
@@ -402,6 +401,13 @@
 		from tbl_fb_comment
 		where status = 1 and fk_fbno = #{fk_fbno}
 	</select>
+	
+	
+	<!-- 본인 댓글 삭제하기(Ajax 처리) -->
+	<delete id="delComment" parameterType="String">
+		delete from tbl_fb_comment
+		where cno = #{cno}
+	</delete>
 	
 	
 	

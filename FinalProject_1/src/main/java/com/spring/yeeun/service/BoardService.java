@@ -392,6 +392,13 @@ public class BoardService implements InterBoardService {
 		int totalPage = dao.commentTotalPage(paraMap);
 		return totalPage;
 	}
+	
+	// 본인 댓글 삭제하기(Ajax 처리)
+	@Override
+	public int delComment(String cno) {
+		int n = dao.delComment(cno); 
+		return n;
+	}
 
 	
 

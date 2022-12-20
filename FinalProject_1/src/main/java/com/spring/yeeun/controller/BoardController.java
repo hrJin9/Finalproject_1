@@ -55,7 +55,7 @@ public class BoardController {
 	// 게시판 목록 및 글쓰기 폼페이지 요청
 	@RequestMapping(value = "/board_all.up")
 	public ModelAndView rl_board_all(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
-		getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출 (단, 로그인을 해야지만 볼 수 있는 페이지에는 사용하면 안된다. AOP 와 getCurrentURL(request); 코드가 꼬이게 된다.)
+		//getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출 (단, 로그인을 해야지만 볼 수 있는 페이지에는 사용하면 안된다. AOP 와 getCurrentURL(request); 코드가 꼬이게 된다.)
 	      
 		List<NoticeBoardVO> boardList = null;      // 초기값으로 글이 하나도 없을 수 있음
 		List<BoardScrapVO> bookmarkList = null;    // 초기값으로 북마크 글이 하나도 없을 수 있음
@@ -402,7 +402,7 @@ public class BoardController {
 	@RequestMapping(value="/notice/view.up")
 	public ModelAndView view(ModelAndView mav, HttpServletRequest request) {
 		
-	    getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출
+	    //getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출
 
 	    HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
@@ -500,7 +500,7 @@ public class BoardController {
 	@RequestMapping(value="/notice/view_pn.up")
 	public ModelAndView view_2(ModelAndView mav, HttpServletRequest request) {
 		
-		getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출
+		//getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출
 		
 		String nbno = request.getParameter("nbno");
 		
@@ -738,7 +738,7 @@ public class BoardController {
 	// 게시판 목록 및 글쓰기 폼페이지 요청
 	@RequestMapping(value = "/freeboard.up")
 	public ModelAndView freeboard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
-		getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출 (단, 로그인을 해야지만 볼 수 있는 페이지에는 사용하면 안된다. AOP 와 getCurrentURL(request); 코드가 꼬이게 된다.)
+		//getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출 (단, 로그인을 해야지만 볼 수 있는 페이지에는 사용하면 안된다. AOP 와 getCurrentURL(request); 코드가 꼬이게 된다.)
 	      
 		List<FreeBoardVO> boardList = null;        // 초기값으로 글이 하나도 없을 수 있음
 		List<BoardScrapVO> bookmarkList = null;    // 초기값으로 북마크 글이 하나도 없을 수 있음
@@ -1028,7 +1028,7 @@ public class BoardController {
 	@RequestMapping(value="/fboard/view.up")
 	public ModelAndView fn_view(ModelAndView mav, HttpServletRequest request) {
 		
-	    getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출
+	    //getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출
 
 	    HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
@@ -1138,7 +1138,7 @@ public class BoardController {
 	@RequestMapping(value="/fboard/view_pn.up")
 	public ModelAndView fn_view_2(ModelAndView mav, HttpServletRequest request) {
 		
-		getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출
+		//getCurrentURL(request);  // 로그아웃을 했을 때 현재 보이던 그 페이지 그대로 돌아가기 위한 메소드 호출
 		
 		String fbno = request.getParameter("fbno");
 		
@@ -1363,8 +1363,6 @@ public class BoardController {
 	@RequestMapping(value="/addComment.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
 	public String addComment(Fb_CommentVO commentvo) throws Throwable {
 
-		
-		
 		int n = 0;
 		try {
 			// 댓글 및 원게시물 테이블의 댓글 개수 증가(update 1씩 증가)하기 
@@ -1411,7 +1409,9 @@ public class BoardController {
 	    if(commentList != null) {
 	    	for(Fb_CommentVO cmtvo: commentList) {  
 	    		JSONObject jsonObj = new JSONObject();
+	    		jsonObj.put("cno", cmtvo.getCno());
 	    		jsonObj.put("name_kr", cmtvo.getName_kr());
+	    		jsonObj.put("fk_employee_no", cmtvo.getFk_employee_no());
 	    		jsonObj.put("position", cmtvo.getPosition());
 	    		jsonObj.put("content", cmtvo.getContent());
 	    		jsonObj.put("writedate", cmtvo.getWritedate());
@@ -1447,7 +1447,27 @@ public class BoardController {
 	}
 	
 	
-	
+	// 본인 댓글 삭제하기(Ajax 처리)
+	@ResponseBody    
+	@RequestMapping(value="/delComment.up", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String delComment(HttpServletRequest request) throws Throwable {
+
+		
+		String cno = request.getParameter("cno");
+		
+		int n = 0;
+		try {
+			n = service.delComment(cno);
+			//System.out.println("댓글삭제 결과 n >>>>"+n);
+		} catch (Throwable e) {
+			e.printStackTrace();  // 콘솔에만 찍어준다.
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("n", n);
+		
+		return jsonObj.toString();
+	}	
 	
 	
 	

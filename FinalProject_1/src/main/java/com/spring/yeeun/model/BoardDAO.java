@@ -327,6 +327,13 @@ public class BoardDAO implements InterBoardDAO {
 		return totalPage; 
 	}
 
+	// 본인 댓글 삭제하기(Ajax 처리)
+	@Override
+	public int delComment(String cno) {
+		int n = sqlsession.delete("board.delComment", cno);
+		return n;
+	}
+
 	
 		
 

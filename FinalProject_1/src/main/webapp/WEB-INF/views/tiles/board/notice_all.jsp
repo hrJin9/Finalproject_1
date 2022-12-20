@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="noticeboard_header.jsp"%> 
+<%@ include file="noticeboard_header.jsp"%>
 <link rel="stylesheet" href="<%= ctxPath%>/resources/fonts/icomoon/style.css">
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
