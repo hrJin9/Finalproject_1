@@ -256,5 +256,17 @@ public class ApprovalDAO implements InterApprovalDAO{
 		return n;
 	}
 
+	@Override
+	public List<ApprovalVO> referedPaging(Map<String, String> paraMap) {
+		List<ApprovalVO> list = sqlsession.selectList("approval.referedPaging", paraMap); 
+		return list;
+	}
+
+	@Override
+	public int referedTotalCount(Map<String, String> paraMap) {
+		int n = sqlsession.selectOne("approval.referedTotalCount",paraMap); 
+		return n;
+	}
+
 	
 }

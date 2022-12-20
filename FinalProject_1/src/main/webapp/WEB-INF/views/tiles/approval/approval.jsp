@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/index.js"></script>
 <!--#include virtual="dbcon.asp"-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <style type="text/css">
 	.ap_type{
 		font-size: 9.5pt;
@@ -254,7 +256,12 @@ let searchWord = "";
 			showDetailApp(anoval,"");
 		} */
 		
-		
+		const doc = new jsPDF({
+			  //orientation: "landscape",
+			  orientation: "portrait",
+			  //format: "a4"
+			  format: "a4"
+			});
 		
 		
 		
@@ -1166,7 +1173,7 @@ let searchWord = "";
 			$("input#searchWord").focus();
 			$("select#searchType option:eq(0)").prop("selected",true); // selected 되게하기
 		}
-	}
+	} 
 	
 	
 	
@@ -1200,6 +1207,51 @@ let searchWord = "";
 		// 선택된 멤버가 하나도 없다면 
 		$(".selmembtn").css('display','block');
 	}
+	
+
+	
+	
+	function savePDF(){
+	    //저장 영역 div id
+	    html2canvas($('#pdfArea')[0] ,{	
+	      //logging : true,		// 디버그 목적 로그
+	      //proxy: "html2canvasproxy.php",
+	      allowTaint : true,	// cross-origin allow 
+	      useCORS: true,		// CORS 사용한 서버로부터 이미지 로드할 것인지 여부
+	      scale : 2			// 기본 96dpi에서 해상도를 두 배로 증가
+	      
+	    }).then(function(canvas) {	
+	      // 캔버스를 이미지로 변환
+	      var imgData = canvas.toDataURL('image/png');
+
+	      var imgWidth = 190; // 이미지 가로 길이(mm) / A4 기준 210mm
+	      var pageHeight = imgWidth * 1.414;  // 출력 페이지 세로 길이 계산 A4 기준
+	      var imgHeight = canvas.height * imgWidth / canvas.width;
+	      var heightLeft = imgHeight;
+	      var margin = 10; // 출력 페이지 여백설정
+	      var doc = new jsPDF('p', 'mm');
+	      var position = 0;
+
+	      // 첫 페이지 출력
+	      doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+	      heightLeft -= pageHeight;
+
+	      // 한 페이지 이상일 경우 루프 돌면서 출력
+	      while (heightLeft >= 20) {			// 35
+	      position = heightLeft - imgHeight;
+	      position = position - 20 ;		// -25
+
+	      doc.addPage();
+	      doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+	      heightLeft -= pageHeight;
+	      }
+
+	      // 파일 저장
+	      doc.save('filename.pdf');
+	    }); 
+	  }
+	
+	
 </script>
  
 <nav id="subList" class="margin-container appreqsublist">
@@ -1445,6 +1497,8 @@ let searchWord = "";
 							  </div>
 						  </div>
 		  	     	  </div>
+		  	     	  
+		  	     	  <div id="pdfArea">
 					  <!-- 문서 헤더정보  -->			  
 					  <div id="datasection" style="border-bottom: 1px solid rgba(36, 42, 48, 0.06);"></div>
 					  
@@ -1470,6 +1524,9 @@ let searchWord = "";
 					  <div class="pad-part" style="border-top: 1px solid #eaeaea;padding-top: 20px;margin-top: 50px;">
 					  	<div id="fbsection" style="font-size: 15px;font-weight: 400;color: #787878;"></div>
 				  	  </div>
+			  	  </div>
+			  	  
+			  	  
 			  	</div>
 			  </div>
 			  </div>

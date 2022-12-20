@@ -91,4 +91,8 @@ public interface InterApprovalDAO {
 	// 저장된 내 결재라인 삭제하기 (Ajax)
 	int delsavedline(String signpath_no);
 
+	List<ApprovalVO> referedPaging(Map<String, String> paraMap);
+
+	int referedTotalCount(Map<String, String> paraMap);
+
 }
