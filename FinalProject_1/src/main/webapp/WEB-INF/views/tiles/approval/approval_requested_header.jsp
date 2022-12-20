@@ -12,7 +12,7 @@
 <style type="text/css">
 	
 	#mainList a:hover{
-		color: #000000;
+		color: #000000 !important;
 		cursor: pointer;
 	}
 	#subList a:hover{
@@ -25,17 +25,18 @@
 		position: relative;
 	    display: flex;
 	    width: 640px;
+	    margin-bottom: -42px;
 	    font-size: 18pt;
 	}
 	/* 
 	.header-main {
-	    font-weight: 700 !important;
+	    font-weight: 800 !important;
 	    padding: 0.9em 0 0.3em 0 !important;
-	    font-size: 20pt !important;
+	    font-size: 18pt !important;
 	} */
 	#mainList a {
 		display: block;
-    	width: 17%;
+    	width: 12%;
     	text-align: center;
 		text-decoration: none;
 		margin-right: 4%;
@@ -45,21 +46,22 @@
 		color: #4d4f53;
 	}
 	.list_notcurrent{
-		color: #D2D6D9;
+		color: #8d96a1;
 	}
 	
 	#subList{
 		position: relative;
-		display: flex;
-		width: 640px;
-		font-size: 11pt;
-		font-weight: bold;
-		/* margin: 4px 0 0 60px; */
+	    display: flex;
+	    width: 87%;
+	    font-size: 11pt;
+	    font-weight: bold;
+	    align-items: center;
+	    justify-content: flex-start;
 	}
 	
-	#subList a {
+	.header-sub{
 		display: block;
-		width: 14%;
+		width: 7%;
 		padding: .9em 0;
 		/* color: #333; */
 		text-align: center;
@@ -70,20 +72,13 @@
 	
 	.subList_underline {
 	    position: absolute;
-	    left: 2%;
+	    left: 0.5%; 
 	    bottom: -1px;
-	    width: 11%;
+	    width: 6%;
 	    height: 2px;
 	    background: #333;
 	    transition: all .3s ease-in-out;
 	    margin-right: 5%;
-	}
-	#subList {
-	    position: relative;
-	    display: flex;
-	    width: 640px;
-	    font-size: 11pt;
-	    font-weight: bold;
 	}
 	#subList a:nth-child(1).iscurrent ~ .subList_underline {
 		left: 0%;
@@ -249,8 +244,8 @@
 	}
 	#writebtn{
 	font-size: 12pt;
-    padding: 0px 34px 1px 26px;
-    font-weight: 700;
+    padding: 0px 30px 1px 24px;
+    font-weight: 600;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -260,8 +255,9 @@
     box-shadow: rgb(0 0 0 / 2%) 0px 2px 6px, rgb(0 0 0 / 6%) 0px -1px 0px inset, rgb(0 0 0 / 8%) 0px 0px 0px 1px inset;
 		/* border-color: rgb(176 176 176); */
 	}
-	
-	
+	#writebtn:hover{
+		background-color: #fafafa;
+	}
 	
 	
 	.flatpickr-month
@@ -271,9 +267,9 @@
 		background: #ffffff !important;
 		color: #3a3a3a !important;
 	}
-	.toggleSwitch {
-	width: 35px;
-  height: 20px;
+.toggleSwitch {
+  width: 30px;
+  height: 15px;
   display: block;
   position: relative;
   border-radius: 30px;
@@ -284,8 +280,8 @@
 }
 
 .toggleSwitch .toggleButton {
-  width: 13px;
-  height: 13px;
+  width: 10px;
+  height: 10px;
   position: absolute;
   top: 50%;
   left: 4px;
@@ -299,7 +295,7 @@
 }
 
 #toggle:checked ~ .toggleSwitch .toggleButton {
-  left: calc(100% - 19px);
+  left: calc(100% - 14px);
   background: #fff;
 }
 
@@ -371,13 +367,23 @@
    color: rgb(17, 17, 17);
 }
   .head-btnsection{
-       padding: 20px 40px 0px;
-   background-color: white;
-   color: rgb(17, 17, 17);
-   position: sticky;
-   top: 0px;
-   z-index: 2;
+      padding: 20px 40px;
+    background-color: white;
+    color: rgb(17, 17, 17);
+    position: sticky;
+    top: 0px;
+    z-index: 2;
   }
+  .statebadge{
+	margin-top: 3px;
+	cursor: default;
+	font-weight: bold !important;
+	border-radius: 1.2em;
+	font-size: .675rem;
+	padding: 0.15rem 0.5rem;
+}
+  
+  
   .Apv-button.is-neutral {
     border-color: rgb(153, 153, 153);
 }
@@ -501,6 +507,511 @@ border-color: rgba(36, 42, 48, 0.04);"
 #btnsection button{
 	padding: .175rem .45rem !important;
 }
+
+ 
+ /* ===  옵션창  === */
+div.option {
+    display: none;
+    border: 0px solid #b0b0b0d9;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 18pt;
+    box-shadow: 0.5px 0.5px 14px 0.5px rgb(0 0 0 / 20%);
+    /* width: 459px; */
+    height: auto;
+    position: fixed;
+    max-width: 40%;
+    height: auto;
+    position: fixed;
+    min-width: 30%;
+    z-index: 3000;
+    top: 30%;
+    left: 50.5%;
+ } 
+ .plusmembtn, .delboxbtn{
+	width: 24px;
+    height: 24px;
+    font-size: 12px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 2%) 0px 2px 6px, rgb(0 0 0 / 6%) 0px -1px 0px inset, rgb(0 0 0 / 8%) 0px 0px 0px 1px inset;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+stepbtn, .plusmembtn{
+   	display: inline-flex;
+}
+.delboxbtn{
+   	display: none;
+   	margin-right: 5px;
+}
+.delboxbtn :hover{
+	background-color :rgba(244, 71, 18, 0.07);
+}
+.selectedmem:hover{
+	background-color:#f6f6f6;
+}
+.selectedmem{
+	margin-top:0px !important;
+	/* margin-bottom: 10px  !important; */
+	padding-bottom: 10px; 
+    padding-top: 10px;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 20px;
+}
+#memcontent-iframe0 > .selectedmem{
+	padding-bottom: 50px;
+}
+#searchWord{
+	 background-color:#92949605;
+	 box-shadow:inset 0px 0px 0px 1px rgba(0, 0, 0, 0.04); 
+	 border-radius: 0.4rem;
+	 width: 112%;
+	 font-size: 9pt;
+	 padding: 6px 12px 6px 70px;
+	 color:#556372
+}
+.signheader{
+height: 26px;
+display: flex;
+align-items: center;
+width: 100%;
+padding-left: 8px;
+padding-right: 8px;
+}
+.signspan{
+flex-shrink: 0;
+margin-right: 10px;
+font-size: 14px;
+font-weight: 600;
+}
+.separator{
+border-style: solid;
+border-width: 0px;
+width: 100%;
+border-top-width: 1px;
+border-color: rgba(36, 42, 48, 0.04);
+margin-right: 10px;
+}
+ 
+ 
+ 
+.detail-search-conditions {
+  margin: 10px 20px 0 30px;
+}
+.condition-cell.title {
+    width: 100px;
+    height: 43px;
+    /* padding-top: 14px; */
+    border: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    box-sizing: border-box;
+}
+.condition-cell {
+    display: table-cell;
+}
+.js-register-name-search-filter .condition-cell:last-child {
+    width: 80%;
+}
+.target-select-group {
+    margin: 16px 18px 12px 10px;
+    font-size: 10px;
+    color: #555;
+}
+.target-select-group li {
+    float: left;
+    min-width: 122px;
+    height: 28px;
+}
+/* 검색기간 라디오 체크*/
+.radio-label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: -23px;
+}
+.label-checkbox {
+    position: relative;
+    cursor: pointer;
+    left: 4px;
+    font-size: 11.5px;
+    top:-1px
+}
+.target-select-group .radio-label-checkbox::before {
+    margin-right: 12px;
+}
+.radio-label-checkbox::before {
+    display: inline-block;
+    content: "";
+    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
+    background-size: 560px auto;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+ul{
+	padding-left: 0;
+	list-style: none;
+	margin-bottom: 3rem;
+}
+/* 검색기간 라디오 라벨*/
+.custom-control-radio {
+    position: relative;
+    left: -5px;
+    top: 3px;
+    z-index: -1;
+ }
+ .radio-label-checkbox::before {
+    display: inline-block;
+    content: "";
+    background: url(/flow-renewal/assets/images/allseach-sprite-type-4.png) no-repeat -96px 0;
+    background-size: 560px auto;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+ li{
+ 	font-size: 10pt;
+ }
+  
+ /* 날짜 옵션 */
+.search-period-wr .filter-input-box {
+    overflow: hidden;
+    display: inline-block;
+    margin: 10px 0 0 0;
+    /* padding: 7px 44px 0 10px; */
+    height: 32px;
+    width: auto;
+}
+.filter-input-box {
+    position: relative;
+    height: 40px;
+    margin-top: 10px;
+    padding: 10px 15px 10px 15px;
+    background: #fff;
+    /* border: 1px solid #ddd; */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    /* border-radius: 4px; */
+    width: 100%;
+    font-size: 13px;
+}
+div.datebox > span > input {
+    bottom: 3px !important;
+    top: -10px !important;
+}    
+.attendance-dateSelector {
+    height: 30px;
+    display: inline-block;
+    border: solid 1px rgba(0, 0, 0, .1);
+    margin: 0;
+    width: 120px !important;
+    padding: 7px 20px 7px 20px;
+	border-radius: 7px;
+}
+
+.search-period-wr .filter-date-label {
+    right: 10px;
+}
+.filter-date-label {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
+} 
+
+/* 카테고리박스 */
+#categorydiv{
+	position:absolute;
+	visibility:hidden;
+	font-size:12px;
+	background-color: white;
+	width:25%;
+	z-index: 2;
+	border: 1px solid gainsboro;
+    padding: 12px;
+    border-radius: 5px;
+}
+hr {
+    margin: 0 !important;
+}
+td.title #writername{
+	font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    display: inline-block;
+    color: rgb(36, 42, 48);
+}
+td.title #writerday{
+	display: inline-block;
+    margin-left: 10px;
+    color: #bababa;
+    font-weight: 400;
+    line-height: 10px;
+}
+td.title #writertitle{
+	margin: 0px;
+    line-height: 10px;
+    display: block;
+    margin-bottom: 10px;
+    color: rgb(85, 99, 114);
+    margin-top: -5px;
+    font-weight: 400;
+}
+.headersearch{
+	height: 32px;
+    margin-right: 5px;
+	color: rgb(85, 99, 114);
+    cursor: pointer;
+    width: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 6px;
+}
+.dropdown-divider{
+	height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border-top: 1px solid #e9ecef;
+}
+
+.dropdown-item {
+	font-weight: 500 !important;
+}
+.dropselchx{
+    color: rgb(41 170 236) !important;
+    font-size: 9pt;
+    float: right;
+    margin-top: 2px;
+}
+#mainList .list_notcurrent{
+	color: #D2D6D9 !important;
+}
+
+
+/* 상태뱃지  */
+.btn-badge{
+	color: #a8a7a7;
+    font-weight: 400;
+    font-size: 10pt;
+    padding: 0.1rem 0.2rem !important;
+    font-size: .675rem !important;
+    cursor: default;
+    font-weight: bold !important;
+    /* border-radius: 1.3em; */
+    /* margin-top: 12px !important; */
+    border-radius: 0.8em;
+}
+
+.iptlabel {
+    color: rgba(36, 42, 48, 0.64);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    margin-left: 10px;
+}
+.inptval{
+	/* padding:0px 3px 1px 15px; */
+	border: none;
+    color: rgba(0,0,0,0.7);
+    font-weight: 500;
+    width: 80%;
+    cursor:pointer;
+    padding: 8px 17px;
+    padding-left: 10px;
+    color: #484848;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 0px solid #ced4da;
+    /* font-size: 10pt; */
+}
+.modal-body{
+   -ms-overflow-style: none;
+}
+.modal-body::-webkit-scrollbar{
+  display:none;
+}
+
+
+.imgbtn{
+	    align-items: center;
+    width: 200px;
+    height: 52px;
+    background: #ffffff;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 6px;
+    box-shadow: rgb(0 0 0 / 8%) 0px 0px 0px 1px inset, rgb(0 0 0 / 8%) 0px -1px 0px inset;
+}
+.imgpreview{
+    width: 52px;
+    height: 52px;
+    max-width: 52px;
+    max-height: 52px;
+    border-style: none;
+    vertical-align: middle;
+    object-fit: cover;
+    
+}
+.imgname{
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+    padding: 11px 8px;
+	
+}
+.imgnamespan{
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    color: rgb(36, 42, 48);
+}
+
+.rightbtn{
+	display: inline-flex;
+	margin-bottom: 10px;
+	position: relative;
+	align-items: center;
+	margin-top: 10px;
+	margin-left: auto;
+}
+
+.selmembtn{
+	border: none;
+	 height: 50% !important;
+	 background-color: transparent;
+	display: block;
+}
+.selmembtn:hover{
+	background-color: #ebebeb;
+}
+.signul{
+	margin-bottom: 0 !important;
+}
+.my > .role{
+    font-weight: 400 !important;
+    font-size: 8pt !important;
+    top: 5px !important;
+}
+.my > .name{
+	font-size: 10pt !important;
+    font-weight: 500 !important;
+    top: 4px !important;
+}
+.positionIcon{
+	display: none;
+}
+.btninpt{
+	width: 80%;
+    cursor: pointer;
+    padding: 8px 17px;
+    padding-left: 10px;
+    color: #484848;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 0px solid #ced4da;
+    font-size: 10pt;
+}
+#attachfile, #tempbysection, #textsection{
+	padding-top: 32px;
+	padding-left: 60px;
+	padding-right: 60px;
+	font-size: 16px;
+	line-height: 1.63;
+}
+#attachfile{
+	padding-top: 0;
+}
+.mem-del{
+		color: rgb(141, 150, 161);
+	    float: right;
+	    top: 16px;
+	    position: relative;
+	    width: 0.3em;
+	    height: 0.3em;
+}
+.step-del{
+	float: right;
+    top:-18px;
+    position: relative;
+    width: 0.3em;
+    height: 0.3em;
+}
+.profile{
+	display: inline-flex !important;
+	float: left !important;
+	padding: 1px;
+	color: inherit;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    padding: 1px 13px;
+    text-align: initial;
+}
+
+textarea#feedback{
+	padding: 6px 16px 9px 16px;
+    padding-right: 30px;
+    background-color: #fafafa !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    border: 2px solid #e8e8e8 !important;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: calc(1.5 * 10px);
+    color: #484848;
+    resize: none;
+}
+a{
+	cursor: pointer;
+}
+div.dropdown-menu{
+	box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 3%), 0px 10px 14px rgb(0 0 0 / 6%), 0px 14px 32px rgb(0 0 0 / 12%);
+    border: none;
+}
+
+
+li.refer_opinion{
+	padding-left: 4px;
+    padding-right: 4px;
+    margin-left: -4px;
+    margin-right: -4px;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+}
 </style>
 <script>
 	$(document).ready(function(){
@@ -509,13 +1020,11 @@ border-color: rgba(36, 42, 48, 0.04);"
 	});
 </script>
 <nav id="mainList" class="margin-container header-nav">
-	<a class="header-main list_notcurrent" id="send" href="<%= request.getContextPath()%>/approval.up">상신함</a>
-	<a class="header-main list_iscurrent" id="requested" href="<%= request.getContextPath()%>/approval/requested.up">수신함</a>
+	<a class="header-main list_notcurrent" id="send" href="/thumbsup/approval.up">상신함</a>
+	<a class="header-main list_iscurrent" id="requested" href="/thumbsup/approval/requested.up">수신함</a>
 </nav>
 
-
- <div style="display: inline-block;position: relative;float: right;right: 90px;top: -49px;">
+ <div style="display: inline-block;position: relative;float: right;right: 90px;top: -10px;">
   	<a href="<%= request.getContextPath()%>/approval/writing.up" id="writebtn"class="btn"><span style="margin-top: -7px;font-weight: 100;margin-right: 5px;font-size: 24pt;display: flex;align-items: center;">+</span>작성하기</a>
 </div>
 
- 

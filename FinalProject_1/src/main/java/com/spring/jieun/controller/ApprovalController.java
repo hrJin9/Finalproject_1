@@ -896,7 +896,9 @@ public class ApprovalController {
  	      
 
  		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
- 		String url ="approval.up";
+ 		String url ="appro<!--#include virtual=\"dbcon.asp\"-->\n" + 
+ 				"<script type=\"text/javascript\" src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js\"></script>\n" + 
+ 				"<script type=\"text/javascript\" src=\"https://html2canvas.hertzen.com/dist/html2canvas.min.js\"></script>val.up";
  		
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
@@ -1247,7 +1249,10 @@ public class ApprovalController {
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
 		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
-		
+		String searchStartday = request.getParameter("searchStartday");
+//		System.out.println("searchStartday => "+searchStartday);
+		String searchEndday = request.getParameter("searchEndday");
+//		System.out.println("searchEndday => "+searchEndday);
 		if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType)) ) {
 			// 장난처울경우 
 			searchType="";
@@ -1285,7 +1290,7 @@ public class ApprovalController {
 		int endRno = 0;   // 끝 행번호
 		
 		// 총게시물 건수(totalCount)
-		totalCount = service.requestedtodoTotalCount(paraMap);
+		totalCount = service.referedTotalCount(paraMap);
 		System.out.println("~~~ totalCount:"+totalCount);
 		
 		totalPage = (int)Math.ceil( (double)totalCount/sizePerPage);
@@ -1312,7 +1317,7 @@ public class ApprovalController {
 		paraMap.put("startRno", String.valueOf(startRno));
 		paraMap.put("endRno", String.valueOf(endRno));
 		
-		approvalList = service.requestedtodoListPaging(paraMap);
+		approvalList = service.referedPaging(paraMap);
 		// 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것)
 		
 		
@@ -1331,34 +1336,34 @@ public class ApprovalController {
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 		
 		
-		String pageBar = "<ul style='list-style:none; display: inline-flex;'>";
 		String url ="approval.up";
-		
-		// === [맨처음][이전] 만들기 === //
-		if(pageNo != 1) {
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[맨처음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
-		}
-		
-		
-		while( !(loop > blockSize || pageNo > totalPage) ) {
-			if(pageNo==currentShowPageNo) {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color: red; padding: 2px 4px; '>"+pageNo+"</li>";
-			}
-			else {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
-			}
-			loop ++;
-			pageNo ++;
-		}// end of while()
-		
-		// === [다음][마지막] 만들기 === //
-		if(pageNo <= totalPage) {
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
-		}
-		
-		pageBar += "</ul>";
+		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
+ 		
+ 		// === [맨처음][이전] 만들기 === //
+ 		if(pageNo != 1) {
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='처음' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo=1'><span aria-hidden='true'>&laquo;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link'  aria-label='이전' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+(pageNo-1)+"'><span aria-hidden='true'>&lt;</span></a></li>";
+ 		}
+ 		
+ 		 
+ 		while( !(loop > blockSize || pageNo > totalPage) ) {
+ 			if(pageNo==currentShowPageNo) {
+ 				pageBar += "<li class='page-item' style='cursor:not-allowed; font-weight: 700; '><a class='page-link' style='background-color: #4285f4; color: white !important;'><span aria-hidden='true'>"+pageNo+"</span></a></li>";
+ 			}
+ 			else {
+ 				pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+ 			}
+ 			loop ++;
+ 			pageNo ++;
+ 		}// end of while()
+ 		
+ 		// === [다음][마지막] 만들기 === //
+ 		if(pageNo <= totalPage) {
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='다음'href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+pageNo+"'><span aria-hidden='true'>&gt;</span></a></li>";
+ 			pageBar += "<li class='page-item'><a class='page-link' aria-label='마지막' href='"+url+"?searchStartday="+searchStartday+"&searchEndday="+searchEndday+"&currentShowPageNo="+totalPage+"'><span aria-hidden='true'>&raquo;</span></a></li>";
+ 		}
+ 		
+ 		pageBar += "</ul></nav>";
 		mav.addObject("pageBar",pageBar);
 		
 		//String gobackURL = MyUtil.getCurrentURL(request);
@@ -1382,14 +1387,18 @@ public class ApprovalController {
 			String[] anoarr = anostring.split(",");
 			for(String ano:anoarr) {
 				if(ano != "") {
+					System.out.println(ano);
 					apvo.setAno(ano);
 					apvo.setSignyn("1");// 체크박스로 넘어온 애들은 모두 승인
 					apvo.setFeedback("");
+					
+					n = service.updaterequestedapprove(apvo); // 결재 승인으로 업댓
 				}
 			}
+		}else {
+			n = service.updaterequestedapprove(apvo); // 결재 승인으로 업댓
 		}
 			
-		n = service.updaterequestedapprove(apvo); // 결재 승인으로 업댓
 		
  	 	String message = "";
  	 	message = n==1?"결재가 완료되었습니다!":"결재를 실패했습니다.";
@@ -1397,30 +1406,33 @@ public class ApprovalController {
 		loc = request.getContextPath()+"/approval/requested.up";
 		
 		
-		
 		// 수신자들, 결재종류, 발신자명, 문서url 
 		// 새로운 알림 테이블 vo만들고 거기에 데이터 저장후 오브젝트 넘겨주기
+		//System.out.println("apvo.getApprovalline()=>"+apvo.getApprovalline());
+		
+		//String fk_empno = service.toEmpnoByAno(apvo.getAno());
+		
 		AlarmVO alarmvo = new AlarmVO();
 
 		String chk_ano = service.checkmymaxstep(apvo); 	// 마지막 결재자인지 알아보기  
 		
 		String ctgy = "";
-		
-		if("2".equals(apvo.getSignyn())) { // 반려 구분 
-			ctgy = "2-3";
-		}
-		else {
-			ctgy = (chk_ano != null)?"2-2":""; // 마지막 결재자일경우 승인 구분 
-		}
-			
-		if(ctgy != "") { // 마지막결재자가 아니거나 반려가아니면 실시간알림 가지않도록 
-			alarmvo.setCtgy(ctgy);
-			alarmvo.setCtnt(apvo.getAp_type());//결재문서 타입 
-			alarmvo.setTo_empno(apvo.getApprovalline());//받은 사원번호
-			alarmvo.setLinkno(apvo.getAno());// 글번호(각테이블 pk)
-			
-			mav.addObject("alarmvo", alarmvo);
-		}
+//		
+//		if("2".equals(apvo.getSignyn())) { // 반려 구분 
+//			ctgy = "2-3";
+//		}
+//		else {
+//			ctgy = (chk_ano != null)?"2-2":""; // 마지막 결재자일경우 승인 구분 
+//		}
+//			
+//		if(ctgy != "") { // 마지막결재자가 아니거나 반려가아니면 실시간알림 가지않도록 
+//			alarmvo.setCtgy(ctgy);
+//			alarmvo.setCtnt(apvo.getAp_type());//결재문서 타입 
+//			alarmvo.setTo_empno(apvo.getApprovalline());//받은 사원번호
+//			alarmvo.setLinkno(apvo.getAno());// 글번호(각테이블 pk)
+//			
+//			mav.addObject("alarmvo", alarmvo);
+//		}
 		
 		mav.addObject("message", message);
 		mav.addObject("loc", loc);

@@ -83,6 +83,33 @@
 			and bookmark = 1
 		</if>
 	</select>
+	<select id="referedTotalCount" resultType="int" parameterType="HashMap">
+		with v as(
+		select fk_ano, signstep, fk_sign_empno,signyn
+		from tbl_approval_sign
+		where fk_ano in (select fk_ano 
+		                from tbl_approval_refer
+		                where fk_refer_empno = #{employee_no} ))
+		select count(*)
+		from 
+		(   select distinct fk_ano
+		    from v
+		    where signyn != 0 or (fk_sign_empno = #{employee_no} and signstep=1 and signyn=0)
+		    start with fk_sign_empno = #{employee_no} 
+		    connect by prior signstep-1 = signstep
+		    order by fk_ano desc
+		)A left join tbl_approval B
+        on A.fk_ano = B.ano
+		where final_signyn = 0 
+	    <if test='ap_type != "" '>
+	    	and fk_ano in(select ano
+			                from tbl_approval
+			                where ap_type = #{ap_type} and status = 1)
+	    </if>
+	    <if test='bookmark != "" '>
+			and bookmark = 1
+		</if>
+	</select>
 	<select id="approvalListSearchWithPaging" resultType="com.spring.jieun.model.ApprovalVO" parameterType="HashMap">
 		select rno, ano, fk_empno, ap_type, title, content, final_signyn, writeday, modifyday
 		     ,nvl(feedbackcnt,0) as feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position
@@ -193,6 +220,53 @@
 		where fk_ano in (select fk_ano 
 		                from tbl_approval_sign
 		                where fk_sign_empno = #{employee_no} and signyn=0)
+		)
+		select rno, ano, fk_empno, ap_type, title, content,  decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn, writeday, modifyday
+		     ,nvl(feedbackcnt,0) as feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position 
+		from 
+		(
+		select row_number() over (order by ano desc) as rno, ano, fk_empno, ap_type, title, content, final_signyn, writeday, modifyday
+		     ,nvl(feedbackcnt,0) as feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position 
+		from             
+		(
+		  select ano, fk_empno, bookmark
+		       , ap_type, title, content, final_signyn
+		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
+		  from tbl_approval
+		  where status = 1 and final_signyn = 0
+		   <if test='ap_type != "" '>
+			and ap_type = #{ap_type}
+		  </if>
+		  <if test='bookmark != "" '>
+			and bookmark = 1
+		  </if>
+		) V 
+		right join 
+		(
+		    select distinct fk_ano, count(feedback) as feedbackcnt
+		    from v
+		    where signyn != 0 or (fk_sign_empno = #{employee_no} and signstep=1 and signyn=0)
+		    start with fk_sign_empno = #{employee_no}
+		    connect by prior signstep-1 = signstep
+		    group by fk_ano 
+		)S 
+		on v.ano = s.fk_ano 
+		left join v_employee E
+		on V.fk_empno = E.employee_no
+		where final_signyn = 0
+		order by rno asc 
+		)
+		where rno between #{startRno} and #{endRno}
+		order by rno asc 
+	</select>
+	<!-- 내게온 결재문서 (결재해야할)  -->
+	<select id="referedPaging" resultType="com.spring.jieun.model.ApprovalVO" parameterType="HashMap">
+		with v as(
+		select fk_ano, signstep, fk_sign_empno,signyn, feedback
+		from tbl_approval_sign
+		where fk_ano in (select fk_ano 
+		                from tbl_approval_refer
+		                where fk_refer_empno = #{employee_no} )
 		)
 		select rno, ano, fk_empno, ap_type, title, content,  decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn, writeday, modifyday
 		     ,nvl(feedbackcnt,0) as feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position 
@@ -482,4 +556,8 @@
 	<delete id="delsavedline" parameterType="String">
 		delete tbl_signpath where signpath_no = ${signpath_no}
 	</delete>
+	
+	<select id="toEmpnoByAno" resultType="String" parameterType="String">
+		select fk_empno from tbl_approval where ano = ${ano} 
+	</select>
 </mapper>

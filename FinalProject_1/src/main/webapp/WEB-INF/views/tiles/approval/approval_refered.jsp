@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="approval_header.jsp"%> 
+<%@ include file="approval_requested_header.jsp"%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions"%>
@@ -236,21 +236,6 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		
-		$(".mainList a").click(function(){
-			if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
-				$(this).removeClass('list_notcurrent');
-				$(this).addClass('list_iscurrent');
-				$(this).siblings().removeClass('list_iscurrent');
-			}
-		});
-		$(".subList a").click(function(){
-			if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
-				$(this).removeClass('list_notcurrent');
-				$(this).addClass('list_iscurrent');
-				$(this).siblings().removeClass('list_iscurrent');
-			}
-		});
 		//console.log($("input#searchStartday").val())
 		//console.log($("input#searchStartday").val());
 		
@@ -804,12 +789,12 @@
 
  <nav id="subList" class="margin-container appreqsublist">
 	<div style="display: contents;">
-		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval/requested.up">진행중</a>
-		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/processing.up" style="margin-left: 3%;">완료</a><!-- 결재예정.진행중.완 -->
-		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/refered.up" style="margin-left: 3%;">수신참조</a>
-		<%-- <a id="noticeboard-team" class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/my.up" style="margin-left: 3%;">내 문서함</a> --%>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested.up">결재대기<span style="color: rgb(41 170 236);font-weight: 500;margin-left: 4px;">${requestScope.totalCount}</span></a>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/will.up" style="margin-left: 1%;">결재예정</a>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/processing.up" style="margin-left: 1%;">결재진행중</a>
+		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval/requested/refered.up" style="margin-left: 1%;">참조문서</a>
 	</div>
-	<div class="subList_underline"></div>
+	<div class="subList_underline"style="left: 24.5%;"></div>
 	<div class="rightbtn">
 				
 		<!-- <a id="bkList"style="cursor:pointer;color: #0775ff;;font-weight: bold;font-size: 9pt;float: right;margin-right: 15px;">북마크</a> --> <!-- 내가북마크한 문서  -->

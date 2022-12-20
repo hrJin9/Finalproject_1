@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="approval_header.jsp"%> 
+<%@ include file="approval_requested_header.jsp"%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions"%>
@@ -233,12 +233,6 @@ $(document).ready(function(){
 	$(".search-period-wr").hide();
 	$("#searchbar").css("display","none");
 	$(".dropselchx").css("display","none");
-	
-	if(!$("a#send").hasClass('list_iscurrent')){// 현재 페이지가아닐경우 
-		$("a#send").removeClass('list_notcurrent');
-		$("a#send").addClass('list_iscurrent');
-		$("a#send").siblings().removeClass('list_iscurrent');
-	}
 	
 	
 	//console.log($("input#searchStartday").val())
@@ -914,12 +908,12 @@ $(document).ready(function(){
  
 <nav id="subList" class="margin-container appreqsublist">
 	<div style="display: contents;">
-		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval/requested.up">결재대기<span style="color: rgb(41 170 236);font-weight: 500;margin-left: 4px;">${requestScope.totalCount}</span></a>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested.up">결재대기<span style="color: rgb(41 170 236);font-weight: 500;margin-left: 4px;">${requestScope.totalCount}</span></a>
 		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/will.up" style="margin-left: 1%;">결재예정</a>
-		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/processing.up" style="margin-left: 1%;">결재진행중</a>
+		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval/requested/processing.up" style="margin-left: 1%;">결재진행중</a>
 		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/refered.up" style="margin-left: 1%;">참조문서</a>
 	</div>
-	<div class="subList_underline"></div>
+	<div class="subList_underline" style="left:16.5%;"></div>
 	<div class="rightbtn">
 	<!-- **** 검색필터 **** --> 
 		<form id="searchbar" name="searchFrm" style="display: flex;">

@@ -137,18 +137,19 @@ public class ApprovalService implements InterApprovalService {
 		int result = 0;
 		if("1".equals(apvo.getSignyn())){ // 승인 일경우
 			String chk_ano = checkmymaxstep(apvo); // 마지막 결재자인지 알아보기
-//			System.out.println("chk_ano =>"+chk_ano);
+			System.out.println("chk_ano =>"+chk_ano);
 			int n = 0;
-//			String ano = paraMap.get("ano");
+			String ano = apvo.getAno();
+			System.out.println("ano => "+ano);
 			if(chk_ano != null) {	//마지막 결재자일경우  
 				n = dao.updateapprovedoc(apvo);// tbl_approval 업데이트
 			}else {	//마지막 결재자가 아닐 경우
 				n = 1;
 			}
-//			System.out.println("n => "+n);
+			System.out.println("n => "+n);
 			
 			if(n==1) result=dao.updaterequestedapprove(apvo); // tbl_approval_sign 업데이트
-//			System.out.println("result => "+result);
+			System.out.println("result => "+result);
 			
 		}else if("2".equals(apvo.getSignyn())){ // 반려 일경우 
 			int n = dao.updaterequestedreject(apvo); // tbl_approval_sign 업데이트 
@@ -364,6 +365,20 @@ public class ApprovalService implements InterApprovalService {
 	@Override
 	public int delsavedline(String signpath_no) {
 		int n = dao.delsavedline(signpath_no); 
+		return n;
+	}
+
+	// 내게 참조로온 문서 
+	@Override
+	public List<ApprovalVO> referedPaging(Map<String, String> paraMap) {
+		List<ApprovalVO> list = dao.referedPaging(paraMap); 
+		return list;
+	}
+
+
+	@Override
+	public int referedTotalCount(Map<String, String> paraMap) {
+		int n = dao.referedTotalCount(paraMap); 
 		return n;
 	}
 
