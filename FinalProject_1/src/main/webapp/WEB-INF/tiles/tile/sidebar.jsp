@@ -358,6 +358,7 @@ $(document).ready(function(){
 	   	socket = sock;
 	    // 데이터를 전달 받았을때 
 	    sock.onmessage = onMessage; // toast 생성
+	    
 	});// end of $(document).ready(function(){})---------------
 	
 	// toast생성 및 추가
@@ -594,10 +595,14 @@ $(document).ready(function(){
 									+'<td width="10%">';
 										/* '<div class="profile"  style="padding: 1px;">'; */
 						if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
-							
-						} else { // 프로필사진이 없는 경우
-						}
-						html += '<span class="pic"><span style="font-size:8pt">'+item.name_kr.substr(1)+'</span></span>';
+			                  html += '<span class="sbpics">'+
+			                              '<img src="<%=ctxPath%>/resources/files/'+item.profile_systemfilename+'" width="38px" height="38px" style="border-radius: 13px; border: solid 1px rgba(0,0,0,0.1);">'+
+			                           '</span>';
+		               } else { // 프로필사진이 없는 경우
+		                  html += '<span class="pic"><span>'+item.name_kr.substr(1,2)+'</span></span>';
+		               }
+
+						/* html += '<span class="pic"><span style="font-size:8pt">'+item.name_kr.substr(1)+'</span></span>'; */
 						html += '</td>'			
 						html +=	'<td width="85%">'+
 											'<div>'+item.name_kr+'</div>'+
@@ -707,7 +712,7 @@ $(document).ready(function(){
 	function emptysearchbar(e){
 		$("#ss-input").val(""); //검색어 비우기
 		const category = $(e.target).parent().parent().attr("class");
-		console.log("category => "+category)
+		//console.log("category => "+category)
 		
 		switch (category) { // 재검색 
 		case "sse-memeber":
@@ -757,10 +762,10 @@ $(document).ready(function(){
 		//if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
 		click: function(){
 			var msgno = $(this).attr("id");
-			console.log(mno);
-			location.href= "<%= ctxPath%>/message.up?mno="+mno;
+			console.log(msgno);
+			location.href= "<%= ctxPath%>/message.up?mno="+msgno;
 		}
-	},".msg-tr");
+	},".msg-tr"); 
 	
 	
 	
@@ -977,7 +982,7 @@ $(document).ready(function(){
 							</tbody>
 						</table>
 						<!-- <br> -->
-						<table class="hi-container mt-3">			
+						<!-- <table class="hi-container mt-3">			
 							<th style="font-weight: 500;font-size:5pt;cursor: default;"colspan="3" height="15px">
 								<span style="color: rgb(85, 99, 114);float: left;cursor: default;">최근 검색</span>
 								<span id="alldel"style="float: right;color: #d4d4d4;cursor: pointer;">전체 삭제</span>
@@ -987,7 +992,7 @@ $(document).ready(function(){
 								<td width="90%">게시판 검색</td>
 								<td width="5%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M12 13.2728L17.0205 18.2933L18.2932 17.0205L13.2728 12L18.2932 6.97954L17.0205 5.70675L12 10.7272L6.97954 5.70675L5.70675 6.97954L10.7272 12L5.70675 17.0205L6.97954 18.2932L12 13.2728Z" fill="#cdd2d6"></path></svg></td>
 							</tr>
-						</table>
+						</table> -->
 					</div>
 					<div class="sse-container">
 						<!-- 구성원 검색 -->
