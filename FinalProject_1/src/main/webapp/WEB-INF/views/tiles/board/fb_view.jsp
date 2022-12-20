@@ -120,8 +120,8 @@
 	    right: 17%;
 	    box-shadow: 1px 1px 1px 1.3px rgb(0 0 0 / 20%);
 	}
-	/* 링크복사 & 작성버튼 알림창  */
-	.urlcopyAlert, .contentAlert2 {
+	/* 링크복사 & 작성버튼 알림창 & 댓글삭제  */
+	.urlcopyAlert, .contentAlert2, .delCmtAlert {
 	    display: none;
 	    width: 243px;
 	    height: 35px;
@@ -161,6 +161,15 @@
 		border-color:white; 
 		background-color:#4d4f53;
 		color:white;
+	}
+	
+	/* 댓글삭제 버튼 */
+	#delcmtbtn {
+		cursor: pointer;
+		color:#ea4335; 
+		position:relative; 
+		top:4px; 
+		left:6px;
 	}
 	
 	/* 드롭다운 css */
@@ -339,7 +348,7 @@
 		$("a#writebtn").hide();
 		goViewComment(1);    // 페이징 처리한 댓글 읽어오기.  맨처음에 (1)페이지를 읽어온다.
 		
-		<%-- ***** 작성자만 본인 게시물 글수정 및 삭제 권한 부여 ***** --%>
+		<%-- ***** 게시글 작성자만 본인 게시물 글수정 및 삭제 권한 부여 ***** --%>
 		if(${sessionScope.loginuser.employee_no} == ${requestScope.boardvo.fk_employee_no}) {
 			$("a#editbtn").show();
 			$("a#deletebtn").show();
@@ -614,11 +623,18 @@
 	//첨부파일이 없는 댓글쓰기
     function goAddWrite_noAttach() {
 		
+		if("${sessionScope.loginuser.position}" == '' || "${sessionScope.loginuser.position}" == null) {
+			var position = ' ';
+		} else {
+			var position = '${sessionScope.loginuser.position}';
+		}
+		
 		$.ajax({
 			url:"<%= request.getContextPath()%>/addComment.up",
 			data:{"fk_employee_no":"${sessionScope.loginuser.employee_no}",  // 값이 문자/숫자가 섞여 있을 수 있으므로  쌍따옴표""를 밖에 써주는 것이 좋다.
 				  "name_kr":"${sessionScope.loginuser.name_kr}",
-				  "position":"${sessionScope.loginuser.position}",
+				 /*  "position":"${sessionScope.loginuser.position}", */
+				  "position":position,
 				  "content":co_content,
 				  "fk_fbno":"${requestScope.boardvo.fbno}"},
 			type:"POST",
@@ -638,46 +654,6 @@
 	}// end of function goAddWrite_noAttach()---------------
 	
 	
-	<%--
-	// 페이징 처리 안한 댓글 읽어오기
-	function goReadComment(){
-		
-		$.ajax({
-			url:"<%= request.getContextPath()%>/readComment.action",
-			data:{"parentSeq":"${requestScope.boardvo.seq}"},  // seq 값이 문자/숫자가 섞여 있을 수 있으므로  쌍따옴표""를 밖에 써주는 것이 좋다.
-			dataType:"JSON",  // BoardController.java 로 data 를 보낸다.
-			success:function(json){   // BoardController.java 에서 jsonArr.put(jsonObj) 한 json 을 받아옴.
-				// [{"fileName":"20221031171351436650695940700.jpg","orgFilename":"쉐보레후면.jpg","fileSize":"101133","name":"이예은","regDate":"2022-10-25 11:02:34","content":"여섯번째 댓글입니다."},{ 생략,"name":"이예은","regDate":"2022-10-25 11:02:27","content":"다섯번째 댓글입니다."},{ 생략,"name":"이예은","regDate":"2022-10-25 11:02:05","content":"네번째 댓글입니다."},{ 생략,"name":"이예은","regDate":"2022-10-25 11:01:58","content":"세번째 댓글입니다."},{ 생략,"name":"이예은","regDate":"2022-10-25 11:01:48","content":"두번째 댓글입니다."},{ 생략,"name":"이예은","regDate":"2022-10-25 11:01:33","content":"첫번째 댓글입니다."}]
-				// 또는
-				// []
-				
-				let html = "";
-				if(json.length > 0) { // json 으로 받아온 값이 [] 아니라면
-					$.each(json, function(index, item){
-						  html += "<tr>"+
-						             "<td class='comment'>"+(index+1)+"</td>"+ // index 는 0부터 시작하기 때문에 + 1 해줌.
-						             "<td>"+item.content+"</td>"+
-						             "<td class='comment'>"+item.name+"</td>"+
-						             "<td class='comment'>"+item.regDate+"</td>"+
-						          "</tr>";
-					});
-				}
-				else {
-					html += "<tr>"+
-								"<td colspan='4' class='comment'>댓글이 없습니다</td>"+
-						    "</tr>";
-				}
-				
-				$("tbody#commentDisplay").html(html);  // 여기에 찍어준다.
-			},
-			error: function(request, status, error){
-	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	        }	
-		});
-		
-	}// end of function goReadComment()--------------- --%>
-
-	
 	
 	// Ajax로 불러온 댓글내용을 페이징 처리하기
 	function goViewComment(currentShowPageNo) {  // currentShowPageNo 은 문서가 로딩되자마자 기본적으로 int타입 1값을 넘겨준다. 하지만, 페이징처리를 map 으로 해주어서  다른 페이지번호를 클릭 시 String 타입으로 바뀐다. (예: 2페이지 클릭시)
@@ -688,7 +664,7 @@
 				  "currentShowPageNo":currentShowPageNo},    // 현재 보고있는 페이지번호  
 			dataType:"JSON",  
 			success:function(json){
-				//console.log(JSON.stringify(json));
+				console.log(JSON.stringify(json));
 				let html = "";
 				
 				if(json.length > 0) {
@@ -703,13 +679,21 @@
 								      + "<span class='writedate'>"+item.writedate+"</span>"
 								      + "<span class='reply icon icon-forward'></span>"
 								      	
-								      + "<div class='dropdown custom-dropdown text-left' style='position: inherit;display: inline-block;'>"
-								      	+ "<a class='dropdown-link icon icon-flickr' role='button' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-offset='-70, 20'></a>"
-									      + "<div class='dropdown-menu' aria-labelledby='dropdownMenuButton' style='min-width: 8rem;font-size: 10pt;' >"
-										      + "<a class='dropdown-item'>수정하기</a>"
-										      + "<a class='dropdown-item'>삭제하기</a>"
-									      + "</div>"
-								      + "</div>"
+								      + "<div class='dropdown custom-dropdown text-left' style='position: inherit;display: inline-block;'>";
+								      
+								      <%-- ***** 댓글 작성자만 본인 댓글 삭제 권한 부여 ***** --%>
+								      if(${sessionScope.loginuser.employee_no}==item.fk_employee_no){
+								      	html += "<a class='bd_toolbar' id='delcmtbtn' onclick='cmtdel("+item.cno+")'>삭제</a>";
+								      }
+								      
+								      /* + "<button type='button' class='btn btn-badge' style='background-color: #17a6f21f;color: #06689c;'>삭제</button>" */
+								      	/* + "<i class='fa-solid fa-xmark'></i>" */
+								      	/* + "<a class='dropdown-link icon icon-flickr' role='button' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-offset='-70, 20'></a>"
+								        + "<div class='dropdown-menu' aria-labelledby='dropdownMenuButton' style='min-width: 8rem;font-size: 10pt;' >"
+									      + "<a class='dropdown-item'>수정하기</a>"
+									      + "<a class='dropdown-item'>삭제하기</a>"
+								        + "</div>" */
+								        html += "</div>"
 								      + "<div id='cmtcontent'>"+item.content+"</div>"
 							      + "</td>"
 						      + "</tr>";
@@ -735,6 +719,40 @@
 		
 	}// end of function goViewComment(currentShowPageNo)---------------
 	
+	
+	
+	
+	// 본인 댓글 삭제하기
+	function cmtdel(cno) {
+		console.log("cno >>"+cno);
+		
+		
+		var result = confirm("댓글을 정말 삭제하시겠습니까?");
+		if(result) { // 확인 클릭시
+			$.ajax({
+				url:"<%= request.getContextPath()%>/delComment.up",
+				data:{"cno":cno},
+				type:"POST",
+				dataType:"JSON",
+				success:function(json){  
+
+					$("div#alert2").css("display","block");
+					$("span#alertText2").html("댓글이 삭제되었습니다.");
+					//alert("성공적으로 댓글이 삭제되었습니다.");
+					setTimeout("javascript:location.reload(true)", 1500);
+					
+					
+				},
+				error: function(request, status, error){
+		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        }					
+			});
+		} else {
+	        //no
+	    	return; // 종료
+	    }
+		
+	}// end of function cmtdel()-------------
 	
 	
 	
@@ -917,22 +935,31 @@
 			
 			
 	     	<%-- ******** 댓글 작성 시작 ******** --%>
-	     	<div style="margin-bottom:4rem!important">
-	     		<div style="display: inline-block;width: 50px;position: relative;top: -13px">
-		      		<span class="pic" id="picbox" ><span id="name" >${fn:substring(sessionScope.loginuser.name_kr, 1,3)}</span></span>
-		      	</div>
-		      	<span class="cowriter">${sessionScope.loginuser.name_kr}&nbsp;${sessionScope.loginuser.position}</span>
-		      	<br>
-	     		<div id="editor2" style="margin-top: 0.7%;margin-left: -1.3%;"></div>
-	     		<button type="button" id="writecmt"class="btn" onclick="goAddWrite()">작성</button>
-	     	
-	     		<%-- 댓글에 달리는 원게시물 글번호(즉, 댓글의 부모글 글번호) --%>
-                <input type="hidden" name="fk_fbno" id="fk_fbno" value="${requestScope.boardvo.fbno}" />
-               	<div id="alert2" class="contentAlert2">
-				     <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
-				     <span id="alertText" style="position: relative; bottom: 2px;">댓글 내용을 입력하세요.</span>
-				</div>
-	     	</div>
+	     	<c:if test="${boardvo.commentCheck == '1'}">  <!-- 댓글달기 허용 -->
+		     	<div style="margin-bottom:4rem!important">
+		     		<div style="display: inline-block;width: 50px;position: relative;top: -13px">
+			      		<span class="pic" id="picbox" ><span id="name" >${fn:substring(sessionScope.loginuser.name_kr, 1,3)}</span></span>
+			      	</div>
+			      	<span class="cowriter">${sessionScope.loginuser.name_kr}&nbsp;
+			      	<c:if test="${sessionScope.loginuser.position != null}">
+			      		${sessionScope.loginuser.position}
+			      	</c:if>
+			      	</span>
+			      	<br>
+		     		<div id="editor2" style="margin-top: 0.7%;margin-left: -1.3%;"></div>
+		     		<button type="button" id="writecmt"class="btn" onclick="goAddWrite()">작성</button>
+		     	
+		     		<%-- 댓글에 달리는 원게시물 글번호(즉, 댓글의 부모글 글번호) --%>
+	                <input type="hidden" name="fk_fbno" id="fk_fbno" value="${requestScope.boardvo.fbno}" />
+	               	<div id="alert2" class="contentAlert2">
+					     <i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+					     <span id="alertText" style="position: relative; bottom: 2px;">댓글 내용을 입력하세요.</span>
+					</div>
+		     	</div>
+	     	</c:if>
+	     	<c:if test="${boardvo.commentCheck == '0'}">
+	     		<div style="text-align: center; color: #cccccc; margin-top: 13px; font-size: 11.5pt;">이 게시물에 대한 댓글 기능이 제한되었습니다.</div>
+	     	</c:if>
 	     	<%-- ******** 댓글 작성 끝 ******** --%>
 	     	
 	     	<%-- ******** 댓글 목록 시작 ******** --%>
@@ -951,9 +978,8 @@
 				      	<div class="dropdown custom-dropdown text-left " style="position: inherit;display: inline-block;">
 			            <a class="dropdown-link icon icon-flickr" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
 				            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;" >
-				             <!--  <a class="dropdown-item" href="#">수정하기</a> -->
+				              <a class="dropdown-item" href="#">수정하기</a>
 				              <a class="dropdown-item" href="#">삭제하기</a>
-				              <a class="dropdown-item" href="#">취소</a>
 				            </div>
 			          	</div>
 				      	<div id="cmtcontent"></div>
@@ -1067,4 +1093,8 @@
 </form>
 <%-- ★★★★★★★★★★ 오프캔버스 끝 ★★★★★★★★★ --%>
 
+<div id="alert2" class="delCmtAlert">
+	<i class="fas fa-check-circle" style="color: #29a329; margin-right: 7px; margin-top:10px; font-size:13pt;"></i>
+	<span id="alertText2" style="position: relative; bottom: 2px;"></span>
+</div>
 

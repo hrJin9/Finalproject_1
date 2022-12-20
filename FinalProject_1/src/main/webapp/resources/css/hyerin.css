@@ -317,9 +317,9 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
    position: absolute; top:32%; left:20%;
 }
 
-.workinghour ~ tr td {
+/* .workinghour ~ tr td {
    padding: 15px 0 15px 5px;
-}
+} */
 
 .workingweek > table > tbody > tr:first-child ~ tr:hover {
     background-color: rgba(242, 242, 242, .5);

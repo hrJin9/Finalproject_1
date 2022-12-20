@@ -685,11 +685,6 @@
 		    }
 		});
 
-		// 모든 조직 펼치기
-		$(".unfold").click(function(){  // 조직도 확대 아이콘 클릭시
-			$(".summary").click();      // 모든 조직의 summary 클릭
-		});
-		
 		<%-- 내게시물 nav바 --%>
 		$("a.mainlist").click(function(){
 			if($(this).hasClass('list_iscurrent') != true){// 현재 페이지가아닐경우 
@@ -1012,19 +1007,17 @@
 					   		<span class="newbadge"><span style="position: relative;top:-2px;">n</span></span>
 				   		</c:if>
 				   	</div>  
-					<div class="fb-info" style="width: 70%;">
-						<div style="display: inline-block; width: 13%; margin-left: -1%;">
+					<div class="fb-info" style="width: 55%;">
+						<div style="display: inline-block; width: 15%; margin-left: -1%;">
 							<span class="username">${boardvo.name_kr}&nbsp;${boardvo.position}</span>
 						</div>
-						<div style="display: inline-block; width: 10%;">
+						<div style="display: inline-block; width: 12.5%;">
 							<span class="writedate">${boardvo.writedate}</span>
 						</div>
 						<div style="display: inline-block; width: 30%;"> 
-							<c:if test="${boardvo.commentCheck =='1'}">
+							<c:if test="${boardvo.commentCheck =='1' && boardvo.commentCount != '0'}">
 								<span class="icon icon-bubble2" id="iconbubble" ></span>
-								<c:if test="${boardvo.commentCount != '0'}">
-							   		<span id="bubblecnt">${boardvo.commentCount}</span>
-						   		</c:if>
+						   		<span id="bubblecnt">${boardvo.commentCount}</span>
 					   		</c:if>
 						</div>
 					</div>	
@@ -1042,6 +1035,7 @@
 			</tr>
 			</c:forEach>
             </c:if>
+            
 	        <c:if test="${empty requestScope.boardList}">
 				<tr>
 					<td style="width: 100%; border: none;">

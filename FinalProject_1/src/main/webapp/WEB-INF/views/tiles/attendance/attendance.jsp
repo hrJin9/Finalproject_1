@@ -71,8 +71,8 @@
 	    border-radius: 20px;
 	    background: white;
 	    position: absolute;
-	    left: 18.85%;
-	    top: 26%;
+	    left: 19%;
+    	top: 27.5%;
 	}
      
 	#myChart {
@@ -80,9 +80,13 @@
 	    box-sizing: border-box;
 	    height: 418px;
 	    width: 977.6px;
-	    min-height: 418px;
-	    max-height: 418px;
+	    min-height: 392px;
+	    max-height: 392px;
 		width: 1121px !important;
+	}
+	
+	document.querySelector("#mycontent > div > div.workingweek > table > tbody > tr > td {
+		height: 53px;
 	}
 </style>
 
@@ -537,6 +541,9 @@
    			      type: 'bar',
    			      data,
    			      options: {
+   			    	/* responsive: false, */  // responsive는 디폴트로 true로 되어있기 때문에 false로 변경하여 주면 원하는 크기의 chart를 만들어 줄 수 있다.
+   			    	maintainAspectRatio: false,
+   			    	
    			    	animation: {
    	                    duration: 0
    	                },   
@@ -854,7 +861,7 @@
 		<span class="fontsize-basic"><span id="workTimebyWeek" style="font-weight: 600; font-size: 14pt;">16시간</span> / 52시간</span>
 		<div class="workingweek-info">
 			<i class="fa-solid fa-circle-info ml-2" style="color: #C6C6C6; font-size: 9pt;"></i>
-			<div class="workingiweek-infobox">
+			<div class="workingiweek-infobox" style="display: none;">
 				<table>
 					<tr><td>소정근무</td><td style="color:white;" class="workingweek-total">0시간</td></tr>
 					<tr><td style="font-size: 8pt;">⤷  기본</td><td class="workingweek-total">0시간</td></tr>
@@ -900,13 +907,13 @@
 				<div class="working-recordbar"></div> --%>
 			</tr>
 			<tr>
-				<td class="tue seldate" style="padding: 15px 0 13px 5px;"><span class="date"></span>(화)<span id="datedot2"></span>
+				<td class="tue seldate" style=""><span class="date"></span>(화)<span id="datedot2"></span>
 					<div class="workingtotalhourByday" id="workTime1"><span>시간</span></div>
 				</td>
 				<%-- <c:forEach var="i" begin="0" end="47"><td></td></c:forEach> --%>
 			</tr>
 			<tr>
-				<td class="wed seldate" style="padding: 15px 0 14px 5px;"><span class="date"></span>(수)<span id="datedot3"></span>
+				<td class="wed seldate" style=""><span class="date"></span>(수)<span id="datedot3"></span>
 					<div class="workingtotalhourByday" id="workTime2"><span>시간</span></div>
 				</td>
 				<%-- <c:forEach var="i" begin="0" end="47"><td></td></c:forEach> --%>
@@ -918,19 +925,19 @@
 				<%-- <c:forEach var="i" begin="0" end="47"><td></td></c:forEach> --%>
 			</tr>
 			<tr>
-				<td class="fri seldate" style="padding: 14px 0 15px 5px;"><span class="date"></span>(금)<span id="datedot5"></span>
+				<td class="fri seldate" style=""><span class="date"></span>(금)<span id="datedot5"></span>
 					<div class="workingtotalhourByday" id="workTime4"><span>시간</span></div>
 				</td>
 				<%-- <c:forEach var="i" begin="0" end="47"><td></td></c:forEach> --%>
 			</tr>
 			<tr class="font-red">
-				<td class="sat seldate" style="padding: 16px 0 16px 5px;"><span class="date"></span>(토)<span id="datedot6"></span>
+				<td class="sat seldate" style=""><span class="date"></span>(토)<span id="datedot6"></span>
 					<div class="workingtotalhourByday" id="workTime5"><span>시간</span></div>
 				</td>
 				<%-- <c:forEach var="i" begin="0" end="47"><td></td></c:forEach> --%>
 			</tr>
 			<tr class="font-red">
-				<td class="sun seldate" style="padding: 17px 0 17px 5px;"><span class="date"></span>(일)<span id="datedot7"></span>
+				<td class="sun seldate" style=""><span class="date"></span>(일)<span id="datedot7"></span>
 					<div class="workingtotalhourByday" id="workTime6"><span>시간</span></div>
 				</td>
 				<%-- <c:forEach var="i" begin="0" end="47"><td></td></c:forEach> --%>
