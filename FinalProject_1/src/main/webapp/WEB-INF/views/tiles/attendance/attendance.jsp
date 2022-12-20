@@ -72,7 +72,7 @@
 	    background: white;
 	    position: absolute;
 	    left: 19%;
-    	top: 27.5%;
+    	top: 29.5%;
 	}
      
 	#myChart {
@@ -80,12 +80,12 @@
 	    box-sizing: border-box;
 	    height: 418px;
 	    width: 977.6px;
-	    min-height: 392px;
-	    max-height: 392px;
+	    min-height: 389.5px;
+	    max-height: 389.5px;
 		width: 1121px !important;
 	}
 	
-	document.querySelector("#mycontent > div > div.workingweek > table > tbody > tr > td {
+	#mycontent > div > div.workingweek > table > tbody > tr {
 		height: 53px;
 	}
 </style>
