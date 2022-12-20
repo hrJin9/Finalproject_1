@@ -228,32 +228,45 @@ function showEmpList(teamVal){
 								'<td>'+
 									'<div class="profile" href="#" style="padding: 1px;">';
 					if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
-						
+						html += '<span class="sbpics">'+
+					      			'<img src="<%=ctxPath%>/resources/files/'+item.profile_systemfilename+'" width="38px" height="38px" style="border-radius: 13px; border: solid 1px rgba(0,0,0,0.1);">'+
+					      		'</span>';
 					} else { // 프로필사진이 없는 경우
-						html += '<span class="pic"><span>지은</span></span>';
+						html += '<span class="pic"><span>'+item.name_kr.substr(1,2)+'</span></span>';
 					}
 										
 					html +=	'<span class="my">'+
-											'<span class="name" style="font-size: 10.8pt;">'+item.name_kr+'</span><br>'+
-											'<span class="role" style="font-size: 9pt;">'+item.role+'</span>'+
+								'<span class="name" style="font-size: 10.8pt;">'+item.name_kr+'</span><br>'+
+								'<span class="role" style="font-size: 9pt;">';
+					if(item.role != null){
+						html += item.role;
+					} else {
+						html += '미지정';
+					}
+						html +=	'</span>'+
 										'</span>'+
 									'</div>'+
 								'</td>'+
-								'<td>';
-					if(item.employee_no == 1){ //사장(대표)인 경우
-						html +=	'<span class="positionIcon">'+
-											'<span>'+item.position+'</span>'+
-										'</span>'+
-									'</td>'+
-								'</tr>';
-						
-					} else{
-						html +=	'<span class="positionIcon">'+
-										'<span>'+item.department_name+' '+item.team_name+'&nbsp;|&nbsp;'+item.position+'</span>'+
-									'</span>'+
-								'</td>'+
-							'</tr>';
+								'<td>'+
+							'<span class="positionIcon"><span>';
+					if(item.department_name != "0"){
+						html += item.department_name;
+					} else {
+						html += '미지정';
 					}
+					if(item.team_name != "0"){
+						html += ' ' + item.team_name;
+					} else {
+						html += ' 미지정';
+					}
+					if(item.position != null){
+						html += '&nbsp;|&nbsp;' + item.position;
+					} else {
+						html += '&nbsp;|&nbsp;미지정';
+					}
+						html += '</span></span>'+
+							'</td>'+
+						'</tr>';
 				});//end of each
 				
 				

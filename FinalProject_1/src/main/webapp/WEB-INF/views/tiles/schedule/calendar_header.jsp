@@ -46,11 +46,11 @@
 		width: 16%;
 	}
  */
-</style> 
+</style>  
  
 <nav id="attendance_mainList" class="margin-container">
 	<a id="attendance" href="<%= request.getContextPath()%>/schedule/scheduleManagement.up" style="color: black;">캘린더</a> 
-	<a id="dayoff" href="<%= request.getContextPath()%>/calendar_todo.up" class="iscurrent">TO DO</a>
+<%-- 	<a id="dayoff" href="<%= request.getContextPath()%>/calendar_todo.up" class="iscurrent">TO DO</a> --%>
 	<div class="list_underline"></div>
 </nav>
 

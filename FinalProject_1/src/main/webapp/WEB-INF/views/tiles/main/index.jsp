@@ -4,7 +4,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/index.css?after">
+<link href='<%=ctxPath %>/resources/fullcalendar_5.10.1/main.min.css' rel='stylesheet' /> 
 <style type="text/css">
+
+#calendar {     
+    max-width: 1024px; 
+    font-size: 11pt;    
+	margin-left: 5%;
+    width: 80%;   
+    margin: 29px 10px 43px 35px;  
+    font-size: 9pt;
+  }   
+   
+#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr {
+	    margin-bottom: 33px;
+ 
+  }
+  
 </style>
 
  
@@ -62,10 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
  */ 
 
  
-
+ 
 
 $(document).ready(function(){
-	
+	 
 	 
 	// ==== 풀캘린더와 관련된 소스코드 시작(화면이 로드되면 캘린더 전체 화면 보이게 해줌) ==== //
 	var calendarEl = document.getElementById('calendar');
@@ -79,7 +95,8 @@ $(document).ready(function(){
   	   businessHours: true, // display business hours
   	   headerToolbar: { 
   	         left: 'prev,next today',  
-  	         center: 'title'  
+  	         center: 'title', 
+  	         right: 'dayGridMonth,listMonth' 
   	       }, 
   	    dayMaxEventRows: true, // for all non-TimeGrid views 
   	    views: {
@@ -93,12 +110,12 @@ $(document).ready(function(){
 	
     		
 	    	 $.ajax({   
-                 url: '<%= ctxPath%>/schedule/selectSchedule.up',
+                 url: '<%= ctxPath%>/selectMainSchedule.up',  
                  data:{"fk_employee_no":"${sessionScope.loginuser.employee_no}"},
                  dataType: "json",
                  success:function(json) {
                 	 var events = [];
-                     if(json.length > 0){
+                     if(json.length > 0){ 
                          
                              $.each(json, function(index, item) {
                                     var startdate = moment(item.startdate).format('YYYY-MM-DD HH:mm:ss');
@@ -185,16 +202,7 @@ $(document).ready(function(){
     
   calendar.render();  // 풀캘린더 보여주기
   
- 
-  var arr_calendar_checkbox = document.querySelectorAll("input.calendar_checkbox"); 
-  // 사내캘린더, 내캘린더, 공유받은캘린더 에서의 체크박스임
   
-  arr_calendar_checkbox.forEach(function(item) {
-	  item.addEventListener("change", function () {
-      // console.log(item);
-		 calendar.refetchEvents(); // 모든 소스의 이벤트를 다시 가져와 화면에 다시 표시합니다.
-    });
-  });
   //==== 풀캘린더와 관련된 소스코드 끝(화면이 로드되면 캘린더 전체 화면 보이게 해줌) ==== //
 	
 	

@@ -134,7 +134,7 @@
 	}
 	td>*{
 		margin-top: 4px;
-	    display: flex;
+	    /* display: flex; */
     	justify-content: space-around;
 	}
 	tbody{
@@ -144,10 +144,6 @@
     	border-style: solid;
     	border-color: rgba(36, 42, 48, 0.02);
 	}
-	
-	
-	
-	
 	
 	.custom-dropdown {
 	border: none!important;
@@ -239,6 +235,29 @@ let endDate = "";
 let searchType = "";
 let searchWord = "";
 	$(document).ready(function(){
+		/* console.log("${requestScope.ano}");
+		if("${requestScope.ano}" != ""){// 검색을 통해 들어와서 결재문서
+			const anoval = 	"${requestScope.ano}";
+			console.log(anoval);
+			showDetailApp(anoval,"");
+		}
+		
+		const url = new URL(window.location.href);
+		// URLSearchParams 객체
+		const urlParams = url.searchParams;
+
+		// URLSearchParams.get()
+		const anoval = document.write(urlParams.get('ano') + '<br>');
+		
+		if(anoval != ""){
+			console.log(anoval);
+			showDetailApp(anoval,"");
+		} */
+		
+		
+		
+		
+		
 		$(".search-period-wr").hide();
 		$("#searchbar").css("display","none");
 		$(".dropselchx").css("display","none");
@@ -415,342 +434,16 @@ let searchWord = "";
 			function(){
 			$('.edit').css('display','none'); // 문서수정내용 감추기
 		},".edit"); */
+		
+		
 		/* *** 클릭하면 문서상세정보 보여주기  */
 		$(document).on({
 			click: function(){
-
 				const anoval = $(this).parent().find(".anoval").val();
 				const ap_type = $(this).parent().find(".ap_type").text();
 				//console.log("anoval => "+anoval);
 				//console.log("ap_type => "+ap_type);
-				let maincontent="";
-
-				//$('#modalcontent').text($(this).data("content"));
-				$.ajax({
-					url:"<%= ctxPath%>/approval/view.up",
-					type:"GET",
-					data:{"ano":anoval
-						, "ap_type":ap_type},
-					dataType:"json",
-					success: function(json) {
-						let content="";// 연차 비교해서 넣기
-						let doccontent="";
-						let badgecontent="";
-						
-	              		if(json.final_signyn=='승인')
-	              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
-	              		if(json.final_signyn=='반려')
-	              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #FBD8D7; color: #D2737F; ">반려</button>' 
-	              		if(json.final_signyn=='진행')
-	              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: rgb(33, 97, 220);color: white; ">진행중</button>'
-	              		if(json.final_signyn=='취소')
-	              			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #E9E9EB;color: #747378; ">취소</button>'
-	              		
-	              		
-	              			
-						let writedayarr = [];
-						writedayarr = json.writeday.split('-');
-						let writeday =writedayarr[1]+'월 '+writedayarr[2].substr(0,2)+'일'+writedayarr[2].substr(2)
-						
-						if(json.bookmark == '0'){
-							badgecontent += `<button style="background-color: white;border: none;margin-left: 10px;"data-bs-toggle="tooltip" data-bs-placement="top" title="북마크" class="tp  bookmark icon icon-star-empty"  aria-label="북마크" onclick="addbookmark('`+json.ano+`',event)"></button><input hidden="hidden" type="text" value="`+json.ano+`">`
-		   	            }else if(json.bookmark == '1'){
-		   	            	badgecontent += `<button style="background-color: white;border: none;margin-left: 10px;"data-bs-toggle="tooltip" data-bs-placement="top" title="북마크" class="tp  bookmark icon icon-star-full" aria-label="북마크" onclick="addbookmark('`+json.ano+`',event)"></button><input hidden="hidden" type="text" value="`+json.ano+`">`
-		   	            }
-						
-						
-						let preserveperiod = '';
-						switch (json.preserveperiod) {
-						case "0":
-							preserveperiod = '영구보존'
-							break;
-						case "1":
-							preserveperiod = '1년'
-							break;
-						case "3":
-							preserveperiod = '3년'
-							break;
-						case "5":
-							preserveperiod = '5년'
-							break;
-						}
-						
-						// ** 문서세부내용 **//
-						content += '<div class="sc-bCfvAP cstQxy"><h4 class="ApvHeader-title">'+json.title+'</h4>'
-								  +'<div class="sc-cOxWqc ft-16 StyledApv"><div class="ApvDl-item"style="font-weight:500;"><span class="ApvDl-dd"><i class="icon icon-file-text2"> </i>'+json.ano+'・'+writeday+' 작성</span>'
-								  +'</div><div class="ApvDl-item" style="font-weight: 400;"><span class="ApvDl-dt">보존연한:</span><span class="ApvDl-dd">'+preserveperiod+'</span>'
-								  +'</div><div class="ApvDl-item" style="font-weight: 400;"><span class="ApvDl-dt">템플릿:</span><span class="ApvDl-dd">'+json.ap_type+'</span>'
-								  +'</div><div class="ApvDl-item" style="font-weight: 400;"><span class="ApvDl-dt">작성자:</span><span class="ApvDl-dd">'+json.name_kr+'</span>'
-								  +'</div></div></div>';
-								  /* '</div><div class="ApvDl-item"><span class="ApvDl-dt">작성일:</span><span class="ApvDl-dd">'+json.writeday+'</span> */
-						
-		             	
-		             	// ** 관련문서  **//
-		                if( json.fk_ano_refer == "" || json.fk_ano_refer == null){ // 참조문서파일이 없을경우  
-			                doccontent += '<div style="padding: 16px;border-radius: 4px;background-color: rgb(246, 246, 246);text-align: center;color: rgb(153, 153, 153);">등록된 관련문서가 없습니다</div>'
-		                }else{
-		                	doccontent += '<div style="padding: 16px;border-radius: 4px;background-color: rgb(246, 246, 246);text-align: center;color: rgb(153, 153, 153);">'
-								  		+'<div class="ApvFile-item" style="display: flex;-webkit-box-pack: justify;justify-content: space-between;color: rgb(17, 17, 17);">'
-						  				+'<div><button style="align-items: center;height: 36px;padding: 8px 12px;display: inline-flex;font-size: 15px;cursor: pointer;border: 0px;background: transparent;"class="Apv-button is-text ApvFile-item_link">'+json.fk_ano_refer+'</button></div>'
-										+'<button style="display: inline-flex;-webkit-box-align: center;font-size: 15px;cursor: pointer;align-items: center;height: 36px;padding: 8px 12px;color: rgb(153, 153, 153);border: 0px;background: transparent;"class="Apv-button is-text ApvFile-item_delete">'
-										+'<span class="material-icons">delete</span></button></div></div>'
-		                }
-		             	
-		                const inputano ='<input id="footerano"hidden="hidden" type="text" value="'+json.ano+'">';
-		                $("#footercss").append(inputano);
-		                $("#badgesection").html(badgecontent);
-		                $("#datasection").html(content);
-		                
-		                if(json.ap_type == '연차'){
-		                	
-			                maincontent += '<div style="display: flex;min-height: 32px;">'
-									  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
-									  				+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>'
-									  				+'<span class="iptlabel">휴가종류</span></div>'
-									  			+'<div style="width: 100%;"><div><span class="mb-1 btninpt inptval" >'+json.docatgo+'</span></div></div></div>'
-									  		+'<div style="display: flex;min-height: 32px;">'
-									  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
-									  				+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-									  				+'<span class="iptlabel">시작일</span></div>'
-									  			+'<div style="width: 100%;"><div><span class="mb-1 btninpt inptval">'+json.startdate+'</span>'
-									  			
-									  			+'<span><input name="startdate" id="startday"class="mb-1 dateSelector attendance-dateSelector btninpt edit" style="padding:0px 3px 1px 15px;border: none;display:none;"/></span>'
-									  			
-									  			+'</div></div></div>' 
-									  		+'<div style="display: flex;min-height: 32px;">'
-										  		+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
-										  			+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-										  				+'<span class="iptlabel">종료일</span></div>'
-										  			+'<div style="width: 100%;"><div>'
-										  			
-										  			+'<input name="enddate" id="endday" class="mb-1 dateSelector attendance-dateSelector btninpt edit" style="padding:0px 3px 1px 15px;border: none;display:none;"/>'
-										  			
-										  			+'<span class="mb-1 btninpt inptval">'+json.enddate+'</span>'
-										  			+'</div></div></div>'
-										  			
-										  			
-
-					maincontent += '<div class="mb-1 edit"style="display: flex;min-height: 32px;display:none;">'
-				  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
-			  			+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>'
-			  				+'<span class="iptlabel">반차여부</span></div>'
-			  			+'<div style="width: 100%;padding-left: 14px;padding-top: 5px;"><div>'
-			  				+'<div class="mb-1 custom-control custom-checkbox" style="min-height: auto;padding-bottom: 5px;display: inline-block;">'
-			  					+'<input type="checkbox" class="checkbox-disable custom-control-input" id="halfstart" name="halfstart">'
-			  					+'<label class="custom-control-label form-inputlabel" for="halfstart" style="display: inline-block;font-size: 13px;color:rgba(0,0,0,0.7)">시작일</label>'
-								+'<span><div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">'
-						                +'<input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">'
-						                +'<label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>'
-						                +'<input type="radio" class="custom-control-radio2 dayradio" id="startnoon" name="startdaynight">'
-						                +'<label for="startnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label></div></span></div>'
-			  				+'<div class="custom-control custom-checkbox" style="min-height: auto;right: -18px; padding-bottom: 5px;display: inline-block;">'
-		   						+'<input type="checkbox" class="checkbox-disable custom-control-input" id="halfend" name="halfend">'
-		   						+'<label class="custom-control-label form-inputlabel" for="halfend"style="display: inline-block;font-size: 13px;color:rgba(0,0,0,0.7)">종료일</label><span>'
-			   						+'<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">'
-						                +'<input type="radio" class="custom-control-radio2 dayradio" id="endmorning" name="enddaynight">'
-						                +'<label for="endmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>'
-						                +'<input type="radio" class="custom-control-radio2 dayradio" id="endnoon" name="enddaynight">'
-						                +'<label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label></div></span></div></div></div></div>'									  			
-										  			
-										  			
-										  			
-		                }else if(json.ap_type == '업무기안서'){
-		                	maincontent += '<div style="display: flex;min-height: 32px;">'
-					  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
-				  				+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>'
-				  				+'<span class="iptlabel">협조부서</span></div>'
-				  			+'<div style="width: 100%;"><div><span class="mb-1 btninpt inptval" >'+json.deptname+'</span></div>'
-
-				  			+'<select name="deptname"id="deptname" class="mb-1 btninpt edit"style="display:none;width: 80%;cursor:pointer;padding: 8px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 0px solid #ced4da;font-size: 10pt;" ></select>'
-				  			
-				  			+'</div></div>'
-				  		+'<div style="display: flex;min-height: 32px;">'
-					  		+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
-					  			+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-					  				+'<span class="iptlabel">시행일자</span></div>'
-					  			+'<div style="width: 100%;"><div>'
-					  			+'<span class="mb-1 btninpt inptval">'+json.executedate+'</span>'
-					  			
-					  			+'<span><input name="executedate" id="executeday"class="mb-1 dateSelector attendance-dateSelector btninpt edit" style="display:none;padding:0px 3px 1px 15px;border: none;"/></span>'
-					  			
-					  			+'</div></div></div>'
-		                }
-			  			
-		                
-						$("#tempbysection").html(maincontent);
-						$("#textsection").html(json.content);
-		                /* $("#filesection").html(filecontent); */
-		                $("#docsection").html(doccontent);
-					},
-					error: function(request, status, error){
-						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				    }
-				});
-				
-
-				// 문서 첨부파일 가져오기 
-				$.ajax({
-					url:"<%= ctxPath%>/approval/viewFile.up",
-					type:"GET",
-					data:{"ano":anoval},
-					dataType:"json",
-					success: function(json) { 
-						let filecontent="";
-						if(json.length > 0) { // 첨부파일이 있는 문서의 경우 
-							filecontent += '<div style="display: flex;min-height: 32px;">'
-								  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
-							  			+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M12 8.09095V6.27277H10.2022V8.09095H12zM12 9.90913H13.7977V8.09095H12V9.90913zM12 11.7273V9.90913H10.2022V11.7273H12zM12 11.7273V13.5455H10.2022V16.2728H13.7977V11.7273H12z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M4.80899 21L4 20.1818V3.81818L4.80899 3H14.6966L15.2687 3.23964L19.7631 7.78509L20 8.36364V20.1818L19.191 21H4.80899ZM5.61798 4.63636V19.3636H18.382V8.70254L14.3615 4.63636H13.7977V6.27277H12V4.63636H5.61798Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
-							  				+'<span class="iptlabel">첨부파일</span></div>'
-							  				+'<div style="width: 100%;"><div style="line-height: 1.5;width: 100%;">'
-							  				+'<div class="input-group" style="padding-left: 10pt;font-size: 11pt !important;  width: 80%;">'
-							  				
-							  				+'<input multiple type="file" name="attaches" class="form-control mg-file edit" id="mg-file" style="display:none;border-radius: 5px; color: #444444 !important; border: solid 1px #00000008; font-size: 11pt; height: 33px; position:relative; ">'
-											
-							  				+'</div></div></div></div>'
-							$.each(json, function(index, item) {
-								filecontent += `<button id="`+item.afno+`" class="imgbtn" style="display:inline-flex;margin-right:10px;" >`
-								+`<div style="height: 100%;"><img src="/thumbsup/resources/files/`+item.ap_systemfilename+`" class="imgpreview" ><span></span></div><div class="imgname" ><div  style="align-items: flex-start;"><span class="imgnamespan" >`+item.ap_originfilename+`</span><span style="font-size: 13px;font-weight: 500;line-height: 1;">.jpg</span></div></div></button>`
-							})
-
-							filecontent +=	'</div></div></div>';
-							
-						}	
-							$("#attachfile").html(filecontent);
-						
-					},
-					error: function(request, status, error){
-						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				    }
-				});
-				
-				
-				
-				// 결재사원 가져오기 
-				$.ajax({
-					url:"<%= ctxPath%>/approval/view_sign.up",
-					type:"GET",
-					data:{"ano":anoval},
-					dataType:"json",
-					success: function(json) {
-						let linecontent=""; 
-						let fbcontent=""; 
-						let btncontent="";
-						let badge = '';
-						// 연차 비교해서 넣기 
-						if(json.length > 0) { // 현재 결재라인에 하이라이트 표시. 아직 결재안한사원 배경색 흐리게, 
-							$.each(json, function(index, item) {
-								
-								 if(index ==0){
-									
-									btncontent += `<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="문서 공유"><i style="color: #959ca7;background-color: white;" class="icon icon-share"></i></button>`
-												+`<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="히스토리"><i style="color: #959ca7;background-color: white;" class="icon icon-history"></i></button>`
-												+`<a style="margin-left: 5px;color: #c2c2c2;font-size: 0.5em;cursor: pointer;"class="dropdown-link icon icon-flickr" id="dropdownMenuButton2" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>`
-								           		+`<div class="dropdown-menu" style="color:#d0d0d0;min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton2" >`
-								             	+`<a onclick="modifymyapp('`+item.signyn+`','`+item.ano+`')" class="dropdown-item" >문서 수정</a>`
-								             	+`<a class="dropdown-item" >인쇄하기</a>`
-								             	+`<a onclick="cancelmyapp('`+item.signyn+`','`+item.ano+`')"  class="dropdown-item" style="color:red;">문서 취소</a></div>`
-									} 
-								
-							
-								 switch (item.signyn) {
-									case "0"://진행중 
-										badge = '<button type="button" class="btn btn-badge statebadge" style="background-color:rgb(250, 179, 0);color: white;margin-left: 100px;margin-bottom: 12px;">대기중</button>'
-										break;
-									case "1"://승인
-										badge = '<button class="tp btn btn-badge statebadge" data-bs-toggle="tooltip" data-bs-placement="top" title="'+item.signdate+'"style="margin-left: 100px;margin-bottom: 12px;background-color: #D5FAF1;color: #65BAA5;">승인</button>'
-										break;
-									case "2"://반려
-										badge = '<button type="button" class="btn btn-badge statebadge tp" data-bs-toggle="tooltip" data-bs-placement="top" title="'+item.signdate+'"style="margin-left: 100px;margin-bottom: 12px;background-color: #FFD4D5;color: #D97881;">반려</button>'
-										break;
-									}
-								/* linecontent += '</div><div class="cell" style="padding-right: 16px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">결재자 / '+item.signemp_position+'('+item.signemp_deptname+')</div></div></div>'; */
-	                   		});
-						
-							// 진행상태뱃지 분류하기
-						
-							for (let i = 0; i < json.length; i++) {
-							    if(i==0 || json[i].signstep != json[i-1].signstep){
-							    	linecontent += `<div class="signli" id="stepdiv`+json[i].step+`" name="approvalstep">`
-									 	+`<header class="signheader" style="background-color: transparent;">`
-										  +`<span class="signspan" id="stepspan`+json[i].step+`" style="color: rgb(141, 150, 161);">`
-						  				+`<span>`+json[i].signstep+`단계</span></span>`
-						  			+`<div class="separator" aria-orientation="horizontal"></div>`
-						  			+`</header>`
-							  		+`<ul class="signul"><li class="signli-prof">`
-									+`<div class="signdiv-prof">`
-										+`<div style="line-height: 1;display: block;width:100%;">`
-		  	  							+`<div id="memcontent-iframe`+json[i].step+`">`
-							    }
-							    linecontent +='<div class="selectedmem">'
-									 		+'<div class="profile" style="padding: 1px;">'
-									 		+'<input class="empno" hidden="" value="'+json[i].sign_empno+'">'
-									 		+'<span class="pic"><span>'+json[i].name_kr.substr(1)+'</span></span>'
-									 		+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+json[i].name_kr+'</span>'
-									 		+'<br><span class="role" style="font-size: 9pt;">'+json[i].role+'</span></span></div>'
-									 		+badge+'<span class="positionIcon"><span>'+json[i].department_name+' '+json[i].team_name+'&nbsp;|&nbsp;'+json[i].position+'</span></span>'
-									 		+'</div>'
-						  		if( i== json.length-1 || json[i].signstep != json[i+1].signstep ){ // 마지막 사람이거나 해당결재라인에 사원이 더없을경우 
-						  			linecontent += '</div></div></div></li></ul></div>';
-						  		}
-							}					
-						
-						
-						
-						
-							//console.log(json(json.length));
-							let fbcnt = 0;
-							$.each(json, function(index, item) {
-								if(index+1 == json.length){//마지막배열 
-									fbcnt = item.fbcnt;
-								}
-								else return;
-							});// end of $.each(json, function(index, item) --------------------
-
-							if(fbcnt==0){ // 작성된 의견이 없는경우 
-								fbcontent+='';
-							}else{ // 작성된 의견이 있는경우
-								
-								$.each(json, function(index, item) {
-									
-										if(index==0){ // 한번만 나올거 
-											fbcontent+='<div class="ApvSection-header"><h2 class="ApvSection-title">의견('+fbcnt+')</h2></div>'
-											  		 +'<div class="ApvSection-body"><div><ul>'
-										}
-										if(typeof item.feedback !="undefined" ){
-											//console.log('item.feedback ->'+item.feedback);
-											fbcontent+='<li class="refer_opinion">'
-													+'<div class="profile" style="padding: 1px;"><input class="empno" hidden="" value="'+item.sign_empno+'">'
-													+'<span class="pic"><span>'+item.name_kr.substr(1)+'</span></span><span class="my"><span class="name" style="font-size: 10.8pt;">'+item .name_kr+'</span><span>'+item.signdate+'</span></span>'
-													+'<br><span>'+item.feedback+'</span>'
-													+'</div>'
-													+'</li>'
-											
-											/* fbcontent+='<div class="sc-iOeugr krRGcH"><div class="ApvComment" style="margin-bottom: 10px;display: flex;padding: 16px;border-radius: 4px;background-color: rgb(246, 246, 246);font-size: 16px;">'
-								  					+'<div class="ApvComment-meta" style="min-width: 180px;padding-right: 16px;border-right: 1px solid rgb(225, 226, 227);margin-right: 16px;">'
-								  					+'<div class="ApvComment-name">'+item.name_kr+'</div><div class="ApvComment-date">'+item.signdate+'</div></div>'
-								  					+'<div class="ApvComment-body" style="flex: 1 1 0%;line-height: 1.88;white-space: pre-line;">'+item.feedback+'<form class="sc-jfvxQR bzoEDp StyledApvCommentForm">'
-										  			+'<div class="ApvCommentForm-footer" style="padding: 8px;display: flex;-webkit-box-pack: end;justify-content: flex-end;margin-top: 10px;">'
-											  		+'<button id="fixmycmt"type="button" style="border: 0px;background: transparent;font-size: 14px;display: inline-flex;-webkit-box-align: center;align-items: center;height: 32px;padding-right: 0px;padding-left: 0px;margin-right: 0px;color: rgb(104, 104, 104);">수정</button>'
-											  		+'<button id="delmycmt"type="button" style="border: 0px;background: transparent;font-size: 14px;display: inline-flex;-webkit-box-align: center;align-items: center;height: 32px;padding-right: 0px;padding-left: 0px;margin-right: 0px;color: rgb(104, 104, 104);">삭제</button>'
-											  		+'</div></form></div></div></div>'; */	
-										}
-									
-										  		 
-								});// end of $.each(json, function(index, item) --------------------
-							}
-								fbcontent+='<ul></div></div>'							
-		                  	}
-							$("#btnsection").html(btncontent);
-							$("#linebody").html(linecontent);
-							$("#fbsection").html(fbcontent);
-							showmodal();
-							var tooltipel = $(".tp").tooltip();
-					},
-					error: function(request, status, error){
-						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				    }
-				}); 
-				
+				showDetailApp(anoval,ap_type)
 			}
 		},'tr td:nth-child(3)');
 		
@@ -858,6 +551,342 @@ let searchWord = "";
 		
 	}); //end of ready	
 
+	// 문서 상세정보 모달창 보여주기 
+	function showDetailApp(anoval,ap_type){
+		let maincontent="";
+		//$('#modalcontent').text($(this).data("content"));
+		$.ajax({
+			url:"<%= ctxPath%>/approval/view.up",
+			type:"GET",
+			data:{"ano":anoval
+				, "ap_type":ap_type},
+			dataType:"json",
+			success: function(json) {
+				let content="";// 연차 비교해서 넣기
+				let doccontent="";
+				let badgecontent="";
+				
+          		if(json.final_signyn=='승인')
+          			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
+          		if(json.final_signyn=='반려')
+          			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #FBD8D7; color: #D2737F; ">반려</button>' 
+          		if(json.final_signyn=='진행')
+          			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: rgb(33, 97, 220);color: white; ">진행중</button>'
+          		if(json.final_signyn=='취소')
+          			badgecontent = '<button type="button" class="btn btn-badge" style="background-color: #E9E9EB;color: #747378; ">취소</button>'
+          		
+          		
+          			
+				let writedayarr = [];
+				writedayarr = json.writeday.split('-');
+				let writeday =writedayarr[1]+'월 '+writedayarr[2].substr(0,2)+'일'+writedayarr[2].substr(2)
+				
+				if(json.bookmark == '0'){
+					badgecontent += `<button style="background-color: white;border: none;margin-left: 10px;"data-bs-toggle="tooltip" data-bs-placement="top" title="북마크" class="tp  bookmark icon icon-star-empty"  aria-label="북마크" onclick="addbookmark('`+json.ano+`',event)"></button><input hidden="hidden" type="text" value="`+json.ano+`">`
+   	            }else if(json.bookmark == '1'){
+   	            	badgecontent += `<button style="background-color: white;border: none;margin-left: 10px;"data-bs-toggle="tooltip" data-bs-placement="top" title="북마크" class="tp  bookmark icon icon-star-full" aria-label="북마크" onclick="addbookmark('`+json.ano+`',event)"></button><input hidden="hidden" type="text" value="`+json.ano+`">`
+   	            }
+				
+				
+				let preserveperiod = '';
+				switch (json.preserveperiod) {
+				case "0":
+					preserveperiod = '영구보존'
+					break;
+				case "1":
+					preserveperiod = '1년'
+					break;
+				case "3":
+					preserveperiod = '3년'
+					break;
+				case "5":
+					preserveperiod = '5년'
+					break;
+				}
+				
+				// ** 문서세부내용 **//
+				content += '<div class="sc-bCfvAP cstQxy"><h4 class="ApvHeader-title">'+json.title+'</h4>'
+						  +'<div class="sc-cOxWqc ft-16 StyledApv"><div class="ApvDl-item"style="font-weight:500;"><span class="ApvDl-dd"><i class="icon icon-file-text2"> </i>'+json.ano+'・'+writeday+' 작성</span>'
+						  +'</div><div class="ApvDl-item" style="font-weight: 400;"><span class="ApvDl-dt">보존연한:</span><span class="ApvDl-dd">'+preserveperiod+'</span>'
+						  +'</div><div class="ApvDl-item" style="font-weight: 400;"><span class="ApvDl-dt">템플릿:</span><span class="ApvDl-dd">'+json.ap_type+'</span>'
+						  +'</div><div class="ApvDl-item" style="font-weight: 400;"><span class="ApvDl-dt">작성자:</span><span class="ApvDl-dd">'+json.name_kr+'</span>'
+						  +'</div></div></div>';
+						  /* '</div><div class="ApvDl-item"><span class="ApvDl-dt">작성일:</span><span class="ApvDl-dd">'+json.writeday+'</span> */
+				
+             	
+             	// ** 관련문서  **//
+                if( json.fk_ano_refer == "" || json.fk_ano_refer == null){ // 참조문서파일이 없을경우  
+	                doccontent += '<div style="padding: 16px;border-radius: 4px;background-color: rgb(246, 246, 246);text-align: center;color: rgb(153, 153, 153);">등록된 관련문서가 없습니다</div>'
+                }else{
+                	doccontent += '<div style="padding: 16px;border-radius: 4px;background-color: rgb(246, 246, 246);text-align: center;color: rgb(153, 153, 153);">'
+						  		+'<div class="ApvFile-item" style="display: flex;-webkit-box-pack: justify;justify-content: space-between;color: rgb(17, 17, 17);">'
+				  				+'<div><button style="align-items: center;height: 36px;padding: 8px 12px;display: inline-flex;font-size: 15px;cursor: pointer;border: 0px;background: transparent;"class="Apv-button is-text ApvFile-item_link">'+json.fk_ano_refer+'</button></div>'
+								+'<button style="display: inline-flex;-webkit-box-align: center;font-size: 15px;cursor: pointer;align-items: center;height: 36px;padding: 8px 12px;color: rgb(153, 153, 153);border: 0px;background: transparent;"class="Apv-button is-text ApvFile-item_delete">'
+								+'<span class="material-icons">delete</span></button></div></div>'
+                }
+             	
+                const inputano ='<input id="footerano"hidden="hidden" type="text" value="'+json.ano+'">';
+                $("#footercss").append(inputano);
+                $("#badgesection").html(badgecontent);
+                $("#datasection").html(content);
+                
+                if(json.ap_type == '연차'){
+                	
+	                maincontent += '<div style="display: flex;min-height: 32px;">'
+							  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
+							  				+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>'
+							  				+'<span class="iptlabel">휴가종류</span></div>'
+							  			+'<div style="width: 100%;"><div><span class="mb-1 btninpt inptval" >'+json.docatgo+'</span></div></div></div>'
+							  		+'<div style="display: flex;min-height: 32px;">'
+							  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
+							  				+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
+							  				+'<span class="iptlabel">시작일</span></div>'
+							  			+'<div style="width: 100%;"><div><span class="mb-1 btninpt inptval">'+json.startdate+'</span>'
+							  			
+							  			+'<span><input name="startdate" id="startday"class="mb-1 dateSelector attendance-dateSelector btninpt edit" style="padding:0px 3px 1px 15px;border: none;display:none;"/></span>'
+							  			
+							  			+'</div></div></div>' 
+							  		+'<div style="display: flex;min-height: 32px;">'
+								  		+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
+								  			+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
+								  				+'<span class="iptlabel">종료일</span></div>'
+								  			+'<div style="width: 100%;"><div>'
+								  			
+								  			+'<input name="enddate" id="endday" class="mb-1 dateSelector attendance-dateSelector btninpt edit" style="padding:0px 3px 1px 15px;border: none;display:none;"/>'
+								  			
+								  			+'<span class="mb-1 btninpt inptval">'+json.enddate+'</span>'
+								  			+'</div></div></div>'
+								  			
+								  			
+
+			maincontent += '<div class="mb-1 edit"style="display: flex;min-height: 32px;display:none;">'
+		  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
+	  			+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>'
+	  				+'<span class="iptlabel">반차여부</span></div>'
+	  			+'<div style="width: 100%;padding-left: 14px;padding-top: 5px;"><div>'
+	  				+'<div class="mb-1 custom-control custom-checkbox" style="min-height: auto;padding-bottom: 5px;display: inline-block;">'
+	  					+'<input type="checkbox" class="checkbox-disable custom-control-input" id="halfstart" name="halfstart">'
+	  					+'<label class="custom-control-label form-inputlabel" for="halfstart" style="display: inline-block;font-size: 13px;color:rgba(0,0,0,0.7)">시작일</label>'
+						+'<span><div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">'
+				                +'<input type="radio" class="custom-control-radio2 dayradio" id="startmorning" name="startdaynight">'
+				                +'<label for="startmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>'
+				                +'<input type="radio" class="custom-control-radio2 dayradio" id="startnoon" name="startdaynight">'
+				                +'<label for="startnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label></div></span></div>'
+	  				+'<div class="custom-control custom-checkbox" style="min-height: auto;right: -18px; padding-bottom: 5px;display: inline-block;">'
+   						+'<input type="checkbox" class="checkbox-disable custom-control-input" id="halfend" name="halfend">'
+   						+'<label class="custom-control-label form-inputlabel" for="halfend"style="display: inline-block;font-size: 13px;color:rgba(0,0,0,0.7)">종료일</label><span>'
+	   						+'<div class="condition-cell" style="display: inline-block;right: 23px;position: relative;top: 1px;">'
+				                +'<input type="radio" class="custom-control-radio2 dayradio" id="endmorning" name="enddaynight">'
+				                +'<label for="endmorning" class="js-period-type radio-label-checkbox2" data-code="unlimit">오전</label>'
+				                +'<input type="radio" class="custom-control-radio2 dayradio" id="endnoon" name="enddaynight">'
+				                +'<label for="endnoon" class="js-period-type radio-label-checkbox2" data-code="unlimit">오후</label></div></span></div></div></div></div>'									  			
+								  			
+								  			
+								  			
+                }else if(json.ap_type == '업무기안서'){
+                	maincontent += '<div style="display: flex;min-height: 32px;">'
+			  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
+		  				+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M7.99999 19L7.99999 6.8L3 6.8V5H15V6.8L9.79999 6.8L9.79999 19H7.99999Z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M13 10H21V11.8H17.8V19H16L16 11.8H13V10Z" fill="rgba(36, 42, 48, 0.32)"></path></svg>'
+		  				+'<span class="iptlabel">협조부서</span></div>'
+		  			+'<div style="width: 100%;"><div><span class="mb-1 btninpt inptval" >'+json.deptname+'</span></div>'
+
+		  			+'<select name="deptname"id="deptname" class="mb-1 btninpt edit"style="display:none;width: 80%;cursor:pointer;padding: 8px 17px;padding-left: 10px;color: #484848;font-weight: 500;border-radius: 5px;border: 0px solid #ced4da;font-size: 10pt;" ></select>'
+		  			
+		  			+'</div></div>'
+		  		+'<div style="display: flex;min-height: 32px;">'
+			  		+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
+			  			+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M8.86517 3V5.11112H15.1348V3H16.9551V5.11112H20.0899L21 6.01588V20.0952L20.0899 21H3.91011L3 20.0952V6.01588L3.91011 5.11112H7.04494V3H8.86517ZM4.82022 10.1376V6.92064H19.1798V10.1376L4.82022 10.1376ZM4.82022 11.9471V19.1905H19.1798V11.9471L4.82022 11.9471Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
+			  				+'<span class="iptlabel">시행일자</span></div>'
+			  			+'<div style="width: 100%;"><div>'
+			  			+'<span class="mb-1 btninpt inptval">'+json.executedate+'</span>'
+			  			
+			  			+'<span><input name="executedate" id="executeday"class="mb-1 dateSelector attendance-dateSelector btninpt edit" style="display:none;padding:0px 3px 1px 15px;border: none;"/></span>'
+			  			
+			  			+'</div></div></div>'
+                }
+	  			
+                
+				$("#tempbysection").html(maincontent);
+				$("#textsection").html(json.content);
+                /* $("#filesection").html(filecontent); */
+                $("#docsection").html(doccontent);
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    }
+		});
+		
+
+		// 문서 첨부파일 가져오기 
+		$.ajax({
+			url:"<%= ctxPath%>/approval/viewFile.up",
+			type:"GET",
+			data:{"ano":anoval},
+			dataType:"json",
+			success: function(json) { 
+				let filecontent="";
+				if(json.length > 0) { // 첨부파일이 있는 문서의 경우 
+					filecontent += '<div style="display: flex;min-height: 32px;">'
+						  			+'<div style="display: flex;align-items: center;width: 160px;height: 32px;">'
+					  			+'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M12 8.09095V6.27277H10.2022V8.09095H12zM12 9.90913H13.7977V8.09095H12V9.90913zM12 11.7273V9.90913H10.2022V11.7273H12zM12 11.7273V13.5455H10.2022V16.2728H13.7977V11.7273H12z" fill="rgba(36, 42, 48, 0.32)"></path><path d="M4.80899 21L4 20.1818V3.81818L4.80899 3H14.6966L15.2687 3.23964L19.7631 7.78509L20 8.36364V20.1818L19.191 21H4.80899ZM5.61798 4.63636V19.3636H18.382V8.70254L14.3615 4.63636H13.7977V6.27277H12V4.63636H5.61798Z" fill="rgba(36, 42, 48, 0.32)" fill-rule="evenodd" clip-rule="evenodd"></path></svg>'
+					  				+'<span class="iptlabel">첨부파일</span></div>'
+					  				+'<div style="width: 100%;"><div style="line-height: 1.5;width: 100%;">'
+					  				+'<div class="input-group" style="padding-left: 10pt;font-size: 11pt !important;  width: 80%;">'
+					  				
+					  				+'<input multiple type="file" name="attaches" class="form-control mg-file edit" id="mg-file" style="display:none;border-radius: 5px; color: #444444 !important; border: solid 1px #00000008; font-size: 11pt; height: 33px; position:relative; ">'
+									
+					  				+'</div></div></div></div>'
+					$.each(json, function(index, item) {
+						filecontent += `<button id="`+item.afno+`" class="imgbtn" style="display:inline-flex;margin-right:10px;" >`
+						+`<div style="height: 100%;"><img src="/thumbsup/resources/files/`+item.ap_systemfilename+`" class="imgpreview" ><span></span></div><div class="imgname" ><div  style="align-items: flex-start;"><span class="imgnamespan" >`+item.ap_originfilename+`</span><span style="font-size: 13px;font-weight: 500;line-height: 1;">.jpg</span></div></div></button>`
+					})
+
+					filecontent +=	'</div></div></div>';
+					
+				}	
+					$("#attachfile").html(filecontent);
+				
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    }
+		});
+		
+		
+		
+		// 결재사원 가져오기 
+		$.ajax({
+			url:"<%= ctxPath%>/approval/view_sign.up",
+			type:"GET",
+			data:{"ano":anoval},
+			dataType:"json",
+			success: function(json) {
+				let linecontent=""; 
+				let fbcontent=""; 
+				let btncontent="";
+				let badge = '';
+				// 연차 비교해서 넣기 
+				if(json.length > 0) { // 현재 결재라인에 하이라이트 표시. 아직 결재안한사원 배경색 흐리게, 
+					$.each(json, function(index, item) {
+						
+						 if(index ==0){
+							
+							btncontent += /* `<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="문서 공유"><i style="color: #959ca7;background-color: white;" class="icon icon-share"></i></button>`
+										+`<button class="btn tp" data-bs-toggle="tooltip" data-bs-placement="top" title="히스토리"><i style="color: #959ca7;background-color: white;" class="icon icon-history"></i></button>` */
+										`<a style="margin-left: 5px;color: #c2c2c2;font-size: 0.5em;cursor: pointer;"class="dropdown-link icon icon-flickr" id="dropdownMenuButton2" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"  data-offset="-70, 20"></a>`
+						           		+`<div class="dropdown-menu" style="color:#d0d0d0;min-width: 8rem;font-size: 10pt;"aria-labelledby="dropdownMenuButton2" >`
+						             	/* +`<a onclick="modifymyapp('`+item.signyn+`','`+item.ano+`')" class="dropdown-item" >문서 수정</a>` */
+						             	+`<a class="dropdown-item" >인쇄하기</a>`
+						             	+`<a onclick="cancelmyapp('`+item.signyn+`','`+item.ano+`')"  class="dropdown-item" style="color:red;">문서 취소</a></div>`
+							} 
+						
+					
+						/* linecontent += '</div><div class="cell" style="padding-right: 16px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">결재자 / '+item.signemp_position+'('+item.signemp_deptname+')</div></div></div>'; */
+               		});
+				
+					// 진행상태뱃지 분류하기
+				
+					for (let i = 0; i < json.length; i++) {
+						 switch (json[i].signyn) {
+							case "0"://진행중 
+								badge = '<button type="button" class="btn btn-badge statebadge" style="background-color:rgb(250, 179, 0);color: white;margin-left: 100px;margin-bottom: 12px;">대기중</button>'
+								break;
+							case "1"://승인
+								badge = '<button class="tp btn btn-badge statebadge" data-bs-toggle="tooltip" data-bs-placement="top" title="'+json[i].signdate+'"style="margin-left: 108px;margin-bottom: 12px;background-color: #D5FAF1;color: #59c4aa;">승인</button>'
+								break;
+							case "2"://반려
+								badge = '<button type="button" class="btn btn-badge statebadge tp" data-bs-toggle="tooltip" data-bs-placement="top" title="'+json[i].signdate+'"style="margin-left: 108px;margin-bottom: 12px;background-color: #FFD4D5;color: #D97881;">반려</button>'
+								break;
+							}
+					    if(i==0 || json[i].signstep != json[i-1].signstep){
+					    	linecontent += `<div class="signli" id="stepdiv`+json[i].step+`" name="approvalstep">`
+							 	+`<header class="signheader" style="background-color: transparent;">`
+								  +`<span class="signspan" id="stepspan`+json[i].step+`" style="color: rgb(141, 150, 161);">`
+				  				+`<span>`+json[i].signstep+`단계</span></span>`
+				  			+`<div class="separator" aria-orientation="horizontal"></div>`
+				  			+`</header>`
+					  		+`<ul class="signul"><li class="signli-prof">`
+							+`<div class="signdiv-prof">`
+								+`<div style="line-height: 1;display: block;width:100%;">`
+  	  							+`<div id="memcontent-iframe`+json[i].step+`">`
+					    }
+					    linecontent +='<div class="selectedmem">'
+							 		+'<div class="profile" style="padding: 1px;">'
+							 		+'<input class="empno" hidden="" value="'+json[i].sign_empno+'">'
+							 		+'<span class="pic"><span>'+json[i].name_kr.substr(1)+'</span></span>'
+							 		+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+json[i].name_kr+'</span>'
+							 		+'<br><span class="role" style="font-size: 9pt;">'+json[i].role+'</span></span></div>'
+							 		+badge+'<span class="positionIcon"><span>'+json[i].department_name+' '+json[i].team_name+'&nbsp;|&nbsp;'+json[i].position+'</span></span>'
+							 		+'</div>'
+				  		if( i== json.length-1 || json[i].signstep != json[i+1].signstep ){ // 마지막 사람이거나 해당결재라인에 사원이 더없을경우 
+				  			linecontent += '</div></div></div></li></ul></div>';
+				  		}
+					}					
+				
+				
+				
+				
+					//console.log(json(json.length));
+					let fbcnt = 0;
+					$.each(json, function(index, item) {
+						if(index+1 == json.length){//마지막배열 
+							fbcnt = item.fbcnt;
+						}
+						else return;
+					});// end of $.each(json, function(index, item) --------------------
+
+					if(fbcnt==0){ // 작성된 의견이 없는경우 
+						fbcontent+='';
+					}else{ // 작성된 의견이 있는경우
+						
+						$.each(json, function(index, item) {
+							
+								if(index==0){ // 한번만 나올거 
+									fbcontent+='<div class="ApvSection-header" style="display: inline-flex;"><i class="icon icon-bubble2" style=""></i><h2 class="ApvSection-title" style="margin-bottom: 0;margin-left: 5px;">의견('+fbcnt+')</h2></div>'
+									  		 +'<div class="ApvSection-body"><div><ul>'
+								}
+								if(typeof item.feedback !="undefined" ){
+									//console.log('item.feedback ->'+item.feedback);
+									fbcontent+='<li class="refer_opinion">'
+											+'<div class="profile" style="padding: 1px;"><input class="empno" hidden="" value="'+item.sign_empno+'">'
+											+'<span class="pic"><span>'+item.name_kr.substr(1)+'</span></span><span class="my"><span class="name" style="font-size: 10.8pt;">'+item .name_kr+'</span><br><span style="font-size: 8pt;color: #c2c9cf;">'+item.signdate+'</span></span>'
+											+'<br><span style="margin-left: 40px;">'+item.feedback+'</span>'
+											+'</div>'
+											+'</li>'
+									
+									/* fbcontent+='<div class="sc-iOeugr krRGcH"><div class="ApvComment" style="margin-bottom: 10px;display: flex;padding: 16px;border-radius: 4px;background-color: rgb(246, 246, 246);font-size: 16px;">'
+						  					+'<div class="ApvComment-meta" style="min-width: 180px;padding-right: 16px;border-right: 1px solid rgb(225, 226, 227);margin-right: 16px;">'
+						  					+'<div class="ApvComment-name">'+item.name_kr+'</div><div class="ApvComment-date">'+item.signdate+'</div></div>'
+						  					+'<div class="ApvComment-body" style="flex: 1 1 0%;line-height: 1.88;white-space: pre-line;">'+item.feedback+'<form class="sc-jfvxQR bzoEDp StyledApvCommentForm">'
+								  			+'<div class="ApvCommentForm-footer" style="padding: 8px;display: flex;-webkit-box-pack: end;justify-content: flex-end;margin-top: 10px;">'
+									  		+'<button id="fixmycmt"type="button" style="border: 0px;background: transparent;font-size: 14px;display: inline-flex;-webkit-box-align: center;align-items: center;height: 32px;padding-right: 0px;padding-left: 0px;margin-right: 0px;color: rgb(104, 104, 104);">수정</button>'
+									  		+'<button id="delmycmt"type="button" style="border: 0px;background: transparent;font-size: 14px;display: inline-flex;-webkit-box-align: center;align-items: center;height: 32px;padding-right: 0px;padding-left: 0px;margin-right: 0px;color: rgb(104, 104, 104);">삭제</button>'
+									  		+'</div></form></div></div></div>'; */	
+								}
+							
+								  		 
+						});// end of $.each(json, function(index, item) --------------------
+					}
+						fbcontent+='<ul></div></div>'							
+                  	}
+					$("#btnsection").html(btncontent);
+					$("#linebody").html(linecontent);
+					$("#fbsection").html(fbcontent);
+					showmodal();
+					var tooltipel = $(".tp").tooltip();
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    }
+		}); 			
+	}
+	
+	
+	
+	
+	
+	
+	
 	//첨부파일 클릭 하면 다운로드 
 	function downloadfile(fk_ano,afno){
 		location.href = "<%= ctxPath%>/afDownload.up?fk_ano="+fk_ano+"&afno="+afno;
@@ -892,7 +921,7 @@ let searchWord = "";
       	              		+ '<td class="title"><div id="writername">'+item.name_kr+'</div>'
       	              		+ '<div id="writerday">'+item.writeday+'</div>'
       		              	+ '<div id="writertitle">'+item.title+'</div></td>'
-      	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div style="margin-top: 15px;">'
+      	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div style="padding-left: 18px;">'
       	              if(item.final_signyn == "승인"){
  		              		html += '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
  		               }
@@ -908,9 +937,9 @@ let searchWord = "";
       	              	html += '</div></td><td>'
       	              	
       	              	if(item.bookmark == '0'){
-			   	            html += `<div style="margin-top:12px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
+			   	            html += `<div style="padding-left: 25px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
 		   	            }else if(item.bookmark == '1'){
-			   	            html += `<div style="margin-top: 12px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
+			   	            html += `<div style="padding-left: 25px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
 		   	            }
       	              	
                     	html+= '</td><td></td></tr>'
@@ -1020,13 +1049,31 @@ let searchWord = "";
 	
 	// 내가쓴 문서 결재취소하기 (첫결재단계가 아직 결재를안했을경우만 )
 	function cancelmyapp(signyn,ano){
-		//console.log('cancelmyapp(signyn) =>'+signyn)
-		//console.log('cancelmyapp(ano) =>'+ano)
-		if(signyn!="진행중"){ // 첫번째 결재라인이 결재내렸으면 취소못하게 
+		console.log('cancelmyapp(signyn) =>'+signyn)
+		console.log('cancelmyapp(ano) =>'+ano)
+		if(signyn!="0"){ // 첫번째 결재라인이 결재내렸으면 취소못하게 
 			alert("결재진행중이므로 취소불가합니다!");
 		}else{
 			if(confirm("정말 결재를 취소하시겠습니까?")){
-				location.href="<%= ctxPath%>/approval/mycancel.up?ano="+ano;
+				$.ajax({
+					url:"<%= ctxPath%>/approval/mycancel.up",
+					data:{"ano":ano},
+					type:"GET",
+					dataType:"json",
+					success:function(json){
+						let text = "";				
+						if(json.result==1){
+							text = "결재신청이 취소 되었습니다!";
+						}else{
+							text = "결재신청 취소를 실패했습니다.";
+						}						
+						alert(text);
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				    }
+				}); 
+				
 			}
 		}  
 	}
@@ -1043,7 +1090,7 @@ let searchWord = "";
 			$.ajax({
 				url:"<%= ctxPath%>/approval/myedit.up?ano="+ano,
 				type:"GET",
-				dataType:"json",
+				dataType:"json", 
 				success:function(json){
 					
 				},
@@ -1215,7 +1262,7 @@ let searchWord = "";
 	            <a class="dropdown-item" onclick="getDate(3,event)">지난 1개월<span class="icon icon-checkmark dropselchx"></span></a>
 	            <a class="dropdown-item" onclick="getDate(4,event)">지난 3개월<span class="icon icon-checkmark dropselchx"></span></a>
 	            <a class="dropdown-item" onclick="getDate(5,event)">지난 1년<span class="icon icon-checkmark dropselchx"></span></a>
-	            <a class="dropdown-item">직접 입력<span class="icon icon-checkmark dropselchx"></span></a>
+	            <!-- <a class="dropdown-item">직접 입력<span class="icon icon-checkmark dropselchx"></span></a> -->
 	            <a class="dropdown-item">
 		            <div class="search-period-wr" >
 		                <div class="js-search-pickr-layer" data-code="unlimit">
@@ -1335,7 +1382,7 @@ let searchWord = "";
 		              <div id="writertitle">${approvalvo.title}</div></td>
 	              <td class="ap_type"><div>${approvalvo.ap_type}</div></td>
 	              <td>
-	              	<div style="margin-top: 15px;">
+	              	<div style="padding-left: 18px;">
 	              		<c:if test="${approvalvo.final_signyn=='승인'}">
 		              		<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>
 	              		</c:if>
@@ -1352,10 +1399,10 @@ let searchWord = "";
 	              </td>
 	              <td>
               		<c:if test="${approvalvo.bookmark=='0'}">
-	            		<div style="margin-top:12px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('${approvalvo.ano}',event)"></a></div>
+	            		<div style="padding-left: 25px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('${approvalvo.ano}',event)"></a></div>
               		</c:if>
               		<c:if test="${approvalvo.bookmark=='1'}">
-	            		<div style="margin-top: 12px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('${approvalvo.ano}',event)"></a></div>
+	            		<div style="padding-left: 25px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('${approvalvo.ano}',event)"></a></div>
               		</c:if>
               	  </td>
 	              <td></td>
@@ -1401,8 +1448,6 @@ let searchWord = "";
 					  <!-- 문서 헤더정보  -->			  
 					  <div id="datasection" style="border-bottom: 1px solid rgba(36, 42, 48, 0.06);"></div>
 					  
-					  
-					  
 					  <!-- 문서내용  -->
 					  <div> 
 					  	<!-- <div class="ApvSection-header"><h2 class="ApvSection-title">내용</h2></div> -->
@@ -1421,32 +1466,10 @@ let searchWord = "";
 						  <div class="ApvSection-body" id ="textsection">
 				  	  </div>
 					  
-					  <!-- 관련문서  -->
-					<!--   <div class="pad-part">
-					  	<div class="ApvSection-header"><h2 class="ApvSection-title">관련문서</h2></div>
-						  <div class="ApvSection-body" id="docsection">
-				  		</div>
-				  	  </div> -->
-					  
 					  <!-- 문서의견  -->
-					  <div class="pad-part">
-					  	<div id="fbsection"></div>
+					  <div class="pad-part" style="border-top: 1px solid #eaeaea;padding-top: 20px;margin-top: 50px;">
+					  	<div id="fbsection" style="font-size: 15px;font-weight: 400;color: #787878;"></div>
 				  	  </div>
-				  	  <!-- <div class="modal-footer" style="position: sticky;bottom: 0;background-color: white;padding: 5px 40px 20px;display: flex;align-items: center;border-top:0px;">
-					  	  <div id="footercss">
-						  	  
-						  	  <button id="rejdoc"class="approvebtn" type="button" style="margin-right:10px;">
-						  	  	<div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-knmidH-justify-space-between c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css" style="width: 100%;"><div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-bICGYT-justify-center c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css c-fGHEql c-fGHEql-jVpCez-align-center">
-						  	  	<div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M12 13.2728L17.0205 18.2933L18.2932 17.0205L13.2728 12L18.2932 6.97954L17.0205 5.70675L12 10.7272L6.97954 5.70675L5.70675 6.97954L10.7272 12L5.70675 17.0205L6.97954 18.2932L12 13.2728Z" fill="currentColor"></path></svg></div>
-						  	  	<div style="display: inline-block;"><span>반려</span></div></div></div>
-						  	  </button>
-						  	  <button id="aprdoc"class="approvebtn"type="button" style="background-color: rgb(19 133 255 / 86%);color:white;">
-							  	  <div class="" style="width: 100%;"><div class="">
-							  	  <div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M10.0425 14.6397L17.8067 6.35059L19.1934 7.64946L10.0975 17.3603L4.83347 12.1769L6.16656 10.8231L10.0425 14.6397Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div>
-							  	  <div style="display: inline-block;"><span>승인하기</span></div></div></div>
-							  </button>
-					  	  </div>
-				  	  </div> -->
 			  	</div>
 			  </div>
 			  </div>
@@ -1507,14 +1530,14 @@ let searchWord = "";
 	
  	
  	
- 	<div><ul>
+ 	<!-- <div><ul>
 		<li class="refer_opinion">
 			<div class="profile" style="padding: 1px;"><input class="empno" hidden="" value="">
 			<span class="pic"><span>채영5</span></span><span class="my"><span class="name" style="font-size: 10.8pt;">강채영5</span></span>
 			<div></div>
 			</div>
 		</li>
- 	</ul></div>
+ 	</ul></div> -->
  	
  	
  	

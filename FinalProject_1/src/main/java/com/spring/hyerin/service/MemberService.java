@@ -308,4 +308,18 @@ public class MemberService implements InterMemberService {
 		return employee_no;
 	}
 	
+	// employee_no의 비밀번호 알아오기
+	@Override
+	public String getMyPassword(String employee_no) {
+		String pwd = dao.getMyPassword(employee_no);
+		return pwd;
+	}
+	
+	// 비밀번호 업데이트해주기
+	@Override
+	public int updateMyPwd(Map<String, String> paraMap) {
+		int n = dao.updateMyPwd(paraMap);
+		return n;
+	}
+	
 }

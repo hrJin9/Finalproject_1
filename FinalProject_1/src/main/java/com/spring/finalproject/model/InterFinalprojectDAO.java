@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.jieun.model.ApprovalVO;
+import com.spring.schedule.model.Calendar_schedule_VO;
 import com.spring.yeeun.model.AttendanceVO;
 
 public interface InterFinalprojectDAO {
@@ -30,5 +31,12 @@ public interface InterFinalprojectDAO {
 	
 	// 결재요청 처리하기 (승인/반려)
 	int updateMainAvStatus(Map<String, String> paraMap);
+
+	
+	
+	
+	//////////////////////////
+	// 캘린더 불러오기
+	List<Calendar_schedule_VO> selectMainSchedule(String fk_employee_no);
 
 }

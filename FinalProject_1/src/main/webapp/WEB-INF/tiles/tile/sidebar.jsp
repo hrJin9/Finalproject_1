@@ -358,6 +358,7 @@ $(document).ready(function(){
 	   	socket = sock;
 	    // 데이터를 전달 받았을때 
 	    sock.onmessage = onMessage; // toast 생성
+	    
 	});// end of $(document).ready(function(){})---------------
 	
 	// toast생성 및 추가
@@ -393,6 +394,7 @@ $(document).ready(function(){
 				let html2 ='';
 				let text ='';
 				let url = '';
+				let cnt = 0;
 				if(json.length > 0) { // 알림이 있는경우 새로운 알림마크 넣기
 					$(".readAlarm").css('display','none');
 					$(".newAlarm").css('display','none');
@@ -413,7 +415,7 @@ $(document).ready(function(){
 							break;
 						case "2-1":
 							text = item.from_empname + "님이 '"+ item.ctnt +"'의 승인을 요청했어요.";
-							url = "<%= ctxPath%>/approval/requested.up?fk_ano="+item.linkno
+							url = "<%= ctxPath%>/approval.up?ano="+item.linkno
 							break;
 						case "2-2":
 							text = "'"+ item.ctnt + "'이 승인이 완료되었어요.";
@@ -443,6 +445,7 @@ $(document).ready(function(){
 					            +'<span style="font-size:6pt; font-weight:bold; color: #a6a6a6;">'+registerdate+'</span></span>'
 					         	+'</span>'
 						      	+'</div>'
+						      	cnt++;
 						}
 						else{ // 읽은 알림 
 							$(".readAlarm").css('display','block');
@@ -460,10 +463,12 @@ $(document).ready(function(){
 						
 					});
 				}else{
+					$(".newAlarm").css('display','block');
 					html ="<div style='text-align:center'>알림이 없습니다.</div>";
 				}
 				    $("#newAlarmDiv").html(html)
 				    $("#readAlarmDiv").html(html2)
+				    $(".newCnt").text(cnt);
 			},
 			error: function(request, status, error){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -473,8 +478,11 @@ $(document).ready(function(){
 	
 	// 알림 클릭시 함수(페이지이동, 새로운소식일경우 지난알림으로-> db에서 읽음처리 ) 
 	function alarmRead(url,amno){
-    	console.log($("#"+amno).hasClass("newala"))
-    	if($("#"+amno).hasClass("newala")==true){// 새로운 소식 분류일경우 읽음처리 해주기 
+    	//console.log($("#"+amno).hasClass("newala"))
+    	//console.log($("#"+amno).html())
+//    	console.log($(this).hasClass("newala"))
+//    	if($("#"+amno).hasClass("newala")==true){// 새로운 소식 분류일경우 읽음처리 해주기 
+    	if($(this).hasClass("newala")==true){// 새로운 소식 분류일경우 읽음처리 해주기 
     		let n=newreadY(amno);
     		console.log(n);
     		//alarmList()
@@ -587,10 +595,14 @@ $(document).ready(function(){
 									+'<td width="10%">';
 										/* '<div class="profile"  style="padding: 1px;">'; */
 						if(item.profile_systemfilename != null){ // 프로필사진이 있는 경우
-							
-						} else { // 프로필사진이 없는 경우
-						}
-						html += '<span class="pic"><span style="font-size:8pt">'+item.name_kr.substr(1)+'</span></span>';
+			                  html += '<span class="sbpics">'+
+			                              '<img src="<%=ctxPath%>/resources/files/'+item.profile_systemfilename+'" width="38px" height="38px" style="border-radius: 13px; border: solid 1px rgba(0,0,0,0.1);">'+
+			                           '</span>';
+		               } else { // 프로필사진이 없는 경우
+		                  html += '<span class="pic"><span>'+item.name_kr.substr(1,2)+'</span></span>';
+		               }
+
+						/* html += '<span class="pic"><span style="font-size:8pt">'+item.name_kr.substr(1)+'</span></span>'; */
 						html += '</td>'			
 						html +=	'<td width="85%">'+
 											'<div>'+item.name_kr+'</div>'+
@@ -700,7 +712,7 @@ $(document).ready(function(){
 	function emptysearchbar(e){
 		$("#ss-input").val(""); //검색어 비우기
 		const category = $(e.target).parent().parent().attr("class");
-		console.log("category => "+category)
+		//console.log("category => "+category)
 		
 		switch (category) { // 재검색 
 		case "sse-memeber":
@@ -750,10 +762,10 @@ $(document).ready(function(){
 		//if($(e.target).is("td:first-child, td:first-child *,td:last-child, td:last-child *")) return;
 		click: function(){
 			var msgno = $(this).attr("id");
-			console.log(mno);
-			location.href= "<%= ctxPath%>/message.up?mno="+mno;
+			console.log(msgno);
+			location.href= "<%= ctxPath%>/message.up?mno="+msgno;
 		}
-	},".msg-tr");
+	},".msg-tr"); 
 	
 	
 	
@@ -821,7 +833,7 @@ $(document).ready(function(){
       	</c:if>
       	<c:if test="${not empty sessionScope.loginuser.profile_systemfilename}">
       		<span class="pic sbpics" style="background-color: inherit; -webkit-mask-image: inherit; -webkit-mask-size: unset;">
-      			<img src="<%=ctxPath%>/resources/files/${sessionScope.loginuser.profile_systemfilename}" width="38px" height="38px" style="border-radius: 25px; border: solid 1px rgba(0,0,0,0.1);">
+      			<img src="<%=ctxPath%>/resources/files/${sessionScope.loginuser.profile_systemfilename}" width="38px" height="38px" style="border-radius: 13px; border: solid 1px rgba(0,0,0,0.1);">
       		</span>
       	</c:if>
       <span class="my"><span class="name">${sessionScope.loginuser.name_kr}</span><br>
@@ -840,15 +852,16 @@ $(document).ready(function(){
 		<div class="sidebar_content">
 	                   <li onclick="javascript:location.href='<%= request.getContextPath()%>/'"><a><span class="icon icon-home"></span><span class="menu-text">홈</span></a></li>
            <li onclick="javascript:location.href='<%=request.getContextPath()%>/memberList.up'"><a><span class="icon icon-users"></span><span class="menu-text">구성원</span></a></li>
-           <li onclick="javascript:location.href='<%= request.getContextPath()%>/calendar.up'"><a><span class="icon icon-calendar"></span><span class="menu-text">캘린더</span></a></li>
-           <li onclick="javascript:location.href='<%= request.getContextPath()%>/support/meetingroom.up'"><a><span class="far fa-handshake" style="margin-left: 10px;"></span><span class="menu-text" style="margin-left: 5px;">회의실예약</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/schedule/scheduleManagement.up'"><a><span class="icon icon-calendar"></span><span class="menu-text">캘린더</span></a></li>
+           <%-- <li onclick="javascript:location.href='<%= request.getContextPath()%>/support/meetingroom.up'"><a><span class="far fa-handshake" style="margin-left: 10px;"></span><span class="menu-text" style="margin-left: 5px;">회의실예약</span></a></li> --%>
            <li onclick="javascript:location.href='<%= request.getContextPath()%>/message.up'"><a><span class="icon icon-envelop"></span><span class="menu-text">메시지</span></a></li>
            <li onclick="javascript:location.href='<%= request.getContextPath()%>/attendance.up'"><a><span class="icon icon-alarm"></span><span class="menu-text">근무</span></a></li>
+           <li onclick="javascript:location.href='<%= request.getContextPath()%>/board_all.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
+           
            <li onclick="javascript:location.href='<%= request.getContextPath()%>/approval.up'"><a><span class="icon icon-file-text2"></span><span class="menu-text">결재</span></a></li>
            <%-- 
            <li onclick="javascript:location.href='<%= request.getContextPath()%>/payroll.up'"><a><span class="icon icon-coin-dollar"></span><span class="menu-text">급여</span></a></li>
             --%>
-           <li onclick="javascript:location.href='<%= request.getContextPath()%>/board_all.up'"><a><span class="icon icon-pencil2"></span><span class="menu-text">게시판</span></a></li>
            
            <%-- 관리자로 로그인했을경우에만 --%>
            <c:set var="logat" value="${sessionScope.loginuser.authority}"/>
@@ -900,17 +913,22 @@ $(document).ready(function(){
     
     
     <%-- **** 비밀번호 변경 Modal **** --%>
-    <div class="modal fade" id="userPwdChange" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <%-- 아이디찾기 a 태그의 data-target="#userPwdFind" data-dismiss="modal" 와 매핑됨. --%>
+    <div class="modal fade" id="userPwdChange" style="background-color: rgba(240, 240, 240, 0.85);" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <%-- 아이디찾기 a 태그의 data-target="#userPwdFind" data-dismiss="modal" 와 매핑됨. --%>
      <div class="modal-dialog">
-       <div class="modal-content">
+       <div class="modal-content" style="border:none;border-radius: 15px;height: 380px;box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 4%), 0px 24px 72px rgb(36 42 48 / 30%);">
          <!-- Modal header -->
-         <button type="button" class="btn-close pwdChangeClose" data-bs-dismiss="modal" style="margin: 30px 0px 10px 425px; font-size: 12pt;"></button>
+         <div class="modal-header" >
+	         <h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
+	         <button id="pwdFindClose" type="button"  class="pwdFindClose btn" data-bs-dismiss="modal" style="transition: transform 0.1s ease 0s;border: none;background-color: transparent;">
+			<svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 26px; height: 26px; flex-shrink: 0;">
+			<path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM15.5303 15.5303C15.2374 15.8232 14.7626 15.8232 14.4697 15.5303L12.0001 13.0607L9.53033 15.5304C9.23744 15.8233 8.76256 15.8233 8.46967 15.5304C8.17678 15.2376 8.17678 14.7627 8.46967 14.4698L10.9394 12.0001L8.46968 9.53033C8.17679 9.23744 8.17679 8.76256 8.46968 8.46967C8.76257 8.17678 9.23745 8.17678 9.53034 8.46967L12.0001 10.9394L14.4697 8.46978C14.7626 8.17689 15.2374 8.17689 15.5303 8.46978C15.8232 8.76268 15.8232 9.23755 15.5303 9.53044L13.0607 12.0001L15.5303 14.4697C15.8232 14.7626 15.8232 15.2374 15.5303 15.5303Z" fill="rgba(36, 42, 48, 0.12)" fill-rule="evenodd" clip-rule="evenodd">
+			</path></svg></button>
+         </div>
          
          <!-- Modal body -->
          <div class="modal-body">
-         <h4 class="modal-title" id="modarTitle" style="font-weight: bold; color: #595959; margin: 6px 0 0 70px;">비밀번호 변경</h4><br>
          <div id="pwdChange">
-            <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 340px;" src="<%= request.getContextPath()%>/pwdChange.up"></iframe>
+            <iframe id="iframe_pwdChange" style="border: none; width: 100%; height: 250px;" src="<%= request.getContextPath()%>/pwdChange.up"></iframe>
          </div>
          </div>
          
@@ -964,7 +982,7 @@ $(document).ready(function(){
 							</tbody>
 						</table>
 						<!-- <br> -->
-						<table class="hi-container mt-3">			
+						<!-- <table class="hi-container mt-3">			
 							<th style="font-weight: 500;font-size:5pt;cursor: default;"colspan="3" height="15px">
 								<span style="color: rgb(85, 99, 114);float: left;cursor: default;">최근 검색</span>
 								<span id="alldel"style="float: right;color: #d4d4d4;cursor: pointer;">전체 삭제</span>
@@ -974,7 +992,7 @@ $(document).ready(function(){
 								<td width="90%">게시판 검색</td>
 								<td width="5%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; flex-shrink: 0;"><path d="M12 13.2728L17.0205 18.2933L18.2932 17.0205L13.2728 12L18.2932 6.97954L17.0205 5.70675L12 10.7272L6.97954 5.70675L5.70675 6.97954L10.7272 12L5.70675 17.0205L6.97954 18.2932L12 13.2728Z" fill="#cdd2d6"></path></svg></td>
 							</tr>
-						</table>
+						</table> -->
 					</div>
 					<div class="sse-container">
 						<!-- 구성원 검색 -->
@@ -993,5 +1011,6 @@ $(document).ready(function(){
 				
 			</div>
 					
+			<!-- </div> -->
 		</div>
 	</div>

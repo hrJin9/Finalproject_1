@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="approval_writing_header.jsp"%>
 <!-- 텍스트에디터 시작-->
-<!-- <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script> -->
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css" />
 <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
@@ -317,9 +316,9 @@
     padding-left: 10px;
     padding-right: 20px;
 }
-td{
+/* td{
 	width: 77%;
-}	
+}	 */
 .positionIcon{
 	margin-left: 90px;
 }
@@ -603,9 +602,6 @@ div#dayoff-temp, div#wort-temp{
 		$("button#approvalsave").click(function(){
 
 			$('#content').prepend(editor.getHTML());
-			
-			
-			
 			// 글제목 유효성 검사
 	         const subject = $("input#subject").val().trim();
 	         if(subject == "") {

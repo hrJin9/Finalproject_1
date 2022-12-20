@@ -111,8 +111,8 @@
 		line-height: 20px;
 	    border-radius: 20px;
 	    border-style: none;
-	    background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%);
-	    border: rgb(0 101 204) solid 1px;
+	    /* background-image: linear-gradient(40deg, rgb(0 101 204) 7.04%, rgb(120 215 255) 100%); */
+	    background-color: #0d6efd;
 	    font-weight: 600;
 	    cursor: pointer;
 	    color: white;
@@ -250,7 +250,7 @@ function goLogin() {
 			</div>
 
 			<div class="d-flex flex-column">
-				<button type="button" id="btn_submit" onclick="goLogin()">로그인</button>
+				<button type="button" id="btn_submit"  onclick="goLogin()">로그인</button>
 			</div>
 		</div>
 	</form>

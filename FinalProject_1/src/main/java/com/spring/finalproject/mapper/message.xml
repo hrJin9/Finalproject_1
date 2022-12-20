@@ -118,7 +118,7 @@
 		    ) M
 		    left join v_employee E
 		    on E.employee_no = writer
-		    where writer = #{empno} and M.delete_status = 1
+		    where writer = #{empno} and M.delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
 		    <if test="tab == 'scrap'">
 		    	and scrap_status = 1
 		    </if>
@@ -155,7 +155,7 @@
 		    ) M
 		    left join v_employee E
 		    on E.employee_no = writer
-		    where writer = #{empno} and M.delete_status = 1
+		    where writer = #{empno} and M.delete_status = 1 and sendtime <![CDATA[<=]]> sysdate
 		    <if test="tab == 'scrap'">
 		    	and scrap_status = 1
 		    </if>

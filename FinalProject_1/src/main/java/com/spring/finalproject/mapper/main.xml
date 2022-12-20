@@ -41,7 +41,7 @@
 			on A.ano = aps.fk_ano
 			join tbl_employee
 			on employee_no = A.fk_empno
-			where signdate is null and fk_sign_empno = #{employee_no}
+			where signyn = 0 and fk_sign_empno = #{employee_no}
 		)
 		where rno in (1,2)
 	</select>
@@ -111,9 +111,28 @@
 	<!-- 결재요청 처리하기 (승인/반려) -->
 	<update id="updateMainAvStatus" parameterType="HashMap">
 		update tbl_approval_sign
-		set signdate = sysdate, signyn = #{signyn}, signemp_name_kr = #{name_kr}
+		set signyn = #{signyn}, signemp_name_kr = #{name_kr}
 		where asno = #{asno}
 	</update>
+	
+	
+	
+	
+	 
+	
+	
+	
+	<!-- 등록된 일정에 대한 정보(달력에 표시됨)-->
+	<select id="selectMainSchedule" resultType="com.spring.schedule.model.Calendar_schedule_VO" parameterType="String">
+		select calno, startdate, enddate, subject, place, joinuser, content, fk_smcatgono, fk_lgcatgono, fk_employee_no 
+		from tbl_calendar_schedule
+		where fk_employee_no = #{fk_employee_no} OR 
+		fk_lgcatgono = 2 OR
+		(fk_lgcatgono != 2 AND lower(joinuser) like '%'|| lower(#{fk_employee_no}) ||'%') 
+		order by calno asc
+	</select>
+	
+	
 	
 	
 </mapper>
