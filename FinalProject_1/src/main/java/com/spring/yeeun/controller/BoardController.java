@@ -355,6 +355,7 @@ public class BoardController {
 	 * 4. 주소값 리턴 (https://localhost:8080/bombom/resources/upload/파일)
 	 */
 	// 게시판 글쓰기 스마트에디터(파일 삽입) Ajax
+	/*
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@ResponseBody
 	@RequestMapping(value = "/board/image_upload.up", method = RequestMethod.POST, produces="text/plain;charset=UTF-8") 
@@ -394,7 +395,7 @@ public class BoardController {
 		// https://localhost:8080/bombom/resources/upload/파일이름
 
 		return url + request.getContextPath() + "/resources/upload/board/" + newFileName;
-	}
+	} */
 
 	
 	
