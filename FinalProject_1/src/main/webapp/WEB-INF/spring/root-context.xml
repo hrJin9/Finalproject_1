@@ -12,7 +12,7 @@
 	<!-- <property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe" />  -->
 	   <property name="username" value="final_orauser1" />
 	   <property name="password" value="aclass" />
-	</bean>
+	</bean> 
 	
 	
 	<!-- ==== #15. myBatis(JDBC)설정 mapper 파일 위치 지정하기  ==== -->
