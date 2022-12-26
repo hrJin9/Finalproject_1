@@ -23,14 +23,14 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로, 4명의 팀원�
 - 구성원관리, 근태/연차관리, 인사이트(요약)
 
 # 3.1. 개발환경
-- OS : Windows 10, Mac
-- Framework : Spring Framework
-- Server : Apache Tomcat 9.0
-- DataBase : Oracle Database
-- Front-end : HTML5 / CSS / Javascript / JSP / JQuery / Ajax / Json 
-- Back-end : JDK 1.8 / Maven / Spring WebSocket / MyBatis
-- Developer Tools : STS3 / Eclipse / SqlDeveloper
-- GitHub
+:heavy_check_mark: **OS** : Windows 10, Mac <br>
+:heavy_check_mark: **Framework** : Spring Framework <br>
+:heavy_check_mark: **Server** : Apache Tomcat 9.0 <br>
+:heavy_check_mark: **DataBase** : Oracle Database <br>
+:heavy_check_mark: **Front-end** : HTML5 / CSS / Javascript / JSP / JQuery / Ajax / Json  <br>
+:heavy_check_mark: **Back-end** : JDK 1.8 / Maven / Spring WebSocket / MyBatis <br>
+:heavy_check_mark: **Developer Tools** : STS3 / Eclipse / SqlDeveloper <br>
+:heavy_check_mark: **GitHub**
 
 # 3.2. API
 ```
@@ -61,9 +61,13 @@ JQuery
 ![ThumbsUp UseCase](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e80ad7dc-4168-4b2f-af2c-ad0d2b731b6b/Usecase.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T071021Z&X-Amz-Expires=86400&X-Amz-Signature=e2fb36d6e52d6667bed7475abce4a389d5ea685f782e5afe883d6be01bafde3d&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Usecase.png%22&x-id=GetObject)
 # 5.3. DB 설계
 <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e3dd001a-5123-4cfa-8b19-6679c2866667/DB%EB%AA%A8%EB%8D%B8%EB%A7%81.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T082311Z&X-Amz-Expires=86400&X-Amz-Signature=4acebcab66e733cce5d289e111b330bcbe967f2ff2b989ca5dc4e64281192b10&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22DB%25EB%25AA%25A8%25EB%258D%25B8%25EB%25A7%2581.jpg%22&x-id=GetObject">
+![DB모델링(영어)](https://user-images.githubusercontent.com/109951309/209524777-a34c6d05-5552-4d41-9aa2-b594bb8da67e.jpg)
+
+
 
 # 6.1. 팀원소개
 [진혜린](https://github.com/hrJin9), [강채영](https://github.com/chaeo), [김지은](https://github.com/jinnssi), [이예은](https://github.com/yenioo) 총 4명이 참가하였습니다.
+
 
 # 6.2 마치며
 - 보완사항
