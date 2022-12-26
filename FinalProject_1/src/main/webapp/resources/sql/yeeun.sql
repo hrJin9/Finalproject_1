@@ -856,7 +856,24 @@ where fk_employee_no = 100016 and substr(startdate, 0,4) = '2022'
 update tbl_employee set dayoff_cnt = dayoff_cnt+1
 where employee_no != 99
 
- 
+update tbl_employee set dayoff_cnt = 0
+where employee_no = 99
+commit;
+
+update tbl_employee set dayoff_cnt = 
+where position = 
+
+select *
+from tbl_employee
+
+select *
+from tbl_dayoff
+where fk_employee_no = '100016'
+
+delete from tbl_dayoff
+where dono = '162'
+commit;
+
 
 
 ----
@@ -949,6 +966,14 @@ values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2020-01-27 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
 values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2020-10-20 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2020-10-20 18:00', 'yyyy-mm-dd hh24:mi'));
 
+
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-26 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-26 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-30 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-30 18:00', 'yyyy-mm-dd hh24:mi'));
+
 commit;
 -- 1 행 이(가) 삽입되었습니다.
 
@@ -959,7 +984,7 @@ select *
 from tbl_dayoff;
 
 delete from tbl_dayoff
-where dono='do-134';
+where dono='do-137';
 commit;
 
 -- to_char(sysdate, 'dy')    AS 줄인요일명

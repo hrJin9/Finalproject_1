@@ -585,6 +585,7 @@
 						<c:if test="${not empty requestScope.boardvo.nb_orgFilename}">
 							<div>첨부파일 <span>1</span></div>
 						</c:if>
+						
 			      </button>
 			    </h2>
 			    <c:if test="${not empty requestScope.boardvo.nb_orgFilename}">

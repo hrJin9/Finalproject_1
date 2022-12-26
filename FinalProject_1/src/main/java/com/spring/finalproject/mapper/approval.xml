@@ -364,7 +364,7 @@
 			, writeday, modifyday, fk_ano_refer, bookmark, final_signdate
 		from 
 		(select ano, fk_empno, ap_type, final_signdate
-		       , title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려') as final_signyn, preserveperiod
+		       , title, content, decode(final_signyn,0,'진행',1,'승인',2,'반려',3,'취소') as final_signyn, preserveperiod
 		       , to_char(writeday,'yyyy-mm-dd hh24:mi') as writeday, nvl(to_char(modifyday, 'yyyy-mm-dd hh24:mi'),0) as modifyday
 		       , fk_ano_refer, bookmark
 		from tbl_approval

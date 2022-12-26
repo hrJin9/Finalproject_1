@@ -278,14 +278,14 @@
     position: relative;
     white-space: nowrap;
 }
-.icon-calendar{
+/* .icon-calendar{
 	position: relative;
     z-index: 2;
     top: 30px;
     right: -38px;
     color:#5d646a !important;
     font-size: 10pt;
-}
+} */
 .ant-input, .ant-input-selector {
     background-color: #fff;
     background-image: none;

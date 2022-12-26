@@ -1257,8 +1257,8 @@ function showsearch(){
 <nav id="subList" class="margin-container appreqsublist">
 	<div style="display: contents;">
 		<a  class="header-sub list_iscurrent" href="<%= request.getContextPath()%>/approval/requested.up">결재대기<span style="color: rgb(41 170 236);font-weight: 500;margin-left: 4px;">${requestScope.totalCount}</span></a>
-		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/will.up" style="margin-left: 1%;">결재예정</a>
-		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/processing.up" style="margin-left: 1%;">결재진행중</a>
+		<%-- <a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/will.up" style="margin-left: 1%;">결재완료 </a> --%>
+		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/processing.up" style="margin-left: 1%;">결재완료</a>
 		<a  class="header-sub list_notcurrent" href="<%= request.getContextPath()%>/approval/requested/refered.up" style="margin-left: 1%;">참조문서</a>
 	</div>
 	<div class="subList_underline"></div>
