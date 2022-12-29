@@ -9,6 +9,8 @@
 5. ✨[마치며](#-마치며)
 <br>
 
+---
+
 # 📌 프로젝트 소개
 Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 [🙆‍♀️ 진혜린](https://github.com/hrJin9)
@@ -34,6 +36,8 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 - 근무/연차
 - 회원가입/수정, 로그인, 비밀번호찾기/변경
 - 구성원관리, 근태/연차관리, 인사이트(요약)
+<br>
+---
 <br>
 
 # 🛠️ 개발환경
@@ -65,12 +69,16 @@ JQuery
 ```
 
 <br>
+---
+<br>
 
 # 🔎 화면설계 및 기능구현
 ![구성원](https://user-images.githubusercontent.com/109951309/209531219-e1f41f16-e400-4cc5-ba28-30df22a0f35b.gif)
 
 
 
+<br>
+---
 <br>
 
 # 📚 프로젝트 산출물
@@ -86,7 +94,9 @@ JQuery
   <img src="https://user-images.githubusercontent.com/109951309/209929800-e98ad3fb-4e71-43b1-8e1d-fc3e3b5f4b3f.jpg">
 </p>
 
-
+<br>
+---
+<br>
 
 # ✨ 마치며
 - 참고사이트 : [flex](https://flex.team/), [다우오피스](https://daouoffice.com/), [잔디](https://www.jandi.com/)
