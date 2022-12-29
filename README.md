@@ -1,12 +1,13 @@
 # ThumbsUp Groupware Project
 <p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/75eee8bc-227d-4b6d-a69c-562658fb6e08/ThumbsUp%EB%A1%9C%EA%B3%A0.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T081833Z&X-Amz-Expires=86400&X-Amz-Signature=27a377de239444c6a7b38b2e91977323f41c5f2b58a704143d266e88faa398e9&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22ThumbsUp%25EB%25A1%259C%25EA%25B3%25A0.jpg%22&x-id=GetObject" width="300px"/></p>
 Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로, 4명의 팀원이 함께 그룹웨어 웹사이트를 제작하였습니다.
+
 [진혜린](https://github.com/hrJin9), [강채영](https://github.com/chaeo), [김지은](https://github.com/jinnssi), [이예은](https://github.com/yenioo) 총 4명이 참가하였습니다.
 
 ## 목차
-[1.1. 프로젝트 기간](#1.1.-프로젝트-기간)
+[1.1. 프로젝트 기간](##1.1.-프로젝트-기간)
 
-[1.2. 프로젝트 컨셉](#1.2.-프로젝트-컨셉)
+[1.2. 프로젝트 컨셉](##1.2.-프로젝트-컨셉)
 
 [2.1. 기획의도](#2.1.-기획의도)
 
