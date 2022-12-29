@@ -42,8 +42,10 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 <br>
 
 # 🛠️ 개발환경
-- **OS** : Windows 10, Mac <br>
-- **Framework** : Spring Framework <br>
+- **OS**
+```dows 10, Mac```
+- **Framework**
+Sng Framework <br>
 - **Server** : Apache Tomcat 9.0 <br>
 - **DataBase** : Oracle Database <br>
 - **Front-end** : HTML5 / CSS / Javascript / JSP / JQuery / Ajax / Json  <br>
