@@ -42,34 +42,26 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 <br>
 
 # 🛠️ 개발환경
-- **OS**
-```dows 10, Mac```
-- **Framework**
-Sng Framework <br>
-- **Server** : Apache Tomcat 9.0 <br>
-- **DataBase** : Oracle Database <br>
-- **Front-end** : HTML5 / CSS / Javascript / JSP / JQuery / Ajax / Json  <br>
-- **Back-end** : JDK 1.8 / Maven / Spring WebSocket / MyBatis <br>
-- **Developer Tools** : STS3 / Eclipse / SqlDeveloper <br>
-- **GitHub**<br>
-- **API**
-```
-Google Mail
-Daum 주소찾기
-Fullcalendar-5.10
-Flatpickr
-Toast Editor
-Chart.js
-Jspdf
-Html2canvas
-```
-- **라이브러리**
-```
-Bootstrap5
-EL/JSTL
-JDBC
-JQuery
-```
+- **OS** : 
+```windows 10, Mac```
+- **Framework** : 
+```Spring Framework```
+- **Server** : 
+```Apache Tomcat 9.0```
+- **DataBase** : 
+```Oracle Database```
+- **Front-end** : 
+```HTML5 / CSS / Javascript / JSP / JQuery / Ajax / Json```
+- **Back-end** : 
+```JDK 1.8 / Maven / Spring WebSocket / MyBatis```
+- **Developer Tools** : 
+```STS3 / Eclipse / SqlDeveloper```
+- **API** : 
+```Google Mail / Daum 주소찾기 / Fullcalendar-5.10 / Flatpickr / Toast Editor / Chart.js / Jspdf / Html2canvas```
+- **라이브러리** : 
+```Bootstrap5 / EL/JSTL / JDBC / JQuery```
+- **GitHub** 
+
 
 <br>
 <br>
