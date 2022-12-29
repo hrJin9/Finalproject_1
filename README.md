@@ -15,7 +15,12 @@
 
 # 💡 프로젝트 소개
 Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로, 4명의 팀원이 함께 그룹웨어 웹사이트를 제작하였습니다.
-[진혜린](https://github.com/hrJin9), [강채영](https://github.com/chaeo), [김지은](https://github.com/jinnssi), [이예은](https://github.com/yenioo) 총 4명이 참가하였습니다.
+## 팀원 소개
+[🙋‍ 진혜린](https://github.com/hrJin9)
+[🙋‍♀️ 강채영](https://github.com/chaeo)
+[🙋‍♀️ 김지은](https://github.com/jinnssi)
+[🙋‍♀️ 이예은](https://github.com/yenioo)
+총 4명이 참가하였습니다.
 
 ## 프로젝트 컨셉
 하나되어 소통하고 업무를 공유하는 공간, ‘Thumbs Up'
