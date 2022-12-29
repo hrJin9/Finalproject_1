@@ -1,19 +1,32 @@
 # ThumbsUp Groupware Project
 <p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/75eee8bc-227d-4b6d-a69c-562658fb6e08/ThumbsUp%EB%A1%9C%EA%B3%A0.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T081833Z&X-Amz-Expires=86400&X-Amz-Signature=27a377de239444c6a7b38b2e91977323f41c5f2b58a704143d266e88faa398e9&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22ThumbsUp%25EB%25A1%259C%25EA%25B3%25A0.jpg%22&x-id=GetObject" width="300px"/></p>
 Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로, 4명의 팀원이 함께 그룹웨어 웹사이트를 제작하였습니다.
+[진혜린](https://github.com/hrJin9), [강채영](https://github.com/chaeo), [김지은](https://github.com/jinnssi), [이예은](https://github.com/yenioo) 총 4명이 참가하였습니다.
 
 ## 목차
 [1.1. 프로젝트 기간](#1.1.-프로젝트-기간)
+[1.2. 프로젝트 컨셉](#1.2.-프로젝트-컨셉)
+[2.1. 기획의도](#2.1.-기획의도)
+[2.2. 주요기능](#2.2.-주요기능)
+[3.1. 개발환경](#3.1.-개발환경)
+[3.2. API](#3.2.-API)
+[3.3. 라이브러리](#3.3.-라이브러리)
+[4. 화면설계 및 기능구현](#4.-화면설계-및-기능구현)
+[5.1. 요구사항 정의서](#5.1.-요구사항-정의서)
+[5.2. Use Case](#5.2.-Use-Case)
+[5.3. DB 설계](#5.3.-DB-설계)
+[6. 마치며](#6.-마치며)
+
 
 ## 1.1. 프로젝트 기간
 > 2022.11.7 ~ 2022.12.20
 <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2558ae47-181c-4239-8ae2-3b77675ba1a1/%EC%9D%BC%EC%A0%95%ED%91%9C.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221229%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221229T061101Z&X-Amz-Expires=86400&X-Amz-Signature=64c1f578e8206ea973816964c74d4773d699cbf85991af46f90b396e11e7f5ab&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EC%259D%25BC%25EC%25A0%2595%25ED%2591%259C.png%22&x-id=GetObject">
 
 
-# 1.2. 프로젝트 컨셉
+## 1.2. 프로젝트 컨셉
 하나되어 소통하고 업무를 공유하는 공간, ‘Thumbs Up'
 
-# 2.1. 기획의도
+## 2.1. 기획의도
 회사 내 구성원들이 소통하고 공유하는 공간으로서
 업무의 효율성을 극대화시키는 것을 목표로 하고 있습니다.
 
@@ -72,11 +85,7 @@ JQuery
 
 
 
-# 6.1. 팀원소개
-[진혜린](https://github.com/hrJin9), [강채영](https://github.com/chaeo), [김지은](https://github.com/jinnssi), [이예은](https://github.com/yenioo) 총 4명이 참가하였습니다.
-
-
-# 6.2 마치며
+# 6. 마치며
 - 보완사항
 
 - 후기
