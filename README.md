@@ -25,8 +25,7 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 <img src="https://user-images.githubusercontent.com/109951309/209932513-1f7c5648-3b85-44ee-b540-6f1dbded11c2.png">
 
 ## 프로젝트 컨셉
->하나되어 소통하고 업무를 공유하는 공간, ‘Thumbs Up' <br>
-
+하나되어 소통하고 업무를 공유하는 공간, ‘Thumbs Up' <br>
 회사 내 구성원들의 업무효율성을 극대화할 수 있는 통합 그룹웨어 시스템을 목표로 하고 있습니다.
 
 ## 주요기능
