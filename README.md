@@ -72,14 +72,14 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 <br>
 
 ## 📚 프로젝트 산출물
-## 요구사항정의서
-<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209928608-4af2fefb-84de-4683-a0cc-f5cd7ce60225.png"></p>
+- **요구사항정의서**<br>
+  <p align="center"><img src="https://user-images.githubusercontent.com/109951309/209928608-4af2fefb-84de-4683-a0cc-f5cd7ce60225.png"></p>
 
-## Use Case
-<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209932502-717a9e77-88b7-4a0c-a0ee-4a122323a04f.png"></p>
+- **Use Case**<br>
+  <p align="center"><img src="https://user-images.githubusercontent.com/109951309/209932502-717a9e77-88b7-4a0c-a0ee-4a122323a04f.png"></p>
 
-## DB 설계
-<p align="center">
+- **DB 설계**<br>
+  <p align="center">
   <img src="https://user-images.githubusercontent.com/109951309/209929797-9fd1db1d-8eb9-4516-bb72-47bdf5f63fc1.jpg">
   <img src="https://user-images.githubusercontent.com/109951309/209929800-e98ad3fb-4e71-43b1-8e1d-fc3e3b5f4b3f.jpg">
 </p>
