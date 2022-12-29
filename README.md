@@ -1,4 +1,4 @@
-# ThumbsUp Groupware Project
+# [ThumbsUp] Groupware
 <p align="center"><img src="https://user-images.githubusercontent.com/109951309/209932496-55a23fc7-2561-49e6-bbdb-2f75fe03614e.jpg" width="300px"/></p>
 
 ## 목차
