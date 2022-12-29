@@ -5,7 +5,7 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로, 4명의 팀원�
 [진혜린](https://github.com/hrJin9), [강채영](https://github.com/chaeo), [김지은](https://github.com/jinnssi), [이예은](https://github.com/yenioo) 총 4명이 참가하였습니다.
 
 ## 목차
-(1.1. 프로젝트 기간)[#1.1.-프로젝트-기간]
+[1.1. 프로젝트 기간](#1.1.-프로젝트-기간)
 
 [1.2. 프로젝트 컨셉](#1.2.-프로젝트-컨셉)
 
