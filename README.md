@@ -81,8 +81,8 @@ JQuery
 <p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e80ad7dc-4168-4b2f-af2c-ad0d2b731b6b/Usecase.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T071021Z&X-Amz-Expires=86400&X-Amz-Signature=e2fb36d6e52d6667bed7475abce4a389d5ea685f782e5afe883d6be01bafde3d&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Usecase.png%22&x-id=GetObject"></p>
 
 ## DB 설계
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e3dd001a-5123-4cfa-8b19-6679c2866667/DB%EB%AA%A8%EB%8D%B8%EB%A7%81.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T082311Z&X-Amz-Expires=86400&X-Amz-Signature=4acebcab66e733cce5d289e111b330bcbe967f2ff2b989ca5dc4e64281192b10&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22DB%25EB%25AA%25A8%25EB%258D%25B8%25EB%25A7%2581.jpg%22&x-id=GetObject"></p>
-<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209524777-a34c6d05-5552-4d41-9aa2-b594bb8da67e.jpg"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209928608-4af2fefb-84de-4683-a0cc-f5cd7ce60225.png">
+</p>
 
 
 
