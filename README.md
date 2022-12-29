@@ -5,7 +5,7 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로, 4명의 팀원�
 [진혜린](https://github.com/hrJin9), [강채영](https://github.com/chaeo), [김지은](https://github.com/jinnssi), [이예은](https://github.com/yenioo) 총 4명이 참가하였습니다.
 
 ## 목차
-[1.1. 프로젝트 기간](#1.1.-프로젝트-기간)
+[1.1. 프로젝트 기간](#프로젝트-기간)
 
 [1.2. 프로젝트 컨셉](#1.2.-프로젝트-컨셉)
 
@@ -30,7 +30,7 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로, 4명의 팀원�
 [6. 마치며](#6.-마치며)
 
 
-## 1.1. 프로젝트 기간
+## 프로젝트 기간
 > 2022.11.7 ~ 2022.12.20
 <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2558ae47-181c-4239-8ae2-3b77675ba1a1/%EC%9D%BC%EC%A0%95%ED%91%9C.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221229%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221229T061101Z&X-Amz-Expires=86400&X-Amz-Signature=64c1f578e8206ea973816964c74d4773d699cbf85991af46f90b396e11e7f5ab&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EC%259D%25BC%25EC%25A0%2595%25ED%2591%259C.png%22&x-id=GetObject">
 
