@@ -1,11 +1,11 @@
 # ThumbsUp Groupware Project
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/75eee8bc-227d-4b6d-a69c-562658fb6e08/ThumbsUp%EB%A1%9C%EA%B3%A0.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T081833Z&X-Amz-Expires=86400&X-Amz-Signature=27a377de239444c6a7b38b2e91977323f41c5f2b58a704143d266e88faa398e9&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22ThumbsUp%25EB%25A1%259C%25EA%25B3%25A0.jpg%22&x-id=GetObject" width="300px"/></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209932496-55a23fc7-2561-49e6-bbdb-2f75fe03614e.jpg" width="300px"/></p>
 
 ## 목차
 1. [📌 프로젝트 소개](#-프로젝트-소개)
 2. [🛠️ 개발환경](#-개발-환경)
 3. [🔎 화면설계 및 기능구현](#-화면설계-및-기능구현)
-4. [🧮 프로젝트 산출물](#-프로젝트-산출물)
+4. [📚 프로젝트 산출물](#-프로젝트-산출물)
 5. ✨[마치며](#-마치며)
 <br>
 
@@ -19,7 +19,7 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 
 ## 📅 프로젝트 일정
 > 2022.11.7 ~ 2022.12.20 (43일)
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2558ae47-181c-4239-8ae2-3b77675ba1a1/%EC%9D%BC%EC%A0%95%ED%91%9C.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221229%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221229T061101Z&X-Amz-Expires=86400&X-Amz-Signature=64c1f578e8206ea973816964c74d4773d699cbf85991af46f90b396e11e7f5ab&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EC%259D%25BC%25EC%25A0%2595%25ED%2591%259C.png%22&x-id=GetObject">
+<img src="https://user-images.githubusercontent.com/109951309/209932513-1f7c5648-3b85-44ee-b540-6f1dbded11c2.png">
 
 ## 💡 프로젝트 컨셉
 >하나되어 소통하고 업무를 공유하는 공간, ‘Thumbs Up'
@@ -73,14 +73,14 @@ JQuery
 
 <br>
 
-# 🧮 프로젝트 산출물
-## 요구사항정의서
+# 📚 프로젝트 산출물
+## 📝 요구사항정의서
 <p align="center"><img src="https://user-images.githubusercontent.com/109951309/209928608-4af2fefb-84de-4683-a0cc-f5cd7ce60225.png"></p>
 
-## Use Case
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e80ad7dc-4168-4b2f-af2c-ad0d2b731b6b/Usecase.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T071021Z&X-Amz-Expires=86400&X-Amz-Signature=e2fb36d6e52d6667bed7475abce4a389d5ea685f782e5afe883d6be01bafde3d&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Usecase.png%22&x-id=GetObject"></p>
+## 👨‍👧‍👧 Use Case
+<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209932502-717a9e77-88b7-4a0c-a0ee-4a122323a04f.png"></p>
 
-## DB 설계
+## ⚙️ DB 설계
 <p align="center">
   <img src="https://user-images.githubusercontent.com/109951309/209929797-9fd1db1d-8eb9-4516-bb72-47bdf5f63fc1.jpg">
   <img src="https://user-images.githubusercontent.com/109951309/209929800-e98ad3fb-4e71-43b1-8e1d-fc3e3b5f4b3f.jpg">
