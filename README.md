@@ -3,13 +3,13 @@
 
 ## 목차
 1. [📌 프로젝트 소개](#-프로젝트-소개)
-2. [🛠️ 개발환경](#-개발환경)
+2. [🛠️ 개발환경](#-개발-환경)
 3. [🔎 화면설계 및 기능구현](#-화면설계-및-기능구현)
 4. [🧮 프로젝트 산출물](#-프로젝트-산출물)
 5. ✨[마치며](#-마치며)
 <br>
 
-## 📌 프로젝트 소개
+# 📌 프로젝트 소개
 Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 [🙆‍♀️ 진혜린](https://github.com/hrJin9)
 [🙇‍♀️ 강채영](https://github.com/chaeo)
@@ -26,7 +26,7 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 
 회사 내 구성원들이 소통하고 공유하는 공간으로서 업무의 효율성을 극대화시키는 것을 목표로 하고 있습니다.
 
-## 주요기능
+## 🔖 주요기능
 - 일정관리
 - 전자결재
 - 메시지
@@ -36,7 +36,7 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 - 구성원관리, 근태/연차관리, 인사이트(요약)
 <br>
 
-## 🛠️ 개발환경
+# 🛠️ 개발환경
 - **OS** : Windows 10, Mac <br>
 - **Framework** : Spring Framework <br>
 - **Server** : Apache Tomcat 9.0 <br>
@@ -66,27 +66,29 @@ JQuery
 
 <br>
 
-## 🔎 화면설계 및 기능구현
+# 🔎 화면설계 및 기능구현
 ![구성원](https://user-images.githubusercontent.com/109951309/209531219-e1f41f16-e400-4cc5-ba28-30df22a0f35b.gif)
 
 
 
 <br>
 
-## 🧮 프로젝트 산출물
+# 🧮 프로젝트 산출물
 ## 요구사항정의서
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0ed4b67a-de16-4dc0-8dd5-e7e7f5a89054/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EC%A0%95%EC%9D%98%EC%84%9C.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T080455Z&X-Amz-Expires=86400&X-Amz-Signature=225d39a3ae8d13512c95f56989a26a7be5fc4132d6b13528e1d78161c0468ea4&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EC%259A%2594%25EA%25B5%25AC%25EC%2582%25AC%25ED%2595%25AD%25EC%25A0%2595%25EC%259D%2598%25EC%2584%259C.png%22&x-id=GetObject"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209928608-4af2fefb-84de-4683-a0cc-f5cd7ce60225.png"></p>
 
 ## Use Case
 <p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e80ad7dc-4168-4b2f-af2c-ad0d2b731b6b/Usecase.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T071021Z&X-Amz-Expires=86400&X-Amz-Signature=e2fb36d6e52d6667bed7475abce4a389d5ea685f782e5afe883d6be01bafde3d&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Usecase.png%22&x-id=GetObject"></p>
 
 ## DB 설계
-<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209928608-4af2fefb-84de-4683-a0cc-f5cd7ce60225.png">
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/109951309/209929797-9fd1db1d-8eb9-4516-bb72-47bdf5f63fc1.jpg">
+  <img src="https://user-images.githubusercontent.com/109951309/209929800-e98ad3fb-4e71-43b1-8e1d-fc3e3b5f4b3f.jpg">
 </p>
 
 
 
-# ✨마치며
+# ✨ 마치며
 - 참고사이트 : [flex](https://flex.team/), [다우오피스](https://daouoffice.com/), [잔디](https://www.jandi.com/)
 - 보완사항
 
