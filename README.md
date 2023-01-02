@@ -70,7 +70,6 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 
 - **구성원**
 <img src="https://user-images.githubusercontent.com/109951309/210200260-ab6b89e9-6ec3-429b-8be3-fdb2b67e8207.png" width="100%">
-  - 
 
 - **캘린더**
 ![녹화_2023_01_02_09_51_49_344](https://user-images.githubusercontent.com/113486177/210199873-1b0a4fe7-f0e7-456b-9918-c3e35859aa51.gif)
