@@ -65,37 +65,39 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 
 ## 🔎 화면설계 및 기능구현
 
-- **로그인/회원가입/비밀번호찾기**
-![로그인회원가입비밀번호찾기](https://user-images.githubusercontent.com/109951309/210196893-368c51a2-56cd-41a6-ad70-956754ca4a78.gif)
+- **로그인**
+<img src="https://user-images.githubusercontent.com/109951309/210200235-2fc84974-79f9-48f8-9ff7-9f74e6827afd.png" width="100%">
 
-- **메인홈페이지**
-![메인-홈](https://user-images.githubusercontent.com/109951309/210196904-a89849e8-0308-4721-8d80-3894c91bbd5e.png)
+- **구성원**
+<img src="https://user-images.githubusercontent.com/109951309/210200260-ab6b89e9-6ec3-429b-8be3-fdb2b67e8207.png" width="100%">
+  - 
+
+- **캘린더**
+![녹화_2023_01_02_09_51_49_344](https://user-images.githubusercontent.com/113486177/210199873-1b0a4fe7-f0e7-456b-9918-c3e35859aa51.gif)
+
 
 - **메시지**
-![메시지](https://user-images.githubusercontent.com/109951309/210196908-def39d1f-de8b-4962-bb54-d0521fe8ae0f.gif)
+<img src="https://user-images.githubusercontent.com/109951309/210200579-36dd1dc6-28e7-4af4-a86e-a128feafe66b.png" width="100%">
 
-- **구성원 보기**<br>
-  <p align="center"><img src="https://user-images.githubusercontent.com/109951309/209531219-e1f41f16-e400-4cc5-ba28-30df22a0f35b.gif" width="100%"></p>
+- **근태**
 
 
-- **프로필**
-  - 타인의 프로필
-  ![프로필](https://user-images.githubusercontent.com/109951309/210196880-42ed2434-3f17-467f-b113-4c8dcba9e589.gif)
-  - 자신의 프로필
-  ![내프로필](https://user-images.githubusercontent.com/109951309/210199080-c26791fe-6622-4fa6-9a82-148fd78bb425.gif)
+- **게시판**
+
+
+- **전자결재**
+
+
 
 
 ---
 - **관리자: 구성원 관리**
-![구성원관리](https://user-images.githubusercontent.com/109951309/210196955-9948dc2e-007a-4313-880b-e87d834f6919.png)
-  - 구성원 추가
-  ![구성원추가](https://user-images.githubusercontent.com/109951309/210196905-29980b09-c023-46fe-9c76-45df361c4bfb.gif)
-- **관리자 : 근태관리
-![근태관리](https://user-images.githubusercontent.com/109951309/210196906-60c52281-ccfe-4bb0-afe4-9dec224bd663.gif)
+<img src="https://user-images.githubusercontent.com/109951309/210200367-f0a76477-39d6-4749-a8a7-95e02b1a4a26.png" width="100%">
+
+- **관리자 : 근태관리**
+<img src="https://user-images.githubusercontent.com/109951309/210200378-8705a94e-c4e2-44e8-9f05-ca9323d5265b.png" width="100%">
 
 
-- **캘린더**
-![녹화_2023_01_02_09_51_49_344](https://user-images.githubusercontent.com/113486177/210199873-1b0a4fe7-f0e7-456b-9918-c3e35859aa51.gif)
 
 
 <br>
