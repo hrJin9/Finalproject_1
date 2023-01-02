@@ -64,9 +64,34 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 <br>
 
 ## 🔎 화면설계 및 기능구현
-![구성원](https://user-images.githubusercontent.com/109951309/209531219-e1f41f16-e400-4cc5-ba28-30df22a0f35b.gif)
+
+- **로그인/회원가입/비밀번호찾기**
+![로그인회원가입비밀번호찾기](https://user-images.githubusercontent.com/109951309/210196893-368c51a2-56cd-41a6-ad70-956754ca4a78.gif)
+
+- **메인홈페이지**
+![메인-홈](https://user-images.githubusercontent.com/109951309/210196904-a89849e8-0308-4721-8d80-3894c91bbd5e.png)
+
+- **메시지**
+![메시지](https://user-images.githubusercontent.com/109951309/210196908-def39d1f-de8b-4962-bb54-d0521fe8ae0f.gif)
+
+- **구성원 보기**<br>
+  <p align="center"><img src="https://user-images.githubusercontent.com/109951309/209531219-e1f41f16-e400-4cc5-ba28-30df22a0f35b.gif" width="100%"></p>
 
 
+- **프로필**
+  - 타인의 프로필
+  ![프로필](https://user-images.githubusercontent.com/109951309/210196880-42ed2434-3f17-467f-b113-4c8dcba9e589.gif)
+  - 자신의 프로필
+  ![내프로필](https://user-images.githubusercontent.com/109951309/210199080-c26791fe-6622-4fa6-9a82-148fd78bb425.gif)
+
+
+---
+- **관리자: 구성원 관리**
+![구성원관리](https://user-images.githubusercontent.com/109951309/210196955-9948dc2e-007a-4313-880b-e87d834f6919.png)
+  - 구성원 추가
+  ![구성원추가](https://user-images.githubusercontent.com/109951309/210196905-29980b09-c023-46fe-9c76-45df361c4bfb.gif)
+- **관리자 : 근태관리
+![근태관리](https://user-images.githubusercontent.com/109951309/210196906-60c52281-ccfe-4bb0-afe4-9dec224bd663.gif)
 
 <br>
 <br>
