@@ -93,6 +93,11 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 - **관리자 : 근태관리
 ![근태관리](https://user-images.githubusercontent.com/109951309/210196906-60c52281-ccfe-4bb0-afe4-9dec224bd663.gif)
 
+
+- **캘린더**
+![녹화_2023_01_02_09_51_49_344](https://user-images.githubusercontent.com/113486177/210199873-1b0a4fe7-f0e7-456b-9918-c3e35859aa51.gif)
+
+
 <br>
 <br>
 
