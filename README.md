@@ -83,7 +83,7 @@ Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
 
 
 - **게시판**
-
+![notice_readme](https://user-images.githubusercontent.com/110097691/210211890-a2050f69-dfda-4cf9-93e7-cd121c928fed.png)
 
 - **전자결재**
 <img src="https://user-images.githubusercontent.com/106755472/210203681-9057bc4a-8c42-465a-a4a5-bf16555bfbdd.gif">
