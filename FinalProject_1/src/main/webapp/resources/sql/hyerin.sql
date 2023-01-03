@@ -1691,3 +1691,18 @@ desc tbl_team
 desc tbl_employee
 
 select * from tbl_employee
+
+
+
+select * from tbl_employee
+where name_kr = '진혜린'
+
+
+delete from tbl_employee where employee_no in (259000,120260,100261)
+
+delete from tbl_attendance where fk_employee_no in (259000,120260,100261)
+
+commit;
+
+select * from tbl_attendance
+
