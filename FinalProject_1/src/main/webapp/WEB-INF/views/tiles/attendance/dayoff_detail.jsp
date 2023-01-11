@@ -123,12 +123,6 @@
 		}); // end of $("select#selyear").change--------------  --%>
 		
 		 
-		 /* let dayoffbyMonth = document.getElementsByClassName("dayoffbyMonth")[0].innerText;
-		 console.log("연차개수 :" +dayoffbyMonth);
-		 console.log("이번달 :" + ${requestScope.thismm}); */
-		 
-		 
-		 
 	});// end of $(document).ready(function(){})----------------
 	
 	
