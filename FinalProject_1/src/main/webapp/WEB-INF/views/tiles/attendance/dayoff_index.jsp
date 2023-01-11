@@ -98,13 +98,14 @@
 		         	
 				    const use_allCnt = json.length;
 	    			document.getElementById("dayoff-usecnt").textContent = use_allCnt;
-	     			
-					html = '<span id="dayoff-usecnt"></span>';
-				
 					
 		           	if(json.length != 0) {
-			     		$.each(json, function(index, item){
-			     			html += '<tr>'
+		           		
+		           		html += '<div class="dayoff-exist">'
+		     					+ '<table class="dayoff-recordtable last_dayoff">';
+		           		
+			     		$.each(json, function(index, item){  // 반복문
+			     			 html += '<tr>'
 									+ '<td width="2.5%">'
 										+ '<div style="margin-right: 10px;">'
 											+ '<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/beach-with-umbrella_1f3d6-fe0f.png" width="20px"/>'
@@ -119,8 +120,10 @@
 										+ '<div class="dayoff-cntinfo"><div>'+item.usedays+'일</div></div>'
 									+ '</td>'
 								+ '</tr>';
-		     			  
 			     		}); 
+			     		
+			     		html += '</table>'
+							+ '</div>';
 		            }
 			        else {
 			        	html += '<div class="dayoff-none"><div>'
@@ -129,7 +132,9 @@
 			        	        + '</div></div>';
 			        }
 	           	
-	   	         	$(".last_dayoff").html(html); 
+	   	         	// $(".last_dayoff").html(html); 
+	   	         	$(".last_dayoffStatus").html(html); 
+	   	         	
 				},
 				error: function(request, status, error){
 		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -160,9 +165,8 @@
 	}// end of function getYears(getY)----------
 	
 	
-	
-	
 </script>
+
 <div class="dayoff-index-container">
 	<div class="dayoff-write">
 		<div class="margin-container dayoff-subject">잔여 휴가</div>
@@ -201,6 +205,18 @@
 				<!-- 연차사용예정이 있는 경우 -->
 				<span class="dayoff-count" id="dayoff-plancnt"></span>
 			</div>
+			
+			<!-- 연차 예정내역이 없는 경우 -->
+			<c:if test="${empty requestScope.comedayoff}">
+				<div class="dayoff-none">
+					<div>
+						<i class="fa-solid fa-circle-info" style="display: block; margin-bottom: 5px;"></i>
+						예정 내역이 없습니다.
+					</div>
+				</div>
+			</c:if>
+			
+			<!-- 연차 예정내역이 있는 경우 -->
 			<div class="dayoff-exist">
 				<table class="dayoff-recordtable">
 				  <c:forEach var="dayoffvo" items="${requestScope.comedayoff}" varStatus="status">
@@ -243,7 +259,8 @@
 				</select>
 			</div>
 		</div>
-		<div>
+		
+		<div class="last_dayoffStatus">
 			<!-- 연차 사용내역이 없는 경우 -->
 			<c:if test="${empty requestScope.lastdayoff}">
 				<div class="dayoff-none">
@@ -253,6 +270,7 @@
 					</div>
 				</div>
 			</c:if>
+			
 			<!-- 연차 사용내역이 있는 경우 -->
 			<div class="dayoff-exist">
 				<table class="dayoff-recordtable last_dayoff">
@@ -277,7 +295,6 @@
 			</div>
 		</div>
 	</div>
-	
 	
 	
 	
@@ -323,6 +340,5 @@
 	  </div>
 	</div> -->
 	<!-- 오프캔버스 끝 -->
-	
 	
 </div>	

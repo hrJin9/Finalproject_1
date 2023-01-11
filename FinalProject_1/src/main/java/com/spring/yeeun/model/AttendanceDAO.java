@@ -16,7 +16,7 @@ public class AttendanceDAO implements InterAttendanceDAO {
 	@Resource
 	private SqlSessionTemplate sqlsession;
 
-	// 근무상태 저장하기
+	// 근무상태 저장하기(transaction 처리)
 	@Override
 	public int addAttendance(Map<String, String> paraMap) {
 		int n = sqlsession.insert("attendance.addAttendance", paraMap);
@@ -98,6 +98,13 @@ public class AttendanceDAO implements InterAttendanceDAO {
 		List<DayoffVO> dayoffListbyYear = sqlsession.selectList("attendance.dayoffListViewByYear", paraMap);
 		return dayoffListbyYear;
 	}
+	
+	// 해당 사원의 근속년수 알아오기
+	@Override
+	public String getWorkingyear(String fk_employee_no) {
+		String workingyear = sqlsession.selectOne("attendance.getWorkingyear", fk_employee_no);
+		return workingyear;
+	}
 
 
 
@@ -128,15 +135,24 @@ public class AttendanceDAO implements InterAttendanceDAO {
 		return n;
 	}
 	
-	// 매월 연차 업데이트 스프링 스케줄러
+	// 1년차 미만 직원의 1개월 개근시 매월(1~12월) 연차 업데이트 스프링 스케줄러
 	@Override
-	public int addDayoff() { // 매년 2~12월(1월 제외)
+	public int addDayoff() {
 		int n = sqlsession.update("attendance.addDayoff");
 		return n;
 	}
 	
-
-	// 년도별 연차 상세 보여주기
+	// 년도 바뀔시 전직원 연차 자동소멸
+	@Override
+	public int dayoffExtinct() {
+		int n = sqlsession.update("attendance.dayoffExtinct");
+		return n;
+	}	
+	
+	
+	
+	
+	// 년도별 연차 상세 보여주기(x)
 	@Override
 	public List<DayoffVO> dayoffDetailViewByYear(Map<String, String> paraMap) {
 		List<DayoffVO> dayoffDetail = sqlsession.selectList("attendance.dayoffDetailViewByYear", paraMap);
@@ -145,13 +161,9 @@ public class AttendanceDAO implements InterAttendanceDAO {
 
 
 
-
 	
 
 
-
-
-	
 	
 
 

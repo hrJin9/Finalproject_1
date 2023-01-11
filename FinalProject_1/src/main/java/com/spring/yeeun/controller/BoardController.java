@@ -664,7 +664,8 @@ public class BoardController {
 		}
 		else {  // 정상적으로 변경된 경우
 			mav.addObject("message", "게시글이 수정되었습니다.");
-			mav.addObject("loc", request.getContextPath()+"/board_all.up"); 
+			//mav.addObject("loc", request.getContextPath()+"/board_all.up"); // 게시판 목록페이지로 이동
+			mav.addObject("loc", request.getContextPath()+"/notice/view.up?nbno="+boardvo.getNbno()); // 게시물 보기에서 변경되어진 글을 보여준다.
 		}
 		mav.setViewName("msg");
 		
@@ -856,8 +857,8 @@ public class BoardController {
         int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
       
         String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
-        String url = "board_all.up";
-      
+        String url = "freeboard.up";
+        
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
  			pageBar += "<li class='page-item'><a class='page-link'  aria-label='처음' href='"+url+"?searchCondition="+searchCondition+"&searchVal="+searchVal+"&currentShowPageNo=1'><span aria-hidden='true'>&laquo;</span></a></li>";
@@ -1301,7 +1302,8 @@ public class BoardController {
 		}
 		else {  // 정상적으로 변경된 경우
 			mav.addObject("message", "게시글이 수정되었습니다.");
-			mav.addObject("loc", request.getContextPath()+"/freeboard.up"); 
+			//mav.addObject("loc", request.getContextPath()+"/freeboard.up"); // 게시판 목록페이지로 이동
+			mav.addObject("loc", request.getContextPath()+"/fboard/view.up?fbno="+boardvo.getFbno()); // 게시물 보기에서 변경되어진 글을 보여준다.
 		}
 		mav.setViewName("msg");
 		

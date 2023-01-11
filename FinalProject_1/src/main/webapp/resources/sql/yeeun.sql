@@ -58,14 +58,14 @@ CREATE TABLE TBL_DEPARTMENTS
 );
 -- Table TBL_DEPARTMENTS이(가) 생성되었습니다.
 
-CREATE TABLE TBL_TEAM
-(TEAM_NO          NUMBER(4)     NOT NULL     
-,TEAM_NAME        VARCHAR2(30)  NOT NULL 
-,FK_DEPARTMENT_NO NUMBER(4)     NOT NULL 
-,MANAGER_NO       NUMBER(6)                -- 팀장
-,DELETE_STATUS    NUMBER(4)     DEFAULT 1
-,CONSTRAINT PK_TBL_TEAM_TEAM_NO PRIMARY KEY(TEAM_NO)
-,CONSTRAINT FK_TBL_TEAM_FK_DEPARTMENT_NO FOREIGN KEY(FK_DEPARTMENT_NO) REFERENCES TBL_DEPARTMENTS(DEPARTMENT_NO)
+create table tbl_team
+(team_no          number(4)     not null     
+,team_name        varchar2(30)  not null 
+,fk_department_no number(4)     not null 
+,manager_no       number(6)                -- 팀장
+,delete_status    number(4)     default 1
+,constraint pk_tbl_team_team_no primary key(team_no)
+,constraint fk_tbl_team_fk_department_no foreign key(fk_department_no) references tbl_departments(department_no)
 );
 -- Table TBL_TEAM이(가) 생성되었습니다.
 
@@ -356,12 +356,6 @@ order by startTime asc
 
 
 
-
-
-
-
-
-
 -- 총근무시간 조회하기
 with B as
 (select
@@ -480,7 +474,7 @@ from
  from tbl_attendance) v)
 select adno, fk_employee_no, adcatgo, seldate, startTime, endTime, workTime, workMin
 from B
-where fk_employee_no = 100016 and seldate = '2022-12-16'
+where fk_employee_no = 100016 and seldate = '2023-01-05'
 order by startTime asc
 
 
@@ -641,7 +635,7 @@ delete from tbl_attendance
 where adno = 57
 
 delete from tbl_attendance
-where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2022-12-06'
+where fk_employee_no = 100016 and to_char(startTime, 'yyyy-mm-dd') = '2023-01-06'
 
 rollback;
 commit;
@@ -974,6 +968,14 @@ values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-26 
 insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
 values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2022-12-30 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2022-12-30 18:00', 'yyyy-mm-dd hh24:mi'));
 
+
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2023-01-02 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2023-01-02 18:00', 'yyyy-mm-dd hh24:mi'));
+
+insert into tbl_dayoff(dono, fk_employee_no, fk_ano, docatgo, startdate, enddate)
+values('do-'||seq_dayoff_no.nextval, 100016, 123, '연차', to_date('2023-01-03 09:00', 'yyyy-mm-dd hh24:mi'), to_date('2023-01-03 18:00', 'yyyy-mm-dd hh24:mi'));
+
 commit;
 -- 1 행 이(가) 삽입되었습니다.
 
@@ -1038,7 +1040,7 @@ from tbl_employee;
 desc tbl_employee;
 -- 사원, 대리, 과장, 부장, 대표
 -----------------------------------------------------------------------------------------
-게시판
+--------- 게시판 ---------
 
 desc tbl_notice_board;
 desc tbl_employee;
@@ -1126,33 +1128,6 @@ where fk_employee_no = 99 and fk_bno =10
 select *
 from tbl_notice_board;
 
-
--- 게시글 분류(공지게시판)
-create table tbl_nb_smcategory
-(sm_nbc_no         nvarchar2(30)  not null     -- 게시글분류번호
-,sm_nbc_name       varchar2(50)   not null     -- 게시글분류명
-,constraint PK_tbl_nb_smcategory primary key(sm_nbc_no)
-);
-
-insert into tbl_nb_smcategory(sm_nbc_no, sm_nbc_name)
-values(1, '인사');
-
-insert into tbl_nb_smcategory(sm_nbc_no, sm_nbc_name)
-values(2, '경조사');
-
-insert into tbl_nb_smcategory(sm_nbc_no, sm_nbc_name)
-values(3, '행사');
-
-insert into tbl_nb_smcategory(sm_nbc_no, sm_nbc_name)
-values(4, '일반');
-commit;
-
-
-select *
-from tbl_notice_board;
-
-delete from tbl_notice_board;
-commit;
 
 insert into tbl_notice_board(nbno, fk_employee_no, name_kr, categoryTag, subject, content, priority, writedate, readcnt, status, nb_fileName, nb_orgFilename, fileSize) 
 values(seq_tbl_nboard.nextval, #{fk_employee_no}, #{name_kr}, #{categoryTag}, #{subject}, #{content}, #{priority}, default, default, default, #{nb_fileName}, #{nb_orgFilename}, #{fileSize}) 
@@ -1332,7 +1307,7 @@ create table tbl_fb_comment
 ,writedate        date default sysdate  not null     -- 작성일자
 ,status           number(1) default 1   not null     -- 글삭제여부
 ,fk_fbno          varchar2(30)          not null     -- 자유게시물번호
-,groupno          number                not null     -- 대슬 그룹번호 
+,groupno          number                not null     -- 댓글 그룹번호 
 ,fk_cno           number default 0      not null     -- 대댓글이라면 댓글(부모글)의 seq 컬럼의 값, 대댓글이 아닌 댓글일 경우 0
 ,depthno        number default 0        not null     -- 댓글(부모글)의 depthno + 1, 대댓글 아닌 댓글일 경우 0 을 가
 ,constraint PK_tbl_fb_comment_cno primary key(cno)
@@ -1460,7 +1435,7 @@ from tbl_employee
 insert into tbl_fb_comment(cno, fk_employee_no, name_kr, position, content, writedate, fk_fbno, status)
 values(seq_tbl_fbcomment.nextval, #{fk_employee_no}, #{name_kr}, #{position}, #{content}, default, #{fk_fbno}, default)
 
--- 자유게시판 댓글 테이블
+-- 자유게시판 댓글 테이블(최종)
 create table tbl_fb_comment
 (cno              number                not null    -- 댓글번호
 ,fk_employee_no   number(6)             not null    -- 사원번호
@@ -1540,24 +1515,146 @@ select count(*)
 from tbl_fb_comment
 where fk_fbno = 12
 
+select *
+from tbl_free_board;
 
 select *
-from tbl_fb_comment
+from tbl_fb_comment;
 
-desc tbl_employee
+desc tbl_employee;
+
+select employee_no, position, hire_date, dayoff_cnt
+from tbl_employee;
+
+select employee_no, position, hire_date, dayoff_cnt
+from tbl_employee
+where employee_no = '100016';
+
+select *
+from tbl_employee;
+
+desc tbl_employee;
+
+update tbl_employee set dayoff_cnt = dayoff_cnt+1
+where position = '사원'
+
 
 select *
 from tbl_employee
+where position = '사원' and trunc(months_between(sysdate, hire_date) /12) > 1 -- 근속년수
 
 
+select trunc(months_between(sysdate, hire_date) /12) AS 근속년수
+from tbl_employee
+where employee_no = '100016';
+
+select hire_date
+from tbl_employee
+where employee_no = '100016';
+
+select trunc(mod(months_between(sysdate, hire_date) /12,1) *12) AS 근속월
+from tbl_employee
+where employee_no = '100017';
+
+select employee_no, position, hire_date, dayoff_cnt
+from tbl_employee
+where employee_no != 99 and trunc(months_between(sysdate, hire_date) /12) < 1
+      and trunc(mod(months_between(sysdate, hire_date) /12,1) *12) < 1;
+
+update tbl_employee set dayoff_cnt = dayoff_cnt+1
+where employee_no != 99 and trunc(months_between(sysdate, hire_date) /12) < 1 -- 근속년수
+      and trunc(mod(months_between(sysdate, hire_date) /12,1) *12) > 1;  -- 근속개월 
+
+
+update tbl_employee set dayoff_cnt = 15
+where position = '과장' and trunc(months_between(sysdate, hire_date) /12) > 1
+
+select employee_no, position, hire_date, dayoff_cnt
+from tbl_employee
+where position = '과장' and trunc(months_between(sysdate, hire_date) /12) > 1
+
+update tbl_employee set hire_date = '2022.05.02'
+where employee_no = '100020';
+commit;
+
+update tbl_employee set dayoff_cnt = 2
+where employee_no = '100018';
+commit;
+
+update tbl_employee set dayoff_cnt = 0;
+commit;
+
+update tbl_employee set dayoff_cnt = 25
+where position = '대표' and trunc(months_between(sysdate, hire_date) /12) >= 1 
+rollback;
+
+select sysdate
+from dual;
+
+select trunc(months_between(sysdate, hire_date) /12)
+from tbl_employee
+where employee_no = '1';
+
+select employee_no, position, hire_date, dayoff_cnt
+from tbl_employee
+where trunc(months_between(sysdate, hire_date) /12) >= 1;
+
+select trunc(months_between(sysdate, hire_date) /12)
+from tbl_employee
+--where employee_no = '100016'
+where fk_employee_no = #{employee_no}
+
+select to_number(to_char(sysdate, 'MM')) --현재 월
+from dual;
+
+update tbl_employee
+set dayoff_cnt = case when trunc(months_between(sysdate, hire_date) /12) < 1 then dayoff_cnt+1  -- 근속년수 1년 미만이면 매월 +1
+when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '사원' then dayoff_cnt+(15-(to_number(to_char(sysdate, 'MM')))+1) -- 근속개월 12개월이면 +(15-(현재달)+1) == 즉, 올해 받아야할 총 연차개수 - 받은 연차개수 
+when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '대리' then dayoff_cnt+(17-(to_number(to_char(sysdate, 'MM')))+1) -- 근속개월 12개월이면 +(17-(현재달)+1)
+when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '과장' then dayoff_cnt+(20-(to_number(to_char(sysdate, 'MM')))+1) -- 근속개월 12개월이면 +(20-(현재달)+1)
+when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '부장' then dayoff_cnt+(22-(to_number(to_char(sysdate, 'MM')))+1) -- 근속개월 12개월이면 +(22-(현재달)+1)
+when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '대표' then dayoff_cnt+(25-(to_number(to_char(sysdate, 'MM')))+1) -- 근속개월 12개월이면 +(25-(현재달)+1)
+when trunc(months_between(sysdate, hire_date) /12) >= 1 then dayoff_cnt+0 -- 근속년수 1년 이상이면 +0
+else 0
+end
+where employee_no != 99;
+rollback;
+
+select employee_no, position, hire_date, dayoff_cnt
+from tbl_employee;
+
+select *
+from tbl_employee
+where trunc(months_between(sysdate, hire_date) /12) >= 1
+
+
+update tbl_employee set dayoff_cnt = dayoff_cnt+1
+where employee_no != 99 and trunc(months_between(sysdate, hire_date) /12) < 1 -- 근속년수
+      and trunc(mod(months_between(sysdate, hire_date) /12,1) *12) > 1;  -- 근속개월 
+--------------------------------------------------------------------------------
+-- @SchedulerLock 테이블 (스프링스케줄러 중복실행을 방지하기 위함)   
+create table SHEDLOCK (
+name varchar (64),
+LOCK_UNTIL timestamp (3) null ,
+LOCKED_AT timestamp (3) null ,
+LOCKED_BY varchar (255),
+primary key (name)
+);
+--------------------------------------------------------------------------------
 delete from tbl_fb_comment
 where cno = 23;
 commit;
 
+delete from tbl_free_board
+where fbno = 29;
+commit;
 
+update tbl_free_board set writedate = '2022. 12. 24'
+where fbno = 26;
+commit;
 
-
-
+update tbl_free_board set readcnt = 52
+where fbno = 30;
 
 
 

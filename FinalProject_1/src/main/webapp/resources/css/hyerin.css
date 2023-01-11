@@ -296,7 +296,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 }
 
 .workinghour > td:first-child{
-   width: 17.9%;
+   width: 18.1%;
 }
 
 .workinghour td {
@@ -611,7 +611,7 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 /* dayoff_index.jsp */
 .dayoff-index-container{
    width: 96%;
-   margin-bottom: 50px;
+   /* margin-bottom: 50px; */
 }
 
 .dayoff-write > div:first-child
@@ -708,6 +708,11 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
    font-size: 11pt;
    border-radius: 5px;
    height: 30px;
+}
+
+
+.last_dayoffStatus {
+	margin-bottom: 50px;
 }
 
 .dayoff-none{
@@ -958,6 +963,20 @@ div.datebox > button:nth-child(3){position:relative; right: 13px;}
 .dayoff-adjustmentbox > table > thead > tr > td:first-child ~ td {
    width: auto;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
