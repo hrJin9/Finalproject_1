@@ -28,7 +28,10 @@
 	   <constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 	
-	
+	<!-- 멀티서버 스케줄 처리를 위한 LOCK API: ShedLock (스프링스케줄러 중복실행을 방지하기 위함) -->
+	<bean id="lockProvider" class="net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider">
+		<constructor-arg ref="dataSource"/>
+	</bean>
 	
 	
 	<!-- mapper 파일이란 sql 문을 가지고 있는 xml 파일을 말한다. -->
