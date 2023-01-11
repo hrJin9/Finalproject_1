@@ -121,7 +121,6 @@
 		        }					
 			});
 		}); // end of $("select#selyear").change--------------  --%>
-		
 		 
 	});// end of $(document).ready(function(){})----------------
 	
@@ -203,8 +202,8 @@
 						<td></td>
 						<td>${requestScope.UnusedDays + requestScope.lastUsedays}</td>
 					</tr> --%>
-					<%-- <c:forEach varStatus="i" begin="0" end="${requestScope.thismm -1}" var="dovo" items="${requestScope.list}"> --%>
-					<c:forEach varStatus="i" begin="0" end="12" var="dovo" items="${requestScope.list}">
+					<c:forEach varStatus="i" begin="0" end="${requestScope.thismm -1}" var="dovo" items="${requestScope.list}">
+					<%-- <c:forEach varStatus="i" begin="0" end="12" var="dovo" items="${requestScope.list}"> --%> <!-- (1년치 확인용)테스트 -->
 						<tr>
 							<c:choose>
 								<c:when test="${requestScope.thismm == 1 && requestScope.workingyear >= 1}">  <!-- ★★ 매년 1월기준  근속년수 1년 이상 직원일 경우 ★★ -->
