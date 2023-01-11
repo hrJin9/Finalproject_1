@@ -1394,7 +1394,7 @@ let searchWord = "";
 				      <a class="dropdown-item" href="#">일반</a>
 				      <a class="dropdown-item" href="#">연차</a>
 				      <a class="dropdown-item" href="#">업무기안서</a>
-				      <a class="dropdown-item" href="#">지출</a>
+				      <a class="dropdown-item" href="#">구매요청서</a>
 				      <a class="dropdown-item" href="#">증명서</a>
 				 </div>
 			</th>
