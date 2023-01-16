@@ -67,12 +67,6 @@ public class Admin_memberController {
 		int sizePerPage = Integer.parseInt(s_sizePerPage);
 		int cur = Integer.parseInt(s_cur);
 		
-//		System.out.println("s_sizePerPage: " + s_sizePerPage);
-//		System.out.println("dropCondition: " + dropCondition);
-//		System.out.println("dropVal: " + dropVal);
-//		System.out.println("searchCondition: " + searchCondition);
-//		System.out.println("searchVal: " + searchVal);
-		
 		//검색어 처리
 		if(dropCondition == null || "".equals(dropCondition)) dropCondition = "";
 		if(dropVal == null || "".equals(dropVal)) dropVal = "";
@@ -94,8 +88,6 @@ public class Admin_memberController {
 		// 구성원 리스트의 총 페이지수
 		int totalCount = service.getEmpTotal(paraMap);
 		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
-		
-//		System.out.println("totalCount: " + totalCount);
 		
 		//페이지 처리
 		try {

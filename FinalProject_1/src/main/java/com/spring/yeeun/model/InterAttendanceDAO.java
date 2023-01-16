@@ -42,20 +42,32 @@ public interface InterAttendanceDAO {
 	// 년도별 휴가 개요 보여주기
 	List<DayoffVO> dayoffListViewByYear(Map<String, String> paraMap);
 
+	// 해당 사원의 근속년수 알아오기
+	String getWorkingyear(String fk_employee_no);
+	
+	
 
 	// 매년 1월 직급별 연차 업데이트 스프링 스케줄러
-	int addDayoffInJanuary1();  // 매년 1월 사원직급
-	int addDayoffInJanuary2();  // 매년 1월 대리직급
-	int addDayoffInJanuary3();  // 매년 1월 과장직급
-	int addDayoffInJanuary4();  // 매년 1월 부장직급
-	int addDayoffInJanuary5();  // 매년 1월 대표직급
+	int addDayoffInJanuary1();  // 매년 1월  1년차 이상 사원직급
+	int addDayoffInJanuary2();  // 매년 1월  1년차 이상 대리직급
+	int addDayoffInJanuary3();  // 매년 1월  1년차 이상 과장직급
+	int addDayoffInJanuary4();  // 매년 1월  1년차 이상 부장직급
+	int addDayoffInJanuary5();  // 매년 1월  1년차 이상 대표직급
 	
-	// 매월 연차 업데이트 스프링 스케줄러
-	int addDayoff();  // 매년 2월~12월(1월 제외)
+	// 1년차 미만 직원의 1개월 개근시 매월(1~12월) 연차 업데이트 스프링 스케줄러
+	int addDayoff();  
+	
+	// 년도 바뀔시 전직원 연차 자동소멸
+	int dayoffExtinct();  
 	
 	
-	// 년도별 연차 상세 보여주기
+	
+	// 년도별 연차 상세 보여주기(x)
 	List<DayoffVO> dayoffDetailViewByYear(Map<String, String> paraMap);
+
+	
+
+	
 
 
 

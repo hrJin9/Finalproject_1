@@ -121,7 +121,7 @@
 		        }					
 			});
 		}); // end of $("select#selyear").change--------------  --%>
-		
+		 
 	});// end of $(document).ready(function(){})----------------
 	
 	
@@ -138,10 +138,6 @@
 	}// end of function getYears(getY)----------
 	
 	
-	
-	
-	
-		
 </script>
 
 <div class="dayoff-detail-container margin-container">
@@ -185,7 +181,7 @@
 			</div>
 		</div>
 		<div class="dayoff-adjustmentbox" style="margin-bottom: 80px;">
-			<table>
+			<table id="doyoffTable">
 				<thead>
 					<tr>
 						<td>날짜</td>
@@ -206,56 +202,166 @@
 						<td></td>
 						<td>${requestScope.UnusedDays + requestScope.lastUsedays}</td>
 					</tr> --%>
-					<c:forEach varStatus="i" begin="0" end="${requestScope.thismm}" var="dovo" items="${requestScope.list}">
+					<c:forEach varStatus="i" begin="0" end="${requestScope.thismm -1}" var="dovo" items="${requestScope.list}">
+					<%-- <c:forEach varStatus="i" begin="0" end="12" var="dovo" items="${requestScope.list}"> --%> <!-- (1년치 확인용)테스트 -->
 						<tr>
 							<c:choose>
-								<c:when test="${i.count < 10}">
-									<td>${requestScope.thisyyyy}. 0${i.count}</td>
-									
-									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '사원'}">
-										<td>+1일</td>
-									</c:if>
-									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '대리'}">
-										<td>+3일</td>
-									</c:if>
-									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '과장'}">
-										<td>+5일</td>
-									</c:if>
-									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '부장'}">
-										<td>+7일</td>
-									</c:if>
-									<c:if test="${i.count == 1 && sessionScope.loginuser.position == '대표'}">
-										<td>+9일</td>
-									</c:if>
-									<c:if test="${i.count != 1}">
-										<td>+1일</td>
-									</c:if>
-									
-									<td></td>
-									<td></td>
-									<c:if test="${dovo == '0'}">
+								<c:when test="${requestScope.thismm == 1 && requestScope.workingyear >= 1}">  <!-- ★★ 매년 1월기준  근속년수 1년 이상 직원일 경우 ★★ -->
+									<c:if test="${i.count < 10}"> <%-- 1 ~ 9월 --%>
+										<td>${requestScope.thisyyyy}. 0${i.count}</td>
+										
+										<c:if test="${i.count == 1 && sessionScope.loginuser.position == '사원'}">
+											<td>+15일</td>
+										</c:if>
+										<c:if test="${i.count == 1 && sessionScope.loginuser.position == '대리'}">
+											<td>+17일</td>
+										</c:if>
+										<c:if test="${i.count == 1 && sessionScope.loginuser.position == '과장'}">
+											<td>+20일</td>
+										</c:if>
+										<c:if test="${i.count == 1 && sessionScope.loginuser.position == '부장'}">
+											<td>+22일</td>
+										</c:if>
+										<c:if test="${i.count == 1 && sessionScope.loginuser.position == '대표'}">
+											<td>+25일</td>
+										</c:if>
+										<c:if test="${i.count != 1}">
+											<td>+0일</td>
+										</c:if>
+										
 										<td></td>
+										<td></td>
+										<c:if test="${dovo == '0'}">
+											<td></td>
+										</c:if>
+										<c:if test="${dovo != '0'}">
+											<td>-${dovo}</td>
+										</c:if>
+										<!-- <td></td> -->
 									</c:if>
-									<c:if test="${dovo != '0'}">
-										<td>-${dovo}</td>
+									<c:if test="${i.count >= 10}"> <%-- 10 ~ 12월 --%>
+										<td>${requestScope.thisyyyy}. ${i.count}</td>
+										<td>+0일</td>
+										<td></td>
+										<td></td>
+										<c:if test="${dovo == '0'}">
+											<td></td>
+										</c:if>
+										<c:if test="${dovo != '0'}">
+											<td>-${dovo}</td>
+										</c:if>
+										<!-- <td></td> -->
 									</c:if>
-									<!-- <td></td> -->
 								</c:when>
 								
 								
-								<c:otherwise> <%-- 10 ~ 12월 --%>
-									<td>${requestScope.thisyyyy}. ${i.count}</td>
-									<td>+1일</td>
-									<td></td>
-									<td></td>
-									<c:if test="${dovo == '0'}">
-										<td></td>
-									</c:if>
-									<c:if test="${dovo != '0'}">
-										<td>-${dovo}</td>
-									</c:if>
-									<!-- <td></td> -->
-								</c:otherwise>
+								<c:otherwise> <!-- ★★ 매년 1월기준  근속년수 1년 미만 직원일 경우 ★★ -->
+		                           <c:if test="${i.count < 10}"> <%-- 1 ~ 9월 --%>
+		                              <c:if test="${requestScope.hiredate_mm <= i.count}"> <!-- 중간에 1년이 되었을시 -->
+		                                 <td>${requestScope.thisyyyy}. 0${i.count}</td>
+		                                 
+		                                 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '사원'}">
+											<td>+${15- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '대리'}">
+											<td>+${17- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '과장'}">
+											<td>+${20- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '부장'}">
+											<td>+${22- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '대표'}">
+											<td>+${25- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm != i.count}">
+											<td>+0일</td>
+										 </c:if>
+		                                 
+		                                 <td></td>
+		                                 <td></td>
+		                                 <c:if test="${dovo == '0'}">
+		                                    <td></td>
+		                                 </c:if>
+		                                 <c:if test="${dovo != '0'}">
+		                                    <td>-${dovo}</td>
+		                                 </c:if>
+		                              </c:if>
+		                              
+		                              <c:if test="${requestScope.hiredate_mm > i.count}">  <!-- 1년 미만시 -->
+		                                 <td>${requestScope.thisyyyy}. 0${i.count}</td>
+		                                 <td>+1일</td>
+		                                 <td></td>
+		                                 <td></td>
+		                                 <c:if test="${dovo == '0'}">
+		                                    <td></td>
+		                                 </c:if>
+		                                 <c:if test="${dovo != '0'}">
+		                                    <td>-${dovo}</td>
+		                                 </c:if>
+		                                 <!-- <td></td> -->
+		                              </c:if>
+		                           </c:if>
+		                           
+		                           <c:if test="${i.count >= 10}"> <%-- 10 ~ 12월 --%>
+		                              <c:if test="${requestScope.hiredate_mm <= i.count}"> <!-- 중간에 1년이 되었을시 -->
+		                                 <td>${requestScope.thisyyyy}. ${i.count}</td>
+		                                 
+		                                 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '사원'}">
+											<td>+${15- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '대리'}">
+											<td>+${17- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '과장'}">
+											<td>+${20- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '부장'}">
+											<td>+${22- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm == i.count && sessionScope.loginuser.position == '대표'}">
+											<td>+${25- (i.count -1)}일</td>
+										 </c:if>
+										 <c:if test="${requestScope.hiredate_mm != i.count}">
+											<td>+0일</td>
+										 </c:if>
+		                                 
+		                                 <td></td>
+		                                 <td></td>
+		                                 <c:if test="${dovo == '0'}">
+		                                    <td></td>
+		                                 </c:if>
+		                                 <c:if test="${dovo != '0'}">
+		                                    <td>-${dovo}</td>
+		                                 </c:if>
+		                              </c:if>
+		                              <c:if test="${requestScope.hiredate_mm > i.count}"> <!-- 1년 미만시 -->
+		                                 <td>${requestScope.thisyyyy}. ${i.count}</td>  
+		                                 <td>+1일</td>
+		                                 <td></td>
+		                                 <td></td>
+		                                 <c:if test="${dovo == '0'}">
+		                                    <td></td>
+		                                 </c:if>
+		                                 <c:if test="${dovo != '0'}">
+		                                    <td>-${dovo}</td>
+		                                 </c:if>
+		                                 <!-- <td></td> -->
+		                              </c:if>
+		                              <%-- <td>${requestScope.thisyyyy}. ${i.count}</td>
+		                              <td>+1일</td>
+		                              <td></td>
+		                              <td></td>
+		                              <c:if test="${dovo == '0'}">
+		                                 <td></td>
+		                              </c:if>
+		                              <c:if test="${dovo != '0'}">
+		                                 <td>-${dovo}</td>
+		                              </c:if>
+		                              <!-- <td></td> --> --%>
+		                           </c:if>
+		                        </c:otherwise>
 							</c:choose>
 						</tr>
 					</c:forEach>

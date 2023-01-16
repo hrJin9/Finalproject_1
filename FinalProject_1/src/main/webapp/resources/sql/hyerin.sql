@@ -1662,3 +1662,47 @@ where fk_sign_empno = 100021
 
 select * from tab;
 
+select * from tbl_employee
+
+select * from tbl_message
+
+
+alter table tbl_message modify subject varchar2(100) 
+
+
+select * from tbl_employee
+where employee_no = 100016
+
+
+desc tbl_message
+
+desc tbl_message_file
+
+
+desc tbl_message_send
+
+
+desc tbl_scrap
+
+desc tbl_departments
+
+desc tbl_team
+
+desc tbl_employee
+
+select * from tbl_employee
+
+
+
+select * from tbl_employee
+where name_kr = '진혜린'
+
+
+delete from tbl_employee where employee_no in (259000,120260,100261)
+
+delete from tbl_attendance where fk_employee_no in (259000,120260,100261)
+
+commit;
+
+select * from tbl_attendance
+

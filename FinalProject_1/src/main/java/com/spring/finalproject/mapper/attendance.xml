@@ -268,43 +268,94 @@
 	</select>
 
 
+	<!-- 해당 사원의 근속년수 알아오기 -->
+	<select id="getWorkingyear" parameterType="string" resultType="String">
+		select trunc(months_between(sysdate, hire_date) /12)
+		from tbl_employee
+		where employee_no = #{fk_employee_no}
+	</select>
+
+
+
+
 
 	<!-- 매년 1월 직급별 연차 업데이트 스프링 스케줄러 -->
-	<update id="addDayoffInJanuary1">
-		update tbl_employee set dayoff_cnt = dayoff_cnt+1
-		where position = '사원'
+	<update id="addDayoffInJanuary1"> <!-- 근속년수 1년 이상 -->
+		<![CDATA[
+		update tbl_employee set dayoff_cnt = 15
+		where position = '사원' and trunc(months_between(sysdate, hire_date) /12) >= 1 
+		]]>
 	</update>
 	
 	<update id="addDayoffInJanuary2">
-		update tbl_employee set dayoff_cnt = dayoff_cnt+3
-		where position = '대리'
+		<![CDATA[
+		update tbl_employee set dayoff_cnt = 17
+		where position = '대리' and trunc(months_between(sysdate, hire_date) /12) >= 1 
+		]]>
 	</update>
 	
 	<update id="addDayoffInJanuary3">
-		update tbl_employee set dayoff_cnt = dayoff_cnt+5
-		where position = '과장'
+		<![CDATA[
+		update tbl_employee set dayoff_cnt = 20
+		where position = '과장' and trunc(months_between(sysdate, hire_date) /12) >= 1 
+		]]>
 	</update>
 	
 	<update id="addDayoffInJanuary4">
-		update tbl_employee set dayoff_cnt = dayoff_cnt+7
-		where position = '부장'
+		<![CDATA[
+		update tbl_employee set dayoff_cnt = 22
+		where position = '부장' and trunc(months_between(sysdate, hire_date) /12) >= 1 
+		]]>
 	</update>
 	
 	<update id="addDayoffInJanuary5">
-		update tbl_employee set dayoff_cnt = dayoff_cnt+9
-		where position = '대표'
+		<![CDATA[
+		update tbl_employee set dayoff_cnt = 25
+		where position = '대표' and trunc(months_between(sysdate, hire_date) /12) >= 1 
+		]]>
 	</update>
 	
-	<!-- 매월 연차 업데이트 스프링 스케줄러 -->
-	<update id="addDayoff">
+	
+	<!-- 1년차 미만 직원의 1개월 개근시 매월 연차 업데이트 스프링 스케줄러 -->
+	<!-- <update id="addDayoff">  관리자계정이 아니고,  근속년수 1년 미만, 근속개월 1개월 이상
+		<![CDATA[
 		update tbl_employee set dayoff_cnt = dayoff_cnt+1
+	    where employee_no != 99 and trunc(months_between(sysdate, hire_date) /12) < 1
+    		  and trunc(mod(months_between(sysdate, hire_date) /12,1) *12) > 1 
+		]]>
+	</update> -->
+	<update id="addDayoff">  <!-- 관리자계정이 아니고,  근속년수 1년 미만, 근속개월 1개월 이상 -->
+		<![CDATA[
+		update tbl_employee
+		set dayoff_cnt = case when trunc(months_between(sysdate, hire_date) /12) < 1 then dayoff_cnt+1
+		when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '사원' then dayoff_cnt+(15-(to_number(to_char(sysdate, 'MM')))+1)
+		when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '대리' then dayoff_cnt+(17-(to_number(to_char(sysdate, 'MM')))+1)
+		when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '과장' then dayoff_cnt+(20-(to_number(to_char(sysdate, 'MM')))+1)
+		when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '부장' then dayoff_cnt+(22-(to_number(to_char(sysdate, 'MM')))+1)
+		when trunc(mod(months_between(sysdate, hire_date) /12,1) *12) = 12 and position = '대표' then dayoff_cnt+(25-(to_number(to_char(sysdate, 'MM')))+1)
+		when trunc(months_between(sysdate, hire_date) /12) >= 1 then dayoff_cnt+0 
+		else 0 end
 		where employee_no != 99
+		]]>   
+		<!-- 근속년수 1년 미만이면 매월 +1 -->
+		<!-- 근속개월 12개월, 사원이면 +(15-(현재달)+1) == 즉, 올해 받아야할 총 연차개수 - 받은 연차개수  -->
+		<!-- 근속개월 12개월, 대리이면 +(17-(현재달)+1) -->
+		<!-- 근속개월 12개월, 과장이면 +(20-(현재달)+1) -->
+		<!-- 근속개월 12개월, 부장이면 +(22-(현재달)+1) -->
+		<!-- 근속개월 12개월, 대표이면 +(25-(현재달)+1) -->
+		<!-- 근속년수 1년 이상이면 +0 -->
+		<!-- 관리자 계정 아닌 경우 -->
 	</update>
 	
+	
+	<!-- 년도 바뀔시 전직원 연차 자동소멸 -->
+	<update id="dayoffExtinct">
+		update tbl_employee set dayoff_cnt = 0
+	</update>
 	
 	
 
-	<!-- 년도별 연차 상세 보여주기 -->
+	<!-- 년도별 연차 상세 보여주기(x) -->
 	<select id="dayoffDetailViewByYear" parameterType="HashMap" resultType="com.spring.yeeun.model.DayoffVO">
 		<![CDATA[
 		with 

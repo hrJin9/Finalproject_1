@@ -43,11 +43,10 @@ public class AttendanceController {
 	}
 	
 	
-	
 	// 근무상태 저장하기
 	@ResponseBody     // return 되는 값은 View 단 페이지를 통해서 출력되는 것이 아니라 return 되어지는 값 그 자체를 웹브라우저에 바로 직접 쓰여지게 하는 것이다. JSON 결과물을 보일때는 css 태그 와 같은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문이다.
 	@RequestMapping(value="/attendancadd.up", produces="text/plain;charset=UTF-8") // 웹브라우저에 출력되는 한글이 안 깨지기 위해 produces="text/plain;charset=UTF-8" 붙여준다.
-	public String attendancadd(HttpServletRequest request, HttpServletResponse response) throws Exception {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
+	public String attendancadd(HttpServletRequest request, HttpServletResponse response) {  // Ajax 방식은 view단 태그는 필요없이  결과물만 찍어주면 되기 때문에 항상 String 타입으로 해준다.
 		
 		String[] adcatgoArr = request.getParameterValues("attendancetypeArr"); // 근무형태 배열
 		String[] sdateArr = request.getParameterValues("startTimeArr");  // 시작시간 배열
@@ -61,7 +60,6 @@ public class AttendanceController {
 		
 		JSONObject jsonobj = new JSONObject();
 		
-		//int n = 0;
         int n2 = 0;
 		for (int i = 0; i < edateArr.length; i++) {
 			Map<String, String> paraMap = new HashMap<String, String>();
@@ -84,16 +82,15 @@ public class AttendanceController {
 	        //S/ystem.out.println("startdate : " +startdate);
 	        //System.out.println("enddate : "+enddate);
 	        
-	        
 			try {
 				//n = service.atdetailAllDel(paraMap); // 해당날짜 전부 삭제
 				//if(n != 0) {
+					// n = service.atdetailAllDel(paraMap); 
 					n2 = service.addAttendance(paraMap); // 해당날짜 다시 insert
 				//}
 			} catch (Exception e) {
 				e.printStackTrace();  // 콘솔에만 찍어준다.
 			}
-			
 		}
 		
 		//jsonobj.put("n", n);  
@@ -463,18 +460,19 @@ public class AttendanceController {
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 		String fk_employee_no = loginuser.getEmployee_no();
 		String position = loginuser.getPosition();
+		String dayoffcnt = loginuser.getDayoff_cnt();
 		
 		int dayoff_receiveCnt = 0;
 		if("사원".equals(position)) {
-			dayoff_receiveCnt = 12;
+			dayoff_receiveCnt = 15;
 		} else if("대리".equals(position)) {
-			dayoff_receiveCnt = 14;
+			dayoff_receiveCnt = 17;
 		} else if("과장".equals(position)) {
-			dayoff_receiveCnt = 16;
-		} else if("부장".equals(position)) {
-			dayoff_receiveCnt = 18;
-		} else if("대표".equals(position)) {
 			dayoff_receiveCnt = 20;
+		} else if("부장".equals(position)) {
+			dayoff_receiveCnt = 22;
+		} else if("대표".equals(position)) {
+			dayoff_receiveCnt = 25;
 		}
 		
 		List<DayoffVO> dayoffList = new ArrayList<DayoffVO>();
@@ -505,7 +503,8 @@ public class AttendanceController {
 		
 		DecimalFormat formatt = new DecimalFormat("##.#");
 		mav.addObject("lastUsedays", formatt.format(lastUsedays)); // 올해 총 사용연차
-		mav.addObject("dayoff_receiveCnt", dayoff_receiveCnt);    // 올해 부여받은 총 연차
+		//mav.addObject("dayoff_receiveCnt", dayoff_receiveCnt);   // 올해 부여받은 총 연차
+		mav.addObject("dayoff_receiveCnt", dayoffcnt);    // 올해 부여받은 총 연차
 	    mav.addObject("comedayoff", comedayoff);   // 구해온 값이 null이 아니라면 comedayoff를 dayoff_index.jsp 에 넘긴다.
 	    mav.addObject("lastdayoff", lastdayoff);   // 구해온 값이 null이 아니라면 lastdayoff를 dayoff_index.jsp 에 넘긴다.
 		mav.setViewName("attendance/dayoff_index.tiles");
@@ -563,18 +562,28 @@ public class AttendanceController {
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 		String fk_employee_no = loginuser.getEmployee_no();
 		String position = loginuser.getPosition();
+		String dayoffcnt = loginuser.getDayoff_cnt();
+		String hiredate = loginuser.getHire_date();  // 입사일자
+		//System.out.println("입사일자 >>>" + hiredate);  // 입사일자 >>>2020-12-24 00:00:00
+		
+		String hiredate_mm = hiredate.substring(5, 7);
+		//System.out.println("입사 월 >>>" + hiredate_mm);
+		
+		// 해당 사원의 근속년수 알아오기
+		String workingyear = service.getWorkingyear(fk_employee_no);
+		//System.out.println("해당 사원의 근속년수 >>>" + workingyear);
 		
 		int dayoff_defaultCnt = 0;
 		if("사원".equals(position)) {
-			dayoff_defaultCnt = 1;
+			dayoff_defaultCnt = 15;
 		} else if("대리".equals(position)) {
-			dayoff_defaultCnt = 3;
+			dayoff_defaultCnt = 17;
 		} else if("과장".equals(position)) {
-			dayoff_defaultCnt = 5;
+			dayoff_defaultCnt = 20;
 		} else if("부장".equals(position)) {
-			dayoff_defaultCnt = 7;
+			dayoff_defaultCnt = 22;
 		} else if("대표".equals(position)) {
-			dayoff_defaultCnt = 9;
+			dayoff_defaultCnt = 25;
 		}
 		
 		List<DayoffVO> dayoffList = new ArrayList<DayoffVO>();  // 예정 + 사용연차
@@ -592,7 +601,6 @@ public class AttendanceController {
 			if(compare > 0) { // 사용연차
 				lastdayoff.add(list);
 			}
-			
 		}
 		
 		double lastUsedays = 0;
@@ -677,13 +685,15 @@ public class AttendanceController {
         int thisyyyy = Integer.parseInt(formatter.format(now).substring(0, 4)); // 포맷팅 적용 => yyyy
         int thismm = Integer.parseInt(formatter.format(now).substring(5, 7)); // 포맷팅 적용 => mm
 		//System.out.println("올해 총 사용연차 : "+ lastUsedays);
-		
+        
 		// 잔여연차 구하기 (해당 empno사원의 정보 가져오기)
 		//EmployeeVO evo = service.getempvo(fk_employee_no);
 		
 		mav.addObject("lastUsedays", format.format(lastUsedays)); // 올해 총 사용연차
-		mav.addObject("dayoff_defaultCnt", dayoff_defaultCnt);    // 올해 1월 부여받은 연차
-		mav.addObject("dayoff_receiveCnt", dayoff_defaultCnt +11);    // 올해 부여받은 총 연차
+		//mav.addObject("dayoff_receiveCnt", dayoff_defaultCnt);    // 올해 1월 부여받은 연차
+		mav.addObject("dayoff_receiveCnt", dayoffcnt);    // 올해 부여받은 총 연차
+		mav.addObject("workingyear", workingyear); // 근속년수
+		mav.addObject("hiredate_mm", hiredate_mm); // (1년 미만 직원대상 월별 연차부여를 위한)입사 월
 		mav.addObject("list", list);          // 월별 연차사용
 		mav.addObject("thisyyyy", thisyyyy);  // 이번년도
 		mav.addObject("thismm", thismm);      // 이번달
@@ -848,11 +858,11 @@ public class AttendanceController {
 	
 	
 	
-    // 매년 1월 직급별 연차 업데이트 스프링 스케줄러
-    @RequestMapping(value="/dayoffUpdateInJanuary.up") 
+	// 매년 1월, 1년차 이상의 직급별 연차 업데이트 스프링 스케줄러
+    @RequestMapping(value="/dayoffUpdateInJanuary.up")  // Controller 에서는 URL 만 잡아주고, Service 단에서 특정 날짜 및 시각을 설정해준다.
     public ModelAndView dayoffUpdateInJanuary(ModelAndView mav, HttpServletRequest request) {
     	
-		String message = "올해 직급별 연차를 업데이트 완료했습니다.";
+		String message = "올해 1년차 이상 직급별 연차를 업데이트 완료했습니다.";
 		String loc = request.getContextPath()+"/main.up";
 		mav.addObject("message", message);
 		mav.addObject("loc", loc);
@@ -862,16 +872,30 @@ public class AttendanceController {
     }		
     
 	
-	// 매월 연차 업데이트 스프링 스케줄러
-    @RequestMapping(value="/dayoffUpdate.up")  // Controller 에서는 URL 만 잡아주고, Service 단에서 특정 날짜 및 시각을 설정해준다.
+    // 1년차 미만 직원의 1개월 개근시 매월 연차 업데이트 스프링 스케줄러
+    @RequestMapping(value="/dayoffUpdate.up")  
     public ModelAndView dayoffUpdate(ModelAndView mav, HttpServletRequest request) {
 			
-		String message = "이번달 모든 직원 연차를 업데이트 완료했습니다.";
+		String message = "이번달 1년차 미만 직원 연차를 업데이트 완료했습니다.";
 		String loc = request.getContextPath()+"/main.up";
 		mav.addObject("message", message);
 		mav.addObject("loc", loc);
 		mav.setViewName("msg");
 		
+    	return mav;
+    }	
+    
+    
+    // 년도 바뀔시 전직원 연차 자동소멸
+    @RequestMapping(value="/dayoffExtinct.up")
+    public ModelAndView dayoffExtinct(ModelAndView mav, HttpServletRequest request) {
+    	
+    	String message = "모든 직원의 전년도 연차가 자동소멸 되었습니다.";
+    	String loc = request.getContextPath()+"/main.up";
+    	mav.addObject("message", message);
+    	mav.addObject("loc", loc);
+    	mav.setViewName("msg");
+    	
     	return mav;
     }	
     

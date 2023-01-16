@@ -171,8 +171,12 @@ function getempname(){
 			if(json.length > 0){
 				var html = '';
 				$.each(json,function(index, item){
-					if(index+1 == json.length) html += item.name + '·' + item.dept_name;
-					else html += item.name + '·' + item.dept_name + ',';
+					if(index+1 == json.length) {
+						html += item.name + '·';
+						item.dept_name != null ? html += item.dept_name : html += '미지정';
+					} else {
+						item.dept_name != null ? html += item.name + '·' + item.dept_name + ',' : html += item.name + '·미기입,';
+					}
 				});
 				$("#empname").val(html);
 				

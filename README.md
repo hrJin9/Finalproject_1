@@ -1,75 +1,126 @@
-# ThumbsUp Groupware Project
-<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/75eee8bc-227d-4b6d-a69c-562658fb6e08/ThumbsUp%EB%A1%9C%EA%B3%A0.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T081833Z&X-Amz-Expires=86400&X-Amz-Signature=27a377de239444c6a7b38b2e91977323f41c5f2b58a704143d266e88faa398e9&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22ThumbsUp%25EB%25A1%259C%25EA%25B3%25A0.jpg%22&x-id=GetObject" width="300px"/></p>
-Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로, 4명의 팀원이 함께 그룹웨어 웹사이트를 제작하였습니다.
+# [ThumbsUp] Groupware
+<p align="center"><img src="https://user-images.githubusercontent.com/109951309/209932496-55a23fc7-2561-49e6-bbdb-2f75fe03614e.jpg" width="300px"/></p>
 
-# 1.1. 프로젝트 기간
-> 2022.11.7 ~ 2022.12.20
-
-
-# 1.2. 프로젝트 컨셉
-하나되어 소통하고 업무를 공유하는 공간, ‘Thumbs Up'
-
-# 2.1. 기획의도
-회사 내 구성원들이 소통하고 공유하는 공간으로서
-업무의 효율성을 극대화시키는 것을 목표로 하고 있습니다.
-
-# 2.2. 주요기능
-- 일정관리
-- 전자결재
-- 메시지
-- 게시판
-- 근무/연차
-- 회원가입/수정, 로그인, 비밀번호찾기/변경
-- 구성원관리, 근태/연차관리, 인사이트(요약)
-
-# 3.1. 개발환경
-:heavy_check_mark: **OS** : Windows 10, Mac <br>
-:heavy_check_mark: **Framework** : Spring Framework <br>
-:heavy_check_mark: **Server** : Apache Tomcat 9.0 <br>
-:heavy_check_mark: **DataBase** : Oracle Database <br>
-:heavy_check_mark: **Front-end** : HTML5 / CSS / Javascript / JSP / JQuery / Ajax / Json  <br>
-:heavy_check_mark: **Back-end** : JDK 1.8 / Maven / Spring WebSocket / MyBatis <br>
-:heavy_check_mark: **Developer Tools** : STS3 / Eclipse / SqlDeveloper <br>
-:heavy_check_mark: **GitHub**
-
-# 3.2. API
-```
-Google Mail
-Daum 주소찾기
-Fullcalendar-5.10
-Flatpickr
-Toast Editor
-Chart.js
-Jspdf
-Html2canvas
-```
-
-# 3.3. 라이브러리
-```
-Bootstrap5
-EL/JSTL
-JDBC
-JQuery
-```
-# 4. 화면설계 및 기능구현
-
-
-# 5.1. 요구사항정의서
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0ed4b67a-de16-4dc0-8dd5-e7e7f5a89054/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EC%A0%95%EC%9D%98%EC%84%9C.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T080455Z&X-Amz-Expires=86400&X-Amz-Signature=225d39a3ae8d13512c95f56989a26a7be5fc4132d6b13528e1d78161c0468ea4&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EC%259A%2594%25EA%25B5%25AC%25EC%2582%25AC%25ED%2595%25AD%25EC%25A0%2595%25EC%259D%2598%25EC%2584%259C.png%22&x-id=GetObject" width="700px">
-
-# 5.2. Use Case
-![ThumbsUp UseCase](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e80ad7dc-4168-4b2f-af2c-ad0d2b731b6b/Usecase.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T071021Z&X-Amz-Expires=86400&X-Amz-Signature=e2fb36d6e52d6667bed7475abce4a389d5ea685f782e5afe883d6be01bafde3d&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Usecase.png%22&x-id=GetObject)
-# 5.3. DB 설계
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e3dd001a-5123-4cfa-8b19-6679c2866667/DB%EB%AA%A8%EB%8D%B8%EB%A7%81.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221226%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221226T082311Z&X-Amz-Expires=86400&X-Amz-Signature=4acebcab66e733cce5d289e111b330bcbe967f2ff2b989ca5dc4e64281192b10&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22DB%25EB%25AA%25A8%25EB%258D%25B8%25EB%25A7%2581.jpg%22&x-id=GetObject">
-![DB모델링(영어)](https://user-images.githubusercontent.com/109951309/209524777-a34c6d05-5552-4d41-9aa2-b594bb8da67e.jpg)
+## 목차
+[📌 프로젝트 소개](#-프로젝트-소개)<br>
+[🛠 개발환경](#-개발환경)<br>
+[🔎 화면설계 및 기능구현](#-화면설계-및-기능구현)<br>
+[📚 프로젝트 산출물](#-프로젝트-산출물)<br>
+[✨ 마치며](#-마치며)
+<br>
+<br>
 
 
 
-# 6.1. 팀원소개
-[진혜린](https://github.com/hrJin9), [강채영](https://github.com/chaeo), [김지은](https://github.com/jinnssi), [이예은](https://github.com/yenioo) 총 4명이 참가하였습니다.
+## 📌 프로젝트 소개
+Thumbs Up은 쌍용교육센터 1조 파이널 프로젝트로,
+[🙆‍♀️진혜린](https://github.com/hrJin9)
+[🙇‍♀️강채영](https://github.com/chaeo)
+[🙋‍♀️김지은](https://github.com/jinnssi)
+[🙋‍♀️이예은](https://github.com/yenioo)
+총 4명이 참가하여 제작한 그룹웨어 웹사이트입니다.
+
+- **프로젝트 일정**<br>
+  2022.11.7 ~ 2022.12.20 (43일)
+  <img src="https://user-images.githubusercontent.com/109951309/209932513-1f7c5648-3b85-44ee-b540-6f1dbded11c2.png">
+
+- **프로젝트 컨셉**<br>
+하나되어 소통하고 업무를 공유하는 공간, ‘Thumbs Up' <br>
+회사 내 구성원들의 업무효율성을 극대화할 수 있는 통합 그룹웨어 시스템을 목표로 하고 있습니다.
+
+- **주요기능**
+  - 일정관리
+  - 전자결재
+  - 메시지
+  - 게시판
+  - 근무/연차
+  - 회원가입/수정, 로그인, 비밀번호찾기/변경
+  - 구성원관리, 근태/연차관리, 인사이트(요약)
+
+<br>
+<br>
+
+## 🛠 개발환경
+- **OS** <br>
+```windows 10``` ```Mac```
+- **Framework** <br>
+```Spring Framework```
+- **Server** <br>
+```Apache Tomcat 9.0```
+- **DataBase** <br>
+```Oracle Database```
+- **Developer Tools** <br>
+```STS3``` ```Eclipse``` ```SqlDeveloper```
+- **Front-end** <br>
+```HTML5``` ```CSS``` ```Javascript``` ```JSP``` ```Ajax``` ```Json```
+- **Back-end** <br>
+```Java(JDK 1.8)``` ```Maven``` ```Spring WebSocket``` ```MyBatis```
+- **API** <br>
+```Google Mail``` ```Daum 주소찾기``` ```Fullcalendar-5.10``` ```Flatpickr``` ```Toast Editor``` ```Chart.js``` ```Jspdf``` ```Html2canvas```
+- **라이브러리** <br>
+```Bootstrap5``` ```EL/JSTL``` ```JDBC``` ```JQuery```
+
+<br>
+<br>
+
+## 🔎 화면설계 및 기능구현
+
+- **로그인**
+<img src="https://user-images.githubusercontent.com/109951309/210200235-2fc84974-79f9-48f8-9ff7-9f74e6827afd.png" width="100%">
+
+- **구성원**
+<img src="https://user-images.githubusercontent.com/109951309/210200260-ab6b89e9-6ec3-429b-8be3-fdb2b67e8207.png" width="100%">
+
+- **캘린더**
+![녹화_2023_01_02_09_51_49_344](https://user-images.githubusercontent.com/113486177/210199873-1b0a4fe7-f0e7-456b-9918-c3e35859aa51.gif)
 
 
-# 6.2 마치며
+- **메시지**
+<img src="https://user-images.githubusercontent.com/109951309/210200579-36dd1dc6-28e7-4af4-a86e-a128feafe66b.png" width="100%">
+
+- **근태**
+![attendance_readme](https://user-images.githubusercontent.com/110097691/210932847-aae20e65-09b2-4e0c-ae62-042a90f9005c.gif)
+
+- **게시판**
+![notice_readme](https://user-images.githubusercontent.com/110097691/210212493-72482687-2837-4ed3-8b70-17f2dc92599e.png)
+
+- **전자결재**
+<img src="https://user-images.githubusercontent.com/106755472/210203681-9057bc4a-8c42-465a-a4a5-bf16555bfbdd.gif">
+
+
+
+
+---
+- **관리자: 구성원 관리**
+<img src="https://user-images.githubusercontent.com/109951309/210200367-f0a76477-39d6-4749-a8a7-95e02b1a4a26.png" width="100%">
+
+- **관리자 : 근태관리**
+<img src="https://user-images.githubusercontent.com/109951309/210200378-8705a94e-c4e2-44e8-9f05-ca9323d5265b.png" width="100%">
+
+
+
+
+<br>
+<br>
+
+## 📚 프로젝트 산출물
+- **요구사항정의서**<br>
+  <p align="center"><img src="https://user-images.githubusercontent.com/109951309/209928608-4af2fefb-84de-4683-a0cc-f5cd7ce60225.png"></p>
+
+- **Use Case**<br>
+  <p align="center"><img src="https://user-images.githubusercontent.com/109951309/209932502-717a9e77-88b7-4a0c-a0ee-4a122323a04f.png"></p>
+
+- **DB 설계**<br>
+  <p align="center">
+  <img src="https://user-images.githubusercontent.com/109951309/209929797-9fd1db1d-8eb9-4516-bb72-47bdf5f63fc1.jpg">
+  <img src="https://user-images.githubusercontent.com/109951309/209929800-e98ad3fb-4e71-43b1-8e1d-fc3e3b5f4b3f.jpg">
+</p>
+
+<br>
+<br>
+
+## ✨ 마치며
+- 참고사이트 : [flex](https://flex.team/), [다우오피스](https://daouoffice.com/), [잔디](https://www.jandi.com/)
 - 보완사항
 
 - 후기

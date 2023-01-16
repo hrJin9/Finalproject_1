@@ -230,7 +230,7 @@
 	    right: 0.3rem;
 	}
 	
-	/* 댓글 수정 및 삭제  */
+	/* 댓글  및 삭제  */
 	a.icon-flickr {
 	    font-size: 5pt !important;
 	    color: #7f7f7f;
@@ -358,32 +358,33 @@
 		}
 		
 		
-		<%-- 텍스트 에디터 시작 --%>
- 		editor2 = new toastui.Editor({
-		    el: document.querySelector("#editor2"),
-		    height: "140px",
-		    /* initialValue: '${requestScope.boardvo.content}', // 이 부분! */
-		    initialEditType: "wysiwyg",
-		    hooks: {
-		      addImageBlobHook: function (blob, callback) {
-		        const formData = new FormData();
-		        formData.append("image", blob);
-		        const imageURL = imageUpload(formData);
-		        // console.log(imageURL);
-		        callback(imageURL, "image");
-		      },
-		    },
-		    language: 'ko-KR'
-		 });
- 		<%-- 텍스트 에디터 끝 --%>
-		
+		if(${requestScope.boardvo.commentCheck} == '1') {  // 댓글허용일 경우에만
+			<%-- 댓글 텍스트 에디터 시작 --%>
+	 		editor2 = new toastui.Editor({
+			    el: document.querySelector("#editor2"),
+			    height: "140px",
+			    /* initialValue: '${requestScope.boardvo.content}', // 이 부분! */
+			    initialEditType: "wysiwyg",
+			    hooks: {
+			      addImageBlobHook: function (blob, callback) {
+			        const formData = new FormData();
+			        formData.append("image", blob);
+			        const imageURL = imageUpload(formData);
+			        // console.log(imageURL);
+			        callback(imageURL, "image");
+			      },
+			    },
+			    language: 'ko-KR'
+			 });
+	 		<%-- 댓글 텍스트 에디터 끝 --%>
+		}
 		
 		
 		// offcanvas
 	 	$("a#editbtn").click(function(e){
 	 		$('.offcanvas').offcanvas('show');
 	 		
-	 		// 상단고정 여부 넣어주기
+	 		// 댓글 허용여부 체크박스 표시해주기
 	 		if(${requestScope.boardvo.commentCheck} == '1') {  // 댓글허용
 	 			$("input:checkbox[id='fbcommentCheck']").prop("checked", true); 
 	 		}
@@ -393,7 +394,7 @@
 	 		editor = new toastui.Editor({
 			    el: document.querySelector("#editor"),
 			    height: "390px",
-			    initialValue: '${requestScope.boardvo.content}', // 이 부분!
+			    initialValue: '${requestScope.boardvo.content}',
 			    initialEditType: "wysiwyg",
 			    hooks: {
 			      addImageBlobHook: function (blob, callback) {
@@ -464,7 +465,6 @@
                  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
             }
         });
-
 
 	}// likeAdd(fbno, status, e)--------------------
 	
@@ -664,7 +664,7 @@
 				  "currentShowPageNo":currentShowPageNo},    // 현재 보고있는 페이지번호  
 			dataType:"JSON",  
 			success:function(json){
-				console.log(JSON.stringify(json));
+				// console.log(JSON.stringify(json));
 				let html = "";
 				
 				if(json.length > 0) {
@@ -740,7 +740,6 @@
 					$("span#alertText2").html("댓글이 삭제되었습니다.");
 					//alert("성공적으로 댓글이 삭제되었습니다.");
 					setTimeout("javascript:location.reload(true)", 1500);
-					
 					
 				},
 				error: function(request, status, error){
@@ -956,44 +955,43 @@
 					     <span id="alertText" style="position: relative; bottom: 2px;">댓글 내용을 입력하세요.</span>
 					</div>
 		     	</div>
+	     	
+		     	<%-- ******** 댓글 목록 시작 ******** --%>
+		     	 <table class="table custom-table">
+		     	  <tbody id="co_table">
+			          <tr style="height: 15px;">
+					      <td style="border-right: none; padding-top: 19px;">
+					      	<div style="display: inline-block;width: 50px;position: relative;top: -13px">
+					      		<!-- <img class="boardprofile mr-2" width="35px" height="35px"> -->
+					      		<span class="pic" id="picbox" ><span id="name" >지은</span></span>
+					      	</div>
+					      	<span class="teamname"></span>
+					      	<span class="writedate"></span>
+					      	<span class="reply icon icon-forward"></span>
+					      	
+					      	<div class="dropdown custom-dropdown text-left " style="position: inherit;display: inline-block;">
+				            <a class="dropdown-link icon icon-flickr" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
+					            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;" >
+					              <a class="dropdown-item" href="#">수정하기</a>
+					              <a class="dropdown-item" href="#">삭제하기</a>
+					            </div>
+				          	</div>
+					      	<div id="cmtcontent"></div>
+					      </td>
+					   </tr>
+				   </tbody>
+		        </table> 
+		     	<%-- ******** 댓글 목록 끝 ******** --%>
+		     	
+		     	<%-- ******** 댓글 페이지바 시작 ******** --%>
+				<div id="pageBar" class="mg-paging" align="center" style="width: fit-content; margin:20px auto; margin-top: 19px; font-size: 9pt;"></div>
+		     	<%-- ******** 댓글 페이지바 끝 ******** --%>
 	     	</c:if>
-	     	<c:if test="${boardvo.commentCheck == '0'}">
+	     	
+	     	<c:if test="${boardvo.commentCheck == '0'}">  <!-- 댓글달기 불가 -->
 	     		<div style="text-align: center; color: #cccccc; margin-top: 13px; font-size: 11.5pt;">이 게시물에 대한 댓글 기능이 제한되었습니다.</div>
 	     	</c:if>
 	     	<%-- ******** 댓글 작성 끝 ******** --%>
-	     	
-	     	<%-- ******** 댓글 목록 시작 ******** --%>
-	     	 <table class="table custom-table">
-	     	  <tbody id="co_table">
-		          <tr style="height: 15px;">
-				      <td style="border-right: none; padding-top: 19px;">
-				      	<div style="display: inline-block;width: 50px;position: relative;top: -13px">
-				      		<!-- <img class="boardprofile mr-2" width="35px" height="35px"> -->
-				      		<span class="pic" id="picbox" ><span id="name" >지은</span></span>
-				      	</div>
-				      	<span class="teamname"></span>
-				      	<span class="writedate"></span>
-				      	<span class="reply icon icon-forward"></span>
-				      	
-				      	<div class="dropdown custom-dropdown text-left " style="position: inherit;display: inline-block;">
-			            <a class="dropdown-link icon icon-flickr" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-70, 20"></a>
-				            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"style="min-width: 8rem;font-size: 10pt;" >
-				              <a class="dropdown-item" href="#">수정하기</a>
-				              <a class="dropdown-item" href="#">삭제하기</a>
-				            </div>
-			          	</div>
-				      	<div id="cmtcontent"></div>
-				      </td>
-				   </tr>
-			   </tbody>
-	        </table> 
-	     	<%-- ******** 댓글 목록 끝 ******** --%>
-	     	
-	     	<%-- ******** 댓글 페이지바 시작 ******** --%>
-			<div id="pageBar" class="mg-paging" align="center" style="width: fit-content; margin:20px auto; margin-top: 19px; font-size: 9pt;"></div>
-	     	<%-- ******** 댓글 페이지바 끝 ******** --%>
-			
-		
 		
 			<c:set var="v_gobackURL" value='${ fn:replace(requestScope.gobackURL, "&", " ") }' /><br> <%-- 만약 url에  "&" 가 있다면 " " 공백으로 바꾸라는 것이다. --%>
 	     	
