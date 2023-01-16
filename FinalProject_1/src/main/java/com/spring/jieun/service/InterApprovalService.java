@@ -90,6 +90,8 @@ public interface InterApprovalService {
 
 	int referedTotalCount(Map<String, String> paraMap);
 
+	List<ApprovalVO> getreferLine(String ano);
+
 	
 //	int cancelmyapproval(String ano);
 

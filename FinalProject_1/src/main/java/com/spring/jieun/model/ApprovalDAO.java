@@ -268,5 +268,11 @@ public class ApprovalDAO implements InterApprovalDAO{
 		return n;
 	}
 
+	@Override
+	public List<ApprovalVO> getreferLine(String ano) {
+		List<ApprovalVO> list = sqlsession.selectList("approval.getreferLine", ano);
+		return list;
+	}
+
 	
 }

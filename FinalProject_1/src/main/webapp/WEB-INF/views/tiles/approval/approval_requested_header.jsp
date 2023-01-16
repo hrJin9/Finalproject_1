@@ -20,7 +20,9 @@
 		cursor: pointer;
 		color: #4d4f53;
 	}
-		
+	.memcontent{
+		display: grid;
+	}
 	#mainList {
 		position: relative;
 	    display: flex;

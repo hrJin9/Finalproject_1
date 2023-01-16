@@ -39,23 +39,7 @@
 			</when>
 		</choose>
 	</select>
-	
-	<select id="getRequestedApprovalTotalCount" resultType="int" parameterType="HashMap">
-		select count(*)
-		from tbl_approval
-		where ano in(select fk_ano
-		            from tbl_approval_sign
-		            where fk_sign_empno = #{employee_no})
-		<if test='final_signyn == "0" '>
-			and final_signyn = 0
-	    </if>
-		<if test='final_signyn != "0" '>
-			and final_signyn != 0
-	    </if>
-	    <if test='bookmark != "" '>
-			and bookmark = 1
-		</if>
-	</select>
+	<!-- 내 결재라인까지온 문서  -->
 	<select id="requestedtodoTotalCount" resultType="int" parameterType="HashMap">
 		with v as(
 		select fk_ano, signstep, fk_sign_empno,signyn
@@ -83,6 +67,24 @@
 			and bookmark = 1
 		</if>
 	</select>
+	<!-- 결재완료 문서  -->
+	<select id="getRequestedApprovalTotalCount" resultType="int" parameterType="HashMap">
+		select count(*)
+		from tbl_approval
+		where ano in(select fk_ano
+		            from tbl_approval_sign
+		            where fk_sign_empno = #{employee_no} and signyn!=0)
+		<if test='final_signyn == "0" '>
+			and final_signyn = 0
+	    </if>
+		<if test='final_signyn != "0" '>
+			and final_signyn != 0
+	    </if>
+	    <if test='bookmark != "" '>
+			and bookmark = 1
+		</if>
+	</select>
+	<!-- 내가 참조된 문서  -->
 	<select id="referedTotalCount" resultType="int" parameterType="HashMap">
 		with v as(
 		select fk_ano, signstep, fk_sign_empno,signyn
@@ -166,7 +168,7 @@
 		on A.fk_empno = E.employee_no
 		order by writeday desc
 	</select>
-	<!-- 내게온 결재문서(결재는완료한상태. 진행중이거나 완료상태 ) -->
+	<!-- 내게온 결재문서(결재완료상태 ) -->
 	<select id="requestedapprovalListPaging" resultType="com.spring.jieun.model.ApprovalVO" parameterType="HashMap">
 		select rno, ano, fk_empno, ap_type, title, content, final_signyn, writeday, modifyday
       		 ,feedbackcnt, bookmark, name_kr, DEPARTMENT_NAME, TEAM_NAME, position 
@@ -182,7 +184,7 @@
 		  from tbl_approval
 		  where status = 1 and ano in(select fk_ano
                              from tbl_approval_sign
-                             where fk_sign_empno = #{employee_no})
+                             where fk_sign_empno = #{employee_no} and signyn !=0)
 		  <if test='final_signyn == "0"  '>
 			and final_signyn = 0
 		  </if>
@@ -259,7 +261,7 @@
 		where rno between #{startRno} and #{endRno}
 		order by rno asc 
 	</select>
-	<!-- 내게온 결재문서 (결재해야할)  -->
+	<!-- 내가 참조된 문서 -->
 	<select id="referedPaging" resultType="com.spring.jieun.model.ApprovalVO" parameterType="HashMap">
 		with v as(
 		select fk_ano, signstep, fk_sign_empno,signyn, feedback
@@ -392,6 +394,18 @@
 		on v.fk_sign_empno = e.employee_no
 		order by signstep asc
     </select>
+   <select id="getreferLine" resultType="com.spring.jieun.model.ApprovalVO" parameterType="String">
+		select referno, name_kr,fk_ano,fk_refer_empno,department_name, position, role, team_name
+		from
+		(select referno,fk_ano,fk_refer_empno
+		from tbl_approval_refer 
+		where fk_ano = #{ano}
+		)V
+		left join V_employee E
+		on v.fk_refer_empno = e.employee_no
+		order by referno asc
+    </select>
+	
 	
 	<update id="delmyapproval" parameterType="String">
 		update tbl_approval set status = 0 

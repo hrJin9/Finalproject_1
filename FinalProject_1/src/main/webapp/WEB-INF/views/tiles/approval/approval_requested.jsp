@@ -939,7 +939,7 @@ function showList(ap_type,bookmark,startDate,endDate,searchType,searchWord){
   	              		+ '<td class="title"><div id="writername">'+item.name_kr+'</div>'
   	              		+ '<div id="writerday">'+item.writeday+'</div>'
   		              	+ '<div id="writertitle">'+item.title+'</div></td>'
-  	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div style="padding-left: 18px;">'
+  	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div style="padding-top: 12px;">'
   	              if(item.final_signyn == "승인"){
 		              		html += '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
 		               }
@@ -955,9 +955,9 @@ function showList(ap_type,bookmark,startDate,endDate,searchType,searchWord){
   	              	html += '</div></td><td>'
   	              	
   	              	if(item.bookmark == '0'){
-		   	            html += `<div style="padding-left: 25px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
+		   	            html += `<div style="margin-top: 12px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
 	   	            }else if(item.bookmark == '1'){
-		   	            html += `<div style="padding-left: 25px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
+		   	            html += `<div style="margin-top: 12px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
 	   	            }
   	              	
                 	html+= '</td><td></td></tr>'
@@ -1367,16 +1367,7 @@ function showsearch(){
 				      <a class="dropdown-item" href="#">증명서</a>
 				 </div>
 			</th>
-              <th class="boardth" width="7%" scope="col"><button id="signyn_sel" type="button" data-bs-toggle="dropdown">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
-				  <div id="signynmenu" class="dropdown-menu"style="font-size: 10pt;">
-				      <h5 class="dropdown-header">진행상태</h5>
-				      <a class="dropdown-item" href="#">전체</a>
-				      <a class="dropdown-item" href="#">진행</a>
-				      <a class="dropdown-item" href="#">승인</a>
-				      <a class="dropdown-item" href="#">반려</a>
-				      <a class="dropdown-item" href="#">취소</a>
-				  </div>
-			  </th>
+              <th class="boardth" width="7%" scope="col"><button id="signyn_sel" type="button" >상태</button></th>
               <th class="boardth" width="8%"scope="col">
               	<input class="bkList" type="checkbox" id="toggle" hidden>
 				 <label style="margin: 0 auto;margin-bottom: 6px;"for="toggle" class="toggleSwitch tp" data-bs-toggle="tooltip" data-bs-placement="top" title="즐겨찾기만">

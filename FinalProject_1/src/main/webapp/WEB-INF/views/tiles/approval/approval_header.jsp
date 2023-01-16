@@ -28,6 +28,9 @@
 	    margin-bottom: -42px;
 	    font-size: 18pt;
 	}
+	.memcontent{
+		display: grid;
+	}
 	/* 
 	.header-main {
 	    font-weight: 800 !important;

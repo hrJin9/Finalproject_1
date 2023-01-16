@@ -14,6 +14,7 @@
 		font-size: 9.5pt;
     	color: #858585;
     	font-weight: 400;
+    	text-align: center;
 	}
 	a.bookmark{
 		box-shadow: rgb(0 0 0 / 2%) 0px 2px 6px, rgb(0 0 0 / 6%) 0px -1px 0px inset, rgb(0 0 0 / 8%) 0px 0px 0px 1px inset;
@@ -25,16 +26,6 @@
     }
     
 		
-	.custom-table {
-		min-width: 900px;
-		thead {
-			tr, th {
-				border-top: none;
-				border-bottom: none!important;
-			}
-		}
-	}
-	
 	.table>:not(:first-child) {
 	     border-width: 1px 0px;
     	border-style: solid;
@@ -223,12 +214,12 @@
 	}
 	
 	.positionIcon {
-    margin-left: 90px;
+    	margin-left: 90px;
 	}
-	
 </style>
 
 <script type="text/javascript">
+// 전역변수 설정 
 let ap_type = "";
 /* let signynval = ""; */
 let bookmark = "";
@@ -796,13 +787,13 @@ let searchWord = "";
 					for (let i = 0; i < json.length; i++) {
 						 switch (json[i].signyn) {
 							case "0"://진행중 
-								badge = '<button type="button" class="btn btn-badge statebadge" style="background-color:rgb(250, 179, 0);color: white;margin-left: 100px;margin-bottom: 12px;">대기중</button>'
+								badge = '<button type="button" class="btn btn-badge statebadge" style="background-color:rgb(250, 179, 0);color: white;float: right;margin-bottom: 12px;">대기중</button>'
 								break;
 							case "1"://승인
-								badge = '<button class="tp btn btn-badge statebadge" data-bs-toggle="tooltip" data-bs-placement="top" title="'+json[i].signdate+'"style="margin-left: 108px;margin-bottom: 12px;background-color: #D5FAF1;color: #59c4aa;">승인</button>'
-								break;
+								badge = '<button class="tp btn btn-badge statebadge" data-bs-toggle="tooltip" data-bs-placement="top" title="'+json[i].signdate+'"style="float: right;margin-bottom: 12px;background-color: #D5FAF1;color: #59c4aa;">승인</button>'
+								break; 
 							case "2"://반려
-								badge = '<button type="button" class="btn btn-badge statebadge tp" data-bs-toggle="tooltip" data-bs-placement="top" title="'+json[i].signdate+'"style="margin-left: 108px;margin-bottom: 12px;background-color: #FFD4D5;color: #D97881;">반려</button>'
+								badge = '<button type="button" class="btn btn-badge statebadge tp" data-bs-toggle="tooltip" data-bs-placement="top" title="'+json[i].signdate+'"style="float: right;margin-bottom: 12px;background-color: #FFD4D5;color: #D97881;">반려</button>'
 								break;
 							}
 					    if(i==0 || json[i].signstep != json[i-1].signstep){
@@ -815,7 +806,7 @@ let searchWord = "";
 					  		+`<ul class="signul"><li class="signli-prof">`
 							+`<div class="signdiv-prof">`
 								+`<div style="line-height: 1;display: block;width:100%;">`
-  	  							+`<div id="memcontent-iframe`+json[i].step+`">`
+  	  							+`<div class="memcontent" id="memcontent-iframe`+json[i].signstep+`">`
 					    }
 					    linecontent +='<div class="selectedmem">'
 							 		+'<div class="profile" style="padding: 1px;">'
@@ -885,7 +876,44 @@ let searchWord = "";
 			error: function(request, status, error){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		    }
-		}); 			
+		}); 	
+						
+						
+		// 참조사원 가져오기 
+		$.ajax({
+			url:"<%= ctxPath%>/approval/view_refer.up",
+			type:"GET",
+			data:{"ano":anoval},
+			dataType:"json",
+			success: function(json) {
+				let html = "";				
+				//referno,fk_ano,fk_refer_empno,referemp_name_kr
+				if(json.length > 0) { // 참조 사원이 있으면  
+					
+					html+='<header class="signheader"><span class="signspan" style="color: rgb(141, 150, 161);"><span>참조자</span></span>'
+			  			+'<div class="separator" aria-orientation="horizontal" ></div></header>'
+							+'<ul class="signul"><li class="signli-prof"><div class="signdiv-prof"><div style="line-height: 1;display: grid;width:100%;"><div id="memcontent-iframe0"></div>'
+							
+					$.each(json, function(index, item) {
+						
+ 	  					html += '<div class="selectedmem">'
+						 		+'<div class="profile" style="padding: 1px;">'
+						 		+'<input class="empno" hidden="" value="'+item.refer_empno+'">'
+						 		+'<span class="pic"><span>'+item.name_kr.substr(1)+'</span></span>'
+						 		+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+item.name_kr+'</span>'
+						 		+'<br><span class="role" style="font-size: 9pt;">'+item.role+'</span></span></div>'
+						 		+'</div>';
+					});
+					html += '</div></div></li></ul></div>'
+				}
+				$("#refermem").html(html);
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    }
+			
+			
+		});
 	}
 	
 	
@@ -928,7 +956,7 @@ let searchWord = "";
       	              		+ '<td class="title"><div id="writername">'+item.name_kr+'</div>'
       	              		+ '<div id="writerday">'+item.writeday+'</div>'
       		              	+ '<div id="writertitle">'+item.title+'</div></td>'
-      	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div style="padding-left: 18px;">'
+      	              		+ '<td class="ap_type" style="text-align:center;"><div>'+item.ap_type+'</div></td><td><div style="padding-left: 18px;">'
       	              if(item.final_signyn == "승인"){
  		              		html += '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
  		               }
@@ -944,9 +972,9 @@ let searchWord = "";
       	              	html += '</div></td><td>'
       	              	
       	              	if(item.bookmark == '0'){
-			   	            html += `<div style="padding-left: 25px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
+			   	            html += `<div style="padding-left: 34%;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
 		   	            }else if(item.bookmark == '1'){
-			   	            html += `<div style="padding-left: 25px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
+			   	            html += `<div style="padding-left: 34%;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
 		   	            }
       	              	
                     	html+= '</td><td></td></tr>'
@@ -1398,16 +1426,7 @@ let searchWord = "";
 				      <a class="dropdown-item" href="#">증명서</a>
 				 </div>
 			</th>
-              <th class="boardth" width="7%" scope="col"><button id="signyn_sel" type="button" data-bs-toggle="dropdown">상태<i class="fa-solid fa-angle-down" style="margin-left: 10px; color: #d4d4d4;"></i></button>  
-				  <div id="signynmenu" class="dropdown-menu"style="font-size: 10pt;">
-				      <h5 class="dropdown-header">진행상태</h5>
-				      <a class="dropdown-item" href="#">전체</a>
-				      <a class="dropdown-item" href="#">진행</a>
-				      <a class="dropdown-item" href="#">승인</a>
-				      <a class="dropdown-item" href="#">반려</a>
-				      <a class="dropdown-item" href="#">취소</a>
-				  </div>
-			  </th>
+              <th class="boardth" width="7%" scope="col"><button id="signyn_sel" type="button">상태</button></th>
               <th class="boardth" width="8%"scope="col">
               	<input class="bkList" type="checkbox" id="toggle" hidden>
 				 <label style="margin: 0 auto;margin-bottom: 6px;"for="toggle" class="toggleSwitch tp" data-bs-toggle="tooltip" data-bs-placement="top" title="즐겨찾기만">
@@ -1535,39 +1554,18 @@ let searchWord = "";
 				  <div data-radix-scroll-area-viewport dir="ltr" class="pad-part" style="box-shadow: inset 1px 0px 0px rgba(0, 0, 0, 0.08);isolation: isolate;position: relative;padding: 26px 24px;height: 100%;">
 					  <div class="ApvSection-header" style="display: flex;flex-direction: row;justify-content: flex-start;">
 					  	<h2 class="ApvSection-title"style="margin: auto 0;" >승인・참조</h2>
-					  	<button class="btn tp" style="display: flex;font-size: small;"data-bs-toggle="tooltip" data-bs-placement="top" title="참조자추가"><i style="color: rgb(78 111 215);background-color: transparent;" class="icon icon-user-plus"></i></button> <!-- 삭제 -->
+					  	<!-- <button class="btn tp" style="display: flex;font-size: small;"data-bs-toggle="tooltip" data-bs-placement="top" title="참조자추가"><i style="color: rgb(78 111 215);background-color: transparent;" class="icon icon-user-plus"></i></button> 삭제 -->
 					  </div>
 					  <div class="ApvSection-body">
 					  	<ol class="signol"></ol>
 						<div class="tbody" id="linebody"style="margin-top: 16px;font-size: 16px;"></div>
 					  </div>
 					  
-					   <div class="signli mt-5" >
-						  <header class="signheader">
-						  <span class="signspan" style="color: rgb(141, 150, 161);">
-				  				<span>참조자</span>
-				  		  </span>
-				  			<div class="separator" aria-orientation="horizontal" ></div>
-				  			<div class="stepbtn">
-				  				<!-- 단계박스 멤버추가 버튼 -->
-						  			<button type="button" id="plusmem0" class="plusmembtn" onClick="optionForm('OPEN',event,0)"><div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; flex-shrink: 0;">
-						  			<path d="M12.9 12.9L19 12.9L19 11.1L12.9 11.1L12.9 5L11.1 5L11.1 11.1L5 11.1L5 12.9L11.1 12.9L11.1 19L12.9 19L12.9 12.9Z" fill="#556372" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>
-				  			</div>
-				  			</header>
-								<ul class="signul">
-									<li class="signli-prof">
-										<div class="signdiv-prof">
-											<div style="line-height: 1;display: block;width:100%;">
-												<!-- iframe 선택된 멤버 보여주기  -->
-		      	  								<div id="memcontent-iframe0">
-		      	  									<!-- 기존에 선택한 참조자 뿌려주고 새로 선택하면 뒤에 append -->
-		      	  								
-		      	  								</div>
-										  	</div>
-							  			</div>
-						  			</li>
-					  			</ul>
-				  			</div>
+					  
+					   <div class="signli mt-5" id="refermem" >
+				  		</div>
+				  		
+				  		
 				  </div>
 			  </aside>
     </div>

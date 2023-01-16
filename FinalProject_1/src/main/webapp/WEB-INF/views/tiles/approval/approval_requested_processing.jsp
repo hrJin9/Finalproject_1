@@ -939,7 +939,7 @@ function showList(ap_type,bookmark,startDate,endDate,searchType,searchWord){
   	              		+ '<td class="title"><div id="writername">'+item.name_kr+'</div>'
   	              		+ '<div id="writerday">'+item.writeday+'</div>'
   		              	+ '<div id="writertitle">'+item.title+'</div></td>'
-  	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div style="padding-left: 18px;">'
+  	              		+ '<td class="ap_type"><div>'+item.ap_type+'</div></td><td><div style="padding-top: 12px;">'
   	              if(item.final_signyn == "승인"){
 		              		html += '<button type="button" class="btn btn-badge" style="background-color: #D1FCF1; color: #4dc6ad; ">승인</button>'
 		               }
@@ -955,9 +955,9 @@ function showList(ap_type,bookmark,startDate,endDate,searchType,searchWord){
   	              	html += '</div></td><td>'
   	              	
   	              	if(item.bookmark == '0'){
-		   	            html += `<div style="padding-left: 25px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
+		   	            html += `<div style="margin-top: 12px;"><a class="bookmark icon icon-star-empty" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
 	   	            }else if(item.bookmark == '1'){
-		   	            html += `<div style="padding-left: 25px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
+		   	            html += `<div style="margin-top: 12px;"><a class="bookmark icon icon-star-full" onclick="addbookmark('`+item.ano+`',event)"></a></div>`
 	   	            }
   	              	
                 	html+= '</td><td></td></tr>'
@@ -1461,9 +1461,6 @@ function showsearch(){
 		  	     	  <div id="pdfArea">
 						  <!-- 문서 헤더정보  -->			  
 						  <div id="datasection" style="border-bottom: 1px solid rgba(36, 42, 48, 0.06);"></div>
-						  
-						  
-						  
 						  <!-- 문서내용  -->
 						  <div class="pad-part"> 
 						  	<!-- <div class="ApvSection-header"><h2 class="ApvSection-title">내용</h2></div> -->
@@ -1474,44 +1471,11 @@ function showsearch(){
 							  	</div>
 					  		</div>
 					  	  </div>
-						  
-						  <!-- 첨부파일  -->
-	<!-- 					  <div class="pad-part">
-						  	<div class="ApvSection-header"><h2 class="ApvSection-title">첨부파일</h2></div>
-							  <div class="ApvSection-body" id ="filesection">
-					  		</div>
-					  	  </div>
-						  
-						  <div class="pad-part">
-						  	<div class="ApvSection-header"><h2 class="ApvSection-title">관련문서</h2></div>
-							  <div class="ApvSection-body" id="docsection">
-					  		</div>
-					  	  </div>
-	 -->					  
 						  <!-- 문서의견  -->
 						  <div class="pad-part">
 						  	<div id="fbsection"></div>
 					  	  </div>
 				  	  </div>
-				  	  
-				  	  
-				  	  
-				  <!-- 	  <div class="modal-footer" style="position: sticky;bottom: 0;background-color: white;padding: 5px 40px 20px;display: flex;align-items: center;border-top:0px;">
-					  	  <div id="footercss">
-						  	  
-						  	  <button id="rejdoc"class="approvebtn" type="button" style="margin-right:10px;">
-						  	  	<div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-knmidH-justify-space-between c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css" style="width: 100%;"><div class="c-dhzjXW c-dhzjXW-jroWjL-align-center c-dhzjXW-bICGYT-justify-center c-dhzjXW-ejCoEP-direction-row c-dhzjXW-kVNAnR-wrap-noWrap c-dhzjXW-ihnNXey-css c-fGHEql c-fGHEql-jVpCez-align-center">
-						  	  	<div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M12 13.2728L17.0205 18.2933L18.2932 17.0205L13.2728 12L18.2932 6.97954L17.0205 5.70675L12 10.7272L6.97954 5.70675L5.70675 6.97954L10.7272 12L5.70675 17.0205L6.97954 18.2932L12 13.2728Z" fill="currentColor"></path></svg></div>
-						  	  	<div style="display: inline-block;"><span>반려</span></div></div></div>
-						  	  </button>
-						  	  <button id="aprdoc"class="approvebtn"type="button" style="background-color: rgb(19 133 255 / 86%);color:white;">
-							  	  <div class="" style="width: 100%;"><div class="">
-							  	  <div style="display: inline-block;"><svg width="20" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; flex-shrink: 0;"><path d="M10.0425 14.6397L17.8067 6.35059L19.1934 7.64946L10.0975 17.3603L4.83347 12.1769L6.16656 10.8231L10.0425 14.6397Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div>
-							  	  <div style="display: inline-block;"><span>승인하기</span></div></div></div>
-							  </button>
-					  	  </div>
-				  	  </div>  -->
-				  	  
 			  	</div>
 			  </div>
 			  <aside style="float: right;width: 30%;background: #fafafa;height: 207%;">

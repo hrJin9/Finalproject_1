@@ -53,14 +53,6 @@
 	    margin-right: 10px;
 	    color: #605c5c;
 	}
-	
-	/* @media (min-width: 576px)
-	.modal-dialog {
-    	max-width: 990px !important;
-	}
-	.modal-dialog-centered {
-	    align-items: normal !important;
-    } */
     
     modal{
         background: rgba(0, 0, 0, 0.5);
@@ -73,19 +65,6 @@
 		background-color: #fff;
 		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 	}
-	/* .form-control, .bootstrap-select .btn {
-	    height: 44px;
-	    padding: 6px 16px 9px 16px;
-	    padding-right: 30px;
-	    border-radius: 4px !important;
-	    box-shadow: none !important;
-	    -webkit-appearance: none;
-	    border: 2px solid #e8e8e8 !important;
-	    font-size: 14px;
-	    font-weight: 500;
-	    line-height: calc(1.5 * 10px);
-	    color: #484848;
-	} */
 	.custom-control-label::before {
 		top: 0.14rem !important;
 		cursor: pointer;
@@ -122,9 +101,6 @@
 	.toastui-editor-defaultUI-toolbar {
 		background-color: #ffffff;
 	}
-/* 	div.toastui-editor-mode-switch{
-		display: none !important;
-	} */
 	.toastui-editor-defaultUI-toolbar {
     	border-bottom: 0px solid #ebedf2 !important;
     }
@@ -278,14 +254,6 @@
     position: relative;
     white-space: nowrap;
 }
-/* .icon-calendar{
-	position: relative;
-    z-index: 2;
-    top: 30px;
-    right: -38px;
-    color:#5d646a !important;
-    font-size: 10pt;
-} */
 .ant-input, .ant-input-selector {
     background-color: #fff;
     background-image: none;
@@ -316,9 +284,6 @@
     padding-left: 10px;
     padding-right: 20px;
 }
-/* td{
-	width: 77%;
-}	 */
 .positionIcon{
 	margin-left: 90px;
 }
@@ -349,690 +314,671 @@ div#dayoff-temp, div#wort-temp{
 }
 </style> 
 <script>
-	$(document).ready(function(){
-		$("#writebtn").hide(); // 글쓰기 버튼 숨기기
-		//툴팁 사용
-		var tooltipel = $(".tp").tooltip();
+$(document).ready(function(){
+	$("#writebtn").hide(); // 글쓰기 버튼 숨기기
+	//툴팁 사용
+	var tooltipel = $(".tp").tooltip();
+	
+	$("input.dayradio").attr("disabled", true) // 반차 라디오버튼 못누르게  
+	const mydayoff = "${sessionScope.loginuser.dayoff_cnt}";
+	// 로그인한 사용자 값 넣기 
+	$("input#left-dayoffcnt").val(Number(mydayoff)-1);
+	$("input#use-dayoffcnt").val("1");
+	
+	
+	// 날짜피커 값이 변경될때마다 연차 갯수 바뀌게하기 
+	$(".dateSelector").change(function(){
+		var today = getTimeStamp(); // 오늘날짜 yyyy-mm-dd 
+		const $thisid =$(this).attr("id");
 		
-		$("input.dayradio").attr("disabled", true) // 반차 라디오버튼 못누르게  
-		const mydayoff = "${sessionScope.loginuser.dayoff_cnt}";
-		// 로그인한 사용자 값 넣기 
-		$("input#left-dayoffcnt").val(mydayoff);
-		$("input#use-dayoffcnt").val("0");
+		const startday = $("input#startday").val();
+		const endday = $("input#endday").val();
 		
-		
-		// 날짜피커 값이 변경될때마다 연차 갯수 바뀌게하기 
-		$(".dateSelector").change(function(){
-			var today = getTimeStamp(); // 오늘날짜 yyyy-mm-dd 
-			const $thisid =$(this).attr("id");
-			
-			const startday = $("input#startday").val();
-			const endday = $("input#endday").val();
-			
-			let startdayarr = startday.split("-");
-			let enddayarr = endday.split("-");
-			let sdate = new Date(startdayarr[0], startdayarr[1], startdayarr[2]);
-			let edate = new Date(enddayarr[0], enddayarr[1], enddayarr[2]);
+		let startdayarr = startday.split("-");
+		let enddayarr = endday.split("-");
+		let sdate = new Date(startdayarr[0], startdayarr[1], startdayarr[2]);
+		let edate = new Date(enddayarr[0], enddayarr[1], enddayarr[2]);
 
-			var diff = edate - sdate;
-			var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
-			var currMonth = currDay * 30;// 월 만듬
-			var currYear = currMonth * 12; // 년 만듬
-			 
-			console.log("* 날짜 두개 : " + startday + ", " + endday + "<br/>");
-			console.log("* 일수 차이 : " + parseInt(diff/currDay) + " 일<br/>");
-			/* console.log("* 월수 차이 : " + parseInt(diff/currMonth) + " 월<br/>");
-			console.log("* 년수 차이 : " + parseInt(diff/currYear) + " 년<br/><br/>"); */ 
-			let betday = parseInt(diff/currDay)+1;
-			let flag = true;
-			flag =  betday < 0? true:false; // 날짜양식에 맞는지 
-			
-			
-			if(!flag){ // 날짜가 양식에맞으면 연차갯수 계산  
-				$("#approvalsave").prop("disabled",false);
-				$("#approvalsave").css("background-color","rgb(0 101 204)");
-				$("input.dayradio").each(function(){
-					if($(this).is(":checked")) {
-						betday-=0.5;
-					}
-					
-				})
-				
-				$("input#use-dayoffcnt").val(betday);
-				$("input#left-dayoffcnt").val(mydayoff-betday);
-			}
-			else{ // 양식에 맞지않으면 (시작날짜가 종료일자 보다 클경우- 시작날짜를 종료날짜보다 크게잡은경우, 종료날짜를 시작날짜보다적게잡은경 )
-				/* $("#approvalsave").prop("disabled",true);		
-				$("#approvalsave").css("background-color","#c3c3c3"); */
-				if( $thisid == endday){
-					$("input#endday").val(startday);
-				}else{
-					$("input#startday").val(endday);
+		var diff = edate - sdate;
+		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
+		var currMonth = currDay * 30;// 월 만듬
+		var currYear = currMonth * 12; // 년 만듬
+		 
+		console.log("* 날짜 두개 : " + startday + ", " + endday + "<br/>");
+		console.log("* 일수 차이 : " + parseInt(diff/currDay) + " 일<br/>");
+		/* console.log("* 월수 차이 : " + parseInt(diff/currMonth) + " 월<br/>");
+		console.log("* 년수 차이 : " + parseInt(diff/currYear) + " 년<br/><br/>"); */ 
+		let betday = parseInt(diff/currDay)+1;
+		let flag = true;
+		flag =  betday < 0? true:false; // 날짜양식에 맞는지 
+		
+		
+		if(!flag){ // 날짜가 양식에맞으면 연차갯수 계산  
+			$("#approvalsave").prop("disabled",false);
+			$("#approvalsave").css("background-color","rgb(0 101 204)");
+			$("input.dayradio").each(function(){
+				if($(this).is(":checked")) {
+					betday-=0.5;
 				}
+				
+			})
+			
+			$("input#use-dayoffcnt").val(betday);
+			$("input#left-dayoffcnt").val(mydayoff-betday);
+		}
+		else{ // 양식에 맞지않으면 (시작날짜가 종료일자 보다 클경우- 시작날짜를 종료날짜보다 크게잡은경우, 종료날짜를 시작날짜보다적게잡은경 )
+			/* $("#approvalsave").prop("disabled",true);		
+			$("#approvalsave").css("background-color","#c3c3c3"); */
+			if( $thisid == endday){
+				$("input#endday").val(startday);
+			}else{
+				$("input#startday").val(endday);
 			}
+		}
+	});
+	
+
+	<%-- 반차여부 체크시 라디오 선택 가능 불가능  --%>
+$("input#halfstart").change(function(){
+	let useval = Number($("input#use-dayoffcnt").val());
+	
+	if($(this).is(":checked")){ // 시작일 반차여부 체크되었으면
+    	$("input[name='startdaynight']").attr("disabled", false);
+		$("#startmorning").prop('checked', true); // 오전체크디폴트
+		if(useval!=0) useval -= 0.5;
+		
+		$("input#use-dayoffcnt").val(useval);
+		$("input#left-dayoffcnt").val(Number(mydayoff) - Number(useval));
+    }else{// 시작일 반차여부 체크해제 되었으면
+      	$("input[name='startdaynight']").each(function(){
+  			if(this.checked){// 시작일라디오 체크 해제시키기 
+  				this.checked = false;
+  				useval += 0.5;
+  				$("input#use-dayoffcnt").val(useval);
+  				$("input#left-dayoffcnt").val(Number(mydayoff)-Number(useval));
+  			}
+      	})
+    $("input[name='startdaynight']").attr("disabled", true);
+      }
+   });
+$("input#halfend").change(function(){
+	let useval = Number($("input#use-dayoffcnt").val());
+	//let leftval = Number($("input#left-dayoffcnt").val());
+	
+    if($(this).is(":checked")){ // 종료일 반차여부 체크되었으면
+	    $("input[name='enddaynight']").attr("disabled", false);
+	    $("#endmorning").prop('checked', true); // 오전체크디폴트
+		if(useval!=0){
+			useval -= 0.5;
+		}
+		$("input#use-dayoffcnt").val(useval);
+		$("input#left-dayoffcnt").val(Number(mydayoff) - Number(useval));
+		
+    }else{
+       	$("input[name='enddaynight']").each(function(){
+   			if(this.checked){// 종료일라디오 체크 해제시키기
+   				this.checked = false;
+   				useval += 0.5;
+  				$("input#use-dayoffcnt").val(useval);
+  				$("input#left-dayoffcnt").val(Number(mydayoff)-Number(useval));
+   			}
+       	})
+	    $("input[name='enddaynight']").attr("disabled", true);
+       }
+   });
+   
+   
+
+
+
+let id = ""; 
+/* 양식에 맞는 모달창 뜨게하기  */
+$("div.dayoff-box").click(function(e){
+	const temname = $(this).children('div').text();
+	//console.log(temname);
+	$("input#subject").val(temname+'결재');
+	$("input#ap_type").val(temname);
+	$("#tempbadge").text(temname+'작성하기');
+	
+	const $target = $(e.target)
+	id = $target.attr("id");
+	
+	id!="timeoff"? $("div#dayoff-temp").hide():$("div#dayoff-temp").show(); // 연차양식 뜨게하기  
+	
+	if( id=="work"){ // 업무기안서 양식 뜨게하기 
+		
+		$.ajax({
+			url: "<%= ctxPath%>/getdeptname.up",
+			type:"GET",
+			dataType:"json",
+			success: function(json) {
+				let html = '';
+				if(json.length > 0){
+					html += '<option value="" selected disabled>옵션을 선택해주세요</option>'
+					$.each(json, function(index,item) {
+						html += '<option value="'+item.deptname+'" selected>'+item.deptname+'</option>'  
+					});
+				}
+				$("#deptname").html(html);
+				$("div#work-temp").show();
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    }
 		});
-		
-		// 반차 오전 오후 클릭됐을경우 
-		$("input.dayradio").change(function(e){
+	}else{
+		$("div#work-temp").hide()
+	}
+	
+	let data = ""
+	switch (id) {
+	case "timeoff":
+		data = timeoff_temp 
+		break;
+	case "reason":
+		data = reason_temp 
+		break;
+	case "work":
+		data = work_temp 
+		break;
+	case "expenditure": 
+		data = expenditure_temp 
+		break;
+	case "buy":
+		data = buy_temp 
+		break;
+	case "condolence":
+		data = condolence_temp; 
+		break;
+	case "other":
+		data = ""; 
+		break;
+	}
+	
+	editor.setMarkdown(data);
+	
+	showmodal();
+})
+
+// 플랫피커
+	flatpickr.localize(flatpickr.l10ns.ko);
+	flatpickr($(".dateSelector"));
+$(".dateSelector").flatpickr({
+	dateFormat: "Y-m-d",
+	defaultDate: new Date(),
+	local: 'ko'
+});
+
+
+/* 문서 템플릿  */
+const timeoff_temp = '';
+const reason_temp = '';
+const work_temp = '';
+const condolence_temp = '<div class="fr-element fr-view" dir="auto" contenteditable="true" style="min-height: 100px;" aria-disabled="false" spellcheck="true"><h1 id="isPasted" style="box-sizing: border-box; margin: 0px; font-weight: 600; line-height: 1.8; font-size: 26px; padding: 30px 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: center;">경조금 지급 신청서</h1><p style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(118, 118, 118); font-family: &quot;Noto Sans JP&quot;, &quot;Noto Sans KR&quot;, &quot;SF Pro KR&quot;, &quot;SF Pro Text&quot;, &quot;SF Pro Icons&quot;, &quot;Apple Gothic&quot;, &quot;HY Gulim&quot;, MalgunGothic, &quot;HY Dotum&quot;, &quot;Lexi Gulim&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, roboto, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p><p style="box-sizing: border-box; margin: 0px; padding: 20px 0px 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.8; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 16px; text-align: start;"><strong style="box-sizing: border-box; font-weight: 700;">1. 경조금 수혜자</strong></p><p style="box-sizing: border-box; margin: 0px; padding: 0px 0px 0px 20px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.8; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 16px; text-align: start;">소속:&nbsp;</p><p style="box-sizing: border-box; margin: 0px; padding: 0px 0px 0px 20px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.8; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 16px; text-align: start;">성명:&nbsp;</p><p style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(118, 118, 118); font-family: &quot;Noto Sans JP&quot;, &quot;Noto Sans KR&quot;, &quot;SF Pro KR&quot;, &quot;SF Pro Text&quot;, &quot;SF Pro Icons&quot;, &quot;Apple Gothic&quot;, &quot;HY Gulim&quot;, MalgunGothic, &quot;HY Dotum&quot;, &quot;Lexi Gulim&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, roboto, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p><table align="" style="box-sizing: border-box; border-collapse: collapse; margin: 0px; padding: 0px; font-family: &quot;맑은 고딕&quot;; width: 938px; border: 1px none rgb(0, 0, 0); empty-cells: show; max-width: 100%; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-align: start; font-size: 16px; line-height: 1.8; color: rgb(0, 0, 0); table-layout: fixed;"><tbody style="box-sizing: border-box;"><tr style="box-sizing: border-box;"><td rowspan="5" scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 142px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">지급사유</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">경조 대상자 성명</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(156, 156, 156); font-family: &quot;맑은 고딕&quot;; font-size: 16px;">예시) 형제/자매 결혼시, 형제/자매 성함 입력</span></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">관계</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><br style="box-sizing: border-box;"></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-weight: bold; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">경조일</p><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; text-align: start;"><strong style="box-sizing: border-box; font-weight: 700;">(장례시 발인일 입력)</strong></span></p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><br style="box-sizing: border-box;"></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">경조내용</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><br style="box-sizing: border-box;"></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">발생지 주소(필요시 작성)</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><br style="box-sizing: border-box;"></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 142px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">지급금액</p></td><td colspan="2" scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 679px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(156, 156, 156); font-family: &quot;맑은 고딕&quot;; font-size: 16px;">경조금 지급금액 000,000원을 입력</span></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 142px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">지급계좌</p></td><td colspan="2" scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 679px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(156, 156, 156); font-family: &quot;맑은 고딕&quot;; font-size: 16px;">급여계좌 입력</span></p></td></tr></tbody></table></div>';
+const buy_temp = '<div class="fr-element fr-view" dir="auto" contenteditable="true" style="min-height: 100px;" aria-disabled="false" spellcheck="true"><p align="center" id="isPasted" style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 10pt; text-align: center;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 24px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 25.68px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;"><strong style="box-sizing: border-box; font-weight: 700;">구 매 요 청 서</strong></span></span></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: normal; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: SpoqaHanSans-Bold;">&nbsp;</span></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: normal; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: SpoqaHanSans-Bold;">&nbsp;</span></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">1.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">구매요청부서 :</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">2.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">구매목적(필요성) :</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: SpoqaHanSans-Bold; font-size: 12px; letter-spacing: 1pt; text-indent: -18pt;">&nbsp; &nbsp; &nbsp;</span><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: SpoqaHanSans-Bold; font-size: 12px; letter-spacing: 1pt; text-indent: -18pt;">※작성 Tip : 구매요청 물품이 업무상 필수물품인 근거사항을 제시해주세요</span></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">3.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">희망납기일 :</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">4.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">구매요청품목</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><br style="box-sizing: border-box;"></p><div style="box-sizing: border-box; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; font-family: &quot;맑은 고딕&quot;; font-size: 16px; color: rgb(0, 0, 0); line-height: 1.8; margin-top: 0px; margin-bottom: 0px;"><table style="box-sizing: border-box; border-collapse: collapse; margin: 0px; padding: 0px; font-family: &quot;Noto Sans JP&quot;, &quot;Noto Sans KR&quot;, &quot;SF Pro KR&quot;, &quot;SF Pro Text&quot;, &quot;SF Pro Icons&quot;, &quot;Apple Gothic&quot;, &quot;HY Gulim&quot;, MalgunGothic, &quot;HY Dotum&quot;, &quot;Lexi Gulim&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, roboto, sans-serif; width: 937px; border: none; empty-cells: show; max-width: 100%;"><tbody style="box-sizing: border-box;"><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">NO</strong>.</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">품목명</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">모델명</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">수량</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">단가</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">금액</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">사용부서(사용자)</strong></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td colspan="4" style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 534.844px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">합계(부가세 포함)</strong></td><td colspan="3" style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 401.156px; background-color: rgb(204, 204, 204);"><br style="box-sizing: border-box;"></td></tr></tbody></table><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 9pt; line-height: 12.84px; font-family: SpoqaHanSans-Bold;">&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 11pt; line-height: 15.6933px; font-family: SpoqaHanSans-Bold;">5.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; &nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 11pt; line-height: 15.6933px; font-family: SpoqaHanSans-Bold;">첨부서류</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 11pt; line-height: 15.6933px; font-family: SpoqaHanSans-Bold;"><br style="box-sizing: border-box;"></span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 56pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;">(1)<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; &nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;">관련 구매 링크 :&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 56pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;"><br style="box-sizing: border-box;"></span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 56pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;">(2)<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; &nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;">견적서(필요시 첨부)</span></strong></p></div></div>';
+const expenditure_temp = '<div class="fr-element fr-view" dir="auto" contenteditable="true" style="min-height: 100px;" aria-disabled="false" spellcheck="true"><div id="isPasted" style="box-sizing: border-box; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.8; display: block; margin-top: 0px; margin-bottom: 0px; text-align: center;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 24px;"><strong style="box-sizing: border-box; font-weight: 700;">지 출 결 의 서</strong></span><br style="box-sizing: border-box;"><br style="box-sizing: border-box;"></div><table style="box-sizing: border-box; border-collapse: collapse; margin: 0px; padding: 0px; font-family: &quot;Noto Sans JP&quot;, &quot;Noto Sans KR&quot;, &quot;SF Pro KR&quot;, &quot;SF Pro Text&quot;, &quot;SF Pro Icons&quot;, &quot;Apple Gothic&quot;, &quot;HY Gulim&quot;, MalgunGothic, &quot;HY Dotum&quot;, &quot;Lexi Gulim&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, roboto, sans-serif; width: 937px; border: none; empty-cells: show; max-width: 100%; color: rgb(0, 0, 0); font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><tbody style="box-sizing: border-box;"><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">NO</strong><strong style="box-sizing: border-box; font-weight: 700;">.</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">거래일</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">거래처명</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px; text-align: center;"><div style="box-sizing: border-box; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">내용</strong></div></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">금액</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">지급 요청일</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">예금주</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">은행</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px; text-align: center;"><div style="box-sizing: border-box; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">계좌번호</strong></div></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px; text-align: center;">1</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px; text-align: center;">2022-01-07</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px; text-align: center;">abc운송</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px; text-align: center;">물품 운반료</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px; text-align: center;">100,000</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px; text-align: center;">2022-01-31</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px; text-align: center;">000</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px; text-align: center;">00은행</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px; text-align: center;">123-456-789</td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td colspan="4" style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 417.383px; background-color: rgb(204, 204, 204);"><div style="box-sizing: border-box; text-align: right;"><strong style="box-sizing: border-box; font-weight: 700;">총계 : &nbsp; &nbsp; &nbsp;</strong></div></td><td colspan="5" style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 518.617px; background-color: rgb(204, 204, 204);">&nbsp;100,000</td></tr></tbody></table></div>';
+
+<%--텍스트 에디터 시작 --%>
+const { Editor } = toastui; 
+const { colorSyntax } = Editor.plugin;
+
+const editor = new toastui.Editor({
+  el: document.querySelector('#editor'),
+     height: '500px',
+     initialEditType:"wysiwyg",
+     previewStyle: 'vertical',
+     plugins: [colorSyntax],
+     language: "ko-KR",
+     hooks: {
+      addImageBlobHook: function (blob, callback) {
+  		        const formData = new FormData();
+  		        formData.append("image", blob);
+  		        formData.append("uri", window.location.pathname);
+  		        const imageURL = imageUpload(formData);
+  		        callback(imageURL, "image");
+  		} 
+  	} 
+});
+
+<%-- 텍스트 에디터 끝 --%>
+
+
+// **** 결재문서 제출 ****  
+// 저장하기 눌렀을경우 
+$("button#approvalsave").click(function(){
+
+	$('#content').prepend(editor.getHTML());
+	// 글제목 유효성 검사
+        const subject = $("input#subject").val().trim();
+        if(subject == "") {
+           alert("글제목을 입력하세요!!");
+           return;
+        }
+        var contentval = editor.getHTML();
+        //console.log(contentval);
+        contentval = contentval.replace(/&nbsp;/gi, ""); // 공백을 "" 으로 변환
+        contentval = contentval.substring(contentval.indexOf("<p>")+3);
+        contentval = contentval.substring(0, contentval.indexOf("</p>"));
+        
+        if(contentval.trim().length == 0) {
+             alert("글내용을 입력하세요!!");
+              return;
+          }
+        $("#content").val(contentval);         
+        
+        
+		if(id=="timeoff"){ // 연차 양식이라면 
 			let useval = Number($("input#use-dayoffcnt").val());
 			let leftval = Number($("input#left-dayoffcnt").val());
-			if($(e.target).is(":checked")){
-				if(useval!=0){
-					useval -= 0.5;
-					leftval -= 0.5;
+			
+			// 연차결재일경우
+			// 양식 다 작성했는지 검사
+			// 반차 적용하기 
+			
+			if(useval == 0){ // 사용연차가 0보다 적으면 
+				alert("신청하는 연차가 없습니다!");
+				return;
+			}else if( useval<0 ){
+				alert("신청할려는 연차가 잔여연차 갯수보다 많습니다!");
+				return;
+			}
+			
+			// 반차 날짜에 적용하기 
+			const startday= $("#startday").val();
+			const endday= $("#endday").val();
+			if($("#startmorning").is(":checked")){ // 시작일 오전에 체크됐으면 
+				$("#startday").val(startday+' 09:00');
+			}else if($("#startnoon").is(":checked")){ // 시작일 오후에 체크됐으면
+				$("#startday").val(startday+' 13:00');
+			}else{
+				$("#startday").val(startday+' 09:00');
+			}
+			
+			if($("#endmorning").is(":checked")){ // 종료일 오전에 체크됐으면 
+				$("#endday").val(endday+' 09:00');
+			}else if($("#endnoon").is(":checked")){ // 종료일 오후에 체크됐으면
+				$("#endday").val(endday+' 13:00');
+			}else{
+				$("#endday").val(endday+' 09:00');
+			}
+			
+		}
+		else if(id=="work"){ // 업무 양식이라면
+			const dept = $("select#deptname").val();
+			if(dept == "" || dept == null) {
+	              alert("부서를 선택해주세요!");
+	               return;
+	          }
+		}
+
+     	// 결재라인 넘겨주기 
+		let appendval='';
+		let appendtext='';
+		$("div[name='approvalstep']").each(function(index){ // 추가된 단계만큼  
+			// 단계, 사원번호 넘겨주기
+			//console.log($(this).find('.empno'));
+			const $this = $(this); 
+			$this.find('input.empno').each(function(num, item){
+				let val = $(item).val();
+				if(val == "") return;
+				
+				if(num != 0 ) val=','+val;  // 결재사원구분자 
+				else if (index !=0 && num == 0){
+					val='/'+val; // 결재단게구분자 
+				}
+				
+				appendval += val;
+				 console.log('appendval => '+appendval); 
+			});
+			
+			$this.find('span.name').each(function(num, item){
+				let text = $(item).text();
+				if(text == "") return;
+				
+				if(num != 0 ) text=','+text;  // 결재사원구분자 
+				else if (index !=0 && num == 0){
+					text='/'+text; // 결재단게구분자 
+				}
+				appendtext += text;
+				console.log('appendtext => '+appendtext); 
+			});
+		});
+		$("input[name='approvalline']").val(appendval);
+		$("input[name='approvalline_name']").val(appendtext);
+		// 참조자 넘겨주기 
+		let referhtml = '';
+		let appendval2='';
+		let appendtext2='';
+		let flag =0; 
+		let flag2 =0; 
+		const referbox =$("div#memcontent-iframe0").find(".selectedmem") 
+		referbox.find('input.empno').each(function(index){ // 추가된 참조사원만큼  
+			// 단계, 사원번호 넘겨주기
+			//console.log($(this).find('.empno'));
+			const $this = $(this); 
+			let val = $this.val();
+			if(val == "") return false;
+			if(flag != 0 ) val=','+val;  // 참조사원구분자
+			
+			appendval2 += val;
+			flag+=1;
+		});
+		referbox.find('span.name').each(function(index){ // 추가된 참조사원만큼  
+			// 단계, 사원번호 넘겨주기
+			//console.log($(this).find('.empno'));
+			const $this = $(this); 
+			let text = $this.text();
+			if(text == "") return false;
+			if(flag2 != 0 ) text=','+text;  // 참조사원구분자
+			
+			appendtext2 += text;
+			flag2 +=1;
+		});
+		$("input[name='referline']").val(appendval2);
+		$("input[name='referline_name']").val(appendtext2);
+		
+	
+        // 폼(form)을 전송(submit)
+  		 const frm = document.addFrm;
+        frm.method = "POST";
+        frm.action = "<%= ctxPath%>/approval/add.up";
+         frm.submit();  
+	});
+	
+	 
+	
+	/* 결재라인 호버효과 */
+	$(document).on({
+		mouseenter: function(){
+			$(this).css('background-color','#f6f6f6');
+			// 만일 1단계만 있다면 삭제버튼 계속 안보이게 하기 
+			if($("div[name='approvalstep']").length > 1) 
+				$(this).find('.delboxbtn').css('display','flex');
+		},
+		mouseleave: function(){
+			$(this).css('background-color','transparent');
+			$(this).find('.delboxbtn').css('display','none');
+		}
+	}, '.signheader');
+	
+	
+	// 외부영역 클릭 시 팝업 닫기
+	$(document).mouseup(function (e){
+		var option = $(".option");
+		if(option.has(e.target).length === 0){
+			option.css('display','none');
+		}
+	});
+	
+});//end of $(document).ready(function(){}---------------
+		
+		
+		
+function imageUpload(formData) {
+	  let imageURL;
+
+  $.ajax({
+    type: "post",
+    url: "<%= ctxPath%>/approval/image_upload.up",
+    async: false,
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function (data) {
+      imageURL = data;
+      //console.log(imageURL);
+    },
+    error: function (request, status, error) {
+      alert(request + ", " + status + ", " + error);
+    },
+  });
+
+  return imageURL;
+}
+
+function showmodal(){
+	$('#writemodal').modal('show');
+};
+
+
+function showmodal_selSignMem(){
+	$('#myModal_selSignMem').modal('show');
+}
+
+// 저장된 개인결재선보여주기 
+function showmodal_mySignMade(){
+	$.ajax({
+		url: "<%= ctxPath%>/approval/loadsavedline.up",
+		type:"GET",
+		/* data:{"ano":anoval
+			, "ap_type":ap_type}, */
+		dataType:"json",
+		success: function(json) {
+			html = '';
+			let sno = '';
+			if(json.length > 0){
+				
+				for (let i = 0; i < json.length; i++) {
+				    if(i==0 || json[i].signpath_no != json[i-1].signpath_no){
+				    	html += '<div name="savedstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">'
+						 	+'<div style="margin-top: 0;display: flex;justify-content: space-between;"><span  id="savespan1" style="font-weight: 500;display: block;">'+json[i].signpath_name+'</span>'
+						 	+'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_savedMyline('+json[i].signpath_no+')" style="top: 6px;"></button></div>'
+				      	  	+'<div style="margin-top: 5px;" onclick="picksavedline('+json[i].signpath_no+')" >'
+				  				+'<div class="selectedmem" style="padding-bottom: 20px;">'
+						      	  	+'<div class="signli">'
+				    }
+				    html += '<header class="signheader" style="padding: 30px 8px;">'
+	  					+'<div class="profile" style="padding: 1px;width: 190px;">'
+	  					+'<span class="pic"><span>'+json[i].name_kr.substr(1)+'</span></span>'
+	  					+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+json[i].name_kr+'</span><br>'
+	  					+'<span class="role" style="font-size: 9pt;">'+json[i].role+'</span></span></div>'
+	  					+'<span class="positionIcon"><span>'+json[i].departemt_name+' '+json[i].team_name+'&nbsp;|&nbsp;'+json[i].position+'</span></span>'
+	  					+'<div class="separator" aria-orientation="horizontal" ></div>'
+	  					+'<span class="signspan" style="color: #5d6267;font-size: 13px;font-weight: 500;"><span>'+json[i].step+'단계</span>'
+			  		   +'</span></header>';
+			  		
+			  		if( i== json.length-1 || json[i].signpath_no != json[i+1].signpath_no ){
+			  			html += '</div></div></div></div>';
+			  		}
+				    
 				}
 			}
-			$("input#use-dayoffcnt").val(useval);
-			$("input#left-dayoffcnt").val(leftval);
-		})
-		
-		
-		<%-- 반차여부 체크시 라디오 선택 가능 불가능  --%>
-		$("input#halfstart").change(function(){
-			let useval = Number($("input#use-dayoffcnt").val());
-			let leftval = Number($("input#left-dayoffcnt").val());
-			if($(this).is(":checked")){ // 반차여부 체크되었으면
-			    $("input[name='startdaynight']").attr("disabled", false);
-	        }else{
-	        	$("input[name='startdaynight']").each(function(){
-	    			if(this.checked){
-	    				this.checked = false;
-	    				useval += 0.5;
-	    				leftval += 0.5;
-	    				$("input#use-dayoffcnt").val(useval);
-	    				$("input#left-dayoffcnt").val(leftval);
-	    			}
-	        	})
-			    $("input[name='startdaynight']").attr("disabled", true);
-	        }
-	    });
-		$("input#halfend").change(function(){
-			let useval = Number($("input#use-dayoffcnt").val());
-			let leftval = Number($("input#left-dayoffcnt").val());
-	        if($(this).is(":checked")){ // 반차여부 체크되었으면
-			    $("input[name='enddaynight']").attr("disabled", false);
-	        }else{
-	        	$("input[name='enddaynight']").each(function(){
-	    			if(this.checked){
-	    				this.checked = false;
-	    				useval += 0.5;
-	    				leftval += 0.5;
-	    				$("input#use-dayoffcnt").val(useval);
-	    				$("input#left-dayoffcnt").val(leftval);
-	    			}
-	        	})
-			    $("input[name='enddaynight']").attr("disabled", true);
-	        }
-	    });
-	    
-	    
-		
-		
-		
-		let id = ""; 
-		/* 양식에 맞는 모달창 뜨게하기  */
-		$("div.dayoff-box").click(function(e){
-			const temname = $(this).children('div').text();
-			//console.log(temname);
-			$("input#subject").val(temname+'결재');
-			$("input#ap_type").val(temname);
-			$("#tempbadge").text(temname+'작성하기');
+			else{
+				html += '<div style="text-align:center;color:grey;">저장한 결재라인이 없습니다.</div>' ;
+			}
 			
-			const $target = $(e.target)
-			id = $target.attr("id");
-			
-			id!="timeoff"? $("div#dayoff-temp").hide():$("div#dayoff-temp").show(); // 연차양식 뜨게하기  
-			
-			if( id=="work"){ // 업무기안서 양식 뜨게하기 
+			$("#mysavedline").html(html);
+		},
+		
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	    }
+	});
+	
+	$('#myModal_saveSignLine').modal('show');
+}
+// 저장된 결재라인 선택시 해당 문서 결재단계적용 
+function picksavedline(signpath_no){
+	
+	$.ajax({
+		url: "<%= ctxPath%>/approval/getmyline.up",
+		type:"GET",
+		data:{"signpath_no":signpath_no},
+		dataType:"json",
+		success: function(json) {
+			let html = '';
+			aprCnt = json.length-1
+			if(json.length > 0){
 				
-				$.ajax({
-					url: "<%= ctxPath%>/getdeptname.up",
+				for (let i = 0; i < json.length; i++) {
+				    if(i==0 || json[i].step != json[i-1].step){
+				    	html += `<div class="signli" id="stepdiv`+json[i].step+`" name="approvalstep">`
+						 	+`<header class="signheader" style="background-color: transparent;">`
+							  +`<span class="signspan" id="stepspan`+json[i].step+`" style="color: rgb(141, 150, 161);">`
+			  				+`<span>`+json[i].step+`단계</span></span>`
+			  			+`<div class="separator" aria-orientation="horizontal"></div>`
+			  			+`<div class="stepbtn">`
+			  				+`<button type="button" id="delbox`+json[i].step+`" class="delboxbtn" onclick="del_stepapproval(`+json[i].step+`,event)" style="display: none;"><div style="height: 16px;display: flex;align-items: center;justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px;height: 20px;flex-shrink: 0;width: 20px;height: 20px;flex-shrink: 0;">`
+			  				+`<path d="M10.5358 4.82022C10.0803 4.82022 9.67068 5.09715 9.50151 5.51946L9.29552 6.03371H14.7045L14.4985 5.51946C14.3293 5.09715 13.9197 4.82022 13.4642 4.82022H10.5358ZM7.8091 4.84345L7.33232 6.03371H5.66739C4.74652 6.03371 4 6.77918 4 7.69876C4 8.37524 4.20052 9.0366 4.5763 9.59947L5.01266 10.2531V19.0787C5.01266 20.1398 5.87408 21 6.93671 21H17.0633C18.1259 21 18.9873 20.1398 18.9873 19.0787V10.2531L19.4237 9.59947C19.7995 9.0366 20 8.37524 20 7.69876C20 6.77917 19.2535 6.03371 18.3326 6.03371H16.6677L16.1909 4.84345C15.7449 3.73007 14.6651 3 13.4642 3H10.5358C9.33493 3 8.25508 3.73007 7.8091 4.84345ZM5.83031 7.85393H7.94937H16.0506H18.1697C18.1442 8.11627 18.0543 8.36917 17.9071 8.58979L17.1646 9.70197V19.0787C17.1646 19.1345 17.1192 19.1798 17.0633 19.1798H6.93671C6.88078 19.1798 6.83544 19.1345 6.83544 19.0787V9.70197L6.09295 8.58979C5.94566 8.36917 5.8558 8.11627 5.83031 7.85393ZM10.8861 17.9663V10.0787H9.06329V17.9663H10.8861ZM14.9367 17.9663V10.0787H13.1139V17.9663H14.9367Z" fill="#c32700" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>`
+				  			+`<button type="button" id="plusmem`+json[i].step+`" class="plusmembtn" onclick="optionForm('OPEN',event,`+json[i].step+`)"><div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; flex-shrink: 0;">`
+				  			+`<path d="M12.9 12.9L19 12.9L19 11.1L12.9 11.1L12.9 5L11.1 5L11.1 11.1L5 11.1L5 12.9L11.1 12.9L11.1 19L12.9 19L12.9 12.9Z" fill="#556372" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>`
+				  		+`</div></header>`
+				  		+`<ul class="signul"><li class="signli-prof">`
+						+`<div class="signdiv-prof">`
+							+`<div style="line-height: 1;display: block;width:100%;">`
+ 	  							+`<div id="memcontent-iframe`+json[i].step+`">`
+				    }
+				    
+				    
+				    html +='<div class="selectedmem">'
+				 		+'<div class="profile" style="padding: 1px;">'
+				 		+'<input class="empno" hidden="" value="'+json[i].sign_empno+'">'
+				 		+'<span class="pic"><span>'+json[i].name_kr.substr(1)+'</span></span>'
+				 		+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+json[i].name_kr+'</span>'
+				 		+'<br><span class="role" style="font-size: 9pt;">'+json[i].role+'</span></span></div>'
+				 		+'<span class="positionIcon"><span>'+json[i].departemt_name+' '+json[i].team_name+'&nbsp;|&nbsp;'+json[i].position+'</span></span>'
+				 		+'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_appendmember(event)">'
+				 		+'</button></div>'
+			  		   
+			  		   
+			  		if( i== json.length-1 || json[i].step != json[i+1].step ){
+			  			html += '</div></div></div></li></ul></div>';
+			  		}
+				 		
+				}// for()---------------------------------------------
+				
+			}
+			
+			$(".approvalplus").html(html);
+		},
+		
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	    }
+	});
+	$('#myModal_saveSignLine').modal('hide');
+}
+
+// 저장된 결재선 삭제 
+function del_savedMyline(no){
+	$.ajax({
+		url: "<%= ctxPath%>/approval/delsavedline.up",
+		type:"GET",
+		data:{'signpath_no':no},	
+		dataType:"json",
+		success: function(json) {
+			if(json.result == 1){
+				alert("저장된 결재라인이 삭제되엇습니다.")
+				showmodal_mySignMade()
+			}
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	    }
+	})
+	
+}
+
+
+
+
+// 선택된 라인 개인결재선으로 저장
+function showmodal_saveSignLine(){
+	if($('.selectedmem').length >0 ){
+		$('#myModal_signName').modal('show');
+	}else{
+		alert("우선 결재사원을 선택해주세요!");
+	}
+}
+function savemystep(){
+	const val = $("#signpath_name").val();
+	if(val != "" || val.trim() != ""){ // 결재선 이름을 적었으면 
+		let n=0
+		let result = 0;
+		let spno = 0;
+		//var list = [];
+		$("div[name='approvalstep']").each(function(index){ // 추가된 단계만큼  
+			// 단계, 사원번호 넘겨주기
+			//console.log($(this).find('.empno'));
+			const $this = $(this); 
+			let appendval='';
+			$this.find('input.empno').each(function(index, item){
+				let val = $(item).val();
+				if(index != 0 ) val=','+val;
+				
+				appendval += val;
+				//console.log('appendval => '+appendval);
+			});			
+			if(appendval != ""){
+				
+				if(spno==0){ // tbl_signpath 한번 넣기 
+					$.ajax({
+						url: "<%= ctxPath%>/approval/getspno.up",
 					type:"GET",
 					dataType:"json",
+					async:false,
 					success: function(json) {
-						let html = '';
-						if(json.length > 0){
-							html += '<option value="" selected disabled>옵션을 선택해주세요</option>'
-							$.each(json, function(index,item) {
-								html += '<option value="'+item.deptname+'" selected>'+item.deptname+'</option>'  
-							});
-						}
-						$("#deptname").html(html);
-						$("div#work-temp").show();
+						console.log(json.spno);
+						spno = json.spno;
 					},
 					error: function(request, status, error){
 						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 				    }
 				});
-			}else{
-				$("div#work-temp").hide()
 			}
 			
-			let data = ""
-			switch (id) {
-			case "timeoff":
-				data = timeoff_temp 
-				break;
-			case "reason":
-				data = reason_temp 
-				break;
-			case "work":
-				data = work_temp 
-				break;
-			case "expenditure": 
-				data = expenditure_temp 
-				break;
-			case "buy":
-				data = buy_temp 
-				break;
-			case "condolence":
-				data = condolence_temp; 
-				break;
-			case "other":
-				data = ""; 
-				break;
-			}
-			
-			editor.setMarkdown(data);
-			
-			showmodal();
-		})
-		
-		// 플랫피커
-	 	flatpickr.localize(flatpickr.l10ns.ko);
-	 	flatpickr($(".dateSelector"));
-		$(".dateSelector").flatpickr({
-			dateFormat: "Y-m-d",
-			defaultDate: new Date(),
-			local: 'ko'
-		});
-		
-		
-		/* 문서 템플릿  */
-		const timeoff_temp = '';
-		const reason_temp = '';
-		const work_temp = '';
-		const condolence_temp = '<div class="fr-element fr-view" dir="auto" contenteditable="true" style="min-height: 100px;" aria-disabled="false" spellcheck="true"><h1 id="isPasted" style="box-sizing: border-box; margin: 0px; font-weight: 600; line-height: 1.8; font-size: 26px; padding: 30px 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: center;">경조금 지급 신청서</h1><p style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(118, 118, 118); font-family: &quot;Noto Sans JP&quot;, &quot;Noto Sans KR&quot;, &quot;SF Pro KR&quot;, &quot;SF Pro Text&quot;, &quot;SF Pro Icons&quot;, &quot;Apple Gothic&quot;, &quot;HY Gulim&quot;, MalgunGothic, &quot;HY Dotum&quot;, &quot;Lexi Gulim&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, roboto, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p><p style="box-sizing: border-box; margin: 0px; padding: 20px 0px 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.8; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 16px; text-align: start;"><strong style="box-sizing: border-box; font-weight: 700;">1. 경조금 수혜자</strong></p><p style="box-sizing: border-box; margin: 0px; padding: 0px 0px 0px 20px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.8; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 16px; text-align: start;">소속:&nbsp;</p><p style="box-sizing: border-box; margin: 0px; padding: 0px 0px 0px 20px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.8; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 16px; text-align: start;">성명:&nbsp;</p><p style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(118, 118, 118); font-family: &quot;Noto Sans JP&quot;, &quot;Noto Sans KR&quot;, &quot;SF Pro KR&quot;, &quot;SF Pro Text&quot;, &quot;SF Pro Icons&quot;, &quot;Apple Gothic&quot;, &quot;HY Gulim&quot;, MalgunGothic, &quot;HY Dotum&quot;, &quot;Lexi Gulim&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, roboto, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p><table align="" style="box-sizing: border-box; border-collapse: collapse; margin: 0px; padding: 0px; font-family: &quot;맑은 고딕&quot;; width: 938px; border: 1px none rgb(0, 0, 0); empty-cells: show; max-width: 100%; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-align: start; font-size: 16px; line-height: 1.8; color: rgb(0, 0, 0); table-layout: fixed;"><tbody style="box-sizing: border-box;"><tr style="box-sizing: border-box;"><td rowspan="5" scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 142px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">지급사유</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">경조 대상자 성명</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(156, 156, 156); font-family: &quot;맑은 고딕&quot;; font-size: 16px;">예시) 형제/자매 결혼시, 형제/자매 성함 입력</span></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">관계</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><br style="box-sizing: border-box;"></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-weight: bold; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">경조일</p><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; text-align: start;"><strong style="box-sizing: border-box; font-weight: 700;">(장례시 발인일 입력)</strong></span></p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><br style="box-sizing: border-box;"></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">경조내용</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><br style="box-sizing: border-box;"></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 194px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">발생지 주소(필요시 작성)</p></td><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 578px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><br style="box-sizing: border-box;"></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 142px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">지급금액</p></td><td colspan="2" scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 679px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(156, 156, 156); font-family: &quot;맑은 고딕&quot;; font-size: 16px;">경조금 지급금액 000,000원을 입력</span></p></td></tr><tr style="box-sizing: border-box;"><td scope="" style="box-sizing: border-box; margin: 0px; padding: 10px 0px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; text-align: center; font-weight: bold; width: 142px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;">지급계좌</p></td><td colspan="2" scope="" style="box-sizing: border-box; margin: 0px; padding: 10px; min-width: 5px; border: 1px solid rgb(0, 0, 0); word-break: break-all; line-height: 1.8; width: 679px;"><p style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 1.8; font-family: &quot;맑은 고딕&quot;; font-size: 16px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(156, 156, 156); font-family: &quot;맑은 고딕&quot;; font-size: 16px;">급여계좌 입력</span></p></td></tr></tbody></table></div>';
-		const buy_temp = '<div class="fr-element fr-view" dir="auto" contenteditable="true" style="min-height: 100px;" aria-disabled="false" spellcheck="true"><p align="center" id="isPasted" style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 10pt; text-align: center;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 24px;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 25.68px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;"><strong style="box-sizing: border-box; font-weight: 700;">구 매 요 청 서</strong></span></span></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: normal; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: SpoqaHanSans-Bold;">&nbsp;</span></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: normal; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: SpoqaHanSans-Bold;">&nbsp;</span></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">1.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">구매요청부서 :</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">2.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">구매목적(필요성) :</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: SpoqaHanSans-Bold; font-size: 12px; letter-spacing: 1pt; text-indent: -18pt;">&nbsp; &nbsp; &nbsp;</span><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: SpoqaHanSans-Bold; font-size: 12px; letter-spacing: 1pt; text-indent: -18pt;">※작성 Tip : 구매요청 물품이 업무상 필수물품인 근거사항을 제시해주세요</span></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">3.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">희망납기일 :</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">4.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 12pt; line-height: 17.12px; font-family: SpoqaHanSans-Bold; letter-spacing: 1pt;">구매요청품목</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 14.2667px; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; text-align: justify; font-size: 10pt; text-indent: -18pt;"><br style="box-sizing: border-box;"></p><div style="box-sizing: border-box; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; font-family: &quot;맑은 고딕&quot;; font-size: 16px; color: rgb(0, 0, 0); line-height: 1.8; margin-top: 0px; margin-bottom: 0px;"><table style="box-sizing: border-box; border-collapse: collapse; margin: 0px; padding: 0px; font-family: &quot;Noto Sans JP&quot;, &quot;Noto Sans KR&quot;, &quot;SF Pro KR&quot;, &quot;SF Pro Text&quot;, &quot;SF Pro Icons&quot;, &quot;Apple Gothic&quot;, &quot;HY Gulim&quot;, MalgunGothic, &quot;HY Dotum&quot;, &quot;Lexi Gulim&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, roboto, sans-serif; width: 937px; border: none; empty-cells: show; max-width: 100%;"><tbody style="box-sizing: border-box;"><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">NO</strong>.</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">품목명</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">모델명</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">수량</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">단가</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">금액</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">사용부서(사용자)</strong></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 133.734px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td colspan="4" style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 534.844px; text-align: center; background-color: rgb(204, 204, 204);"><strong style="box-sizing: border-box; font-weight: 700;">합계(부가세 포함)</strong></td><td colspan="3" style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 401.156px; background-color: rgb(204, 204, 204);"><br style="box-sizing: border-box;"></td></tr></tbody></table><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 9pt; line-height: 12.84px; font-family: SpoqaHanSans-Bold;">&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 11pt; line-height: 15.6933px; font-family: SpoqaHanSans-Bold;">5.<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; &nbsp;&nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 11pt; line-height: 15.6933px; font-family: SpoqaHanSans-Bold;">첨부서류</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 38pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 11pt; line-height: 15.6933px; font-family: SpoqaHanSans-Bold;"><br style="box-sizing: border-box;"></span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 56pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;">(1)<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; &nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;">관련 구매 링크 :&nbsp;</span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 56pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;"><br style="box-sizing: border-box;"></span></strong></p><p style="box-sizing: border-box; margin: 0cm 0cm 0.0001pt 56pt; padding: 0px; line-height: 14.2667px; text-align: justify; font-size: 10pt; text-indent: -18pt; font-family: &quot;맑은 고딕&quot;;"><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;">(2)<span style="box-sizing: border-box; margin: 0px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; &nbsp;</span></span></strong><strong style="box-sizing: border-box; font-weight: 700;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; line-height: 14.2666px; font-family: SpoqaHanSans-Bold; font-size: 13.3333px;">견적서(필요시 첨부)</span></strong></p></div></div>';
-		const expenditure_temp = '<div class="fr-element fr-view" dir="auto" contenteditable="true" style="min-height: 100px;" aria-disabled="false" spellcheck="true"><div id="isPasted" style="box-sizing: border-box; color: rgb(0, 0, 0); font-family: &quot;맑은 고딕&quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.8; display: block; margin-top: 0px; margin-bottom: 0px; text-align: center;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 24px;"><strong style="box-sizing: border-box; font-weight: 700;">지 출 결 의 서</strong></span><br style="box-sizing: border-box;"><br style="box-sizing: border-box;"></div><table style="box-sizing: border-box; border-collapse: collapse; margin: 0px; padding: 0px; font-family: &quot;Noto Sans JP&quot;, &quot;Noto Sans KR&quot;, &quot;SF Pro KR&quot;, &quot;SF Pro Text&quot;, &quot;SF Pro Icons&quot;, &quot;Apple Gothic&quot;, &quot;HY Gulim&quot;, MalgunGothic, &quot;HY Dotum&quot;, &quot;Lexi Gulim&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, roboto, sans-serif; width: 937px; border: none; empty-cells: show; max-width: 100%; color: rgb(0, 0, 0); font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><tbody style="box-sizing: border-box;"><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">NO</strong><strong style="box-sizing: border-box; font-weight: 700;">.</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">거래일</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">거래처명</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px; text-align: center;"><div style="box-sizing: border-box; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">내용</strong></div></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">금액</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">지급 요청일</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">예금주</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">은행</strong></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px; text-align: center;"><div style="box-sizing: border-box; text-align: center;"><strong style="box-sizing: border-box; font-weight: 700;">계좌번호</strong></div></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px; text-align: center;">1</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px; text-align: center;">2022-01-07</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px; text-align: center;">abc운송</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px; text-align: center;">물품 운반료</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px; text-align: center;">100,000</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px; text-align: center;">2022-01-31</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px; text-align: center;">000</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px; text-align: center;">00은행</td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px; text-align: center;">123-456-789</td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 57.1719px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 95.5703px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 160.648px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 100.07px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 107.711px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 104.578px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 103.992px;"><br style="box-sizing: border-box;"></td><td style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 102.266px;"><br style="box-sizing: border-box;"></td></tr><tr style="box-sizing: border-box;"><td colspan="4" style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 417.383px; background-color: rgb(204, 204, 204);"><div style="box-sizing: border-box; text-align: right;"><strong style="box-sizing: border-box; font-weight: 700;">총계 : &nbsp; &nbsp; &nbsp;</strong></div></td><td colspan="5" style="box-sizing: border-box; margin: 0px; padding: 0px; min-width: 5px; border: 1px solid rgb(221, 221, 221); width: 518.617px; background-color: rgb(204, 204, 204);">&nbsp;100,000</td></tr></tbody></table></div>';
-		
-		<%--텍스트 에디터 시작 --%>
-		const { Editor } = toastui; 
-		const { colorSyntax } = Editor.plugin;
-		
-		const editor = new toastui.Editor({
-		  el: document.querySelector('#editor'),
-	      height: '500px',
-	      initialEditType:"wysiwyg",
-	      previewStyle: 'vertical',
-	      plugins: [colorSyntax],
-	      hooks: {
-		      addImageBlobHook: function (blob, callback) {
-		        const formData = new FormData();
-		        formData.append("image", blob);
-		        const editor = new toastui.Editor({
-		  		  el: document.querySelector('#editor'),
-		  	      height: '500px',
-		  	      initialEditType:"wysiwyg",
-		  	      previewStyle: 'vertical',
-		  	      plugins: [colorSyntax],
-		  	      hooks: {
-		  		      addImageBlobHook: function (blob, callback) {
-		  		        const formData = new FormData();
-		  		        formData.append("image", blob);
-		  		        formData.append("uri", window.location.pathname);
-		  		        const imageURL = imageUpload(formData);
-		  		        callback(imageURL, "image");
-		  		      }
-		  		  }, 
-		  		  language: "ko-KR"
-		  		});
-		        const imageURL = imageUpload(formData);
-		        callback(imageURL, "image");
-		      }
-		  }, 
-		  language: "ko-KR"
-		});
-		
-		<%-- 텍스트 에디터 끝 --%>
-		
-		
-		// **** 결재문서 제출 ****  
-		// 저장하기 눌렀을경우 
-		$("button#approvalsave").click(function(){
-
-			$('#content').prepend(editor.getHTML());
-			// 글제목 유효성 검사
-	         const subject = $("input#subject").val().trim();
-	         if(subject == "") {
-	            alert("글제목을 입력하세요!!");
-	            return;
-	         }
-	         var contentval = editor.getHTML();
-	         console.log(contentval);
-	         contentval = contentval.replace(/&nbsp;/gi, ""); // 공백을 "" 으로 변환
-	         contentval = contentval.substring(contentval.indexOf("<p>")+3);
-	         contentval = contentval.substring(0, contentval.indexOf("</p>"));
-	         
-	         if(contentval.trim().length == 0) {
-	              alert("글내용을 입력하세요!!");
-	               return;
-	           }
-	         $("#content").val(contentval);         
-	         
-	         
-				if(id=="timeoff"){ // 연차 양식이라면 
-					let useval = Number($("input#use-dayoffcnt").val());
-					let leftval = Number($("input#left-dayoffcnt").val());
-					
-					// 연차결재일경우
-					// 양식 다 작성했는지 검사
-					// 반차 적용하기 
-					
-					if(useval == 0){ // 사용연차가 0보다 적으면 
-						alert("신청하는 연차가 없습니다!");
-						return;
-					}else if( useval<0 ){
-						alert("신청할려는 연차가 잔여연차 갯수보다 많습니다!");
-						return;
-					}
-					
-					// 반차 날짜에 적용하기 
-					const startday= $("#startday").val();
-					const endday= $("#endday").val();
-					if($("#startmorning").is(":checked")){ // 시작일 오전에 체크됐으면 
-						$("#startday").val(startday+' 09:00');
-					}else if($("#startnoon").is(":checked")){ // 시작일 오후에 체크됐으면
-						$("#startday").val(startday+' 13:00');
-					}else{
-						$("#startday").val(startday+' 09:00');
-					}
-					
-					if($("#endmorning").is(":checked")){ // 종료일 오전에 체크됐으면 
-						$("#endday").val(endday+' 09:00');
-					}else if($("#endnoon").is(":checked")){ // 종료일 오후에 체크됐으면
-						$("#endday").val(endday+' 13:00');
-					}else{
-						$("#endday").val(endday+' 09:00');
-					}
-					
-				}
-				else if(id=="work"){ // 업무 양식이라면
-					const dept = $("select#deptname").val();
-					if(dept == "" || dept == null) {
-			              alert("부서를 선택해주세요!");
-			               return;
-			          }
-				}
-
-	      	// 결재라인 넘겨주기 
-				let appendval='';
-				let appendtext='';
-				$("div[name='approvalstep']").each(function(index){ // 추가된 단계만큼  
-					// 단계, 사원번호 넘겨주기
-					//console.log($(this).find('.empno'));
-					const $this = $(this); 
-					$this.find('input.empno').each(function(num, item){
-						let val = $(item).val();
-						if(val == "") return;
-						
-						if(num != 0 ) val=','+val;  // 결재사원구분자 
-						else if (index !=0 && num == 0){
-							val='/'+val; // 결재단게구분자 
-						}
-						
-						appendval += val;
-						 console.log('appendval => '+appendval); 
+			if(spno != 0){
+				$.ajax({ // tbl_signpath_detail 
+					url: "<%= ctxPath%>/approval/savemyline.up",
+						type:"POST",
+						data:{"signpath_name":$("#signpath_name").val()
+							, "signpath":appendval
+							,"signstep":index+1
+							,"signpath_no":spno}, 
+						dataType:"json",
+						success: function(json) {
+							result *= json.result;
+							//console.log(result);
+							n++;
+						},
+						error: function(request, status, error){
+							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					    }
 					});
 					
-					$this.find('span.name').each(function(num, item){
-						let text = $(item).text();
-						if(text == "") return;
-						
-						if(num != 0 ) text=','+text;  // 결재사원구분자 
-						else if (index !=0 && num == 0){
-							text='/'+text; // 결재단게구분자 
-						}
-						appendtext += text;
-						console.log('appendtext => '+appendtext); 
-					});
-				});
-				$("input[name='approvalline']").val(appendval);
-				$("input[name='approvalline_name']").val(appendtext);
-				// 참조자 넘겨주기 
-				let referhtml = '';
-				let appendval2='';
-				let appendtext2='';
-				let flag =0; 
-				let flag2 =0; 
-				const referbox =$("div#memcontent-iframe0").find(".selectedmem") 
-				referbox.find('input.empno').each(function(index){ // 추가된 참조사원만큼  
-					// 단계, 사원번호 넘겨주기
-					//console.log($(this).find('.empno'));
-					const $this = $(this); 
-					let val = $this.val();
-					if(val == "") return false;
-					if(flag != 0 ) val=','+val;  // 참조사원구분자
-					
-					appendval2 += val;
-					flag+=1;
-				});
-				referbox.find('span.name').each(function(index){ // 추가된 참조사원만큼  
-					// 단계, 사원번호 넘겨주기
-					//console.log($(this).find('.empno'));
-					const $this = $(this); 
-					let text = $this.text();
-					if(text == "") return false;
-					if(flag2 != 0 ) text=','+text;  // 참조사원구분자
-					
-					appendtext2 += text;
-					flag2 +=1;
-				});
-				$("input[name='referline']").val(appendval2);
-				$("input[name='referline_name']").val(appendtext2);
-				
-			
-	         // 폼(form)을 전송(submit)
-	   		 const frm = document.addFrm;
-	         frm.method = "POST";
-	         frm.action = "<%= ctxPath%>/approval/add.up";
-	         frm.submit();  
-		});
-		
-		 
-		
-		/* 결재라인 호버효과 */
-		$(document).on({
-			mouseenter: function(){
-				$(this).css('background-color','#f6f6f6');
-				// 만일 1단계만 있다면 삭제버튼 계속 안보이게 하기 
-				if($("div[name='approvalstep']").length > 1) 
-					$(this).find('.delboxbtn').css('display','flex');
-			},
-			mouseleave: function(){
-				$(this).css('background-color','transparent');
-				$(this).find('.delboxbtn').css('display','none');
+				}
 			}
-		}, '.signheader');
-		
-		
-		// 외부영역 클릭 시 팝업 닫기
-		$(document).mouseup(function (e){
-			var option = $(".option");
-			if(option.has(e.target).length === 0){
-				option.css('display','none');
-			}
+			//list.push(appendval); // 단계마다 들감. [(10001,10001),(10001)]
 		});
-		
-	});//end of $(document).ready(function(){}---------------
-			
-			
-			
-	function imageUpload(formData) {
-		  let imageURL;
+		result ==1? alert("저장에 성공했습니다!"):alert("저장에 성공했습니다!");
+		$('#myModal_signName').modal('hide');
+	}
+	else{
+		alert("저장할 결재선명을 적어주세요!")
+	}
+}
 
-	  $.ajax({
-	    type: "post",
-	    url: "<%= ctxPath%>/approval/image_upload.up",
-	    async: false,
-	    data: formData,
-	    processData: false,
-	    contentType: false,
-	    success: function (data) {
-	      imageURL = data;
-	      console.log(imageURL);
-	    },
-	    error: function (request, status, error) {
-	      alert(request + ", " + status + ", " + error);
-	    },
-	  });
 
-	  return imageURL;
+
+
+
+
+
+
+/* 모달창 닫힐때 confirm 뜨게하기 */
+function modalclose(){
+	if(!confirm("결재문서를 닫으시겠습니까? 작성중인 내용은 모두 삭제됩니다.")){
+		$('#writemodal').modal("show");  
+	}else{
+		$('#appform')[0].reset();// 모든 값 없애기 !!
+		$('.toastui-editor-contents').html('');
+		$('#writemodal').modal("hide"); //닫기 
 	}
-	
-	function showmodal(){
-		$('#writemodal').modal('show');
-	};
-	
-	
-	function showmodal_selSignMem(){
-		$('#myModal_selSignMem').modal('show');
-	}
-	
-	// 저장된 개인결재선보여주기 
-	function showmodal_mySignMade(){
-		$.ajax({
-			url: "<%= ctxPath%>/approval/loadsavedline.up",
-			type:"GET",
-			/* data:{"ano":anoval
-				, "ap_type":ap_type}, */
-			dataType:"json",
-			success: function(json) {
-				html = '';
-				let sno = '';
-				if(json.length > 0){
-					
-					for (let i = 0; i < json.length; i++) {
-					    if(i==0 || json[i].signpath_no != json[i-1].signpath_no){
-					    	html += '<div name="savedstep" class="divbox dayoff-box timeoff mb-2" style="border: solid 1px rgb(0 0 0 / 7%);height: auto;display: block;">'
-							 	+'<div style="margin-top: 0;display: flex;justify-content: space-between;"><span  id="savespan1" style="font-weight: 500;display: block;">'+json[i].signpath_name+'</span>'
-							 	+'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_savedMyline('+json[i].signpath_no+')" style="top: 6px;"></button></div>'
-					      	  	+'<div style="margin-top: 5px;" onclick="picksavedline('+json[i].signpath_no+')" >'
-					  				+'<div class="selectedmem" style="padding-bottom: 20px;">'
-							      	  	+'<div class="signli">'
-					    }
-					    html += '<header class="signheader" style="padding: 30px 8px;">'
-		  					+'<div class="profile" style="padding: 1px;width: 190px;">'
-		  					+'<span class="pic"><span>'+json[i].name_kr.substr(1)+'</span></span>'
-		  					+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+json[i].name_kr+'</span><br>'
-		  					+'<span class="role" style="font-size: 9pt;">'+json[i].role+'</span></span></div>'
-		  					+'<span class="positionIcon"><span>'+json[i].departemt_name+' '+json[i].team_name+'&nbsp;|&nbsp;'+json[i].position+'</span></span>'
-		  					+'<div class="separator" aria-orientation="horizontal" ></div>'
-		  					+'<span class="signspan" style="color: #5d6267;font-size: 13px;font-weight: 500;"><span>'+json[i].step+'단계</span>'
-				  		   +'</span></header>';
-				  		
-				  		if( i== json.length-1 || json[i].signpath_no != json[i+1].signpath_no ){
-				  			html += '</div></div></div></div>';
-				  		}
-					    
-					}
-				}
-				else{
-					html += '<div style="text-align:center;color:grey;">저장한 결재라인이 없습니다.</div>' ;
-				}
-				
-				$("#mysavedline").html(html);
-			},
-			
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }
-		});
-		
-		$('#myModal_saveSignLine').modal('show');
-	}
-	// 저장된 결재라인 선택시 해당 문서 결재단계적용 
-	function picksavedline(signpath_no){
-		
-		$.ajax({
-			url: "<%= ctxPath%>/approval/getmyline.up",
-			type:"GET",
-			data:{"signpath_no":signpath_no},
-			dataType:"json",
-			success: function(json) {
-				let html = '';
-				aprCnt = json.length-1
-				if(json.length > 0){
-					
-					for (let i = 0; i < json.length; i++) {
-					    if(i==0 || json[i].step != json[i-1].step){
-					    	html += `<div class="signli" id="stepdiv`+json[i].step+`" name="approvalstep">`
-							 	+`<header class="signheader" style="background-color: transparent;">`
-								  +`<span class="signspan" id="stepspan`+json[i].step+`" style="color: rgb(141, 150, 161);">`
-				  				+`<span>`+json[i].step+`단계</span></span>`
-				  			+`<div class="separator" aria-orientation="horizontal"></div>`
-				  			+`<div class="stepbtn">`
-				  				+`<button type="button" id="delbox`+json[i].step+`" class="delboxbtn" onclick="del_stepapproval(`+json[i].step+`,event)" style="display: none;"><div style="height: 16px;display: flex;align-items: center;justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px;height: 20px;flex-shrink: 0;width: 20px;height: 20px;flex-shrink: 0;">`
-				  				+`<path d="M10.5358 4.82022C10.0803 4.82022 9.67068 5.09715 9.50151 5.51946L9.29552 6.03371H14.7045L14.4985 5.51946C14.3293 5.09715 13.9197 4.82022 13.4642 4.82022H10.5358ZM7.8091 4.84345L7.33232 6.03371H5.66739C4.74652 6.03371 4 6.77918 4 7.69876C4 8.37524 4.20052 9.0366 4.5763 9.59947L5.01266 10.2531V19.0787C5.01266 20.1398 5.87408 21 6.93671 21H17.0633C18.1259 21 18.9873 20.1398 18.9873 19.0787V10.2531L19.4237 9.59947C19.7995 9.0366 20 8.37524 20 7.69876C20 6.77917 19.2535 6.03371 18.3326 6.03371H16.6677L16.1909 4.84345C15.7449 3.73007 14.6651 3 13.4642 3H10.5358C9.33493 3 8.25508 3.73007 7.8091 4.84345ZM5.83031 7.85393H7.94937H16.0506H18.1697C18.1442 8.11627 18.0543 8.36917 17.9071 8.58979L17.1646 9.70197V19.0787C17.1646 19.1345 17.1192 19.1798 17.0633 19.1798H6.93671C6.88078 19.1798 6.83544 19.1345 6.83544 19.0787V9.70197L6.09295 8.58979C5.94566 8.36917 5.8558 8.11627 5.83031 7.85393ZM10.8861 17.9663V10.0787H9.06329V17.9663H10.8861ZM14.9367 17.9663V10.0787H13.1139V17.9663H14.9367Z" fill="#c32700" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>`
-					  			+`<button type="button" id="plusmem`+json[i].step+`" class="plusmembtn" onclick="optionForm('OPEN',event,`+json[i].step+`)"><div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; flex-shrink: 0;">`
-					  			+`<path d="M12.9 12.9L19 12.9L19 11.1L12.9 11.1L12.9 5L11.1 5L11.1 11.1L5 11.1L5 12.9L11.1 12.9L11.1 19L12.9 19L12.9 12.9Z" fill="#556372" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div></button>`
-					  		+`</div></header>`
-					  		+`<ul class="signul"><li class="signli-prof">`
-							+`<div class="signdiv-prof">`
-								+`<div style="line-height: 1;display: block;width:100%;">`
-  	  							+`<div id="memcontent-iframe`+json[i].step+`">`
-					    }
-					    
-					    
-					    html +='<div class="selectedmem">'
-					 		+'<div class="profile" style="padding: 1px;">'
-					 		+'<input class="empno" hidden="" value="'+json[i].sign_empno+'">'
-					 		+'<span class="pic"><span>'+json[i].name_kr.substr(1)+'</span></span>'
-					 		+'<span class="my"><span class="name" style="font-size: 10.8pt;">'+json[i].name_kr+'</span>'
-					 		+'<br><span class="role" style="font-size: 9pt;">'+json[i].role+'</span></span></div>'
-					 		+'<span class="positionIcon"><span>'+json[i].departemt_name+' '+json[i].team_name+'&nbsp;|&nbsp;'+json[i].position+'</span></span>'
-					 		+'<button type="button" class="btn-close mem-del" aria-label="close" onclick="del_appendmember(event)">'
-					 		+'</button></div>'
-				  		   
-				  		   
-				  		if( i== json.length-1 || json[i].step != json[i+1].step ){
-				  			html += '</div></div></div></li></ul></div>';
-				  		}
-					 		
-					}// for()---------------------------------------------
-					
-				}
-				
-				$(".approvalplus").html(html);
-			},
-			
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }
-		});
-		$('#myModal_saveSignLine').modal('hide');
-	}
-	
-	// 저장된 결재선 삭제 
-	function del_savedMyline(no){
-		$.ajax({
-			url: "<%= ctxPath%>/approval/delsavedline.up",
-			type:"GET",
-			data:{'signpath_no':no},	
-			dataType:"json",
-			success: function(json) {
-				if(json.result == 1){
-					alert("저장된 결재라인이 삭제되엇습니다.")
-					showmodal_mySignMade()
-				}
-			},
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }
-		})
-		
-	}
-	
-	
-	
-	
-	// 선택된 라인 개인결재선으로 저장
-	function showmodal_saveSignLine(){
-		if($('.selectedmem').length >0 ){
-			$('#myModal_signName').modal('show');
-		}else{
-			alert("우선 결재사원을 선택해주세요!");
-		}
-	}
-	function savemystep(){
-		const val = $("#signpath_name").val();
-		if(val != "" || val.trim() != ""){ // 결재선 이름을 적었으면 
-			let n=0
-			let result = 0;
-			let spno = 0;
-			//var list = [];
-			$("div[name='approvalstep']").each(function(index){ // 추가된 단계만큼  
-				// 단계, 사원번호 넘겨주기
-				//console.log($(this).find('.empno'));
-				const $this = $(this); 
-				let appendval='';
-				$this.find('input.empno').each(function(index, item){
-					let val = $(item).val();
-					if(index != 0 ) val=','+val;
-					
-					appendval += val;
-					//console.log('appendval => '+appendval);
-				});			
-				if(appendval != ""){
-					
-					if(spno==0){ // tbl_signpath 한번 넣기 
-						$.ajax({
-							url: "<%= ctxPath%>/approval/getspno.up",
-							type:"GET",
-							dataType:"json",
-							async:false,
-							success: function(json) {
-								console.log(json.spno);
-								spno = json.spno;
-							},
-							error: function(request, status, error){
-								alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-						    }
-						});
-					}
-					
-					if(spno != 0){
-						$.ajax({ // tbl_signpath_detail 
-							url: "<%= ctxPath%>/approval/savemyline.up",
-							type:"POST",
-							data:{"signpath_name":$("#signpath_name").val()
-								, "signpath":appendval
-								,"signstep":index+1
-								,"signpath_no":spno}, 
-							dataType:"json",
-							success: function(json) {
-								result *= json.result;
-								//console.log(result);
-								n++;
-							},
-							error: function(request, status, error){
-								alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-						    }
-						});
-						
-					}
-				}
-				//list.push(appendval); // 단계마다 들감. [(10001,10001),(10001)]
-			});
-			result ==1? alert("저장에 성공했습니다!"):alert("저장에 성공했습니다!");
-			$('#myModal_signName').modal('hide');
-		}
-		else{
-			alert("저장할 결재선명을 적어주세요!")
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	/* 모달창 닫힐때 confirm 뜨게하기 */
-	function modalclose(){
-		if(!confirm("결재문서를 닫으시겠습니까? 작성중인 내용은 모두 삭제됩니다.")){
-			$('#writemodal').modal("show");  
-		}else{
-			/* $('#appform').reset(); */
-			// val(""); // 모든 값 없애기 !!
-			$('#writemodal').modal("hide"); //닫기 
-		}
-	}
-	
-	
-	let num = 0;
-	<%-- 옵션창 열리고 닫히고  --%>
+}
+
+
+let num = 0;
+<%-- 옵션창 열리고 닫히고  --%>
 	function optionForm(value,e,thisnum){
 		 if(value=="OPEN") {
 			 option.style.display="block";
@@ -1188,7 +1134,6 @@ div#dayoff-temp, div#wort-temp{
 	    return zero + n;
 	}
 
-	
 	
 	
 </script>

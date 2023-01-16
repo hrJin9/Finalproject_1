@@ -383,6 +383,13 @@ public class ApprovalService implements InterApprovalService {
 	}
 
 
+	@Override
+	public List<ApprovalVO> getreferLine(String ano) {
+		List<ApprovalVO> list = dao.getreferLine(ano);
+		return list;
+	}
+
+
 	
 
 

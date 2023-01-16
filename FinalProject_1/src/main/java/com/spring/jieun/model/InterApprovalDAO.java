@@ -95,4 +95,6 @@ public interface InterApprovalDAO {
 
 	int referedTotalCount(Map<String, String> paraMap);
 
+	List<ApprovalVO> getreferLine(String ano);
+
 }

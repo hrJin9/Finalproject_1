@@ -264,7 +264,7 @@ public class ApprovalController {
 		
         totalCount = service.getMyApprovalTotalCount(paraMap);
 //		totalCount = service.getRequestedApprovalTotalCount(paraMap);
-		System.out.println("~~~ totalCount:"+totalCount);
+		//System.out.println("~~~ totalCount:"+totalCount);
 		
 		totalPage = (int)Math.ceil( (double)totalCount/sizePerPage);
 		
@@ -312,7 +312,7 @@ public class ApprovalController {
 		
 		
 		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
- 		String url ="approval.up";
+ 		String url ="processed.up";
  		
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
@@ -440,7 +440,7 @@ public class ApprovalController {
         
         // 총게시물 건수(totalCount)
         totalCount = service.getMyApprovalTotalCount(paraMap);
-        System.out.println("~~~ totalCount:"+totalCount);
+        //System.out.println("~~~ totalCount:"+totalCount);
 
         totalPage = (int)Math.ceil( (double)totalCount/sizePerPage);
         
@@ -747,6 +747,40 @@ public class ApprovalController {
 		return jsonarr.toString(); // "[]" 또는 "[{},{},{}]"
 		
 	}
+	@ResponseBody
+	@RequestMapping(value = "/approval/view_refer.up", method = RequestMethod.GET, produces="text/plain;charset=UTF-8") // 오로지 GET방식만 허락하는 것임.
+	public String approval_viewrefer(HttpServletRequest request,HttpServletResponse response) {
+		
+		String ano = request.getParameter("ano");
+		//System.out.println("anoval => "+ano);
+		
+		// 한문서에 대해 결재라인리스트 가져오기 
+		List<ApprovalVO> referList = service.getreferLine(ano);
+		
+		JSONArray jsonarr = new JSONArray(); // []
+		if(referList != null) {
+			int fbcnt = 0; 
+			int i = 0; 
+			for(ApprovalVO aprvo: referList) {
+				JSONObject jsonobj = new JSONObject();
+				jsonobj.put("ano", aprvo.getFk_ano());
+				jsonobj.put("refer_empno", aprvo.getFk_refer_empno());
+				jsonobj.put("department_name", aprvo.getDepartment_name());
+				jsonobj.put("name_kr", aprvo.getName_kr());
+				jsonobj.put("position", aprvo.getPosition());
+				jsonobj.put("role", aprvo.getRole());
+				jsonobj.put("team_name", aprvo.getTeam_name());
+				
+				if((i+1)!=referList.size()) jsonobj.put("fbcnt", 0);
+				else jsonobj.put("fbcnt", fbcnt);
+				
+				jsonarr.put(jsonobj);
+				i++;
+			}
+		}
+		return jsonarr.toString(); // "[]" 또는 "[{},{},{}]"
+		
+	}
 	
 	
 	
@@ -876,7 +910,7 @@ public class ApprovalController {
         paraMap.put("endRno", String.valueOf(endRno));
         
         approvalList = service.requestedtodoListPaging(paraMap);
-        System.out.println("~~~ approvalList.size():"+approvalList.size());
+        //System.out.println("~~~ approvalList.size():"+approvalList.size());
         // 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것)
         
         
@@ -896,9 +930,7 @@ public class ApprovalController {
  	      
 
  		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
- 		String url ="appro<!--#include virtual=\"dbcon.asp\"-->\n" + 
- 				"<script type=\"text/javascript\" src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js\"></script>\n" + 
- 				"<script type=\"text/javascript\" src=\"https://html2canvas.hertzen.com/dist/html2canvas.min.js\"></script>val.up";
+ 		String url ="requested.up";
  		
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
@@ -1000,7 +1032,7 @@ public class ApprovalController {
 		
 		// 총게시물 건수(totalCount)
 		totalCount = service.getRequestedApprovalTotalCount(paraMap);
-		System.out.println("~~~ totalCount:"+totalCount);
+		//System.out.println("~~~ totalCount:"+totalCount);
 		
 		totalPage = (int)Math.ceil( (double)totalCount/sizePerPage);
 		
@@ -1046,7 +1078,7 @@ public class ApprovalController {
 		
 		
 		String pageBar = "<nav><ul class='pagination mg-pagebar'style='align-items: center;display: inline-flex;'>";
- 		String url ="approval.up";
+ 		String url ="processing.up";
  		
  		// === [맨처음][이전] 만들기 === //
  		if(pageNo != 1) {
