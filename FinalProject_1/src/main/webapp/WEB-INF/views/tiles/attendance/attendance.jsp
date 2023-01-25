@@ -467,7 +467,7 @@
 			
 			thisWeekDate = thisWeek[index+1];
 			thisWeekDate2.push(thisWeekDate);
-			console.log("thisWeekDate >>>"+thisWeekDate);
+			//console.log("thisWeekDate >>>"+thisWeekDate);
 		});
 		totaltimebyDay();  // 하루치 총 근무시간 구하기
 		totaltimebyWeek(); // 일주일치 총 근무시간 구하기
@@ -481,7 +481,7 @@
 			async:false,
 			dataType:"JSON",  
 			success:function(json){ 
-				console.log(JSON.stringify(json));  // 배열타입도 모두 찍을 수 있다.
+				//console.log(JSON.stringify(json));  // 배열타입도 모두 찍을 수 있다.
 
 				if(window.myChart != undefined ){
 					window.myChart.destroy();
@@ -1021,7 +1021,7 @@
 					
 					<div class="buttons">
 				  		<div class="workadd" onclick="attendanceplus(1)">
-				  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5pt;">추가하기</span></div>
+				  			<div><i class="fa-solid fa-circle-plus" style="color: #5E9FF2;"></i><span style="color:#5E9FF2; margin-left: 5px;">추가하기</span></div>
 			  			</div>
 			  			<div class="workstatus-buttoncontainer">
 			  				<button type="button" class="workstatusall-del btn" id="goAllDel"><i class="fa-solid fa-trash-can" ></i></button> <%-- 전체 삭제하기 --%>

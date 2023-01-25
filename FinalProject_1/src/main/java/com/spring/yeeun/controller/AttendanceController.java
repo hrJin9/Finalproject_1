@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -397,8 +398,7 @@ public class AttendanceController {
 		JSONObject jsonObj = new JSONObject(); // JSON 객체 생성
 		
 		float realtotal = 0;
-		int size = 0;
-		int workTimeList_length = 0;
+		HashSet<String> distinctData = new HashSet<String>();
 		for (int i = 0; i < thisWeekDate.length; i++) {
 			Map<String, String> paraMap = new HashMap<String, String>();
 			String year = thisWeekDate[i].substring(0, 4);
@@ -411,19 +411,19 @@ public class AttendanceController {
 			paraMap.put("thisWeekDay", thisWeekDay); 
 			
 			List<AttendanceVO> totalworkTimeList = service.getTotalworkTimebyWeek(paraMap);
-			
 			for (int j = 0; j < totalworkTimeList.size(); j++) {
 				realtotal += Integer.parseInt(totalworkTimeList.get(j).getTotalTime());
 				//System.out.println("realtotal >>>>>>>" +realtotal);
+				
+				String realworkday = totalworkTimeList.get(j).getSeldate();
+				distinctData.add(realworkday); // 동일날짜에 여러 근무형태로 저장시 중복값 제거를 위함.
 			}
-			size = totalworkTimeList.size();
-			workTimeList_length += size;
-			//System.out.println("size : "+size);
 		}
-		//System.out.println("workTimeList_length : "+workTimeList_length);
+		//System.out.println("distinctData.size() : "+ distinctData.size());
+		//System.out.println("distinctData.toString() : "+ distinctData.toString());
 		
 		// 근무한 날짜 개수만큼 근무시간 빼줘야함 .!!!
-		realtotal = realtotal - (workTimeList_length*60);
+		realtotal = realtotal - (distinctData.size()*60);
 		int workTime = (int)(realtotal / 60);  // 몫
 		int workMin = (int)(realtotal % 60);   // 나머지
 		
